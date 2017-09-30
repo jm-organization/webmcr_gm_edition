@@ -1,11 +1,10 @@
-###WebMcr Personal Version for Grand-Mine
+WebMcr Personal Version for Grand-Mine
 
-**Установка**: Залить все файлы на сайт и следовать инструкциям установщика
+Установка: Залить все файлы на сайт и следовать инструкциям установщика
 
-###Контакты:
+Контакты:
+ - Сайт оффициального разработчика: http://webmcr.com
+ - Оффициальный Wiki: http://wiki.webmcr.com/
+ - Mind 42 - http://mind42.com/mindmap/a2e9fdc9-a645-42db-80e0-c338f8a27c2c
 
-Сайт оффициального разработчика: http://webmcr.com
-Оффициальный Wiki: http://wiki.webmcr.com/
-Mind 42 - http://mind42.com/mindmap/a2e9fdc9-a645-42db-80e0-c338f8a27c2c
----
-Сайт 
+ - Сайт организации, которая адоптировала движок для проекта: http://www.jm-org.net/
