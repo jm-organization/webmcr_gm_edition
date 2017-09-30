@@ -7,4 +7,4 @@ WebMcr Personal Version for Grand-Mine
  - Оффициальный Wiki: http://wiki.webmcr.com/
  - Mind 42 - http://mind42.com/mindmap/a2e9fdc9-a645-42db-80e0-c338f8a27c2c
 
- - Сайт организации, которая адоптировала движок для проекта: http://www.jm-org.net/
+ - Сайт организации, которая адaптировала движок для проекта: http://www.jm-org.net/
