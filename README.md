@@ -1,8 +1,8 @@
-###WebMcr Personal Version for Grand-Mine###
+###WebMcr Personal Version for Grand-Mine
 
 **Установка**: Залить все файлы на сайт и следовать инструкциям установщика
 
-###Контакты:###
+###Контакты:
 
 Сайт оффициального разработчика: http://webmcr.com
 Оффициальный Wiki: http://wiki.webmcr.com/
