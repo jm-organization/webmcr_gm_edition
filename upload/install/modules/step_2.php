@@ -97,9 +97,9 @@ class module{
 			$us_f		= $ctables['users']['fields'];
 
 			$query = $db->query("INSERT INTO `{$ctables['users']['name']}`
-										(`{$us_f['group']}`, `{$us_f['login']}`, `{$us_f['email']}`, `{$us_f['pass']}`, `{$us_f['uuid']}`, `{$us_f['salt']}`, `{$us_f['ip_create']}`, `{$us_f['ip_last']}`, `{$us_f['date_reg']}`, `{$us_f['date_last']}`, `{$us_f['fname']}`, `{$us_f['lname']}`)
+										(`{$us_f['group']}`, `{$us_f['login']}`, `{$us_f['email']}`, `{$us_f['pass']}`, `{$us_f['uuid']}`, `{$us_f['salt']}`, `{$us_f['ip_create']}`, `{$us_f['ip_last']}`, `{$us_f['date_reg']}`, `{$us_f['date_last']}`)
 									VALUES
-										('3', '$login', '$email', '$password', '$uuid', '$salt', '$ip', '$ip', '$time', '$time', '', '')");
+										('3', '$login', '$email', '$password', '$uuid', '$salt', '$ip', '$ip', '$time', '$time')");
 
 			if(!$query){ $this->install->notify($this->lng['e_add_admin'], $this->lng['e_msg'], 'install/?do=step_2'); }
 
