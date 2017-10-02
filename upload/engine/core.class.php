@@ -547,7 +547,10 @@ class core{
 
 	/**
 	 * Подгрузчик модулей по умолчанию (прямой загрузчик без лишних проверок)
+	 *
 	 * @param String $mode - название модуля
+	 *
+	 * @return Buffer|void
 	 */
 	public function load_def_mode($mode){
 		

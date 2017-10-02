@@ -97,7 +97,7 @@ class db{
 
 		$uid = intval($uid);
 		$msg = $this->safesql($msg);
-		$date = time();
+		$date = new DateTime();
 
 		$ctables	= $this->cfg->db['tables'];
 		$logs_f		= $ctables['logs']['fields'];
@@ -105,7 +105,7 @@ class db{
 		$insert = $this->query("INSERT INTO `{$this->cfg->tabname('logs')}`
 										(`{$logs_f['uid']}`, `{$logs_f['msg']}`, `{$logs_f['date']}`)
 									VALUES
-										('$uid', '$msg', '$date')");
+										('$uid', '$msg', '".$date->format('Y-m-d H:i:s')."')");
 
 		if(!$insert){ return false; }
 

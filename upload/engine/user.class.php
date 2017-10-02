@@ -65,8 +65,8 @@ class user{
 
 		$query = $this->db->query("SELECT `u`.`{$us_f['group']}`, `u`.`{$us_f['login']}`, `u`.`{$us_f['email']}`, `u`.`{$us_f['pass']}`, `u`.`{$us_f['salt']}`,
 											`u`.`{$us_f['tmp']}`, `u`.`{$us_f['ip_create']}`, `u`.`{$us_f['date_reg']}`, `u`.`{$us_f['date_last']}`,
-											`u`.`{$us_f['fname']}`, `u`.`{$us_f['lname']}`, `u`.`{$us_f['gender']}`, `u`.`{$us_f['bday']}`,
-											`u`.`{$us_f['is_skin']}`, `u`.`{$us_f['is_cloak']}`, `u`.`{$us_f['color']}`, `u`.`{$us_f['uuid']}`,
+											`u`.`{$us_f['gender']}`,
+											`u`.`{$us_f['is_skin']}`, `u`.`{$us_f['is_cloak']}`, `u`.`{$us_f['uuid']}`,
 											`g`.`{$ug_f['title']}`, `g`.`{$ug_f['text']}`, `g`.`{$ug_f['perm']}`, `g`.`{$ug_f['color']}` AS `gcolor`,
 											`i`.`{$ic_f['money']}`, `i`.`{$ic_f['rm']}`, `i`.`{$ic_f['bank']}`
 									FROM `{$this->cfg->tabname('users')}` AS `u`
@@ -88,7 +88,7 @@ class user{
 		$ar_hash	= $uid.'_'.md5($new_hash);
 
 		// Check security auth
-		if($_COOKIE['mcr_user'] !== $ar_hash){ $this->set_unauth(); $this->core->notify(); }
+		if($_COOKIE['mcr_user'] !== $ar_hash){ $this->set_unauth(); $this->core->notify('Warning!'); }
 
 		$login				= $this->db->HSC($ar[$us_f['login']]);
 

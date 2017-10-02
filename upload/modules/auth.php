@@ -45,7 +45,7 @@ class module{
 
 		if(!$this->user->auth->authentificate(@$_POST['password'], $ar[$us_f['pass']], $ar[$us_f['salt']])){ $this->core->notify($this->core->lng["e_msg"], $this->lng['e_wrong_pass']); }
 
-		$time = time();
+		$time = new DateTime();
 
 		$new_tmp = $this->db->safesql($this->user->auth->createTmp());
 
@@ -53,7 +53,7 @@ class module{
 		$password = $this->db->safesql($password);
 
 		$update = $this->db->query("UPDATE `{$this->cfg->tabname('users')}`
-									SET `{$us_f['tmp']}`='$new_tmp', `{$us_f['ip_last']}`='$new_ip', `{$us_f['date_last']}`='$time'
+									SET `{$us_f['tmp']}`='$new_tmp', `{$us_f['ip_last']}`='$new_ip', `{$us_f['date_last']}`='".$time->format('Y-m-d H:i:s')."'
 									WHERE `{$us_f['id']}`='$uid'
 									LIMIT 1");
 
@@ -65,7 +65,7 @@ class module{
 
 		$new_hash = $uid.'_'.md5($new_hash);
 
-		$safetime = ($remember) ? 3600*24*30+time() : time()+3600;
+		$safetime = ($remember) ? time()+3600*24*30 : time()+3600;
 
 		setcookie("mcr_user", $new_hash, $safetime, '/');
 
