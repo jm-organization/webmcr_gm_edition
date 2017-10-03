@@ -64,7 +64,7 @@ class user{
 		$ic_f	= $ctables['iconomy']['fields'];
 
 		$query = $this->db->query("SELECT `u`.`{$us_f['group']}`, `u`.`{$us_f['login']}`, `u`.`{$us_f['email']}`, `u`.`{$us_f['pass']}`, `u`.`{$us_f['salt']}`,
-											`u`.`{$us_f['tmp']}`, `u`.`{$us_f['ip_create']}`, `u`.`{$us_f['date_reg']}`, `u`.`{$us_f['date_last']}`,
+											`u`.`{$us_f['tmp']}`, `u`.`{$us_f['date_reg']}`, `u`.`{$us_f['date_last']}`,
 											`u`.`{$us_f['gender']}`,
 											`u`.`{$us_f['is_skin']}`, `u`.`{$us_f['is_cloak']}`, `u`.`{$us_f['uuid']}`,
 											`g`.`{$ug_f['title']}`, `g`.`{$ug_f['text']}`, `g`.`{$ug_f['perm']}`, `g`.`{$ug_f['color']}` AS `gcolor`,

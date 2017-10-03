@@ -98,6 +98,7 @@ $lng = array(
 	"date_reg" => "Дата регистрации",
 	"last_activity" => "Последнее действие",
 	"gender" => "Пол",
+	"gender_n" => "Не задано",
 	"gender_m" => "Мужской",
 	"gender_w" => "Женский",
 	"birthday" => "Дата рождения",
