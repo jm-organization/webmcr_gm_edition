@@ -48,8 +48,8 @@ class module{
 
 			if(empty($email)){ $this->core->notify($this->core->lng['e_msg'], $this->lng['invalid_email'], 1, "?mode=restore"); }
 
-			$ctables	= $this->cfg->db['tables'];
-			$us_f		= $ctables['users']['fields'];
+			$ctables = $this->cfg->db['tables'];
+			$us_f = $ctables['users']['fields'];
 
 			$query = $this->db->query("SELECT `{$us_f['id']}`, `{$us_f['tmp']}` FROM `{$this->cfg->tabname('users')}` WHERE `{$us_f['email']}`='$email'");
 
@@ -114,10 +114,10 @@ class module{
 
 			$password = $this->core->gen_password($newpass, $salt);
 
-			$time = time();
+			$time = new DateTime();
 
 			$update = $this->db->query("UPDATE `{$this->cfg->tabname('users')}`
-										SET `{$us_f['pass']}`='$password', `{$us_f['salt']}`='$salt', `{$us_f['tmp']}`='$tmp', `{$us_f['ip_last']}`='{$this->user->ip}', `{$us_f['date_last']}`='$time'
+										SET `{$us_f['pass']}`='$password', `{$us_f['salt']}`='$salt', `{$us_f['tmp']}`='$tmp', `{$us_f['ip_last']}`='{$this->user->ip}', `{$us_f['date_last']}`='".$time->format('Y-m-d H:i:s')."'
 										WHERE `{$us_f['id']}`='$uid'");
 
 			if(!$update){ $this->core->notify($this->core->lng['e_attention'], $this->core->lng['e_sql_critical'], 1, "?mode=restore"); }

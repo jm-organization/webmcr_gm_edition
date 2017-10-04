@@ -5,7 +5,8 @@
  * @contact: admin@jm-org.net
  * @web-site: www.jm-org.net
  *
- * @author: Magicmen
+ * @supplier: Magicmen
+ * @script_author: Qexy
  *
  **/
 
@@ -20,23 +21,6 @@ class submodule{
 		$this->cfg = $core->cfg;
 		$this->user	= $core->user;
 		$this->lng = $core->load_language('register');
-	}
-
-	private function count_ip(){
-		$ctables = $this->cfg->db['tables'];
-		$us_f = $ctables['users']['fields'];
-
-		$query = $this->db->query("SELECT COUNT(*) FROM `{$this->cfg->tabname('users')}`
-								   WHERE `{$us_f['ip_create']}`='{$this->user->ip}'
-								   OR `{$us_f['ip_last']}`='{$this->user->ip}'");
-
-		if (!$query){ 
-			return 0;
-		}
-
-		$ar = $this->db->fetch_array($query);
-
-		return $ar[0];
 	}
 
 	private function is_post() {
