@@ -260,9 +260,9 @@ class submodule{
 
 				$create_news = "
 					INSERT INTO `mcr_news`
-						(`cid`, 					`title`, 			`text_html`, 			`vote`, 		`discus`, 			`attach`, 			`date`, 		`img`, 			`uid`, 				`data`, 		`hidden`)
+						(`cid`, `title`, `text_html`, `vote`, `discus`, `attach`, `date`, `img`, `uid`, `data`, `hidden`)
 					VALUES
-						('{$n['category_id']}', 	'{$n['title']}', 	'{$n['news_text']}', 	'{$n['vote']}', '{$n['discus']}', 	'{$n['attach']}', 	'{$n['date']}', '{$n['img']}', 	'{$n['user_id']}', 	'{$n['data']}', '{$n['hidden']}')
+						('{$n['category_id']}', '{$n['title']}', '{$n['news_text']}', '{$n['vote']}', '{$n['discus']}', '{$n['attach']}', '{$n['date']}', '{$n['img']}', '{$n['user_id']}', '{$n['data']}', '{$n['hidden']}')
 				";
 
 				if (!$this->db->query($create_news)) {$this->core->notify(
