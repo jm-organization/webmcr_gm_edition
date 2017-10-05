@@ -115,13 +115,13 @@ class db{
 	public function update_user($user){
 		if(!$user->is_auth){ return false; }
 
-		$time = time();
+		$time = new DateTime();
 
 		$ctables	= $this->cfg->db['tables'];
 		$us_f		= $ctables['users']['fields'];
 
 		$update = $this->query("UPDATE `{$this->cfg->tabname('users')}`
-								SET `{$us_f['ip_last']}`='{$user->ip}', `{$us_f['date_last']}`='$time'
+								SET `{$us_f['ip_last']}`='{$user->ip}', `{$us_f['date_last']}`='".$time->format('Y-m-d H:i:s')."'
 								WHERE `{$us_f['id']}`='{$user->id}'");
 
 		if(!$update){ return false; }

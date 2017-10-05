@@ -89,11 +89,10 @@ class user{
 
 		$login = $this->db->HSC($ar[$us_f['login']]);
 
-		$color = (!empty($ar[$us_f['color']])) ? $this->db->HSC($ar[$us_f['color']]) : $this->db->HSC($ar['gcolor']);
+		$color = $this->db->HSC($ar['gcolor']);
+		$gcolor = $color;
 
 		$group = $this->db->HSC($ar[$ug_f['title']]);
-
-		$gcolor = $this->db->HSC($ar['gcolor']);
 
 		// Identificator
 		$this->id = $uid;

@@ -57,7 +57,7 @@ class submodule{
 		}
 
 		$query = $this->db->query("SELECT `l`.`{$logs_f['id']}`, `l`.`{$logs_f['uid']}`, `l`.`{$logs_f['msg']}`, `l`.`{$logs_f['date']}`,
-										`u`.`{$us_f['login']}`, `u`.`{$us_f['color']}`, `g`.`{$ug_f['color']}` AS `gcolor`
+										`u`.`{$us_f['login']}`, `g`.`{$ug_f['color']}` AS `gcolor`
 									FROM `{$this->cfg->tabname('logs')}` AS `l`
 									LEFT JOIN `{$this->cfg->tabname('users')}` AS `u`
 										ON `u`.`{$us_f['id']}`=`l`.`{$logs_f['uid']}`
@@ -73,7 +73,7 @@ class submodule{
 
 		while($ar = $this->db->fetch_assoc($query)){
 
-			$color = (empty($ar[$us_f['color']])) ? $this->db->HSC($ar['gcolor']) : $this->db->HSC($ar[$us_f['color']]);
+			$color = $this->db->HSC($ar['gcolor']);
 
 			$login = (!is_null($ar[$us_f['login']])) ? $this->db->HSC($ar['login']) : $this->lng['mod_name'];
 

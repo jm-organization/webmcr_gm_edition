@@ -12,7 +12,7 @@
 		<div class="control-group">
 			<label class="control-label" for="inputTitle"><?php echo $this->lng_m['news_field_name']; ?></label>
 			<div class="controls">
-				<input type="text" class="span10" name="title" value="<?php echo $data['TITLE']; ?>" id="inputTitle" placeholder="<?php echo $this->lng_m['news_field_name']; ?>">
+				<input type="text" class="span10" name="title" required="required" value="<?php echo $data['TITLE']; ?>" id="inputTitle" placeholder="<?php echo $this->lng_m['news_field_name']; ?>">
    </div>
   </div>
   
@@ -30,7 +30,15 @@
     <span class="help-block"><?php echo $this->lng_m['news_field_text_desc']; ?></span>
    </div>
   </div>
-  
+
+		<div class="control-group">
+			<div class="controls">
+				<label class="checkbox">
+					<input type="checkbox" name="hidden" value="1" <?php echo $data['HIDDEN']; ?>> <?php echo $this->lng_m['news_field_hidden']; ?>
+				</label>
+			</div>
+		</div>
+
 		<div class="control-group">
 			<div class="controls">
 				<label class="checkbox">

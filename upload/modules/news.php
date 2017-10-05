@@ -54,10 +54,10 @@ class module{
 
 	private function news_array($cid=false){
 
-		$start		= $this->core->pagination($this->cfg->pagin['news'], 0, 0); // Set start pagination
-		$end		= $this->cfg->pagin['news']; // Set end pagination
+		$start = $this->core->pagination($this->cfg->pagin['news'], 0, 0); // Set start pagination
+		$end = $this->cfg->pagin['news']; // Set end pagination
 
-		$where		= "";
+		$where = "";
 
 		if($cid!==false){ $where .= "WHERE `n`.cid='$cid'"; }
 
