@@ -1,16 +1,14 @@
 $(function(){
-	$(document).ready(function() {
-		var wbbOpt = {
-			lang: "ru",
-			buttons: "bold,italic,underline,|,img,,link,quote,|,bullist,|,justifyleft,justifycenter,justifyright,|,fontcolor,smilebox"
-		};
-		
-		$("#wysibb-editor").wysibb(wbbOpt);
-	});
-
+	var wbbOpt = {
+		lang: "ru",
+		buttons: "bold,italic,underline,|,img,,link,quote,|,bullist,|,justifyleft,justifycenter,justifyright,|,fontcolor,smilebox"
+	};
+	
+	$("#wysibb-editor").wysibb(wbbOpt);
+	
 	$("body").on("click", "#add_comment", function(){
 		
-		$("#wysibb-editor").sync()
+		$("#wysibb-editor").sync();
 		
 		mcr.loading();
 		
@@ -127,6 +125,8 @@ $(function(){
 				if(!data._type){ return mcr.notify(data._title, data._message); }
 				
 				$('textarea[name="message"]')[0].value += '[quote="'+data._data.login+' | '+data._data.create+'"]'+data._data.text+'[/quote]';
+				
+				$("#wysibb-editor").sync();
 				
 				mcr.loading(false);
 			}
