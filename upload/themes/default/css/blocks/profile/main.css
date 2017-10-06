@@ -1,5 +1,31 @@
-.form-block .block-content .block-profile { text-align: center; /* border: 1px solid; */ }
-.form-block .block-content .block-profile .avatar { display: inline-block; vertical-align: top; }
-.form-block .block-content .block-profile .avatar img { width: 128px; height: 128px; }
-.form-block .block-content .block-profile .info { text-align: left; display: inline-block; vertical-align: top; list-style: none; margin: 0px; margin-left: 20px; width: 50%; }
-.form-block .block-content .block-profile .info li { margin-bottom: 6px; }
+.form-block .block-content .block-profile { font-size: 0px; }
+
+.form-block .block-content .block-profile > .avatar,
+.form-block .block-content .block-profile > .info {
+	display: inline-block;
+	vertical-align: top;
+	box-sizing: border-box;
+	font-size: 14px;
+	width: 40%;
+}
+
+.form-block .block-content .block-profile > .avatar > img {
+	max-width: 100%;
+}
+
+.form-block .block-content .block-profile > .avatar {
+	padding-right: 10px;
+}
+
+.form-block .block-content .block-profile > .info {
+	width: 60%;
+	padding-left: 10px;
+}
+
+.form-block .block-content .block-profile > .info > li {
+	margin-bottom: 5px;
+}
+
+.form-block .block-content .block-profile > .info > li:last-child {
+	margin: 0px;
+}

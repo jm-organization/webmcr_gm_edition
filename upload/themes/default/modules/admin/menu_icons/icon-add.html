@@ -6,26 +6,18 @@
 
 	<div class="block-line"></div>
 
-	<form class="form-horizontal" method="post">
-		<div class="control-group">
-			<label class="control-label" for="inputTitle"><?php echo $this->lng_m['mi_field_name']; ?></label>
-			<div class="controls">
-				<input type="text" class="span10" name="title" value="<?php echo $data['TITLE']; ?>" id="inputTitle" placeholder="<?php echo $this->lng_m['mi_field_name']; ?>" required>
-			</div>
+	<form method="post">
+		<div class="form-group">
+			<label for="inputTitle"><?php echo $this->lng_m['mi_field_name']; ?></label>
+			<input type="text" class="form-control" name="title" value="<?php echo $data['TITLE']; ?>" id="inputTitle" placeholder="<?php echo $this->lng_m['mi_field_name']; ?>" required>
 		</div>
 
-		<div class="control-group">
-			<label class="control-label" for="inputImg"><?php echo $this->lng_m['mi_field_img']; ?></label>
-			<div class="controls">
-				<input type="text" class="span10" name="img" value="<?php echo $data['IMG']; ?>" id="inputImg" placeholder="<?php echo $this->lng_m['mi_field_img']; ?>">
-			</div>
+		<div class="form-group">
+			<label for="inputImg"><?php echo $this->lng_m['mi_field_img']; ?></label>
+			<input type="text" class="form-control" name="img" value="<?php echo $data['IMG']; ?>" id="inputImg" placeholder="<?php echo $this->lng_m['mi_field_img']; ?>">
 		</div>
 
-		<div class="control-group">
-			<div class="controls">
-				<button type="submit" class="btn" name="submit"><?php echo $data['BUTTON']; ?></button>
-			</div>
-		</div>
+		<button type="submit" class="btn btn-primary btn-block" name="submit"><?php echo $data['BUTTON']; ?></button>
 	</form>
 		
 </div>

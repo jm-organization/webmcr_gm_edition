@@ -8,100 +8,74 @@
 
 	<div class="adm-settings">
 		<form method="post"></form>
-		<ul class="nav nav-tabs" id="myTab">
-			<li><a href="<?php echo ADMIN_URL; ?>&do=settings&op=main"><?php echo $this->lng_m['set_main']; ?></a></li>
-			<li><a href="<?php echo ADMIN_URL; ?>&do=settings&op=pagin"><?php echo $this->lng_m['set_pagin']; ?></a></li>
-			<li class="active"><a href="<?php echo ADMIN_URL; ?>&do=settings&op=mail"><?php echo $this->lng_m['set_mail']; ?></a></li>
-			<li><a href="<?php echo ADMIN_URL; ?>&do=settings&op=search"><?php echo $this->lng_m['set_search']; ?></a></li>
-			<li><a href="<?php echo ADMIN_URL; ?>&do=settings&op=functions"><?php echo $this->lng_m['set_func']; ?></a></li>
-			<li><a href="<?php echo ADMIN_URL; ?>&do=settings&op=base"><?php echo $this->lng_m['set_base']; ?></a></li>
+
+		<ul class="nav nav-tabs">
+			<li class="nav-item"><a class="nav-link" href="<?php echo ADMIN_URL; ?>&do=settings&op=main"><?php echo $this->lng_m['set_main']; ?></a></li>
+			<li class="nav-item"><a class="nav-link" href="<?php echo ADMIN_URL; ?>&do=settings&op=pagin"><?php echo $this->lng_m['set_pagin']; ?></a></li>
+			<li class="nav-item"><a class="nav-link active" href="<?php echo ADMIN_URL; ?>&do=settings&op=mail"><?php echo $this->lng_m['set_mail']; ?></a></li>
+			<li class="nav-item"><a class="nav-link" href="<?php echo ADMIN_URL; ?>&do=settings&op=search"><?php echo $this->lng_m['set_search']; ?></a></li>
+			<li class="nav-item"><a class="nav-link" href="<?php echo ADMIN_URL; ?>&do=settings&op=functions"><?php echo $this->lng_m['set_func']; ?></a></li>
+			<li class="nav-item"><a class="nav-link" href="<?php echo ADMIN_URL; ?>&do=settings&op=base"><?php echo $this->lng_m['set_base']; ?></a></li>
 		</ul>
 		 
 		<div class="tab-content">
-			<div class="tab-pane active">
+			<form method="post">
 
-				<form class="form-horizontal" method="post">
+				<div class="form-group">
+					<label class="control-label" for="input_from"><?php echo $this->lng_m['set_mail_from']; ?></label>
+					<input type="text" name="from" class="form-control" id="input_from" value="<?php echo $data['CFG']['from']; ?>" placeholder="<?php echo $this->lng_m['set_mail_from_ph']; ?>">
+				</div>
 
-					<div class="control-group">
-						<label class="control-label" for="input_from"><?php echo $this->lng_m['set_mail_from']; ?></label>
-						<div class="controls">
-							<input type="text" name="from" class="span10" id="input_from" value="<?php echo $data['CFG']['from']; ?>" placeholder="<?php echo $this->lng_m['set_mail_from_ph']; ?>">
-						</div>
-					</div>
+				<div class="form-group">
+					<label class="control-label" for="input_from_name"><?php echo $this->lng_m['set_mail_from_name']; ?></label>
+					<input type="text" name="from_name" class="form-control" value="<?php echo $data['CFG']['from_name']; ?>" id="input_from_name" placeholder="<?php echo $this->lng_m['set_mail_from_name_ph']; ?>">
+				</div>
 
-					<div class="control-group">
-						<label class="control-label" for="input_from_name"><?php echo $this->lng_m['set_mail_from_name']; ?></label>
-						<div class="controls">
-							<input type="text" name="from_name" class="span10" value="<?php echo $data['CFG']['from_name']; ?>" id="input_from_name" placeholder="<?php echo $this->lng_m['set_mail_from_name_ph']; ?>">
-						</div>
-					</div>
+				<div class="form-group">
+					<label class="control-label" for="input_reply"><?php echo $this->lng_m['set_mail_reply']; ?></label>
+					<input type="text" name="reply" class="form-control" value="<?php echo $data['CFG']['reply']; ?>" id="input_reply" placeholder="<?php echo $this->lng_m['set_mail_reply_ph']; ?>">
+				</div>
 
-					<div class="control-group">
-						<label class="control-label" for="input_reply"><?php echo $this->lng_m['set_mail_reply']; ?></label>
-						<div class="controls">
-							<input type="text" name="reply" class="span10" value="<?php echo $data['CFG']['reply']; ?>" id="input_reply" placeholder="<?php echo $this->lng_m['set_mail_reply_ph']; ?>">
-						</div>
-					</div>
+				<div class="form-group">
+					<label class="control-label" for="input_reply_name"><?php echo $this->lng_m['set_mail_reply_name']; ?></label>
+					<input type="text" name="reply_name" class="form-control" value="<?php echo $data['CFG']['reply_name']; ?>" id="input_reply_name" placeholder="<?php echo $this->lng_m['set_mail_reply_name_ph']; ?>">
+				</div>
 
-					<div class="control-group">
-						<label class="control-label" for="input_reply_name"><?php echo $this->lng_m['set_mail_reply_name']; ?></label>
-						<div class="controls">
-							<input type="text" name="reply_name" class="span10" value="<?php echo $data['CFG']['reply_name']; ?>" id="input_reply_name" placeholder="<?php echo $this->lng_m['set_mail_reply_name_ph']; ?>">
-						</div>
-					</div>
+				<legend><?php echo $this->lng_m['set_mail_smtp']; ?></legend>
 
-					<legend><?php echo $this->lng_m['set_mail_smtp']; ?></legend>
+				<div class="form-group">
+					<label class="control-label" for="input_smtp"><?php echo $this->lng_m['set_mail_smtp_use']; ?></label>
+					<select name="smtp" id="input_smtp" class="form-control">
+						<option value="0"><?php echo $this->lng['no']; ?></option>
+						<option value="1" <?php echo $data['SMTP']; ?>><?php echo $this->lng['yes']; ?></option>
+					</select>
+				</div>
 
-					<div class="control-group">
-						<label class="control-label" for="input_smtp"><?php echo $this->lng_m['set_mail_smtp_use']; ?></label>
-						<div class="controls">
-							<select name="smtp" id="input_smtp" class="span10">
-								<option value="0"><?php echo $this->lng['no']; ?></option>
-								<option value="1" <?php echo $data['SMTP']; ?>><?php echo $this->lng['yes']; ?></option>
-							</select>
-						</div>
-					</div>
+				<div class="form-group">
+					<label class="control-label" for="input_smtp_host"><?php echo $this->lng_m['set_mail_smtp_host']; ?></label>
+					<input type="text" class="form-control" name="smtp_host" value="<?php echo $data['CFG']['smtp_host']; ?>" id="input_smtp_host" placeholder="<?php echo $this->lng_m['set_mail_smtp_host_ph']; ?>">
+				</div>
 
-					<div class="control-group">
-						<label class="control-label" for="input_smtp_host"><?php echo $this->lng_m['set_mail_smtp_host']; ?></label>
-						<div class="controls">
-							<input type="text" class="span10" name="smtp_host" value="<?php echo $data['CFG']['smtp_host']; ?>" id="input_smtp_host" placeholder="<?php echo $this->lng_m['set_mail_smtp_host_ph']; ?>">
-						</div>
-					</div>
+				<div class="form-group">
+					<label class="control-label" for="input_smtp_user"><?php echo $this->lng_m['set_mail_smtp_user']; ?></label>
+					<input type="text" class="form-control" name="smtp_user" value="<?php echo $data['CFG']['smtp_user']; ?>" id="input_smtp_user" placeholder="<?php echo $this->lng_m['set_mail_smtp_user_ph']; ?>">
+				</div>
 
-					<div class="control-group">
-						<label class="control-label" for="input_smtp_user"><?php echo $this->lng_m['set_mail_smtp_user']; ?></label>
-						<div class="controls">
-							<input type="text" class="span10" name="smtp_user" value="<?php echo $data['CFG']['smtp_user']; ?>" id="input_smtp_user" placeholder="<?php echo $this->lng_m['set_mail_smtp_user_ph']; ?>">
-						</div>
-					</div>
+				<div class="form-group">
+					<label class="control-label" for="input_smtp_pass"><?php echo $this->lng_m['set_mail_smtp_pass']; ?></label>
+					<input type="password" class="form-control" name="smtp_pass" value="<?php echo $data['CFG']['smtp_pass']; ?>" id="input_smtp_pass" placeholder="<?php echo $this->lng_m['set_mail_smtp_pass_ph']; ?>">
+				</div>
 
-					<div class="control-group">
-						<label class="control-label" for="input_smtp_pass"><?php echo $this->lng_m['set_mail_smtp_pass']; ?></label>
-						<div class="controls">
-							<input type="password" class="span10" name="smtp_pass" value="<?php echo $data['CFG']['smtp_pass']; ?>" id="input_smtp_pass" placeholder="<?php echo $this->lng_m['set_mail_smtp_pass_ph']; ?>">
-						</div>
-					</div>
+				<div class="form-group">
+					<label class="control-label" for="input_smtp_tls"><?php echo $this->lng_m['set_mail_smtp_tls']; ?></label>
+					<select name="smtp" id="input_smtp_tls" class="form-control">
+						<option value="0"><?php echo $this->lng['no']; ?></option>
+						<option value="1" <?php echo $data['SMTP_TLS']; ?>><?php echo $this->lng['yes']; ?></option>
+					</select>
+				</div>
 
-					<div class="control-group">
-						<label class="control-label" for="input_smtp_tls"><?php echo $this->lng_m['set_mail_smtp_tls']; ?></label>
-						<div class="controls">
-							<select name="smtp_tls" id="input_smtp_tls" class="span10">
-								<option value="0"><?php echo $this->lng['no']; ?></option>
-								<option value="1" <?php echo $data['SMTP_TLS']; ?>><?php echo $this->lng['yes']; ?></option>
-							</select>
-						</div>
-					</div>
-
-					<div class="control-group">
-						<div class="controls">
-							<button type="submit" name="submit" class="btn"><?php echo $this->lng['save']; ?></button>
-						</div>
-					</div>
-
-				</form>
-			
-			</div>
+				<button type="submit" name="submit" class="btn btn-primary btn-block"><?php echo $this->lng['save']; ?></button>
+			</form>
 		</div>
 	</div>
 		

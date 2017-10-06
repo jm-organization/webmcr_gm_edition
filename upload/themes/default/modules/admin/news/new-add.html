@@ -4,7 +4,7 @@
  
 	<div class="block-header">
 		<div class="block-name"><?php echo $data['PAGE']; ?></div>
-	</div>
+ </div>
  
 	<div class="block-line"></div>
  
@@ -13,23 +13,23 @@
 			<label class="control-label" for="inputTitle"><?php echo $this->lng_m['news_field_name']; ?></label>
 			<div class="controls">
 				<input type="text" class="span10" name="title" required="required" value="<?php echo $data['TITLE']; ?>" id="inputTitle" placeholder="<?php echo $this->lng_m['news_field_name']; ?>">
-			</div>
-		</div>
+   </div>
+  </div>
   
 		<div class="control-group">
 			<label class="control-label" for="inputCategory"><?php echo $this->lng_m['news_field_cat']; ?></label>
 			<div class="controls">
 				<select name="cid" class="span10" id="inputCategory"><?php echo $data['CATEGORIES']; ?></select>
-			</div>
-		</div>
+   </div>
+  </div>
   
 		<div class="control-group">
 			<label class="control-label" for="inputText"><?php echo $this->lng_m['news_field_text']; ?></label>
 			<div class="controls">
 				<textarea id="inputText" class="tinymce bb-textarea input-block-level" data-for="bb-full" placeholder="<?php echo $this->lng_m['news_field_text']; ?>" name="text" rows="20"><?php echo $data['TEXT']; ?></textarea>
-				<span class="help-block"><?php echo $this->lng_m['news_field_text_desc']; ?></span>
-			</div>
-		</div>
+    <span class="help-block"><?php echo $this->lng_m['news_field_text_desc']; ?></span>
+   </div>
+  </div>
 
 		<div class="control-group">
 			<div class="controls">
@@ -43,33 +43,33 @@
 			<div class="controls">
 				<label class="checkbox">
 					<input type="checkbox" name="vote" value="1" <?php echo $data['VOTE']; ?>> <?php echo $this->lng_m['news_field_vote']; ?>
-				</label>
-			</div>
-		</div>
+    </label>
+   </div>
+  </div>
   
 		<div class="control-group">
 			<div class="controls">
 				<label class="checkbox">
 					<input type="checkbox" name="discus" value="1" <?php echo $data['DISCUS']; ?>> <?php echo $this->lng_m['news_field_com']; ?>
-				</label>
-			</div>
-		</div>
+    </label>
+   </div>
+  </div>
   
 		<div class="control-group">
 			<div class="controls">
 				<label class="checkbox">
 					<input type="checkbox" name="attach" value="1" <?php echo $data['ATTACH']; ?>> <?php echo $this->lng_m['news_field_attach']; ?>
-				</label>
-			</div>
-		</div>
+    </label>
+   </div>
+  </div>
   
 		<div class="control-group">
 			<div class="controls">
 				<button type="submit" class="btn" name="submit"><?php echo $data['BUTTON']; ?></button>
 				<button type="submit" class="btn" name="preview"><?php echo $this->lng_m['news_preview']; ?></button>
-			</div>
-		</div>
-	</form>
+   </div>
+  </div>
+ </form>
  
 </div>
 

@@ -6,24 +6,18 @@
 
 	<div class="block-line"></div>
 
-	<form class="form-horizontal" method="post">
-		<div class="control-group">
+	<form method="post">
+		<div class="form-group">
 			<label class="control-label" for="inputTitle"><?php echo $this->lng_m['cn_field_name']; ?></label>
-			<div class="controls">
-				<input type="text" class="span10" name="title" value="<?php echo $data['TITLE']; ?>" id="inputTitle" placeholder="<?php echo $this->lng_m['cn_field_name']; ?>">
-			</div>
+			<input type="text" class="form-control" name="title" value="<?php echo $data['TITLE']; ?>" id="inputTitle" placeholder="<?php echo $this->lng_m['cn_field_name']; ?>">
 		</div>
-		<div class="control-group">
+
+		<div class="form-group">
 			<label class="control-label" for="inputText"><?php echo $this->lng_m['cn_field_desc']; ?></label>
-			<div class="controls">
-				<textarea id="inputText" class="span10" placeholder="<?php echo $this->lng_m['cn_field_desc']; ?>" name="text" maxlength="255" rows="5"><?php echo $data['TEXT']; ?></textarea>
-			</div>
+			<textarea id="inputText" class="form-control" placeholder="<?php echo $this->lng_m['cn_field_desc']; ?>" name="text" maxlength="255" rows="5"><?php echo $data['TEXT']; ?></textarea>
 		</div>
-		<div class="control-group">
-			<div class="controls">
-				<button type="submit" class="btn" name="submit"><?php echo $data['BUTTON']; ?></button>
-			</div>
-		</div>
+		
+		<button type="submit" class="btn btn-block btn-primary" name="submit"><?php echo $data['BUTTON']; ?></button>
 	</form>
 		
 </div>

@@ -8,12 +8,12 @@
 
 	<div class="comment-form-content">
 		<form method="post">
-
-			<textarea class="wysibb-texarea" id="wysibb-editor" name="message" data-for="bb-comments" placeholder="<?php echo $this->lng_m['message']; ?>" required></textarea>
-
-			<div class="submit-btn">
-				<button type="submit" class="btn btn-primary" name="comment" id="add_comment" value="add"><?php echo $this->lng_m['add']; ?></button>
+			<?php echo $data['BB_PANEL']; ?>
+			<div class="form-group">
+				<textarea name="message" class="form-control" data-for="bb-comments" placeholder="<?php echo $this->lng_m['message']; ?>" required></textarea>
 			</div>
+
+			<button type="submit" class="btn btn-block btn-primary" name="comment" id="add_comment" value="add"><?php echo $this->lng_m['add']; ?></button>
 		</form>
 	</div>
 </div>
