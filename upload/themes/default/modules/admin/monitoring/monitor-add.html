@@ -6,61 +6,43 @@
 
 	<div class="block-line"></div>
 
-	<form class="form-horizontal" method="post">
-		<div class="control-group">
-			<label class="control-label" for="inputTitle"><?php echo $this->lng_m['mon_field_name']; ?></label>
-			<div class="controls">
-				<input type="text" class="span10" name="title" value="<?php echo $data['TITLE']; ?>" id="inputTitle" placeholder="<?php echo $this->lng_m['mon_field_name']; ?>">
-			</div>
+	<form method="post">
+		<div class="form-group">
+			<label for="inputTitle"><?php echo $this->lng_m['mon_field_name']; ?></label>
+			<input type="text" class="form-control" name="title" value="<?php echo $data['TITLE']; ?>" id="inputTitle" placeholder="<?php echo $this->lng_m['mon_field_name']; ?>">
 		</div>
 
-		<div class="control-group">
-			<label class="control-label" for="inputText"><?php echo $this->lng_m['mon_field_desc']; ?></label>
-			<div class="controls">
-				<textarea id="inputText" class="span10" placeholder="<?php echo $this->lng_m['mon_field_desc']; ?>" name="text" maxlength="255" rows="5"><?php echo $data['TEXT']; ?></textarea>
-			</div>
+		<div class="form-group">
+			<label for="inputText"><?php echo $this->lng_m['mon_field_desc']; ?></label>
+			<textarea id="inputText" class="form-control" placeholder="<?php echo $this->lng_m['mon_field_desc']; ?>" name="text" maxlength="255" rows="5"><?php echo $data['TEXT']; ?></textarea>
 		</div>
 
-		<div class="control-group">
-			<label class="control-label" for="inputTitle"><?php echo $this->lng_m['mon_field_ip']; ?></label>
-			<div class="controls">
-				<input type="text" class="span10" name="ip" value="<?php echo $data['IP']; ?>" id="inputTitle" placeholder="<?php echo $this->lng_m['mon_field_ip']; ?>">
-			</div>
+		<div class="form-group">
+			<label for="inputTitle"><?php echo $this->lng_m['mon_field_ip']; ?></label>
+			<input type="text" class="form-control" name="ip" value="<?php echo $data['IP']; ?>" id="inputTitle" placeholder="<?php echo $this->lng_m['mon_field_ip']; ?>">
 		</div>
 
-		<div class="control-group">
-			<label class="control-label" for="inputTitle"><?php echo $this->lng_m['mon_field_port']; ?></label>
-			<div class="controls">
-				<input type="text" class="span10" name="port" value="<?php echo $data['PORT']; ?>" id="inputTitle" placeholder="<?php echo $this->lng_m['mon_field_port']; ?>">
-			</div>
+		<div class="form-group">
+			<label for="inputTitle"><?php echo $this->lng_m['mon_field_port']; ?></label>
+			<input type="text" class="form-control" name="port" value="<?php echo $data['PORT']; ?>" id="inputTitle" placeholder="<?php echo $this->lng_m['mon_field_port']; ?>">
 		</div>
 
-		<div class="control-group">
-			<label class="control-label" for="inputType"><?php echo $this->lng_m['mon_field_type']; ?></label>
-			<div class="controls">
-				<select id="inputType" class="span10" name="type"><?php echo $data['TYPES']; ?></select>
-			</div>
+		<div class="form-group">
+			<label for="inputType"><?php echo $this->lng_m['mon_field_type']; ?></label>
+			<select id="inputType" class="form-control" name="type"><?php echo $data['TYPES']; ?></select>
 		</div>
 
-		<div class="control-group">
-			<label class="control-label" for="inputCache"><?php echo $this->lng_m['mon_field_cache']; ?></label>
-			<div class="controls">
-				<input type="text" class="span10" name="cache" value="<?php echo $data['CACHE']; ?>" id="inputCache" placeholder="<?php echo $this->lng_m['mon_field_cache']; ?>">
-			</div>
+		<div class="form-group">
+			<label for="inputCache"><?php echo $this->lng_m['mon_field_cache']; ?></label>
+			<input type="text" class="form-control" name="cache" value="<?php echo $data['CACHE']; ?>" id="inputCache" placeholder="<?php echo $this->lng_m['mon_field_cache']; ?>">
 		</div>
 
-		<div class="control-group">
-			<label class="control-label" for="inputError"><?php echo $this->lng_m['mon_field_error']; ?></label>
-			<div class="controls">
-				<input type="text" class="span10" value="<?php echo $data['ERROR']; ?>" id="inputError" disabled placeholder="<?php echo $this->lng_m['mon_field_error']; ?>">
-			</div>
+		<div class="form-group">
+			<label for="inputError"><?php echo $this->lng_m['mon_field_error']; ?></label>
+			<input type="text" class="form-control" value="<?php echo $data['ERROR']; ?>" id="inputError" disabled placeholder="<?php echo $this->lng_m['mon_field_error']; ?>">
 		</div>
 
-		<div class="control-group">
-			<div class="controls">
-				<button type="submit" class="btn" name="submit"><?php echo $data['BUTTON']; ?></button>
-			</div>
-		</div>
+		<button type="submit" class="btn btn-primary btn-block" name="submit"><?php echo $data['BUTTON']; ?></button>
 	</form>
 		
 </div>

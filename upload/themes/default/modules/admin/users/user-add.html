@@ -6,94 +6,68 @@
 
 	<div class="block-line"></div>
 
-	<form class="form-horizontal" method="post">
-		<div class="control-group">
-			<label class="control-label" for="inputLogin"><?php echo $this->lng['login']; ?></label>
-			<div class="controls">
-				<input type="text" name="login" value="<?php echo $data['LOGIN']; ?>" id="inputLogin" placeholder="<?php echo $this->lng['login']; ?>">
-			</div>
+	<form method="post">
+		<div class="form-group">
+			<label for="inputLogin"><?php echo $this->lng['login']; ?></label>
+			<input type="text" class="form-control" name="login" value="<?php echo $data['LOGIN']; ?>" id="inputLogin" placeholder="<?php echo $this->lng['login']; ?>">
 		</div>
 
-		<div class="control-group">
-			<label class="control-label" for="inputPassword"><?php echo $this->lng['pass']; ?></label>
-			<div class="controls">
-				<input type="text" name="password" id="inputPassword" placeholder="<?php echo $this->lng['pass']; ?>">
-			</div>
+		<div class="form-group">
+			<label for="inputPassword"><?php echo $this->lng['pass']; ?></label>
+			<input type="text" class="form-control" name="password" id="inputPassword" placeholder="<?php echo $this->lng['pass']; ?>">
 		</div>
 
-		<div class="control-group">
-			<label class="control-label" for="inputEmail"><?php echo $this->lng['email']; ?></label>
-			<div class="controls">
-				<input type="text" name="email" value="<?php echo $data['EMAIL']; ?>" id="inputEmail" placeholder="<?php echo $this->lng['email']; ?>">
-			</div>
+		<div class="form-group">
+			<label for="inputEmail"><?php echo $this->lng['email']; ?></label>
+			<input type="text" class="form-control" name="email" value="<?php echo $data['EMAIL']; ?>" id="inputEmail" placeholder="<?php echo $this->lng['email']; ?>">
 		</div>
 
-		<div class="control-group">
-			<label class="control-label" for="selectGid"><?php echo $this->lng['group']; ?></label>
-			<div class="controls">
-				<select name="gid" id="selectGid">
-					<?php echo $data['GROUPS']; ?>
-				</select>
-			</div>
+		<div class="form-group">
+			<label for="selectGid"><?php echo $this->lng['group']; ?></label>
+			<select name="gid" class="form-control" id="selectGid">
+				<?php echo $data['GROUPS']; ?>
+			</select>
 		</div>
 
-		<div class="control-group">
-			<label class="control-label" for="inputColor"><?php echo $this->lng['color']; ?></label>
-			<div class="controls">
-				<input type="text" name="color" value="<?php echo $data['COLOR']; ?>" id="inputColor" placeholder="<?php echo $this->lng['color']; ?>">
-			</div>
+		<div class="form-group">
+			<label for="inputColor"><?php echo $this->lng['color']; ?></label>
+			<input type="text" class="form-control" name="color" value="<?php echo $data['COLOR']; ?>" id="inputColor" placeholder="<?php echo $this->lng['color']; ?>">
 		</div>
 
-		<div class="control-group">
-			<label class="control-label" for="inputFName"><?php echo $this->lng['firstname']; ?></label>
-			<div class="controls">
-				<input type="text" name="firstname" pattern="^[а-яА-ЯёЁa-zA-Z]+$" value="<?php echo $data['FIRSTNAME']; ?>" id="inputFName" placeholder="<?php echo $this->lng['firstname']; ?>">
-			</div>
+		<div class="form-group">
+			<label for="inputFName"><?php echo $this->lng['firstname']; ?></label>
+			<input type="text" class="form-control" name="firstname" pattern="^[а-яА-ЯёЁa-zA-Z]+$" value="<?php echo $data['FIRSTNAME']; ?>" id="inputFName" placeholder="<?php echo $this->lng['firstname']; ?>">
 		</div>
 
-		<div class="control-group">
-			<label class="control-label" for="inputLName"><?php echo $this->lng['lastname']; ?></label>
-			<div class="controls">
-				<input type="text" name="lastname" pattern="^[а-яА-ЯёЁa-zA-Z]+$" value="<?php echo $data['LASTNAME']; ?>" id="inputLName" placeholder="<?php echo $this->lng['lastname']; ?>">
-			</div>
+		<div class="form-group">
+			<label for="inputLName"><?php echo $this->lng['lastname']; ?></label>
+			<input type="text" class="form-control" name="lastname" pattern="^[а-яА-ЯёЁa-zA-Z]+$" value="<?php echo $data['LASTNAME']; ?>" id="inputLName" placeholder="<?php echo $this->lng['lastname']; ?>">
 		</div>
 
-		<div class="control-group">
-			<label class="control-label" for="selectGender"><?php echo $this->lng['gender']; ?></label>
-			<div class="controls">
-				<select name="gender" id="selectGender">
-					<option value="0"><?php echo $this->lng['gender_m']; ?></option>
-					<option value="1" <?php echo $data['GENDER']; ?>><?php echo $this->lng['gender_w']; ?></option>
-				</select>
-			</div>
+		<div class="form-group">
+			<label for="selectGender"><?php echo $this->lng['gender']; ?></label>
+			<select name="gender" class="form-control" id="selectGender">
+				<option value="0"><?php echo $this->lng['gender_m']; ?></option>
+				<option value="1" <?php echo $data['GENDER']; ?>><?php echo $this->lng['gender_w']; ?></option>
+			</select>
 		</div>
 
-		<div class="control-group">
-			<label class="control-label" for="inputBirthday"><?php echo $this->lng['birthday']; ?></label>
-			<div class="controls">
-				<input type="text" name="birthday" maxlength="10" pattern="^\d{2}.\d{2}.\d{4}$" value="<?php echo $data['BIRTHDAY']; ?>" id="inputBirthday" placeholder="Дата рождения">
-			</div>
+		<div class="form-group">
+			<label for="inputBirthday"><?php echo $this->lng['birthday']; ?></label>
+			<input type="text" class="form-control" name="birthday" maxlength="10" pattern="^\d{2}.\d{2}.\d{4}$" value="<?php echo $data['BIRTHDAY']; ?>" id="inputBirthday" placeholder="Дата рождения">
 		</div>
 
-		<div class="control-group">
-			<label class="control-label" for="inputMoney"><?php echo $this->lng['money']; ?></label>
-			<div class="controls">
-				<input type="text" name="money" value="<?php echo $data['MONEY']; ?>" id="inputMoney" placeholder="<?php echo $this->lng['money']; ?>">
-			</div>
+		<div class="form-group">
+			<label for="inputMoney"><?php echo $this->lng['money']; ?></label>
+			<input type="text" class="form-control" name="money" value="<?php echo $data['MONEY']; ?>" id="inputMoney" placeholder="<?php echo $this->lng['money']; ?>">
 		</div>
 
-		<div class="control-group">
-			<label class="control-label" for="inputRMoney"><?php echo $this->lng['realmoney']; ?></label>
-			<div class="controls">
-				<input type="text" name="realmoney" value="<?php echo $data['REALMONEY']; ?>" id="inputRMoney" placeholder="<?php echo $this->lng['realmoney']; ?>">
-			</div>
+		<div class="form-group">
+			<label for="inputRMoney"><?php echo $this->lng['realmoney']; ?></label>
+			<input type="text" class="form-control" name="realmoney" value="<?php echo $data['REALMONEY']; ?>" id="inputRMoney" placeholder="<?php echo $this->lng['realmoney']; ?>">
 		</div>
 
-		<div class="control-group">
-			<div class="controls">
-				<button type="submit" class="btn" name="submit"><?php echo $data['BUTTON']; ?></button>
-			</div>
-		</div>
+		<button type="submit" class="btn btn-block btn-primary" name="submit"><?php echo $data['BUTTON']; ?></button>
 	</form>
 		
 </div>

@@ -21,10 +21,10 @@ function load_extensions(){
 
 					var btn_name = (ar.pay.status) ? lng_ie.buy+' ('+ar.pay.price+' р.)' : lng_ie.download;
 
-					$(".adm-info-modules .thumbnails").append('<li class="span4"><div class="thumbnail"><img src="'
+					$(".adm-info-modules .thumbnails").append('<li><div class="thumbnail"><img src="'
 						+ ar.img + '" alt="img"><div class="title">'
 						+ ar.title + '</div><div class="read-more"><a href="'
-						+ ar.url.full + '" class="btn btn-block" target="_blank">'+lng_ie.readmore+'</a></div><div class="get-link"><a href="'
+						+ ar.url.full + '" class="btn btn-block btn-secondary" target="_blank">'+lng_ie.readmore+'</a></div><div class="get-link"><a href="'
 						+ ar.url.get + '" class="btn btn-block btn-info" target="_blank">'+btn_name+'</a></div></div></li>');
 				}
 			}else{
