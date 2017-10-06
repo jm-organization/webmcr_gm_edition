@@ -1,11 +1,11 @@
 <?php echo $data['PREVIEW']; ?>
 
 <div class="form-block">
-
+ 
 	<div class="block-header">
 		<div class="block-name"><?php echo $data['PAGE']; ?></div>
-	</div>
-
+ </div>
+ 
 	<div class="block-line"></div>
  
 	<form class="form-horizontal" method="post">
@@ -30,35 +30,41 @@
     <span class="help-block"><?php echo $this->lng_m['news_field_text_desc']; ?></span>
    </div>
   </div>
-
+  
 		<div class="control-group">
 			<div class="controls">
 				<label class="checkbox">
 					<input type="checkbox" name="hidden" value="1" <?php echo $data['HIDDEN']; ?>> <?php echo $this->lng_m['news_field_hidden']; ?>
-				</label>
-			</div>
-		</div>
-
-		<div class="control-group">
-			<div class="controls">
-				<label class="checkbox">
-					<input type="checkbox" name="vote" value="1" <?php echo $data['VOTE']; ?>> <?php echo $this->lng_m['news_field_vote']; ?>
     </label>
    </div>
   </div>
   
 		<div class="control-group">
 			<div class="controls">
-				<label class="checkbox">
-					<input type="checkbox" name="discus" value="1" <?php echo $data['DISCUS']; ?>> <?php echo $this->lng_m['news_field_com']; ?>
+    <label class="custom-control custom-checkbox">
+     <input class="custom-control-input" type="checkbox" name="vote" value="1" <?php echo $data['VOTE']; ?>>
+     <span class="custom-control-indicator"></span>
+     <span class="custom-control-description"><?php echo $this->lng_m['news_field_vote']; ?></span>
     </label>
    </div>
   </div>
   
 		<div class="control-group">
 			<div class="controls">
-				<label class="checkbox">
-					<input type="checkbox" name="attach" value="1" <?php echo $data['ATTACH']; ?>> <?php echo $this->lng_m['news_field_attach']; ?>
+    <label class="custom-control custom-checkbox">
+     <input class="custom-control-input" type="checkbox" name="discus" value="1" <?php echo $data['DISCUS']; ?>> 
+     <span class="custom-control-indicator"></span>
+     <span class="custom-control-description"><?php echo $this->lng_m['news_field_com']; ?></span>
+    </label>
+   </div>
+  </div>
+  
+		<div class="control-group">
+			<div class="controls">
+    <label class="custom-control custom-checkbox">
+     <input class="custom-control-input" type="checkbox" name="attach" value="1" <?php echo $data['ATTACH']; ?>> 
+     <span class="custom-control-indicator"></span>
+     <span class="custom-control-description"><?php echo $this->lng_m['news_field_attach']; ?></span>
     </label>
    </div>
   </div>
@@ -70,7 +76,7 @@
    </div>
   </div>
  </form>
-  
+ 
 </div>
 
 <?php echo $this->file_manager(); ?>
