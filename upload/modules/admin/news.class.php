@@ -12,8 +12,6 @@
 
 if(!defined("MCR")){ exit("Hacking Attempt!"); }
 
-require_once __DIR__.'/../htmLawed/htmLawed.php';
-
 class submodule{
 	private $core, $db, $cfg, $user, $lng;
 
@@ -212,6 +210,7 @@ class submodule{
 		$categories	= $this->categories();
 		// TODO: News image
 		$title = $text = $votes = $discuses = $attached = $img = $preview = $hidden = '';
+		$date = new DateTime();
 
 		if($_SERVER['REQUEST_METHOD']=='POST'){
 			// TITLE
@@ -229,7 +228,7 @@ class submodule{
 			$attach	= (intval(@$_POST['attach']) == 1)?true:false;
 
 			// NEWS CONTENT
-			$text = $this->db->safesql(htmLawed(trim(@$_POST['text'])));
+			$text = $this->db->safesql(trim(@$_POST['text']));
 			// NEWS IS HIDDEN
 			$hidden	= (intval(@$_POST['hidden'])===1)?true:false;
 
@@ -252,6 +251,7 @@ class submodule{
 					'vote' => (!$vote)?0:1,
 					'discus' => (!$discus)?0:1,
 					'attach' => (!$attach)?0:1,
+					'date' => $date->format('Y-m-d H:i:s'),
 					'img' => $img,
 					'user_id' => $this->user->id,
 					'data' => $data,
@@ -260,9 +260,9 @@ class submodule{
 
 				$create_news = "
 					INSERT INTO `mcr_news`
-						(`cid`, `title`, `text_html`, `vote`, `discus`, `attach`, `date`, `img`, `uid`, `data`, `hidden`)
+						(`cid`, 					`title`, 			`text_html`, 			`vote`, 		`discus`, 			`attach`, 			`date`, 		`img`, 			`uid`, 				`data`, 		`hidden`)
 					VALUES
-						('{$n['category_id']}', '{$n['title']}', '{$n['news_text']}', '{$n['vote']}', '{$n['discus']}', '{$n['attach']}', NOW(), '{$n['img']}', '{$n['user_id']}', '{$n['data']}', '{$n['hidden']}')
+						('{$n['category_id']}', 	'{$n['title']}', 	'{$n['news_text']}', 	'{$n['vote']}', '{$n['discus']}', 	'{$n['attach']}', 	'{$n['date']}', '{$n['img']}', 	'{$n['user_id']}', 	'{$n['data']}', '{$n['hidden']}')
 				";
 
 				if (!$this->db->query($create_news)) {$this->core->notify(
@@ -361,7 +361,7 @@ class submodule{
 			// NEWS IS HIDDEN
 			$hidden	= (intval(@$_POST['hidden'])===1)?true:false;
 			// NEWS CONTENT
-			$updated_text = $this->db->safesql(htmLawed(trim(@$_POST['text'])));
+			$updated_text = $this->db->safesql(trim(@$_POST['text']));
 
 			if (isset($_POST['preview'])) {
 				$cid_ar = $this->db->fetch_assoc($check_cid);
