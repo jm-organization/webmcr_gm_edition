@@ -1,20 +1,20 @@
 <div class="form-block profile">
-
+	
 	<div class="block-header">
 		<div class="block-name"><?php echo $this->lng_m['mod_name']; ?></div>
 	</div>
-
+	
 	<div class="block-line"></div>
-
+	
 	<div class="profile-content">
-
+		
 		<!-- Nav tabs -->
 		<ul class="nav nav-tabs" role="tablist">
 			<li role="presentation" class="nav-item"><a href="#tab1" class="nav-link active" aria-controls="tab1" role="tab" data-toggle="tab"><?php echo $this->lng_m['f_info']; ?></a></li>
 			<li role="presentation" class="nav-item"><a href="#tab2" class="nav-link" aria-controls="tab2" role="tab" data-toggle="tab"><?php echo $this->lng_m['f_skin']; ?></a></li>
 			<li role="presentation" class="nav-item"><a href="#tab3" class="nav-link" aria-controls="tab3" role="tab" data-toggle="tab"><?php echo $this->lng_m['f_settings']; ?></a></li>
 		</ul>
-
+		
 		<!-- Tab panes -->
 		<div class="tab-content">
 			<div role="tabpanel" class="tab-pane active" id="tab1">
@@ -29,7 +29,7 @@
 					<div class="info-line"><b><?php echo $this->lng_m['f_rmoney']; ?>:</b> <span><?php echo $this->user->realmoney; ?> руб.</span></div>
 				</div>
 			</div>
-
+			
 			<div role="tabpanel" class="tab-pane" id="tab2">
 				<div class="row">
 					<div class="col-md-4">
@@ -37,14 +37,14 @@
 							<div class="profile-skin" style="background-image: url('<?php echo SKIN_URL; ?>interface/<?php echo $this->user->skin; ?>.png?<?php echo mt_rand(1000,9999); ?>');"></div>
 						</div>
 					</div>
-
+					
 					<div class="col-md-4">
 						<form class="skin-uploader" enctype="multipart/form-data" method="POST">
 							<input type="file" name="skin" class="file-inputs" title="<?php echo $this->lng_m['drop_skin_here']; ?>">
 							<button class="btn btn-secondary" name="del-skin" value="1"><?php echo $this->lng_m['delete_skin']; ?></button>
 						</form>
 					</div>
-
+					
 					<div class="col-md-4">
 						<form class="cloak-uploader" enctype="multipart/form-data" method="POST">
 							<input type="file" name="cloak" class="file-inputs" title="<?php echo $this->lng_m['drop_cloak_here']; ?>">
@@ -53,25 +53,25 @@
 					</div>
 				</div>
 			</div>
-
+			
 			<div role="tabpanel" class="tab-pane" id="tab3">
 				<form class="settings" method="post">
-
+					
 					<div class="form-group">
 						<label for="inputOldpass"><?php echo $this->lng_m['f_oldpass']; ?></label>
 						<input type="password" class="form-control" name="oldpass" id="inputOldpass" placeholder="<?php echo $this->lng_m['f_oldpass']; ?>">
 					</div>
-
+					
 					<div class="form-group">
 						<label for="inputNewpass"><?php echo $this->lng['pass']; ?></label>
 						<input type="password" class="form-control" name="newpass" id="inputNewpass" placeholder="<?php echo $this->lng['pass']; ?>">
 					</div>
-
+					
 					<div class="form-group">
 						<label for="inputRepass"><?php echo $this->lng_m['f_repass']; ?></label>
 						<input type="password" class="form-control" name="repass" id="inputRepass" placeholder="<?php echo $this->lng_m['f_repass']; ?>">
 					</div>
-
+					
 					<button type="submit" name="settings" class="btn btn-primary btn-block"><?php echo $this->lng_m['btn_save']; ?></button>
 				</form>
 			</div>
