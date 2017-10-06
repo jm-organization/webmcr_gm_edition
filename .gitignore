@@ -56,6 +56,6 @@ vcs.xml
 *.project
 
 # htmLawed
-/upload/modules/htmLawed/htmLawed_README.htm
-/upload/modules/htmLawed/htmLawed_TESTCASE.txt
-/upload/modules/htmLawed/htmLawed_README.txt
+/upload/engine/libs/htmLawed/htmLawed_README.htm
+/upload/engine/libs/htmLawed/htmLawed_TESTCASE.txt
+/upload/engine/libs/htmLawed/htmLawed_README.txt

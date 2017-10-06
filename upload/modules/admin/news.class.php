@@ -12,7 +12,7 @@
 
 if(!defined("MCR")){ exit("Hacking Attempt!"); }
 
-require_once __DIR__.'/../htmLawed/htmLawed.php';
+require_once MCR_LIBS_PATH.'htmLawed/htmLawed.php';
 
 class submodule{
 	private $core, $db, $cfg, $user, $lng;

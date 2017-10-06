@@ -467,7 +467,7 @@ var dmp = new diff_match_patch(); function diffLaunch(){var text1 = document.get
 <h5 style="float: left; display: inline; margin-top: 0; margin-bottom: 5px;"><a href="http://www.bioinformatics.org/phplabware/internal_utilities/htmLawed/index.php" title="htmLawed home">HTM<big><big>L</big></big>AWED</a> <?php echo hl_version();?> <a href="htmLawedTest.php" title="test home">TEST</a></h5>
 <span style="float: right;" class="help"><a href="htmLawed_README.htm"><span class="notice">htm</span></a> / <a href="htmLawed_README.txt"><span class="notice">txt</span></a> documentation</span><br style="clear:both;" />
 
-<a href="htmLawedTest.php" title="[toggle visibility] type or copy-paste" onclick="javascript:toggle('inputF'); return false;"><span class="notice">Input &raquo;</span> <span class="help" title="limit lower with multibyte characters<?php echo (($_hlimit < $_limit && $_hlimit)? '; limit is '. $_hlimit. ' for viewing binaries' : ''); ?>"><small>(max. <?php echo htmlspecialchars($_limit);?> chars)</small></span></a>
+<a href="htmLawedTest.php" title="[toggle visibility] type or copy-paste" onclick="javascript:toggle('inputF'); return false;"><span class="notice">Input &raquo;</span> <span class="help" title="limit lower with multibyte characters<?php echo (( $_hlimit < $_limit && $_hlimit)? '; limit is ' . $_hlimit . ' for viewing binaries' : ''); ?>"><small>(max. <?php echo htmlspecialchars($_limit);?> chars)</small></span></a>
 
 <form id="testform" name="testform" action="htmLawedTest.php" method="post" accept-charset="<?php echo htmlspecialchars($_POST['enc']); ?>" style="padding:0; margin: 0; display:inline;">
 

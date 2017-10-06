@@ -91,7 +91,7 @@ class module{
 			$attach = intval($ar['attach']);
 			
 			$text_with_pagebreaker = $ar['text_html'];
-			$text_pos = mb_strpos($text_with_pagebreaker, '<p>{READMORE}</p>', 0, 'UTF-8');
+			$text_pos = mb_strpos($text_with_pagebreaker, '{READMORE}', 0, 'UTF-8');
 			$text = ($text_pos !== false)?mb_substr($text_with_pagebreaker, 0, $text_pos, "UTF-8"):'null';
 
 			$new_data	= array(
@@ -343,7 +343,7 @@ class module{
 			"ID"			=> $id,
 			"CID"			=> intval($ar['cid']),
 			"TITLE"			=> $this->db->HSC($ar['title']),
-			"TEXT"			=> str_replace('<p>{READMORE}</p>', '<br>', $ar['text_html']),
+			"TEXT"			=> str_replace('<p>{READMORE}</p>', '', $ar['text_html']),
 			"UID"			=> intval($ar['uid']),
 			"DATA"			=> json_decode($ar['data'], true),
 			"CATEGORY"		=> $this->db->HSC($ar['category']),
