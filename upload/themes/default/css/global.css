@@ -118,7 +118,8 @@ body > .container > .row > .col-md-8 {
 }
 
 #navbar-footer .block-right {
-	text-align: right;
+	float: right;
+    text-align: right;
 }
 
 /* Debug + */
