@@ -9,21 +9,21 @@
 	<div class="block-line"></div>
 	
 	<form class="form-horizontal" method="post">
-		<div class="control-group">
+		<div class="form-group">
 			<label class="control-label" for="inputTitle"><?php echo $this->lng_m['news_field_name']; ?></label>
 			<div class="controls">
-				<input type="text" class="span10" name="title" required="required" value="<?php echo $data['TITLE']; ?>" id="inputTitle" placeholder="<?php echo $this->lng_m['news_field_name']; ?>">
+				<input type="text" class="form-control" name="title" required="required" value="<?php echo $data['TITLE']; ?>" id="inputTitle" placeholder="<?php echo $this->lng_m['news_field_name']; ?>">
 			</div>
 		</div>
 		
-		<div class="control-group">
+		<div class="form-group">
 			<label class="control-label" for="inputCategory"><?php echo $this->lng_m['news_field_cat']; ?></label>
 			<div class="controls">
-				<select name="cid" class="span10" id="inputCategory"><?php echo $data['CATEGORIES']; ?></select>
+				<select name="cid" class="form-control" id="inputCategory"><?php echo $data['CATEGORIES']; ?></select>
 			</div>
 		</div>
 		
-		<div class="control-group">
+		<div class="form-group">
 			<label class="control-label" for="inputText"><?php echo $this->lng_m['news_field_text']; ?></label>
 			<div class="controls">
 				<textarea id="inputText" class="tinymce bb-textarea input-block-level" data-for="bb-full" placeholder="<?php echo $this->lng_m['news_field_text']; ?>" name="text" rows="20"><?php echo $data['TEXT']; ?></textarea>
@@ -31,15 +31,14 @@
 			</div>
 		</div>
 		
-		<div class="control-group">
+		<div class="custom-controls-stacked">
 			<div class="controls">
-				<label class="checkbox">
-					<input type="checkbox" name="hidden" value="1" <?php echo $data['HIDDEN']; ?>> <?php echo $this->lng_m['news_field_hidden']; ?>
+				<label class="custom-control custom-checkbox">
+					<input class="custom-control-input" type="checkbox" name="hidden" value="1" <?php echo $data['HIDDEN']; ?>>
+					<span class="custom-control-indicator"></span>
+					<span class="custom-control-description"><?php echo $this->lng_m['news_field_hidden']; ?></span>
 				</label>
 			</div>
-		</div>
-		
-		<div class="control-group">
 			<div class="controls">
 				<label class="custom-control custom-checkbox">
 					<input class="custom-control-input" type="checkbox" name="vote" value="1" <?php echo $data['VOTE']; ?>>
@@ -47,9 +46,6 @@
 					<span class="custom-control-description"><?php echo $this->lng_m['news_field_vote']; ?></span>
 				</label>
 			</div>
-		</div>
-		
-		<div class="control-group">
 			<div class="controls">
 				<label class="custom-control custom-checkbox">
 					<input class="custom-control-input" type="checkbox" name="discus" value="1" <?php echo $data['DISCUS']; ?>> 
@@ -57,9 +53,6 @@
 					<span class="custom-control-description"><?php echo $this->lng_m['news_field_com']; ?></span>
 				</label>
 			</div>
-		</div>
-		
-		<div class="control-group">
 			<div class="controls">
 				<label class="custom-control custom-checkbox">
 					<input class="custom-control-input" type="checkbox" name="attach" value="1" <?php echo $data['ATTACH']; ?>> 
@@ -68,10 +61,10 @@
 				</label>
 			</div>
 		</div>
-		
-		<div class="control-group">
+
+		<div class="form-group">
 			<div class="controls">
-				<button type="submit" class="btn" name="submit"><?php echo $data['BUTTON']; ?></button>
+				<button type="submit" class="btn btn-primary" name="submit"><?php echo $data['BUTTON']; ?></button>
 				<button type="submit" class="btn" name="preview"><?php echo $this->lng_m['news_preview']; ?></button>
 			</div>
 		</div>

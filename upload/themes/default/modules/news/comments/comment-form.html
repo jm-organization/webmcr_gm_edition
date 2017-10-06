@@ -8,10 +8,7 @@
 
 	<div class="comment-form-content">
 		<form method="post">
-			<?php echo $data['BB_PANEL']; ?>
-			<div class="form-group">
-				<textarea name="message" class="form-control" data-for="bb-comments" placeholder="<?php echo $this->lng_m['message']; ?>" required></textarea>
-			</div>
+			<textarea name="message" id="wysibb-editor" class="form-control wysibb-texarea" data-for="bb-comments" placeholder="<?php echo $this->lng_m['message']; ?>" required></textarea>
 
 			<button type="submit" class="btn btn-block btn-primary" name="comment" id="add_comment" value="add"><?php echo $this->lng_m['add']; ?></button>
 		</form>
