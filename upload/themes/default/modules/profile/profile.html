@@ -22,8 +22,8 @@
 					<div class="info-line"><b><?php echo $this->lng['login']; ?>:</b> <span><?php echo $this->user->login; ?></span></div>
 					<div class="info-line"><b><?php echo $this->lng['email']; ?>:</b> <span><?php echo $this->user->email; ?></span></div>
 					<div class="info-line"><b><?php echo $this->lng['group']; ?>:</b> <span><?php echo $this->user->group; ?></span></div>
-					<div class="info-line"><b><?php echo $this->lng['date_reg']; ?>:</b> <span><?php echo date("d.m.Y в H:i", $this->user->time_create); ?></span></div>
-					<div class="info-line"><b><?php echo $this->lng['last_activity']; ?>:</b> <span><?php echo date("d.m.Y в H:i", $this->user->time_last); ?></span></div>
+					<div class="info-line"><b><?php echo $this->lng['date_reg']; ?>:</b> <span><?php echo $this->user->time_create; ?></span></div>
+					<div class="info-line"><b><?php echo $this->lng['last_activity']; ?>:</b> <span><?php echo $this->user->time_last; ?></span></div>
 					<div class="info-line"><b><?php echo $this->lng_m['f_gender']; ?>:</b> <span><?php echo $this->user->gender; ?></span></div>
 					<div class="info-line"><b><?php echo $this->lng_m['f_gmoney']; ?>:</b> <span><?php echo $this->user->money; ?> майн.</span></div>
 					<div class="info-line"><b><?php echo $this->lng_m['f_rmoney']; ?>:</b> <span><?php echo $this->user->realmoney; ?> руб.</span></div>
