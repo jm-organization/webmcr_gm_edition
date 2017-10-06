@@ -212,7 +212,6 @@ class submodule{
 		$categories	= $this->categories();
 		// TODO: News image
 		$title = $text = $votes = $discuses = $attached = $img = $preview = $hidden = '';
-		$date = new DateTime();
 
 		if($_SERVER['REQUEST_METHOD']=='POST'){
 			// TITLE
@@ -253,7 +252,6 @@ class submodule{
 					'vote' => (!$vote)?0:1,
 					'discus' => (!$discus)?0:1,
 					'attach' => (!$attach)?0:1,
-					'date' => $date->format('Y-m-d H:i:s'),
 					'img' => $img,
 					'user_id' => $this->user->id,
 					'data' => $data,
@@ -262,9 +260,9 @@ class submodule{
 
 				$create_news = "
 					INSERT INTO `mcr_news`
-						(`cid`, 					`title`, 			`text_html`, 			`vote`, 		`discus`, 			`attach`, 			`date`, 		`img`, 			`uid`, 				`data`, 		`hidden`)
+						(`cid`, `title`, `text_html`, `vote`, `discus`, `attach`, `date`, `img`, `uid`, `data`, `hidden`)
 					VALUES
-						('{$n['category_id']}', 	'{$n['title']}', 	'{$n['news_text']}', 	'{$n['vote']}', '{$n['discus']}', 	'{$n['attach']}', 	'{$n['date']}', '{$n['img']}', 	'{$n['user_id']}', 	'{$n['data']}', '{$n['hidden']}')
+						('{$n['category_id']}', '{$n['title']}', '{$n['news_text']}', '{$n['vote']}', '{$n['discus']}', '{$n['attach']}', NOW(), '{$n['img']}', '{$n['user_id']}', '{$n['data']}', '{$n['hidden']}')
 				";
 
 				if (!$this->db->query($create_news)) {$this->core->notify(
