@@ -1,8 +1,9 @@
 <div class="form-block">
 	<div class="block-header"><?php echo $this->lng_m['mod_name']; ?></div>
 	<div class="block-line"></div>
-
+ 
 	<div class="mcr-register">
+
 		<form class="form-horizontal" method="post">
 
 			<div class="control-group">
@@ -45,21 +46,18 @@
 			</div>
 
 			<?php echo $this->captcha(); ?>
-
-			<div class="control-group">
-				<div class="controls">
-					<textarea rows="5" class="span9" readonly><?php echo $this->sp("rules.txt"); ?></textarea>
-				</div>
-			</div>
-
-			<div class="control-group">
-				<div class="controls">
-					<label class="checkbox">
-						<input type="checkbox" name="accept" value="1" required> <?php echo $this->lng_m['accept']; ?>
-					</label>
-					<button type="submit" id="postbut" name="submit" class="btn"><?php echo $this->lng_m['btn']; ?></button>
-				</div>
-			</div>
-		</form>
-	</div>
+   
+			<div class="form-group">
+				<textarea rows="5" class="form-control" readonly><?php echo $this->sp("rules.txt"); ?></textarea>
+   </div>
+   
+			<div class="checkbox">
+				<label>
+					<input type="checkbox" name="accept" value="1" required> <?php echo $this->lng_m['accept']; ?>
+    </label>
+   </div>
+   
+			<button type="submit" id="postbut" name="submit" class="btn btn-primary btn-block"><?php echo $this->lng_m['btn']; ?></button>
+  </form>
+ </div>
 </div>

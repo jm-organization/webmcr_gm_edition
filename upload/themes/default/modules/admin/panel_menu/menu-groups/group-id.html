@@ -1,8 +1,10 @@
-	<div class="navbar navbar-inverse spl_grp_block">
-		<div class="navbar-inner">
-			<a class="brand spl-btn" data-for="spl_adm_grp_<?php echo $data['ID']; ?>" title="<?php echo $data['TEXT'];; ?>" href="#"><?php echo $data['TITLE']; ?></a>
+	<nav class="navbar navbar-dark bg-inverse spl_grp_block">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<div class="navbar-text"><a class="spl-btn" data-for="spl_adm_grp_<?php echo $data['ID']; ?>" title="<?php echo $data['TEXT'];; ?>" href="#"><?php echo $data['TITLE']; ?></a></div>
+			</div>
 		</div>
-	</div>
+	</nav>
 
 	<ul class="spl-body" id="spl_adm_grp_<?php echo $data['ID']; ?>">
 		<?php echo $data['ITEMS']; ?>

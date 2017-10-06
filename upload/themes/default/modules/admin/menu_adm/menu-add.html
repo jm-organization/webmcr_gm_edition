@@ -6,75 +6,55 @@
 
 	<div class="block-line"></div>
 
-	<form class="form-horizontal" method="post">
-		<div class="control-group">
-			<label class="control-label" for="inputTitle"><?php echo $this->lng_m['mcp_field_name']; ?></label>
-			<div class="controls">
-				<input type="text" class="span10" name="title" value="<?php echo $data['TITLE']; ?>" id="inputTitle" placeholder="<?php echo $this->lng_m['mcp_field_name']; ?>" required>
-			</div>
+	<form method="post">
+		<div class="form-group">
+			<label for="inputTitle"><?php echo $this->lng_m['mcp_field_name']; ?></label>
+			<input type="text" class="form-control" name="title" value="<?php echo $data['TITLE']; ?>" id="inputTitle" placeholder="<?php echo $this->lng_m['mcp_field_name']; ?>" required>
 		</div>
 
-		<div class="control-group">
-			<label class="control-label" for="selectGid"><?php echo $this->lng_m['mcp_field_group']; ?></label>
-			<div class="controls">
-				<select name="gid" class="span10" id="selectGid">
-					<?php echo $data['GROUPS']; ?>
-				</select>
-			</div>
+		<div class="form-group">
+			<label for="selectGid"><?php echo $this->lng_m['mcp_field_group']; ?></label>
+			<select name="gid" class="form-control" id="selectGid">
+				<?php echo $data['GROUPS']; ?>
+			</select>
 		</div>
 
-		<div class="control-group">
-			<label class="control-label" for="textareaText"><?php echo $this->lng_m['mcp_field_desc']; ?></label>
-			<div class="controls">
-				<textarea name="text" class="span10" placeholder="<?php echo $this->lng_m['mcp_field_desc']; ?>" rows="8" maxlength="255" id="textareaText"><?php echo $data['TEXT']; ?></textarea>
-			</div>
+		<div class="form-group">
+			<label for="textareaText"><?php echo $this->lng_m['mcp_field_desc']; ?></label>
+			<textarea name="text" class="form-control" placeholder="<?php echo $this->lng_m['mcp_field_desc']; ?>" rows="8" maxlength="255" id="textareaText"><?php echo $data['TEXT']; ?></textarea>
 		</div>
 
-		<div class="control-group">
-			<label class="control-label" for="inputUrl"><?php echo $this->lng_m['mcp_field_link']; ?></label>
-			<div class="controls">
-				<input type="text" class="span10" name="url" value="<?php echo $data['URL']; ?>" id="inputUrl" placeholder="<?php echo $this->lng_m['mcp_field_link']; ?>" required>
-			</div>
+		<div class="form-group">
+			<label for="inputUrl"><?php echo $this->lng_m['mcp_field_link']; ?></label>
+			<input type="text" class="form-control" name="url" value="<?php echo $data['URL']; ?>" id="inputUrl" placeholder="<?php echo $this->lng_m['mcp_field_link']; ?>" required>
 		</div>
 
-		<div class="control-group">
-			<label class="control-label" for="selectTarget"><?php echo $this->lng_m['mcp_field_target']; ?></label>
-			<div class="controls">
-				<select id="selectTarget" class="span10" name="target">
-					<option value="_self"><?php echo $this->lng_m['mcp_target_self']; ?></option>
-					<option value="_blank" <?php echo $data['TARGET']; ?>><?php echo $this->lng_m['mcp_target_blank']; ?></option>
-				</select>
-			</div>
+		<div class="form-group">
+			<label for="selectTarget"><?php echo $this->lng_m['mcp_field_target']; ?></label>
+			<select id="selectTarget" class="form-control" name="target">
+				<option value="_self"><?php echo $this->lng_m['mcp_target_self']; ?></option>
+				<option value="_blank" <?php echo $data['TARGET']; ?>><?php echo $this->lng_m['mcp_target_blank']; ?></option>
+			</select>
 		</div>
 
-		<div class="control-group">
-			<label class="control-label" for="selectPerm"><?php echo $this->lng_m['mcp_field_access']; ?></label>
-			<div class="controls">
-				<select size="6" class="span10" name="permissions" id="selectPerm">
-					<?php echo $data['PERMISSIONS']; ?>
-				</select>
-			</div>
+		<div class="form-group">
+			<label for="selectPerm"><?php echo $this->lng_m['mcp_field_access']; ?></label>
+			<select size="6" class="form-control" name="permissions" id="selectPerm">
+				<?php echo $data['PERMISSIONS']; ?>
+			</select>
 		</div>
 
-		<div class="control-group">
-			<label class="control-label" for="inputPriority"><?php echo $this->lng_m['mcp_field_priority']; ?></label>
-			<div class="controls">
-				<input type="text" class="span10" name="priority" value="<?php echo $data['PRIORITY']; ?>" pattern="^\d+$" id="inputPriority" placeholder="<?php echo $this->lng_m['mcp_field_priority']; ?>">
-			</div>
+		<div class="form-group">
+			<label for="inputPriority"><?php echo $this->lng_m['mcp_field_priority']; ?></label>
+			<input type="text" class="form-control" name="priority" value="<?php echo $data['PRIORITY']; ?>" pattern="^\d+$" id="inputPriority" placeholder="<?php echo $this->lng_m['mcp_field_priority']; ?>">
 		</div>
 
-		<div class="control-group">
-			<label class="control-label" for="selectIcon"><?php echo $this->lng_m['mcp_field_icon']; ?></label>
-			<div class="controls">
-				<?php echo $data['ICONS']; ?>
-			</div>
+		<div class="form-group">
+			<div><?php echo $this->lng_m['mcp_field_icon']; ?></div>
+			<?php echo $data['ICONS']; ?>
 		</div>
 
-		<div class="control-group">
-			<div class="controls">
-				<button type="submit" class="btn" name="submit"><?php echo $data['BUTTON']; ?></button>
-			</div>
-		</div>
+		<button type="submit" class="btn btn-primary btn-block" name="submit"><?php echo $data['BUTTON']; ?></button>
 	</form>
 		
 </div>

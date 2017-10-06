@@ -3,20 +3,14 @@
 	<div class="block-line"></div>
 
 	<div class="mcr-restore">
-		<form class="form-horizontal" method="post">
+		<form method="post">
 
-			<div class="control-group">
-				<label class="control-label" for="inputEmail"><?php echo $this->lng['email']; ?></label>
-				<div class="controls">
-					<input type="text" name="email" class="span7" id="inputEmail" placeholder="<?php echo $this->lng['email']; ?>" required>
-				</div>
+			<div class="form-group">
+				<label for="inputEmail"><?php echo $this->lng['email']; ?></label>
+				<input type="email" class="form-control" name="email" id="inputEmail" placeholder="<?php echo $this->lng['email']; ?>" required>
 			</div>
 
-			<div class="control-group">
-				<div class="controls">
-					<button type="submit" name="submit" class="btn"><?php echo $this->lng_m['btn_restore']; ?></button>
-				</div>
-			</div>
+			<button type="submit" class="btn btn-primary btn-block"><?php echo $this->lng_m['btn_restore']; ?></button>
 		</form>
 	</div>
 </div>

@@ -15,90 +15,61 @@
 
 <body>
 
-<div class="navbar navbar-fixed-top">
-	<div class="navbar-inner">
-		<div class="container">
+<nav class="navbar navbar-light navbar-fixed-top bg-faded">
+	<div class="container">
+		<button class="navbar-toggler hidden-sm-up" type="button" data-toggle="collapse" data-target="#navbar-header">&#9776;</button>
+		<div class="collapse navbar-toggleable-xs" id="navbar-header">
+			<a class="navbar-brand" href="<?php echo BASE_URL; ?>"><?php echo $data['CFG']['s_name']; ?></a>
+			<ul class="nav navbar-nav">
+				<?php echo $data['MENU']; ?>
+			</ul>
 
-			<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-			</a>
-
-			<a class="brand" href="<?php echo BASE_URL; ?>"><?php echo $data['CFG']['s_name']; ?></a>
-
-			<div class="nav-collapse collapse">
-
-				<ul class="nav">
-					<?php echo $data['MENU']; ?>
-				</ul>
-
-				<?php echo $data['SEARCH']; ?>
-
-			</div>
+			<?php echo $data['SEARCH']; ?>
 		</div>
 	</div>
-</div>
+</nav>
 
-<header class="jumbotron subhead">
+<header class="jumbotron jumbotron-fluid">
 	<div class="container">
-		<div class="container-fluid">
-			<div class="row-fluid">
-				<div class="span9">
-					<h1><?php echo $data['CFG']['s_name']; ?></h1>
-					<p class="lead"><?php echo $data['CFG']['s_about'] ?></p>
-				</div>
-
-				<div class="span3" style="margin-top: 30px;">
-					<p class="lead"><a href="<?php echo $data['CFG']['s_client']; ?>"><?php echo $this->lng['load_client']; ?></a></p>
-				</div>
-			</div>
-		</div>
+		<h1 class="display-3"><?php echo $data['CFG']['s_name']; ?></h1>
+		<p><?php echo $data['CFG']['s_about'] ?></p>
+		<p><a class="btn btn-success btn-lg" href="index.php?mode=start" role="button"><i class="fa fa-download"></i> <?php echo $this->lng['load_client']; ?></a></p>
 	</div>
 </header>
 
 <?php echo $data['ADVICE']; ?>
 
 <div class="container">
-	<div class="container-fluid">
-		<div class="row-fluid">
-			<!-- Левый контейнер -->
-			<div class="span4 main-content">
-
-				<!-- Ajax оповещения -->
-				<div id="js-notify" class="alert">
-					<a href="#" id="close">&times;</a>
-					<div id="title">Название</div>
-					<div id="message">Сообщение</div>
-				</div>
-
-				<?php echo $data['L_BLOCKS']; ?>
-
+	<div class="row">
+		<div class="col-md-4">
+			<div id="js-notify" class="alert alert-warning">
+				<a href="#" id="close">&times;</a>
+				<div id="title"></div>
+				<div id="message"></div>
 			</div>
-			<!-- /.Левый контейнер -->
+			
+			<?php echo $data['L_BLOCKS']; ?>
+		</div>
 
-			<!-- Правый контейнер -->
-			<div class="span8">
-				<?php echo $data['BREADCRUMBS']; ?>
+		<div class="col-md-8">
+			<?php echo $data['BREADCRUMBS']; ?>
 
-				<?php echo $data['CONTENT']; ?>
-
-			</div>
-			<!-- /.Правый контейнер	-->
+			<?php echo $data['CONTENT']; ?>
 		</div>
 	</div>
 </div>
 
 <div id="js-loader" title="<?php echo $this->lng['loading']; ?>"><img src="<?php echo STYLE_URL; ?>img/loading.gif" alt="<?php echo $this->lng['loading']; ?>" /></div>
 
-<div class="navbar navbar-fixed-bottom">
-	<div class="navbar-inner">
-		<div class="footer-block">
-			<div class="left-side"><?php echo $this->lng['copy_pre']; ?> <?php echo $data['CFG']['s_name']; ?> <?php echo $this->lng['copy_app']; ?></div>
-			<div class="right-side"><?php echo FEEDBACK; ?> | <?php echo VERSION; ?></div>
+<nav class="navbar navbar-light bg-faded">
+	<div class="container">
+		<button class="navbar-toggler hidden-sm-up" type="button" data-toggle="collapse" data-target="#navbar-footer">&#9776;</button>
+		<div class="collapse navbar-toggleable-xs" id="navbar-footer">
+			<div class="block-left"><?php echo $this->lng['copy_pre']; ?> <?php echo $data['CFG']['s_name']; ?> <?php echo $this->lng['copy_app']; ?></div><!--
+			--><div class="block-right"><?php echo FEEDBACK; ?> | <?php echo VERSION; ?></div>
 		</div>
 	</div>
-</div>
+</nav>
 
 </body>
 

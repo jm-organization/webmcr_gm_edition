@@ -8,12 +8,16 @@ var mcr = {
 	loading: function(status){
 
 		if(status!==false){
-			if($('#js-loader').is(':hidden')){ $('#js-loader').fadeIn(500); }
+			if(!$('#js-loader').hasClass('runclose') && !$('#js-loader').hasClass('runopen')){
+				$('#js-loader').addClass('runopen').fadeIn(300, function(){
+					$(this).removeClass('runopen');
+				});
+			}
 		}else{
-			if($('#js-loader').is(':visible')){ $('#js-loader').fadeOut(500); }
+			$('#js-loader').addClass('runclose').fadeOut(300, function(){
+				$(this).removeClass('runclose');
+			});
 		}
-
-		return (status===false) ? false : true;
 	},
 
 	/*
@@ -34,14 +38,14 @@ var mcr = {
 		type = (type===undefined) ? 0 : parseInt(type);
 
 		switch(type){
-			case 2: type = 'alert-error'; break;
+			case 2: type = 'alert-danger'; break;
 			case 3: type = 'alert-success'; break;
 			case 4: type = 'alert-info'; break;
 
-			default: type = ''; break;
+			default: type = 'alert-warning'; break;
 		}
 
-		$('#js-notify').removeClass('alert-error alert-success alert-info').addClass(type);
+		$('#js-notify').removeClass('alert-danger alert-warning alert-success alert-info').addClass(type);
 
 		$('#js-notify > #title').html(title);
 		$('#js-notify > #message').html(message);
@@ -148,6 +152,55 @@ var mcr = {
 	// Получение информации о откртых и закрытых спойлерах
 	spl_items: Cookies.getJSON('spl_items'),
 
+	// Инстализация мониторинга
+	init_monitoring: function(){
+
+		if($('.monitor-id').length<=0){ return; }
+
+		var that = this;
+
+		that.loading();
+
+		var formdata = new FormData();
+		
+		formdata.append('mcr_secure', that.meta_data.secure);
+
+		$.ajax({
+			url: "index.php?mode=ajax&do=monitoring",
+			dataType: "json",
+			type: 'POST',
+			contentType: false,
+			processData: false,
+			data: formdata,
+			error: function(data){
+				that.logger(data);
+				that.notify(lng.error, lng.e_monitor);
+			},
+
+			success: function(data){
+
+				if(!data._type){ return that.notify(data._title, data._message); }
+
+				if(data._data.length<=0){ return that.loading(false); }
+
+				$.each(data._data, function(key, ar){
+					$('.monitor-id#'+ar.id+' .bar').css('width', ar.progress+'%');
+					$('.monitor-id#'+ar.id+' .progress').removeClass('progress-info').removeClass('progress-danger');
+
+					if(ar.status==1){
+						$('.monitor-id#'+ar.id+' .progress').addClass('progress-info');
+						$('.monitor-id#'+ar.id+' .stats').text(ar.online+' / '+ar.slots);
+					}else{
+						$('.monitor-id#'+ar.id+' .progress').addClass('progress-danger');
+						$('.monitor-id#'+ar.id+' .stats').text(lng.offline);
+					}
+				});
+				
+				that.loading(false);
+			}
+		});
+	},
+
 	init_filemanager: function(pge){
 		var that = this;
 
@@ -194,12 +247,12 @@ var mcr = {
 					}
 
 					$('.file-manager > .lastfiles').append('<div class="file-line" id="'+ar.uniq+'">'+
-							'<div class="line-uniq"><a href="'+ar.link+'">'+ar.uniq+'</a> <a href="#" rel="tooltip" title="'+lng.change+'" class="file-edit icon-edit"></a></div>'+
+							'<div class="line-uniq"><a href="'+ar.link+'">'+ar.uniq+'</a> <a href="#" rel="tooltip" title="'+lng.change+'" class="file-edit fa fa-pencil"></a></div>'+
 							'<div class="line-oldname">'+ar.oldname+'</div>'+
 							'<div class="line-size">'+size+'</div>'+
-							'<div class="line-downloads"><i class="icon-download" rel="tooltip" title="'+lng.count_downloads+'"></i> '+ar.downloads+'</div>'+
-							'<div class="line-info"><i class="icon-info-sign" rel="tooltip" title="'+lng.added+': '+ar.login+' | '+lng.date+': '+ar.date+'"></i></div>'+
-							'<div class="line-act"><a href="#" rel="tooltip" title="'+lng.delete+'" class="file-remove icon-remove"></a></div>'+
+							'<div class="line-downloads"><i class="fa fa-download" rel="tooltip" title="'+lng.count_downloads+'"></i> '+ar.downloads+'</div>'+
+							'<div class="line-info"><i class="fa fa-info" rel="tooltip" title="'+lng.added+': '+ar.login+' | '+lng.date+': '+ar.date+'"></i></div>'+
+							'<div class="line-act"><a href="#" rel="tooltip" title="'+lng.delete+'" class="file-remove fa fa-times"></a></div>'+
 						'</div>');
 
 					that.loading(false);
@@ -226,6 +279,9 @@ var mcr = {
 // Функции, вызываемые при загрузке
 $(function(){
 	$('input[type="file"].file-inputs').bootstrapFileInput();
+
+	// Загрузка мониторинга
+	mcr.init_monitoring();
 
 	// Загрузка файлового менеджера(если доступен)
 	if($('.file-manager').length > 0){ mcr.init_filemanager(); }
@@ -423,17 +479,17 @@ $(function(){
 		return false;
 	});
 
-	$("#search-selector a").click(function(){
+	$('body').on('click', "#search-selector > .dropdown-item > a", function(e){
+
+		e.preventDefault();
 
 		var search_val = $("#search-hidden").val();
 
-		$("#search-selector a#"+search_val).parent().removeClass("active");
+		$("#search-selector .dropdown-item").removeClass("active");
 
-		var id = this.id;
+		$("#search-hidden").val($(this).attr('id'));
 
-		$("#search-hidden").val(id);
-
-		$(this).parent().addClass("active");
+		$(this).closest('.dropdown-item').addClass("active");
 
 		return false;
 
@@ -525,6 +581,7 @@ $(function(){
 		var formdata = new FormData();
 
 		$.each($(this)[0].files, function(key, value){
+			if(value.size > 51200000){ return; }
 			formdata.append('files'+key, value);
 		});
 		
@@ -561,12 +618,12 @@ $(function(){
 					}
 
 					$('.file-manager > .lastfiles').prepend('<div class="file-line" id="'+ar.uniq+'">'+
-							'<div class="line-uniq"><a href="'+ar.link+'">'+ar.uniq+'</a> <a href="#" rel="tooltip" title="'+lng.change+'" class="file-edit icon-edit"></a></div>'+
+							'<div class="line-uniq"><a href="'+ar.link+'">'+ar.uniq+'</a> <a href="#" rel="tooltip" title="'+lng.change+'" class="file-edit fa fa-pencil"></a></div>'+
 							'<div class="line-oldname">'+ar.oldname+'</div>'+
 							'<div class="line-size">'+size+'</div>'+
-							'<div class="line-downloads"><i class="icon-download" rel="tooltip" title="'+lng.count_downloads+'"></i> '+ar.downloads+'</div>'+
-							'<div class="line-info"><i class="icon-info-sign" rel="tooltip" title="'+lng.added+': '+ar.login+' | '+lng.date+': '+ar.date+'"></i></div>'+
-							'<div class="line-act"><a href="#" rel="tooltip" title="'+lng.delete+'" class="file-remove icon-remove"></a></div>'+
+							'<div class="line-downloads"><i class="fa fa-download" rel="tooltip" title="'+lng.count_downloads+'"></i> '+ar.downloads+'</div>'+
+							'<div class="line-info"><i class="fa fa-info" rel="tooltip" title="'+lng.added+': '+ar.login+' | '+lng.date+': '+ar.date+'"></i></div>'+
+							'<div class="line-act"><a href="#" rel="tooltip" title="'+lng.delete+'" class="file-remove fa fa-times"></a></div>'+
 						'</div>');
 
 					$('.file-manager .file-input-wrapper input[type="file"].file-inputs').attr('title', lng.drop_files_here);
@@ -627,8 +684,8 @@ $(function(){
 		var text = that.prev('a').text();
 
 		if(!that.hasClass('edit-active')){
-			if(that.hasClass('icon-edit')){ that.removeClass('icon-edit'); }
-			that.addClass('icon-ok edit-active');
+			if(that.hasClass('fa-pencil')){ that.removeClass('fa-pencil'); }
+			that.addClass('fa-check edit-active');
 			that.prev('a').remove();
 			$('<input class="file-edit-input" type="text" value="'+text+'">').insertBefore(that);
 			mcr.loading(false);
@@ -660,9 +717,9 @@ $(function(){
 			success: function(data){
 				if(!data._type){ return mcr.notify(data._title, data._message); }
 
-				if(that.hasClass('icon-ok')){ that.removeClass('icon-ok'); }
+				if(that.hasClass('fa-check')){ that.removeClass('fa-check'); }
 				if(that.hasClass('edit-active')){ that.removeClass('edit-active'); }
-				that.addClass('icon-edit');
+				that.addClass('fa-pencil');
 
 				that.prev('.file-edit-input').remove();
 
@@ -694,55 +751,4 @@ $(function(){
 	$('body').on('click', '.is_auth_user', function(){
 		if(!mcr.meta_data.is_auth){ mcr.notify(lng.error, lng.e_auth, false); return false; }
 	});
-
-	function fd_ac_users(query){
-		var formdata = new FormData();
-
-		formdata.append('mcr_secure', mcr.meta_data.secure);
-		formdata.append('query', query);
-
-		return formdata;
-	}
-
-	$('body').on('input', 'input[type="text"].ac_users', function(){
-
-		var that = $(this);
-
-		var formdata = new FormData();
-
-		formdata.append('mcr_secure', mcr.meta_data.secure);
-		formdata.append('query', that.val());
-
-		that.typeahead({
-			items: 10,
-			minLength: 2,
-			source: function(query, process){
-				return $.ajax({
-					url: "index.php?mode=ajax&do=ac_users",
-					dataType: 'json',
-					type: 'POST',
-					async: true,
-					cache: false,
-					contentType: false,
-					processData: false,
-					data: fd_ac_users(query),
-					error: function(data){
-						mcr.logger(data);
-						mcr.notify(lng.error, 'warn');
-					},
-
-					success: function(data){
-						if(!data._type){ return; }
-
-						process(data._data);
-					}
-				});
-			},
-
-			matcher: function (param){
-				return true;
-			}
-		});
-	});
-	
 });
