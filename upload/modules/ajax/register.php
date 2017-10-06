@@ -131,7 +131,6 @@ class submodule{
 			$tmp = $this->db->safesql($this->core->random(16));
 			$salt = $this->db->safesql($this->core->random());
 			$ip = $this->user->ip;
-			$time = new DateTime();
 			$gid = ($this->cfg->main['reg_accept']) ? 1 : 2;
 			$gender_enum = array('no_set','male','female');
 
@@ -156,7 +155,7 @@ class submodule{
 										`{$us_f['salt']}`, `{$us_f['tmp']}`, `{$us_f['ip_last']}`, `{$us_f['date_reg']}`, `{$us_f['gender']}`)
 									VALUES
 										('$gid', '$login', '$email', '$password', UNHEX(REPLACE(UUID(), '-', '')), '$salt', '$tmp', '$ip', 
-										'".$time->format('Y-m-d H:i:s')."', '$gender')");
+										NOW(), '$gender')");
 				// Говорим юзверю, что такой логин, мыло или ююайди уже занят
 				if (!$register_user) $this->notify($this->lng['e_exist']);
 				$id = $this->db->insert_id();

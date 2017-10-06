@@ -54,3 +54,8 @@ vcs.xml
 *.classpath
 *.buildpath
 *.project
+
+# htmLawed
+/upload/modules/htmLawed/htmLawed_README.htm
+/upload/modules/htmLawed/htmLawed_TESTCASE.txt
+/upload/modules/htmLawed/htmLawed_README.txt
