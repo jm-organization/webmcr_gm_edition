@@ -97,7 +97,6 @@ class db{
 
 		$uid = intval($uid);
 		$msg = $this->safesql($msg);
-		$date = time();
 
 		$ctables	= $this->cfg->db['tables'];
 		$logs_f		= $ctables['logs']['fields'];
@@ -105,7 +104,7 @@ class db{
 		$insert = $this->query("INSERT INTO `{$this->cfg->tabname('logs')}`
 										(`{$logs_f['uid']}`, `{$logs_f['msg']}`, `{$logs_f['date']}`)
 									VALUES
-										('$uid', '$msg', '$date')");
+										('$uid', '$msg', NOW())");
 
 		if(!$insert){ return false; }
 
@@ -115,13 +114,11 @@ class db{
 	public function update_user($user){
 		if(!$user->is_auth){ return false; }
 
-		$time = time();
-
 		$ctables	= $this->cfg->db['tables'];
 		$us_f		= $ctables['users']['fields'];
 
 		$update = $this->query("UPDATE `{$this->cfg->tabname('users')}`
-								SET `{$us_f['ip_last']}`='{$user->ip}', `{$us_f['date_last']}`='$time'
+								SET `{$us_f['ip_last']}`='{$user->ip}', `{$us_f['date_last']}`=NOW()
 								WHERE `{$us_f['id']}`='{$user->id}'");
 
 		if(!$update){ return false; }

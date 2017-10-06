@@ -198,7 +198,7 @@ CREATE TABLE IF NOT EXISTS `mcr_news` (
   `date` datetime NOT NULL,
   `img` varchar(255) DEFAULT NULL,
   `data` text NOT NULL COMMENT 'Сведения о новости',
-  `hidden` tinyint(1) NOT NULL DEFAULT '1',
+  `hidden` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `cid` (`cid`),
   KEY `uid` (`uid`),
@@ -211,6 +211,7 @@ CREATE TABLE IF NOT EXISTS `mcr_news_cats` (
   `title` varchar(32) NOT NULL DEFAULT '',
   `description` varchar(255) NOT NULL DEFAULT '',
   `data` text NOT NULL,
+  `hidden` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
 #line
@@ -398,19 +399,20 @@ CREATE TABLE IF NOT EXISTS `~us~` (
   `~us_tmp~` varchar(128) CHARACTER SET latin1 NOT NULL DEFAULT '',
   `~us_is_skin~` tinyint(1) NOT NULL DEFAULT '0',
   `~us_is_cloak~` tinyint(1) NOT NULL DEFAULT '0',
-  `~us_ip_create~` varchar(64) CHARACTER SET latin1 NOT NULL DEFAULT '127.0.0.1',
   `~us_ip_last~` varchar(64) CHARACTER SET latin1 NOT NULL DEFAULT '127.0.0.1',
   `~us_date_reg~` datetime NOT NULL,
   `~us_date_last~` datetime NOT NULL,
   `~us_gender~` enum('male','no_set','female') NOT NULL DEFAULT 'no_set',
   `~us_ban_server~` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`~us_id~`),
-  UNIQUE KEY `~us_login~` (`~us_login~`,`~us_email~`),
+  UNIQUE KEY `~us_login~` (`~us_login~`),
+  UNIQUE KEY `~us_email~` (`~us_email~`),
+  UNIQUE KEY `~us_uuid~` (`~us_uuid~`),
   KEY `~us_gid~` (`~us_gid~`),
   KEY `~us_login~_2` (`~us_login~`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 #line
-ALTER TABLE `mcr_comments`
+ALTER TABLE `mcr_news_comments`
   ADD CONSTRAINT `mcr_comments_ibfk_2` FOREIGN KEY (`uid`) REFERENCES `~us~` (`~us_id~`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `mcr_comments_ibfk_1` FOREIGN KEY (`nid`) REFERENCES `mcr_news` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 #line

@@ -1,6 +1,18 @@
 <?php
+/*
+ * Изменения разработчиками JM Organization
+ *
+ * @contact: admin@jm-org.net
+ * @web-site: www.jm-org.net
+ *
+ * @supplier: Magicmen
+ * @script_author: Qexy
+ *
+ **/
 
 if(!defined("MCR")){ exit("Hacking Attempt!"); }
+
+require_once MCR_LIBS_PATH.'htmLawed/htmLawed.php';
 
 class submodule{
 	private $core, $db, $cfg, $user, $lng;
@@ -165,6 +177,16 @@ class submodule{
 		return ob_get_clean();
 	}
 
+	private function is_fill_title($title) {
+		if (!$title) {
+			$this->core->notify(
+				$this->core->lng["e_msg"], 
+				$this->lng['news_title_is_null'],
+				2
+			);
+		}
+	}
+
 	private function get_preview($title='', $text='', $category='', $cid=0, $vote=0){
 		$data = array(
 			"TITLE" => $this->db->HSC($title),
@@ -187,91 +209,84 @@ class submodule{
 		);
 
 		$this->core->bc = $this->core->gen_bc($bc);
-
-		$bb = $this->core->load_bb_class(); // Загрузка класса BB-кодов
-
-		$categories		= $this->categories();
-		$title			= '';
-		$text			= '';
-		$text_short		= '';
-		$votes			= '';
-		$discuses		= '';
-		$attached		= '';
-		$preview		= '';
+		$categories	= $this->categories();
+		// TODO: News image
+		$title = $text = $votes = $discuses = $attached = $img = $preview = $hidden = '';
 
 		if($_SERVER['REQUEST_METHOD']=='POST'){
-			$title = $this->db->safesql(@$_POST['title']);
+			// TITLE
+			$title = (@$_POST['title'] == '')?false:$this->db->safesql(@$_POST['title']);
+			$this->is_fill_title( $title );
 
-			$cid = intval(@$_POST['cid']);
-			
-			$check_cid = $this->db->query("SELECT title FROM `mcr_news_cats` WHERE id='$cid'");
-			if(!$check_cid || $this->db->num_rows($check_cid)<=0){ $this->core->notify($this->core->lng["e_msg"], $this->lng['news_e_cat_not_exist'], 2, '?mode=admin&do=news&op=edit&id='.$id); }
+			$category_id = intval(@$_POST['cid']);
+			$check_cid = $this->db->query("SELECT title FROM `mcr_news_cats` WHERE id='$category_id'");
+			if (!$check_cid || $this->db->num_rows($check_cid) <= 0) {
+				$this->core->notify($this->core->lng["e_msg"], $this->lng['news_e_cat_not_exist'], 2);
+			}
 
-			$vote	= (intval(@$_POST['vote'])===1) ? 1 : 0;
-			$discus	= (intval(@$_POST['discus'])===1) ? 1 : 0;
-			$attach	= (intval(@$_POST['attach'])===1) ? 1 : 0;
+			$vote = (intval(@$_POST['vote']) == 1)?true:false;
+			$discus	= (intval(@$_POST['discus']) == 1)?true:false;
+			$attach	= (intval(@$_POST['attach']) == 1)?true:false;
 
-			// Обработка описания +
-			$text_bb_short = @$_POST['text_short'];
-			$text_bb = @$_POST['text'];
+			// NEWS CONTENT
+			$text = $this->db->safesql(htmLawed(trim(@$_POST['text'])));
+			// NEWS IS HIDDEN
+			$hidden	= (intval(@$_POST['hidden'])===1)?true:false;
 
-			$text_bb_trim = trim($text_bb);
-			$text_bb_short_trim = trim($text_bb_short);
-
-			if(empty($text_bb_trim)){ $this->core->notify($this->core->lng["e_msg"], $this->lng['news_e_desc'], 2, '?mode=admin&do=news&op=add'); }
-			if(empty($text_bb_short_trim)){ $this->core->notify($this->core->lng["e_msg"], $this->lng['news_e_sdesc'], 2, '?mode=admin&do=news&op=add'); }
-
-			$text_html				= $bb->parse($text_bb);
-			$text_html_short		= $bb->parse($text_bb_short);
-
-			$safe_text_html			= $this->db->safesql($text_html);
-			$safe_text_html_short	= $this->db->safesql($text_html_short);
-
-			$safe_text_bb			= $this->db->safesql($text_bb);
-			$safe_text_bb_short		= $this->db->safesql($text_bb_short);
-
-			$text_html_strip		= trim(strip_tags($text_html, "<img><hr><iframe>"));
-			$text_html_short_strip	= trim(strip_tags($text_html_short, "<img><hr><iframe>"));
-
-			if(empty($text_html_strip)){ $this->core->notify($this->core->lng["e_msg"], $this->lng['news_e_desc'], 2, '?mode=admin&do=news&op=add'); }
-			if(empty($text_html_short_strip)){ $this->core->notify($this->core->lng["e_msg"], $this->lng['news_e_sdesc'], 2, '?mode=admin&do=news&op=add'); }
-			// Обработка описания -
-
-			if(isset($_POST['preview'])){
-				$cid_ar			= $this->db->fetch_assoc($check_cid);
-				$preview		= $this->get_preview($title, $text_html, $cid_ar['title'], $cid, $vote);
-				$text			= $text_bb;
-				$text_short		= $text_bb_short;
-				$categories		= $this->categories($cid);
-				$votes			= ($vote===1) ? 'checked' : '';
-				$discuses		= ($discus===1) ? 'checked' : '';
-				$attached		= ($attach===1) ? 'checked' : '';
-			}else{
+			if (isset($_POST['preview'])) {
+				$cid_ar	= $this->db->fetch_assoc($check_cid);
+				$preview = $this->get_preview($title, $text, $cid_ar['title'], $category_id, $vote);
+			} else {
 				$new_data = array(
 					"time_create" => time(),
 					"time_last" => time(),
 					"uid_create" => $this->user->id,
 					"uid_last" => $this->user->id
 				);
+				$data = $this->db->safesql(json_encode($new_data));
 
-				$new_data = $this->db->safesql(json_encode($new_data));
+				$n = array(
+					'category_id' => $category_id,
+					'title' => $title,
+					'news_text' => $text,
+					'vote' => (!$vote)?0:1,
+					'discus' => (!$discus)?0:1,
+					'attach' => (!$attach)?0:1,
+					'img' => $img,
+					'user_id' => $this->user->id,
+					'data' => $data,
+					'hidden' => (!$hidden)?0:1
+				);
 
-				$insert = $this->db->query("INSERT INTO `mcr_news`
-												(cid, title, text_bb, text_html, text_bb_short, text_html_short, vote, discus, attach, uid, `data`)
-											VALUES
-												('$cid', '$title', '$safe_text_bb', '$safe_text_html', '$safe_text_bb_short', '$safe_text_html_short', '$vote', '$discus', '$attach', '{$this->user->id}', '$new_data')");
+				$create_news = "
+					INSERT INTO `mcr_news`
+						(`cid`, `title`, `text_html`, `vote`, `discus`, `attach`, `date`, `img`, `uid`, `data`, `hidden`)
+					VALUES
+						('{$n['category_id']}', '{$n['title']}', '{$n['news_text']}', '{$n['vote']}', '{$n['discus']}', '{$n['attach']}', NOW(), '{$n['img']}', '{$n['user_id']}', '{$n['data']}', '{$n['hidden']}')
+				";
 
-				if(!$insert){ $this->core->notify($this->core->lng["e_msg"], $this->core->lng["e_sql_critical"], 2, '?mode=admin&do=news&op=add'); }
+				if (!$this->db->query($create_news)) {$this->core->notify(
+					$this->core->lng["e_msg"],
+					$this->core->lng["e_sql_critical"],
+					2,
+					'?mode=admin&do=news&op=add'
+				); }
 
 				$id = $this->db->insert_id();
 
 				// Последнее обновление пользователя
 				$this->db->update_user($this->user);
-
 				// Лог действия
-				$this->db->actlog($this->lng['log_add_news']." #$id ".$this->lng['log_news'], $this->user->id);
-				
-				$this->core->notify($this->core->lng["e_success"], $this->lng['news_add_success'], 3, '?mode=admin&do=news');
+				$this->db->actlog(
+					$this->lng['log_add_news']." #$id ".$this->lng['log_news'],
+					$this->user->id
+				);
+				$this->core->notify(
+					$this->core->lng["e_success"],
+					$this->lng['news_add_success'],
+					3,
+					'?mode=admin&do=news'
+				);
 			}
 		}
 
@@ -279,13 +294,11 @@ class submodule{
 			"PAGE" => $this->lng['news_add_page_name'],
 			"CATEGORIES" => $categories,
 			"TITLE" => $this->db->HSC($title),
-			"TEXT_SHORT" => $text_short,
 			"TEXT" => $text,
 			"VOTE" => $votes,
 			"DISCUS" => $discuses,
 			"ATTACH" => $attached,
-			"BB_PANEL_SHORT" => $bb->bb_panel('bb-short'),
-			"BB_PANEL_FULL" => $bb->bb_panel('bb-full'),
+			"HIDDEN" => $hidden,
 			"BUTTON" => $this->lng['news_add_btn'],
 			"PREVIEW" => $preview,
 		);
@@ -299,22 +312,28 @@ class submodule{
 		$id = intval($_GET['id']);
 		$preview = '';
 
-		$query = $this->db->query("SELECT cid, title, text_bb, text_bb_short, vote, discus, attach, `data`
+		$query = $this->db->query("SELECT `cid`, `title`, `text_html`, `vote`, `discus`, `attach`, `data`
 									FROM `mcr_news`
 									WHERE id='$id'");
 
-		if(!$query || $this->db->num_rows($query)<=0){ $this->core->notify($this->core->lng["e_msg"], $this->core->lng["e_sql_critical"], 2, '?mode=admin&do=news'); }
+		if (!$query || $this->db->num_rows($query) <= 0) {
+			$this->core->notify(
+				$this->core->lng["e_msg"],
+				$this->core->lng["e_sql_critical"],
+				2,
+				'?mode=admin&do=news'
+			);
+		}
 
 		$ar = $this->db->fetch_assoc($query);
 
-		$categories		= $this->categories($ar['cid']);
-		$title			= $this->db->HSC($ar['title']);
-		$text			= $this->db->HSC($ar['text_bb']);
-		$text_short		= $this->db->HSC($ar['text_bb_short']);
-		$votes			= (intval($ar['vote'])===1) ? 'checked' : '';
-		$discuses		= (intval($ar['discus'])===1) ? 'checked' : '';
-		$attached		= (intval($ar['attach'])===1) ? 'checked' : '';
-
+		$categories	= $this->categories($ar['cid']);
+		$title = $this->db->HSC($ar['title']);
+		$text = $this->db->HSC($ar['text_html']);
+		$votes = (intval($ar['vote'])===1) ? 'checked' : '';
+		$discuses = (intval($ar['discus'])===1) ? 'checked' : '';
+		$attached = (intval($ar['attach'])===1) ? 'checked' : '';
+		$hidden = '';
 		$data = json_decode($ar['data']);
 
 		$bc = array(
@@ -325,57 +344,29 @@ class submodule{
 
 		$this->core->bc = $this->core->gen_bc($bc);
 
-		$bb = $this->core->load_bb_class(); // Загрузка класса BB-кодов
-
 		if($_SERVER['REQUEST_METHOD']=='POST'){
-			$title = $this->db->safesql(@$_POST['title']);
+			// TITLE
+			$title = (@$_POST['title'] == '')?false:$this->db->safesql(@$_POST['title']);
+			$this->is_fill_title( $title );
 
-			$cid = intval(@$_POST['cid']);
-			
-			$check_cid = $this->db->query("SELECT title FROM `mcr_news_cats` WHERE id='$cid'");
-			if(!$check_cid || $this->db->num_rows($check_cid)<=0){ $this->core->notify($this->core->lng["e_msg"], $this->lng['news_e_cat_not_exist'], 2, '?mode=admin&do=news&op=edit&id='.$id); }
+			$category_id = intval(@$_POST['cid']);
+			$check_cid = $this->db->query("SELECT title FROM `mcr_news_cats` WHERE id='$category_id'");
+			if (!$check_cid || $this->db->num_rows($check_cid) <= 0) {
+				$this->core->notify($this->core->lng["e_msg"], $this->lng['news_e_cat_not_exist'], 2);
+			}
 
-			$vote	= (intval(@$_POST['vote'])===1) ? 1 : 0;
+			$vote = (intval(@$_POST['vote'])===1) ? 1 : 0;
 			$discus	= (intval(@$_POST['discus'])===1) ? 1 : 0;
 			$attach	= (intval(@$_POST['attach'])===1) ? 1 : 0;
+			// NEWS IS HIDDEN
+			$hidden	= (intval(@$_POST['hidden'])===1)?true:false;
+			// NEWS CONTENT
+			$updated_text = $this->db->safesql(htmLawed(trim(@$_POST['text'])));
 
-			// Обработка описания +
-			$text_bb_short = @$_POST['text_short'];
-			$text_bb = @$_POST['text'];
-
-			$text_bb_trim = trim($text_bb);
-			$text_bb_short_trim = trim($text_bb_short);
-
-			if(empty($text_bb_trim)){ $this->core->notify($this->core->lng["e_msg"], $this->lng['news_e_desc'], 2, '?mode=admin&do=news&op=edit&id='.$id); }
-			if(empty($text_bb_short_trim)){ $this->core->notify($this->core->lng["e_msg"], $this->lng['news_e_sdesc'], 2, '?mode=admin&do=news&op=edit&id='.$id); }
-
-			$text_html				= $bb->parse($text_bb);
-			$text_html_short		= $bb->parse($text_bb_short);
-
-			$safe_text_html			= $this->db->safesql($text_html);
-			$safe_text_html_short	= $this->db->safesql($text_html_short);
-
-			$safe_text_bb			= $this->db->safesql($text_bb);
-			$safe_text_bb_short		= $this->db->safesql($text_bb_short);
-
-			$text_html_strip		= trim(strip_tags($text_html, "<img><hr><iframe>"));
-			$text_html_short_strip	= trim(strip_tags($text_html_short, "<img><hr><iframe>"));
-
-			if(empty($text_html_strip)){ $this->core->notify($this->core->lng["e_msg"], $this->lng['news_e_desc'], 2, '?mode=admin&do=news&op=edit&id='.$id); }
-			if(empty($text_html_short_strip)){ $this->core->notify($this->core->lng["e_msg"], $this->lng['news_e_sdesc'], 2, '?mode=admin&do=news&op=edit&id='.$id); }
-			// Обработка описания -
-
-			if(isset($_POST['preview'])){
-				$cid_ar			= $this->db->fetch_assoc($check_cid);
-				$preview		= $this->get_preview($title, $text_html, $cid_ar['title'], $cid, $vote);
-				$title			= $this->db->HSC($title);
-				$text			= $text_bb;
-				$text_short		= $text_bb_short;
-				$categories		= $this->categories($cid);
-				$votes			= ($vote===1) ? 'checked' : '';
-				$discuses		= ($discus===1) ? 'checked' : '';
-				$attached		= ($attach===1) ? 'checked' : '';
-			}else{
+			if (isset($_POST['preview'])) {
+				$cid_ar = $this->db->fetch_assoc($check_cid);
+				$preview = $this->get_preview($title, $text, $cid_ar['title'], $category_id, $vote);
+			} else {
 				$new_data = array(
 					"time_create" => $data->time_create,
 					"time_last" => time(),
@@ -385,20 +376,28 @@ class submodule{
 
 				$new_data = $this->db->safesql(json_encode($new_data));
 
-				$update = $this->db->query("UPDATE `mcr_news`
-											SET cid='$cid', title='$title', text_bb='$safe_text_bb', text_html='$safe_text_html',
-												text_bb_short='$safe_text_bb_short', text_html_short='$safe_text_html_short',
-												vote='$vote', discus='$discus', attach='$attach', `data`='$new_data'
-											WHERE id='$id'");
+				$updated_news = "
+					UPDATE `mcr_news`
+					SET 
+						`cid`='$category_id', `title`='$title', `text_html`='$updated_text',
+						`vote`='$vote', `discus`='$discus', `attach`='$attach', `data`='$new_data'
+					WHERE 
+						`id`='$id'
+				";
 
-				if(!$update){ $this->core->notify($this->core->lng["e_msg"], $this->core->lng["e_sql_critical"], 2, '?mode=admin&do=news&op=edit&id='.$id); }
+				if (!$this->db->query($updated_news)) {
+					$this->core->notify(
+						$this->core->lng["e_msg"],
+						$this->core->lng["e_sql_critical"],
+						2,
+						'?mode=admin&do=news&op=edit&id='.$id
+					);
+				}
 
 				// Последнее обновление пользователя
 				$this->db->update_user($this->user);
-
 				// Лог действия
 				$this->db->actlog($this->lng['log_edit_news']." #$id ".$this->lng['log_news'], $this->user->id);
-				
 				$this->core->notify($this->core->lng["e_success"], $this->lng['news_edit_success'], 3, '?mode=admin&do=news');
 			}
 		}
@@ -407,13 +406,11 @@ class submodule{
 			"PAGE" => $this->lng['news_edit_page_name'],
 			"CATEGORIES" => $categories,
 			"TITLE" => $title,
-			"TEXT_SHORT" => $text_short,
 			"TEXT" => $text,
 			"VOTE" => $votes,
 			"DISCUS" => $discuses,
 			"ATTACH" => $attached,
-			"BB_PANEL_SHORT" => $bb->bb_panel('bb-short'),
-			"BB_PANEL_FULL" => $bb->bb_panel('bb-full'),
+			"HIDDEN" => $hidden,
 			"BUTTON" => $this->lng['news_edit_btn'],
 			"PREVIEW" => $preview,
 		);
@@ -424,6 +421,7 @@ class submodule{
 	public function content(){
 
 		$op = (isset($_GET['op'])) ? $_GET['op'] : 'list';
+		$content = '';
 
 		switch($op){
 			case 'add':		$content = $this->add(); break;

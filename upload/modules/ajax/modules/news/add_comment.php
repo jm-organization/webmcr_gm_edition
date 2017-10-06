@@ -71,10 +71,10 @@ class submodule{
 
 		$safedata = $this->db->safesql(json_encode($newdata));
 
-		$insert = $this->db->query("INSERT INTO `mcr_comments`
-										(nid, text_html, text_bb, uid, `data`)
+		$insert = $this->db->query("INSERT INTO `mcr_news_comments`
+										(nid, text_html, text_bb, uid, `data`, `date`)
 									VALUES
-										('$nid', '$safe_text_html', '$text_bb', '{$this->user->id}', '$safedata')");
+										('$nid', '$safe_text_html', '$text_bb', '{$this->user->id}', '$safedata', NOW())");
 
 		if(!$insert){ $this->core->js_notify($this->core->lng['e_sql_critical']); }
 

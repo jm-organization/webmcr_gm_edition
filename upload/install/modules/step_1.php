@@ -78,7 +78,7 @@ class module{
 				'~logs_id~', '~logs_uid~', '~logs_msg~', '~logs_date~',
 
 				'~us~',
-				'~us_id~', '~us_gid~', '~us_login~', '~us_email~', '~us_pass~', '~us_uuid~', '~us_salt~', '~us_tmp~', '~us_is_skin~', '~us_is_cloak~', '~us_ip_create~', '~us_ip_last~', '~us_color~', '~us_date_reg~', '~us_date_last~', '~us_fname~', '~us_lname~', '~us_gender~', '~us_bday~', '~us_ban_server~',
+				'~us_id~', '~us_gid~', '~us_login~', '~us_email~', '~us_pass~', '~us_uuid~', '~us_salt~', '~us_tmp~', '~us_is_skin~', '~us_is_cloak~', '~us_ip_create~', '~us_ip_last~', '~us_date_reg~', '~us_date_last~', '~us_gender~', '~us_ban_server~',
 
 				'~base_url~',
 			);
@@ -94,7 +94,7 @@ class module{
 				$logs_f['id'], $logs_f['uid'], $logs_f['msg'], $logs_f['date'],
 
 				$ctables['users']['name'],
-				$us_f['id'], $us_f['group'], $us_f['login'], $us_f['email'], $us_f['pass'], $us_f['uuid'], $us_f['salt'], $us_f['tmp'], $us_f['is_skin'], $us_f['is_cloak'], $us_f['ip_create'], $us_f['ip_last'], $us_f['color'], $us_f['date_reg'], $us_f['date_last'], $us_f['fname'], $us_f['lname'], $us_f['gender'], $us_f['bday'], $us_f['ban_server'],
+				$us_f['id'], $us_f['group'], $us_f['login'], $us_f['email'], $us_f['pass'], $us_f['uuid'], $us_f['salt'], $us_f['tmp'], $us_f['is_skin'], $us_f['is_cloak'], $us_f['ip_create'], $us_f['ip_last'], $us_f['date_reg'], $us_f['date_last'], $us_f['gender'], $us_f['ban_server'],
 
 				URL_ROOT,
 			);

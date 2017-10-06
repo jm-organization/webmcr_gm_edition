@@ -7,45 +7,70 @@
 	</div>
 
 	<div class="block-line"></div>
+ 
+	<form class="form-horizontal" method="post">
+		<div class="control-group">
+			<label class="control-label" for="inputTitle"><?php echo $this->lng_m['news_field_name']; ?></label>
+			<div class="controls">
+				<input type="text" class="span10" name="title" required="required" value="<?php echo $data['TITLE']; ?>" id="inputTitle" placeholder="<?php echo $this->lng_m['news_field_name']; ?>">
+   </div>
+  </div>
+  
+		<div class="control-group">
+			<label class="control-label" for="inputCategory"><?php echo $this->lng_m['news_field_cat']; ?></label>
+			<div class="controls">
+				<select name="cid" class="span10" id="inputCategory"><?php echo $data['CATEGORIES']; ?></select>
+   </div>
+  </div>
+  
+		<div class="control-group">
+			<label class="control-label" for="inputText"><?php echo $this->lng_m['news_field_text']; ?></label>
+			<div class="controls">
+				<textarea id="inputText" class="tinymce bb-textarea input-block-level" data-for="bb-full" placeholder="<?php echo $this->lng_m['news_field_text']; ?>" name="text" rows="20"><?php echo $data['TEXT']; ?></textarea>
+    <span class="help-block"><?php echo $this->lng_m['news_field_text_desc']; ?></span>
+   </div>
+  </div>
 
-	<form method="post">
-		<div class="form-group">
-			<label for="inputTitle"><?php echo $this->lng_m['news_field_name']; ?></label>
-			<input type="text" class="form-control" name="title" value="<?php echo $data['TITLE']; ?>" id="inputTitle" placeholder="<?php echo $this->lng_m['news_field_name']; ?>">
+		<div class="control-group">
+			<div class="controls">
+				<label class="checkbox">
+					<input type="checkbox" name="hidden" value="1" <?php echo $data['HIDDEN']; ?>> <?php echo $this->lng_m['news_field_hidden']; ?>
+				</label>
+			</div>
 		</div>
 
-		<div class="form-group">
-			<label for="inputCategory"><?php echo $this->lng_m['news_field_cat']; ?></label>
-			<select name="cid" class="form-control" id="inputCategory"><?php echo $data['CATEGORIES']; ?></select>
-		</div>
-
-		<div class="form-group">
-			<label for="inputText"><?php echo $this->lng_m['news_field_text']; ?></label>
-			<textarea id="inputText" class="tinymce bb-textarea" data-for="text" placeholder="<?php echo $this->lng_m['news_field_text_desc']; ?>" name="text" rows="30"><?php echo $data['TEXT']; ?></textarea>
-		</div>
-
-		<div class="checkbox">
-			<label>
-				<input type="checkbox" name="vote" value="1" <?php echo $data['VOTE']; ?>> <?php echo $this->lng_m['news_field_vote']; ?>
-			</label>
-		</div>
-
-		<div class="checkbox">
-			<label>
-				<input type="checkbox" name="discus" value="1" <?php echo $data['DISCUS']; ?>> <?php echo $this->lng_m['news_field_com']; ?>
-			</label>
-		</div>
-
-		<div class="checkbox">
-			<label>
-				<input type="checkbox" name="attach" value="1" <?php echo $data['ATTACH']; ?>> <?php echo $this->lng_m['news_field_attach']; ?>
-			</label>
-		</div>
-
-		<button type="submit" class="btn btn-block btn-secondary" name="preview"><?php echo $this->lng_m['news_preview']; ?></button>
-		<button type="submit" class="btn btn-block btn-primary" name="submit"><?php echo $data['BUTTON']; ?></button>
-	</form>
-		
+		<div class="control-group">
+			<div class="controls">
+				<label class="checkbox">
+					<input type="checkbox" name="vote" value="1" <?php echo $data['VOTE']; ?>> <?php echo $this->lng_m['news_field_vote']; ?>
+    </label>
+   </div>
+  </div>
+  
+		<div class="control-group">
+			<div class="controls">
+				<label class="checkbox">
+					<input type="checkbox" name="discus" value="1" <?php echo $data['DISCUS']; ?>> <?php echo $this->lng_m['news_field_com']; ?>
+    </label>
+   </div>
+  </div>
+  
+		<div class="control-group">
+			<div class="controls">
+				<label class="checkbox">
+					<input type="checkbox" name="attach" value="1" <?php echo $data['ATTACH']; ?>> <?php echo $this->lng_m['news_field_attach']; ?>
+    </label>
+   </div>
+  </div>
+  
+		<div class="control-group">
+			<div class="controls">
+				<button type="submit" class="btn" name="submit"><?php echo $data['BUTTON']; ?></button>
+				<button type="submit" class="btn" name="preview"><?php echo $this->lng_m['news_preview']; ?></button>
+   </div>
+  </div>
+ </form>
+  
 </div>
 
 <?php echo $this->file_manager(); ?>

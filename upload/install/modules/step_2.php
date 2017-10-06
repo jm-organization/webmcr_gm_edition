@@ -35,7 +35,7 @@ class module{
 		if(!isset($_SESSION['step_1'])){ $this->install->notify('', '', 'install/?do=step_1'); }
 		if(isset($_SESSION['step_2'])){ $this->install->notify('', '', 'install/?do=step_3'); }
 
-		$time = time();
+		$time = new DateTime();
 
 		$_SESSION['f_login'] = (isset($_POST['login'])) ? $this->install->HSC(@$_POST['login']) : 'admin';
 
@@ -88,7 +88,6 @@ class module{
 
 			$salt		= $db->safesql($this->install->random());
 			$password	= $this->install->gen_password(@$_POST['password'], $salt, $method);
-			$uuid		= $db->safesql($this->install->logintouuid(@$_POST['login']));
 			$ip			= $this->install->ip();
 
 			$ctables	= $this->cfg['db']['tables'];
@@ -97,9 +96,9 @@ class module{
 			$us_f		= $ctables['users']['fields'];
 
 			$query = $db->query("INSERT INTO `{$ctables['users']['name']}`
-										(`{$us_f['group']}`, `{$us_f['login']}`, `{$us_f['email']}`, `{$us_f['pass']}`, `{$us_f['uuid']}`, `{$us_f['salt']}`, `{$us_f['ip_create']}`, `{$us_f['ip_last']}`, `{$us_f['date_reg']}`, `{$us_f['date_last']}`)
+										(`{$us_f['group']}`, `{$us_f['login']}`, `{$us_f['email']}`, `{$us_f['pass']}`, `{$us_f['uuid']}`, `{$us_f['salt']}`, `{$us_f['ip_last']}`, `{$us_f['date_reg']}`)
 									VALUES
-										('3', '$login', '$email', '$password', '$uuid', '$salt', '$ip', '$ip', '$time', '$time')");
+										('3', '$login', '$email', '$password', UNHEX(REPLACE(UUID(), '-', '')), '$salt', '$ip', '".$time->format('Y-m-d H:i:s')."')");
 
 			if(!$query){ $this->install->notify($this->lng['e_add_admin'], $this->lng['e_msg'], 'install/?do=step_2'); }
 
