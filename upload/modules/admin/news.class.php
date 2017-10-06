@@ -12,6 +12,8 @@
 
 if(!defined("MCR")){ exit("Hacking Attempt!"); }
 
+require_once __DIR__.'/../htmLawed/htmLawed.php';
+
 class submodule{
 	private $core, $db, $cfg, $user, $lng;
 
@@ -228,7 +230,7 @@ class submodule{
 			$attach	= (intval(@$_POST['attach']) == 1)?true:false;
 
 			// NEWS CONTENT
-			$text = $this->db->safesql(trim(@$_POST['text']));
+			$text = $this->db->safesql(htmLawed(trim(@$_POST['text'])));
 			// NEWS IS HIDDEN
 			$hidden	= (intval(@$_POST['hidden'])===1)?true:false;
 
@@ -361,7 +363,7 @@ class submodule{
 			// NEWS IS HIDDEN
 			$hidden	= (intval(@$_POST['hidden'])===1)?true:false;
 			// NEWS CONTENT
-			$updated_text = $this->db->safesql(trim(@$_POST['text']));
+			$updated_text = $this->db->safesql(htmLawed(trim(@$_POST['text'])));
 
 			if (isset($_POST['preview'])) {
 				$cid_ar = $this->db->fetch_assoc($check_cid);
