@@ -23,13 +23,13 @@
 			<p id="label" style="display: inline-block; width: 100%">
 				<label style="float: left"><?php echo $this->lng_m['news_field_date']; ?></label>
 				<span style="float: right" class="switch">
-					<span class="button"></span>
+					<span class="button <?php if ($data['PLANED_PUBLISH']) { echo 'right'; } ?>"></span>
 					<span class="road"></span>
-					<input type="checkbox" name="planed_publish" style="opacity: 0; position: absolute; top: 5px; z-index: -2;">
+					<input type="checkbox" name="planed_publish" style="opacity: 0; position: absolute; top: 5px; z-index: -2;" <?php if ($data['PLANED_PUBLISH']) { echo 'checked="checked"'; } ?>>
 				</span>
 			</p>
-			<div class="date-publish" id="date_publish">
-				<input type="text" name="publish_time" class="form-control" id="input_publish_time" value="<?php echo $data['DATE']; ?>" <?php if ($data['PLANED_PUBLISH']) { echo 'checked="checked"'; } ?>>
+			<div class="date-publish" id="date_publish" <?php if ($data['PLANED_PUBLISH']) { echo 'style="display: block"'; } ?>>
+				<input type="text" name="publish_time" class="form-control" id="input_publish_time" value="<?php echo $data['DATE']; ?>">
 			</div>
 		</div>
   
