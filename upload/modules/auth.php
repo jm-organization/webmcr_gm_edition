@@ -45,17 +45,20 @@ class module{
 
 		if(!$this->user->auth->authentificate(@$_POST['password'], $ar[$us_f['pass']], $ar[$us_f['salt']])){ $this->core->notify($this->core->lng["e_msg"], $this->lng['e_wrong_pass']); }
 
-		$time = new DateTime();
-
 		$new_tmp = $this->db->safesql($this->user->auth->createTmp());
 
 		$new_ip = $this->user->ip;
 		$password = $this->db->safesql($password);
 
-		$update = $this->db->query("UPDATE `{$this->cfg->tabname('users')}`
-									SET `{$us_f['tmp']}`='$new_tmp', `{$us_f['ip_last']}`='$new_ip', `{$us_f['date_last']}`='".$time->format('Y-m-d H:i:s')."'
-									WHERE `{$us_f['id']}`='$uid'
-									LIMIT 1");
+		$update = $this->db->query("
+			UPDATE `{$this->cfg->tabname('users')}`
+			SET 
+				`{$us_f['tmp']}`='$new_tmp', 
+				`{$us_f['ip_last']}`='$new_ip', 
+				`{$us_f['date_last']}`=NOW()
+			WHERE `{$us_f['id']}`='$uid'
+			LIMIT 1
+		");
 
 		if(!$update){ $this->core->notify($this->core->lng['e_attention'], $this->core->lng['e_sql_critical']); }
 

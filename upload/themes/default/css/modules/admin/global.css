@@ -122,3 +122,53 @@
 		text-align: left;
 	}
 }
+
+/*----------------------------------------*\
+|******************************************|
+|********====*JM Organization*====*********|
+|*****************edited*******************|
+|******************************************|
+\*----------------------------------------*/
+
+/* Item::somethings */
+.date-publish {
+	display: none;
+}
+.date-publish * {
+	display: inline-block;
+	height: 33px;
+}
+.date-publish .date
+{ width: 168px; }
+.date-publish .time-hour,
+.date-publish .time-minute
+{ width: 28px; }
+
+/* Controls::switch */
+.switch {
+	width: 36px;
+	height: 24px;
+	position: relative;
+	margin-right: 15px;
+}
+.switch .road {
+	width: 100%;
+	height: 14px;
+	border-radius: 7px;
+	margin: 5px 0;
+	background: #868e96;
+	display: inline-block;
+}
+.switch .button {
+	position: absolute;
+	width: 24px;
+	height: 24px;
+	background: #343a40;
+	border-radius: 50%;
+	top: 0;
+	left: -5px;
+}
+.switch .button.right {
+	left: 17px!important;
+	background: #17a2b8!important;
+}
