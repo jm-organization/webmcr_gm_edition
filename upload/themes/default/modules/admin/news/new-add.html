@@ -29,7 +29,7 @@
 				</span>
 			</p>
 			<div class="date-publish" id="date_publish">
-				<input type="text" name="publish_time" class="form-control" id="input_publish_time" value="<?php echo $data['DATE']; ?>">
+				<input type="text" name="publish_time" class="form-control" id="input_publish_time" value="<?php echo $data['DATE']; ?>" <?php if ($data['PLANED_PUBLISH']) { echo 'checked="checked"'; } ?>>
 			</div>
 		</div>
   

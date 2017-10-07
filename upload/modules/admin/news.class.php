@@ -480,6 +480,7 @@ class submodule{
 			"CATEGORIES" => $categories,
 			"TITLE" => $title,
 			"TEXT" => $text,
+			"PLANED_PUBLISH" => (@$data->planed_news || @$_POST['planed_publish']=='on')?true:false,
 			"DATE" => $date->format('d.m.Y H:i:s'),
 			"VOTE" => $votes,
 			"DISCUS" => $discuses,
