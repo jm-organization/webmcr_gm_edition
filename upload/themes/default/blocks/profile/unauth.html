@@ -1,9 +1,9 @@
 <div class="form-block">
-
+	
 	<div class="block-header"><?php echo $this->lng_b['auth']; ?></div>
-
+	
 	<div class="block-line"></div>
-
+	
 	<div class="block-content">
 		<form method="post" class="block-auth" action="<?php echo BASE_URL; ?>?mode=auth">
 			<div class="form-group">
@@ -12,21 +12,20 @@
 					<input type="text" name="login" class="form-control" placeholder="<?php echo $this->lng_b['login_or_email']; ?>">
 				</div>
 			</div>
-
+			
 			<div class="form-group">
 				<div class="input-group">
 					<span class="input-group-addon"><i class="fa fa-lock"></i></span>
 					<input type="password" name="password" class="form-control" placeholder="<?php echo $this->lng_b['password']; ?>">
 				</div>
 			</div>
-
-			<div class="checkbox">
-				<label>
-					<input type="checkbox" name="remember" value="1">
-					<?php echo $this->lng_b['remember']; ?>
-				</label>
-			</div>
-
+			
+			<label class="custom-control custom-checkbox">
+				<input class="custom-control-input" type="checkbox" name="remember" value="1">
+				<span class="custom-control-indicator"></span>
+				<span class="custom-control-description"><?php echo $this->lng_b['remember']; ?></span>
+			</label>
+			
 			<div class="row">
 				<div class="col-md-4"><input type="submit" class="btn btn-secondary btn-block" name="submit" value="<?php echo $this->lng_b['enter']; ?>"></div>
 				<div class="col-md-3"><a class="btn btn-secondary btn-block" rel="tooltip" title="<?php echo $this->lng_b['restore']; ?>" href="<?php echo BASE_URL; ?>?mode=restore"><i class="fa fa-repeat"></i></a></div>
@@ -34,5 +33,5 @@
 			</div>
 		</form>
 	</div>
-
+	
 </div>
