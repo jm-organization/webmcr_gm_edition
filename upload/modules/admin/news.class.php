@@ -211,12 +211,6 @@ class submodule{
 		return $this->core->sp(MCR_THEME_MOD."admin/news/new-preview.html", $data);
 	}
 
-	private function publish_time() {
-		$time = new DateTime();
-
-		return $time->format('d.m.Y H:i:s');
-	}
-
 	private function is_fill_title($title) {
 		if (!$title) {
 			$this->core->notify(
@@ -252,7 +246,7 @@ class submodule{
 		$this->core->bc = $this->core->gen_bc($bc);
 		$categories	= $this->categories();
 		// TODO: News image
-		$title = $text = $votes = $discuses = $attached = $img = $preview = $hidden = '';
+		$title = $text = $vote = $discus = $attach = $img = $preview = $hidden = $n = '';
 
 		if($_SERVER['REQUEST_METHOD']=='POST'){
 			// TITLE
@@ -320,7 +314,7 @@ class submodule{
 			if (isset($_POST['preview'])) {
 				$cid_ar	= $this->db->fetch_assoc($check_cid);
 
-				$preview = $this->get_preview($n['title'], $n['news_text'], $cid_ar['title'], $category_id, $vote, $n['date']);
+				$preview = $this->get_preview($n['title'], str_replace('{READMORE}', '', htmLawed(trim(@$_POST['text']))), $cid_ar['title'], $category_id, $vote, $n['date']);
 			} else {
 				$create_news = "
 					INSERT INTO `mcr_news`
@@ -356,11 +350,12 @@ class submodule{
 			"PAGE" => $this->lng['news_add_page_name'],
 			"TITLE" => $this->db->HSC($title),
 			"CATEGORIES" => $categories,
-			"DATE" => $this->publish_time(),
-			"TEXT" => $text,
-			"VOTE" => $votes,
-			"DISCUS" => $discuses,
-			"ATTACH" => $attached,
+			"PLANED_PUBLISH" => (@$_POST['planed_publish']=='on')?'checked':'',
+			"DATE" => $n['date'],
+			"TEXT" => htmLawed(trim(@$_POST['text'])),
+			"VOTE" => ($vote)?'checked':'',
+			"DISCUS" => ($discus)?'checked':'',
+			"ATTACH" => ($attach)?'checked':'',
 			"HIDDEN" => $hidden,
 			"BUTTON" => $this->lng['news_add_btn'],
 			"PREVIEW" => $preview,
@@ -456,8 +451,7 @@ class submodule{
 				$preview = $this->get_preview($title, $updated_text, $cid_ar['title'], $category_id, $vote, $publish_date);
 			} else {
 				$new_data = array(
-					"planed_news" => (@$data->planed_news
-                        || @$_POST['planed_publish']=='on')?true:false,
+					"planed_news" => (@$_POST['planed_publish']=='on')?true:false,
 					"time_last" => time(),
 					"uid_last" => $this->user->id
 				);
@@ -501,7 +495,7 @@ class submodule{
 			"CATEGORIES" => $categories,
 			"TITLE" => $title,
 			"TEXT" => $text,
-			"PLANED_PUBLISH" => (@$data->planed_news || @$_POST['planed_publish']=='on')?true:false,
+			"PLANED_PUBLISH" => (@$data->planed_news || @$_POST['planed_publish']=='on')?'checked':'',
 			"DATE" => $date->format('d.m.Y H:i:s'),
 			"VOTE" => $votes,
 			"DISCUS" => $discuses,

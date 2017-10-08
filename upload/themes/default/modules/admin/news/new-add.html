@@ -9,93 +9,91 @@
 	<div class="block-line"></div>
  
 	<form method="post">
-		<div class="form-group">
-			<label for="inputTitle"><?php echo $this->lng_m['news_field_name']; ?></label>
-			<input type="text" class="form-control" name="title" required="required" value="<?php echo $data['TITLE']; ?>" id="inputTitle" placeholder="<?php echo $this->lng_m['news_field_name']; ?>">
-  		</div>
-  
-		<div class="form-group">
-			<label for="inputCategory"><?php echo $this->lng_m['news_field_cat']; ?></label>
-			<select name="cid" class="form-control" id="inputCategory"><?php echo $data['CATEGORIES']; ?></select>
-  		</div>
+		<div class="form-row">
+			<div class="form-group col-md-12">
+				<label for="inputTitle"><?php echo $this->lng_m['news_field_name']; ?></label>
+				<input type="text" class="form-control" name="title" required="required" value="<?php echo $data['TITLE']; ?>" id="inputTitle" placeholder="<?php echo $this->lng_m['news_field_name']; ?>">
+			</div>
 
-		<div class="form-group">
-			<p id="label" style="display: inline-block; width: 100%">
-				<label style="float: left"><?php echo $this->lng_m['news_field_date']; ?></label>
-				<span style="float: right" class="switch">
-					<span class="button <?php if ($data['PLANED_PUBLISH']) { echo 'right'; } ?>"></span>
-					<span class="road"></span>
-					<input type="checkbox" name="planed_publish" style="opacity: 0; position: absolute; top: 5px; z-index: -2;" <?php if ($data['PLANED_PUBLISH']) { echo 'checked="checked"'; } ?>>
-				</span>
-			</p>
-			<div class="date-publish" id="date_publish" <?php if ($data['PLANED_PUBLISH']) { echo 'style="display: block"'; } ?>>
-				<input type="text" name="publish_time" class="form-control" id="input_publish_time" value="<?php echo $data['DATE']; ?>">
+			<div class="form-group col-md-12">
+				<label for="inputCategory"><?php echo $this->lng_m['news_field_cat']; ?></label>
+				<select name="cid" class="form-control" id="inputCategory"><?php echo $data['CATEGORIES']; ?></select>
+			</div>
+		</div>
+
+		<div class="form-row">
+			<div class="form-group col-md-12">
+				<p id="label" style="display: inline-block; width: 100%">
+					<span style="float: left; line-height: 24px;"><?php echo $this->lng_m['news_field_date']; ?></span>
+					<label style="float: right;" id="switch_pp" class="switch">
+						<input type="checkbox" name="planed_publish" <?php echo $data['PLANED_PUBLISH']; ?>>
+						<span class="slider round"></span>
+					</label>
+				</p>
+				<div class="date-publish" id="date_publish">
+					<input type="text" name="publish_time" class="form-control" id="input_publish_time" value="<?php echo $data['DATE']; ?>">
+				</div>
 			</div>
 		</div>
   
-		<div class="form-group">
-			<label for="inputText"><?php echo $this->lng_m['news_field_text']; ?></label>
-			<textarea id="inputText" class="tinymce bb-textarea input-block-level" data-for="bb-full" name="text" rows="20"><?php echo $data['TEXT']; ?></textarea>
-			<small id="textHelp" class="form-text text-muted"><?php echo $this->lng_m['news_field_text_desc']; ?></small>
-  		</div>
-
-		<div class="form-check">
-			<label class="form-check-label">
-				<input type="checkbox" class="form-check-input" name="hidden" value="1" <?php echo $data['HIDDEN']; ?>> <?php echo $this->lng_m['news_field_hidden']; ?>
-			</label>
+		<div class="form-row">
+			<div class="form-group col-md-12">
+				<label for="inputText"><?php echo $this->lng_m['news_field_text']; ?></label>
+				<textarea id="inputText" class="tinymce bb-textarea input-block-level" data-for="bb-full" name="text" rows="20"><?php echo $data['TEXT']; ?></textarea>
+				<small id="textHelp" class="form-text text-muted"><?php echo $this->lng_m['news_field_text_desc']; ?></small>
+			</div>
 		</div>
 
-		<div class="form-check">
-			<label class="form-check-label">
-				<input type="checkbox" class="form-check-input" name="vote" value="1" <?php echo $data['VOTE']; ?>> <?php echo $this->lng_m['news_field_vote']; ?>
-			</label>
-		</div>
+		<div class="form-row">
+			<div class="form-check col-md-12">
+				<p style="display: inline-block; width: 100%">
+					<span style="float: left; line-height: 24px;"><?php echo $this->lng_m['news_field_hidden']; ?></span>
+					<label style="float: right;" class="switch">
+						<input type="checkbox" class="form-check-input" name="hidden" value="1" <?php echo $data['HIDDEN']; ?>>
+						<span class="slider round"></span>
+					</label>
+				</p>
+			</div>
 
-		<div class="form-check">
-			<label class="form-check-label">
-				<input type="checkbox" class="form-check-input" name="discus" value="1" <?php echo $data['DISCUS']; ?>> <?php echo $this->lng_m['news_field_com']; ?>
-			</label>
-		</div>
+			<div class="form-check col-md-12">
+				<p style="display: inline-block; width: 100%">
+					<span style="float: left; line-height: 24px;"><?php echo $this->lng_m['news_field_vote']; ?></span>
+					<label style="float: right;" class="switch">
+						<input type="checkbox" class="form-check-input" name="vote" value="1" <?php echo $data['VOTE']; ?>>
+						<span class="slider round"></span>
+					</label>
+				</p>
+			</div>
 
-		<div class="form-check">
-			<label class="form-check-label">
-				<input type="checkbox" class="form-check-input" name="attach" value="1" <?php echo $data['ATTACH']; ?>> <?php echo $this->lng_m['news_field_attach']; ?>
-			</label>
+			<div class="form-check col-md-12">
+				<p style="display: inline-block; width: 100%">
+					<span style="float: left; line-height: 24px;"><?php echo $this->lng_m['news_field_com']; ?></span>
+					<label style="float: right;" class="switch">
+						<input type="checkbox" class="form-check-input" name="discus" value="1" <?php echo $data['DISCUS']; ?>>
+						<span class="slider round"></span>
+					</label>
+				</p>
+			</div>
+
+			<div class="form-check col-md-12">
+				<p style="display: inline-block; width: 100%">
+					<span style="float: left; line-height: 24px;"><?php echo $this->lng_m['news_field_attach']; ?></span>
+					<label style="float: right;" class="switch">
+						<input type="checkbox" class="form-check-input" name="attach" value="1" <?php echo $data['ATTACH']; ?>>
+						<span class="slider round"></span>
+					</label>
+				</p>
+			</div>
 		</div>
   
-		<div class="form-group">
-			<div class="controls">
-				<button type="submit" class="btn btn-primary" name="submit"><?php echo $data['BUTTON']; ?></button>
-				<button type="submit" class="btn btn-outline-secondary" name="preview"><?php echo $this->lng_m['news_preview']; ?></button>
-   			</div>
-  		</div>
-
-		<script>
-			function check_switch_state() {
-				if ($('.switch .button').hasClass('right')) {
-					$('[name="planed_publish"]').attr('checked', 'checked');
-					$('#date_publish').show();
-				} else {
-					$('[name="planed_publish"]').removeAttr('checked');
-					$('#date_publish').hide();
-				}
-			}
-
-			$(document).ready(function () {
-				$('.switch').on('click', '.button', function () {
-					$(this).toggleClass('right');
-
-					check_switch_state();
-				});
-
-				$('#input_publish_time').datetimepicker({
-					lang:'ru',
-					timepicker:true,
-					value:'',
-					format:'d.m.Y H:i:s'
-				});
-			});
-		</script>
+		<div class="form-row">
+			<div class="form-group col-md-12">
+				<div class="controls">
+					<button type="submit" class="btn btn-primary" name="submit"><?php echo $data['BUTTON']; ?></button>
+					<button type="submit" class="btn btn-outline-secondary" name="preview"><?php echo $this->lng_m['news_preview']; ?></button>
+				</div>
+			</div>
+		</div>
  	</form>
  
 </div>

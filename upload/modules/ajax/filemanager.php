@@ -21,15 +21,17 @@ class submodule{
 		if($page<=0){ $this->core->js_notify($this->lng['fm_file_not_found']); }
 		$page = $page*$limit-$limit;
 
-		$ctables	= $this->cfg->db['tables'];
-		$logs_f		= $ctables['logs']['fields'];
+		$ctables = $this->cfg->db['tables'];
+		$logs_f	= $ctables['logs']['fields'];
 
-		$query = $this->db->query("SELECT `f`.id, `f`.`uniq`, `f`.`name`, `f`.`oldname`, `f`.`data`, `f`.uid, `u`.`{$logs_f['uid']}`
-								FROM `mcr_files` AS `f`
-								LEFT JOIN `{$this->cfg->tabname('users')}` AS `u`
-									ON `u`.`{$logs_f['id']}`=`f`.uid
-								ORDER BY `f`.id DESC
-								LIMIT $page, $limit");
+		$query = $this->db->query("
+			SELECT `f`.id, `f`.`uniq`, `f`.`name`, `f`.`oldname`, `f`.`data`, `f`.uid, `u`.`{$logs_f['uid']}`
+			FROM `mcr_files` AS `f`
+			LEFT JOIN `{$this->cfg->tabname('users')}` AS `u`
+				ON `u`.`{$logs_f['id']}`=`f`.uid
+			ORDER BY `f`.id DESC
+			LIMIT $page, $limit
+		");
 
 		if(!$query || $this->db->num_rows($query)<=0){ $this->core->js_notify($this->lng['fm_file_not_found']); }
 
@@ -64,11 +66,9 @@ class submodule{
 
 	private function upload(){
 		$files = @$_FILES;
-
-		if(empty($files)){ $this->core->js_notify($this->lng['fm_not_selected']); }
+		if (empty($files)) { $this->core->js_notify($this->lng['fm_not_selected']); }
 
 		$line = '';
-
 		$result = $errors = array();
 
 		foreach($files as $key => $file){
@@ -84,14 +84,13 @@ class submodule{
 				default: $errors[] = $this->lng['fm_e_unknow']; break;
 			}
 
-			if($file['error']!=0){ continue; }
-
-			if(!file_exists($file['tmp_name'])){ $errors[] = $this->lng['fm_e_temp_file']; }
-
+			if ($file['error']!=0) continue;
+			if (!file_exists($file['tmp_name'])) {
+				$errors[] = $this->lng['fm_e_temp_file'];
+			}
 
 			$oldname = $file['name'];
 			$ext = '.'.substr(strrchr($oldname, '.'), 1);
-
 
 			$uniq = $this->core->random(12);
 			$name = md5($this->core->random(12, false)).$ext;
@@ -104,10 +103,10 @@ class submodule{
 				"size" => intval($file['size']),
 				"downloads" => 0,
 			);
-
 			$safe_data = $this->db->safesql(json_encode($data));
+			$hash = md5($name);
 
-			$line .= "('$safe_uniq', '$safe_name', '$safe_oldname', '{$this->user->id}', '$safe_data'),";
+			$line .= "('$safe_uniq', '$safe_name', '$safe_oldname', '{$this->user->id}', '$safe_data', '$hash'),";
 
 			if(!move_uploaded_file($file['tmp_name'], MCR_UPL_PATH.'files/'.$name)){ $errors[] = $this->lng['fm_e_not_loaded']; }
 
@@ -132,12 +131,10 @@ class submodule{
 
 		$line = mb_substr($line, 0, -1, "UTF-8");
 
-		$insert = $this->db->query("INSERT INTO `mcr_files`
-										(`uniq`, `name`, `oldname`, `uid`, `data`)
-									VALUES
-										$line");
-
-		if(!$insert){ $this->core->js_notify($this->core->lng["e_sql_critical"]); }
+		$insert = $this->db->query("INSERT INTO `mcr_files` (
+			`uniq`, `name`, `oldname`, `uid`, `data`, `hash`
+		) VALUES $line");
+		if (!$insert) $this->core->js_notify($this->core->lng["e_sql_critical"].': '.mysqli_error($this->db->obj));
 
 		$array = array(
 			"data" => $result,

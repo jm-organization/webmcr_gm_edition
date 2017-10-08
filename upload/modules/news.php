@@ -56,7 +56,7 @@ class module{
 		$start = $this->core->pagination($this->cfg->pagin['news'], 0, 0); // Set start pagination
 		$end = $this->cfg->pagin['news']; // Set end pagination
 
-		$where = ($cid!==false)?"WHERE `n`.cid='$cid' AND `n`.`hidden` = 0 OR `c`.`hidden` = 0` AND `n`.`date` != NOW()":"WHERE `n`.`hidden` = 0 AND `n`.`date` < NOW()";
+		$where = ($cid!==false)?"WHERE `n`.cid='$cid' AND `n`.`hidden` = 0 OR `c`.`hidden` = 0` AND `n`.`date` < NOW()":"WHERE `n`.`hidden` = 0 AND `n`.`date` < NOW()";
 
 		$query = $this->db->query(
 			"SELECT `n`.id, `n`.cid, `n`.title, `n`.text_html, `n`.`vote`, `n`.`discus`, `n`.`uid`, `n`.`date`, `n`.`attach`,

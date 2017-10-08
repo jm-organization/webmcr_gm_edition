@@ -14,3 +14,26 @@ $(function(){
 		});
 	}
 });
+
+function check_cpp(checkbox) {
+	if ($(checkbox).is(':checked')) {
+		$('#date_publish').show();
+	} else {
+		$('#date_publish').hide();
+	}
+}
+
+$(document).ready(function () {
+	$('.switch').on('click', '[name="planed_publish"]', function () {
+		check_cpp(this);
+	});
+
+	check_cpp('[name="planed_publish"]');
+
+	$('#input_publish_time').datetimepicker({
+		lang:'ru',
+		timepicker:true,
+		value:'',
+		format:'d.m.Y H:i:s'
+	});
+});
