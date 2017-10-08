@@ -118,7 +118,8 @@ body > .container > .row > .col-md-8 {
 }
 
 #navbar-footer .block-right {
-	text-align: right;
+	float: right;
+    text-align: right;
 }
 
 /* Debug + */
@@ -732,21 +733,6 @@ table.table td.action input[type="checkbox"] { margin-top: 0px; margin-left: 10p
 	max-width: 100% !important;
 }
 
-.col-md-1,
-.col-md-2,
-.col-md-3,
-.col-md-4,
-.col-md-5,
-.col-md-6,
-.col-md-7,
-.col-md-8,
-.col-md-9,
-.col-md-10,
-.col-md-11,
-.col-md-12 {
-	word-wrap: break-word;
-}
-
 /*----------------------------------------*\
 |******************************************|
 |********====*JM Organization*====*********|
@@ -780,3 +766,4 @@ table.table td.action input[type="checkbox"] { margin-top: 0px; margin-left: 10p
 	left: 17px!important;
 	background: #17a2b8!important;
 }
+

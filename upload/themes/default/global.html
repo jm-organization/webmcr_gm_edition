@@ -1,76 +1,75 @@
 <!DOCTYPE HTML>
 <html>
-<head>
-	<title><?php echo $data['CFG']['s_name']; ?> — <?php echo $data['TITLE']; ?></title>
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta charset="utf-8">
-	<meta name="description" content="<?php echo $data['CFG']['s_about'] ?>">
-	<meta name="keywords" content="<?php echo $data['CFG']['s_keywords'] ?>">
-	<meta name="author" content="NC22 &amp; Qexy.org">
-	<meta name='data' content='<?php echo META_JSON_DATA; ?>'>
-	<base href="<?php echo BASE_URL ?>">
-	<?php echo $data['DEF_HEADER']; ?>
-	<?php echo $data['HEADER']; ?>
-</head>
-
-<body>
-
-<nav class="navbar navbar-light navbar-fixed-top bg-faded">
-	<div class="container">
-		<button class="navbar-toggler hidden-sm-up" type="button" data-toggle="collapse" data-target="#navbar-header">&#9776;</button>
-		<div class="collapse navbar-toggleable-xs" id="navbar-header">
-			<a class="navbar-brand" href="<?php echo BASE_URL; ?>"><?php echo $data['CFG']['s_name']; ?></a>
-			<ul class="nav navbar-nav">
-				<?php echo $data['MENU']; ?>
-			</ul>
-
-			<?php echo $data['SEARCH']; ?>
-		</div>
-	</div>
-</nav>
-
-<header class="jumbotron jumbotron-fluid">
-	<div class="container">
-		<h1 class="display-3"><?php echo $data['CFG']['s_name']; ?></h1>
-		<p><?php echo $data['CFG']['s_about'] ?></p>
-		<p><a class="btn btn-success btn-lg" href="index.php?mode=start" role="button"><i class="fa fa-download"></i> <?php echo $this->lng['load_client']; ?></a></p>
-	</div>
-</header>
-
-<?php echo $data['ADVICE']; ?>
-
-<div class="container">
-	<div class="row">
-		<div class="col-md-4">
-			<div id="js-notify" class="alert alert-warning">
-				<a href="#" id="close">&times;</a>
-				<div id="title"></div>
-				<div id="message"></div>
-			</div>
-			
-			<?php echo $data['L_BLOCKS']; ?>
-		</div>
-
-		<div class="col-md-8">
-			<?php echo $data['BREADCRUMBS']; ?>
-
-			<?php echo $data['CONTENT']; ?>
-		</div>
-	</div>
-</div>
-
-<div id="js-loader" title="<?php echo $this->lng['loading']; ?>"><img src="<?php echo STYLE_URL; ?>img/loading.gif" alt="<?php echo $this->lng['loading']; ?>" /></div>
-
-<nav class="navbar navbar-light bg-faded">
-	<div class="container">
-		<button class="navbar-toggler hidden-sm-up" type="button" data-toggle="collapse" data-target="#navbar-footer">&#9776;</button>
-		<div class="collapse navbar-toggleable-xs" id="navbar-footer">
-			<div class="block-left"><?php echo $this->lng['copy_pre']; ?> <?php echo $data['CFG']['s_name']; ?> <?php echo $this->lng['copy_app']; ?></div><!--
-			--><div class="block-right"><?php echo FEEDBACK; ?> | <?php echo VERSION; ?></div>
-		</div>
-	</div>
-</nav>
-
-</body>
-
+ <head>
+  <title><?php echo $data['CFG']['s_name']; ?> — <?php echo $data['TITLE']; ?></title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="utf-8">
+  <meta name="description" content="<?php echo $data['CFG']['s_about'] ?>">
+  <meta name="keywords" content="<?php echo $data['CFG']['s_keywords'] ?>">
+  <meta name="author" content="NC22 &amp; Qexy.org">
+  <meta name='data' content='<?php echo META_JSON_DATA; ?>'>
+  <base href="<?php echo BASE_URL ?>">
+  <?php echo $data['DEF_HEADER']; ?>
+  <?php echo $data['HEADER']; ?>
+ </head>
+ 
+ <body>
+  
+  <nav class="navbar navbar-toggleable-md navbar-light bg-faded">
+   <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbar-header" aria-controls="navbar-header" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+   </button>
+   <a class="navbar-brand" href="<?php echo BASE_URL; ?>"><?php echo $data['CFG']['s_name']; ?></a>
+   
+   <div class="collapse navbar-collapse" id="navbar-header">
+    <ul class="navbar-nav mr-auto mt-2 mt-md-0">
+     <?php echo $data['MENU']; ?>
+    </ul>
+    <?php echo $data['SEARCH']; ?>
+   </div>
+  </nav>
+  
+  <header class="jumbotron jumbotron-fluid">
+   <div class="container">
+    <h1 class="display-3"><?php echo $data['CFG']['s_name']; ?></h1>
+    <p><?php echo $data['CFG']['s_about'] ?></p>
+    <p><a class="btn btn-success btn-lg" href="index.php?mode=start" role="button"><i class="fa fa-download"></i> <?php echo $this->lng['load_client']; ?></a></p>
+   </div>
+  </header>
+  
+  <?php echo $data['ADVICE']; ?>
+  
+  <div class="container">
+   <div class="row">
+    <div class="col-md-4">
+     <div id="js-notify" class="alert alert-warning">
+      <a href="#" id="close">&times;</a>
+      <div id="title"></div>
+      <div id="message"></div>
+     </div>
+     
+     <?php echo $data['L_BLOCKS']; ?>
+    </div>
+    
+    <div class="col-md-8">
+     <?php echo $data['BREADCRUMBS']; ?>
+     
+     <?php echo $data['CONTENT']; ?>
+    </div>
+   </div>
+  </div>
+  
+  <div id="js-loader" title="<?php echo $this->lng['loading']; ?>"><img src="<?php echo STYLE_URL; ?>img/loading.gif" alt="<?php echo $this->lng['loading']; ?>" /></div>
+  
+  <nav class="navbar fixed-bottom navbar-light bg-faded">
+   <div class="container">
+    <div id="navbar-footer">
+     <div class="block-left"><?php echo $this->lng['copy_pre']; ?> <?php echo $data['CFG']['s_name']; ?> <?php echo $this->lng['copy_app']; ?></div>
+     <div class="block-right"><?php echo FEEDBACK; ?> | <?php echo VERSION; ?></div>
+    </div>
+   </div>
+  </nav>
+  
+ </body>
+ 
 </html>

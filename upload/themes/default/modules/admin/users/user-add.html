@@ -30,31 +30,12 @@
 		</div>
 
 		<div class="form-group">
-			<label for="inputColor"><?php echo $this->lng['color']; ?></label>
-			<input type="text" class="form-control" name="color" value="<?php echo $data['COLOR']; ?>" id="inputColor" placeholder="<?php echo $this->lng['color']; ?>">
-		</div>
-
-		<div class="form-group">
-			<label for="inputFName"><?php echo $this->lng['firstname']; ?></label>
-			<input type="text" class="form-control" name="firstname" pattern="^[а-яА-ЯёЁa-zA-Z]+$" value="<?php echo $data['FIRSTNAME']; ?>" id="inputFName" placeholder="<?php echo $this->lng['firstname']; ?>">
-		</div>
-
-		<div class="form-group">
-			<label for="inputLName"><?php echo $this->lng['lastname']; ?></label>
-			<input type="text" class="form-control" name="lastname" pattern="^[а-яА-ЯёЁa-zA-Z]+$" value="<?php echo $data['LASTNAME']; ?>" id="inputLName" placeholder="<?php echo $this->lng['lastname']; ?>">
-		</div>
-
-		<div class="form-group">
 			<label for="selectGender"><?php echo $this->lng['gender']; ?></label>
 			<select name="gender" class="form-control" id="selectGender">
-				<option value="0"><?php echo $this->lng['gender_m']; ?></option>
-				<option value="1" <?php echo $data['GENDER']; ?>><?php echo $this->lng['gender_w']; ?></option>
+				<option value="0"><?php echo $this->lng['gender_n']; ?></option>
+				<option value="1" <?php echo $data['GENDER']; ?>><?php echo $this->lng['gender_m']; ?></option>
+				<option value="2" <?php echo $data['GENDER']; ?>><?php echo $this->lng['gender_w']; ?></option>
 			</select>
-		</div>
-
-		<div class="form-group">
-			<label for="inputBirthday"><?php echo $this->lng['birthday']; ?></label>
-			<input type="text" class="form-control" name="birthday" maxlength="10" pattern="^\d{2}.\d{2}.\d{4}$" value="<?php echo $data['BIRTHDAY']; ?>" id="inputBirthday" placeholder="Дата рождения">
 		</div>
 
 		<div class="form-group">

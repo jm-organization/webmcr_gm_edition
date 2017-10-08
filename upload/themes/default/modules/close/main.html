@@ -1,90 +1,90 @@
 <!DOCTYPE HTML>
 <html>
-<head>
- <title><?php echo $this->cfg->main['s_name']; ?> — <?php echo $this->lng_m['mod_name']; ?></title>
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta charset="utf-8">
-	<meta name="description" content="<?php echo $this->cfg->main['s_about']; ?>">
-	<meta name="keywords" content="<?php echo $this->cfg->main['s_keywords']; ?>">
-	<meta name="author" content="NC22 &amp; Qexy.org">
-	<meta name='data' content='<?php echo META_JSON_DATA; ?>'>
-	<base href="<?php echo BASE_URL ?>">
-	<?php echo $this->def_header; ?>
-	<?php echo $this->header; ?>
-</head>
-
-<body>
-
-<header class="jumbotron">
-	<div class="container">
-		<h1><?php echo $this->cfg->main['s_name']; ?></h1>
-		<p>На сайте ведутся технические работы. Вход только для администрации.</p>
-	</div>
-</header>
-
-<?php echo $this->advice(); ?>
-
-<div class="container">
-	<div class="row">
-		<div class="col-md-12">
-			<div id="js-notify" class="alert alert-warning">
-				<a href="#" id="close">&times;</a>
-				<div id="title"></div>
-				<div id="message"></div>
+	<head>
+		<title><?php echo $this->cfg->main['s_name']; ?> — <?php echo $this->lng_m['mod_name']; ?></title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta charset="utf-8">
+		<meta name="description" content="<?php echo $this->cfg->main['s_about']; ?>">
+		<meta name="keywords" content="<?php echo $this->cfg->main['s_keywords']; ?>">
+		<meta name="author" content="NC22 &amp; Qexy.org">
+		<meta name='data' content='<?php echo META_JSON_DATA; ?>'>
+		<base href="<?php echo BASE_URL ?>">
+		<?php echo $this->def_header; ?>
+		<?php echo $this->header; ?>
+	</head>
+	
+	<body>
+		
+		<header class="jumbotron">
+			<div class="container">
+				<h1><?php echo $this->cfg->main['s_name']; ?></h1>
+				<p>На сайте ведутся технические работы. Вход только для администрации.</p>
 			</div>
-			
-			<div class="form-block">
-
-				<div class="block-header"><?php echo $this->lng_m['auth']; ?></div>
-
-				<div class="block-line"></div>
-
-				<div class="block-content">
-					<form method="post" class="block-auth" action="<?php echo BASE_URL; ?>?mode=auth">
-						<p class="text-center"><?php echo $data['FOR_TIME']; ?></p>
-						<br>
-
-						<div class="form-group">
-							<div class="input-group">
-								<span class="input-group-addon"><i class="fa fa-user"></i></span>
-								<input type="text" name="login" class="form-control" placeholder="<?php echo $this->lng['login']; ?>">
-							</div>
+		</header>
+		
+		<?php echo $this->advice(); ?>
+		
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12">
+					<div id="js-notify" class="alert alert-warning">
+						<a href="#" id="close">&times;</a>
+						<div id="title"></div>
+						<div id="message"></div>
+					</div>
+					
+					<div class="form-block">
+						
+						<div class="block-header"><?php echo $this->lng_m['auth']; ?></div>
+						
+						<div class="block-line"></div>
+						
+						<div class="block-content">
+							<form method="post" class="block-auth" action="<?php echo BASE_URL; ?>?mode=auth">
+								<p class="text-center"><?php echo $data['FOR_TIME']; ?></p>
+								<br>
+								
+								<div class="form-group">
+									<div class="input-group">
+										<span class="input-group-addon"><i class="fa fa-user"></i></span>
+										<input type="text" name="login" class="form-control" placeholder="<?php echo $this->lng['login']; ?>">
+									</div>
+								</div>
+								
+								<div class="form-group">
+									<div class="input-group">
+										<span class="input-group-addon"><i class="fa fa-lock"></i></span>
+										<input type="password" name="password" class="form-control" placeholder="<?php echo $this->lng['pass']; ?>">
+									</div>
+								</div>
+								
+								<div class="checkbox">
+									<label>
+										<input type="checkbox" name="remember" value="1">
+										<?php echo $this->lng_m['remember']; ?>
+									</label>
+								</div>
+								
+								<input type="submit" class="btn btn-block btn-primary" name="submit" value="<?php echo $this->lng_m['enter']; ?>">
+							</form>
 						</div>
-
-						<div class="form-group">
-							<div class="input-group">
-								<span class="input-group-addon"><i class="fa fa-lock"></i></span>
-								<input type="password" name="password" class="form-control" placeholder="<?php echo $this->lng['pass']; ?>">
-							</div>
-						</div>
-
-						<div class="checkbox">
-							<label>
-								<input type="checkbox" name="remember" value="1">
-								<?php echo $this->lng_m['remember']; ?>
-							</label>
-						</div>
-
-						<input type="submit" class="btn btn-block btn-primary" name="submit" value="<?php echo $this->lng_m['enter']; ?>">
-					</form>
+						
+					</div>
 				</div>
-
 			</div>
 		</div>
-	</div>
-</div>
-
-<div id="js-loader" title="Загрузка..."><img src="<?php echo STYLE_URL; ?>img/loading.gif" alt="Loading..." /></div>
-
-<nav class="navbar navbar-default navbar-fixed-bottom">
-	<div class="container">
-		<div id="navbar-footer">
-			<div class="navbar-left navbar-text"><?php echo $this->lng['copy_pre']; ?> <?php echo $this->cfg->main['s_name']; ?> <?php echo $this->lng['copy_app']; ?></div>
-			<div class="navbar-right navbar-text"><?php echo FEEDBACK; ?> | <?php echo VERSION; ?></div>
-		</div>
-	</div>
-</nav>
-
-</body>
-
+		
+		<div id="js-loader" title="Загрузка..."><img src="<?php echo STYLE_URL; ?>img/loading.gif" alt="Loading..." /></div>
+		
+		<nav class="navbar navbar-default navbar-fixed-bottom">
+			<div class="container">
+				<div id="navbar-footer">
+					<div class="navbar-left navbar-text"><?php echo $this->lng['copy_pre']; ?> <?php echo $this->cfg->main['s_name']; ?> <?php echo $this->lng['copy_app']; ?></div>
+					<div class="navbar-right navbar-text"><?php echo FEEDBACK; ?> | <?php echo VERSION; ?></div>
+				</div>
+			</div>
+		</nav>
+		
+	</body>
+	
 </html>

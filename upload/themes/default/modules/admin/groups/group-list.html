@@ -1,12 +1,12 @@
 <form method="post" class="panel-menu-groups" action="<?php echo ADMIN_URL; ?>&do=groups&op=delete">
 	<div class="form-block">
-
+		
 		<div class="block-header">
 			<div class="block-name"><?php echo $this->lng_m['mod_name']; ?></div>
 		</div>
-
+		
 		<div class="block-line"></div>
-
+		
 		<div class="table-responsive">
 			<table class="table table-striped">
 				<thead>
@@ -17,24 +17,29 @@
 						<th class="action"><?php echo $this->lng_m['grp_field_act']; ?> <input type="checkbox" class="check-all" data-for="check-input"></th>
 					</tr>
 				</thead>
-
+				
 				<tbody>
 					<?php echo $data['GROUPS']; ?>
 				</tbody>
 			</table>
 		</div>
 	</div>
-
+	
 	<div class="form-block actions">
 		<div class="left-act"><?php echo $data['PAGINATION']; ?></div>
+		
 		<div class="right-act">
-			<div class="input-group">
-				<input type="text" class="adm-search-input form-control" id="adm-search-id" placeholder="<?php echo $this->lng['ph_search']; ?>">
-				<div class="input-group-btn">
-					<button class="btn btn-secondary adm-search" data-for="#adm-search-id" type="button" rel="tooltip" title="<?php echo $this->lng['search']; ?>"><i class="fa fa-search"></i></button>
-					<a class="btn btn-secondary" href="<?php echo ADMIN_URL; ?>&do=groups&op=add"><i class="fa fa-plus"></i></a>
-					<a class="btn btn-secondary edit" data-for="check-input" data-link="<?php echo ADMIN_URL; ?>&do=groups&op=edit&id=" href="#"><i class="fa fa-pencil"></i></a>
-					<button class="btn btn-secondary remove" data-for="check-input" data-text="<?php echo $this->lng_m['grp_accept']; ?>" type="submit" name="delete"><i class="fa fa-times"></i></button>
+			<div class="row">
+				<div class="input-group">
+					<input type="text" class="adm-search-input form-control" id="adm-search-id" placeholder="<?php echo $this->lng['ph_search']; ?>">
+					<div class="input-group-btn">
+						<div class="btn-group">
+							<button class="btn btn-secondary adm-search" data-for="#adm-search-id" type="button" rel="tooltip" title="<?php echo $this->lng['search']; ?>"><i class="fa fa-search"></i></button>
+							<a class="btn btn-secondary" href="<?php echo ADMIN_URL; ?>&do=groups&op=add"><i class="fa fa-plus"></i></a>
+							<a class="btn btn-secondary edit" data-for="check-input" data-link="<?php echo ADMIN_URL; ?>&do=groups&op=edit&id=" href="#"><i class="fa fa-pencil"></i></a>
+							<button class="btn btn-secondary remove" data-for="check-input" data-text="<?php echo $this->lng_m['grp_accept']; ?>" type="submit" name="delete"><i class="fa fa-times"></i></button>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
