@@ -119,31 +119,52 @@ class submodule{
 	}
 
 	private function delete(){
-		if(!$this->core->is_access('sys_adm_news_delete')){ $this->core->notify($this->core->lng["e_msg"], $this->core->lng['e_403'], 2, '?mode=admin&do=news'); }
+		if (!$this->core->is_access('sys_adm_news_delete')) { $this->core->notify($this->core->lng["e_msg"], $this->core->lng['e_403'], 2, '?mode=admin&do=news'); }
 
-		if($_SERVER['REQUEST_METHOD']!='POST'){ $this->core->notify($this->core->lng["e_msg"], $this->core->lng['e_hack'], 2, '?mode=admin&do=news'); }
+		if ($_SERVER['REQUEST_METHOD']!='POST') {
+			$this->core->notify(
+				$this->core->lng["e_msg"],
+				$this->core->lng['e_hack'],
+				2,
+				'?mode=admin&do=news'
+			);
+		}
 			
-		$list = @$_POST['id'];
+		$news_list = @$_POST['id'];
 
-		if(empty($list)){ $this->core->notify($this->core->lng["e_msg"], $this->lng['news_not_selected'], 2, '?mode=admin&do=news'); }
+		if (empty($news_list)) {
+			$this->core->notify(
+				$this->core->lng["e_msg"],
+				$this->lng['news_not_selected'],
+				2,
+				'?mode=admin&do=news'
+			);
+		}
 
-		$list = $this->core->filter_int_array($list);
+		$news_list = $this->core->filter_int_array($news_list);
+		$news_list = array_unique($news_list);
+		$news_list = $this->db->safesql(implode(", ", $news_list));
 
-		$list = array_unique($list);
-
-		$list = $this->db->safesql(implode(", ", $list));
-
-		if(!$this->db->remove_fast("mcr_news", "id IN ($list)")){ $this->core->notify($this->core->lng["e_msg"], $this->core->lng["e_sql_critical"], 2, '?mode=admin&do=news'); }
+		if (!$this->db->remove_fast("mcr_news", "id IN ($news_list)")) {
+			$this->core->notify(
+				$this->core->lng["e_msg"],
+				$this->core->lng["e_sql_critical"],
+				2,
+				'?mode=admin&do=news'
+			);
+		}
 
 		$count1 = $this->db->affected_rows();
 
 		// Последнее обновление пользователя
 		$this->db->update_user($this->user);
-
 		// Лог действия
-		$this->db->actlog($this->lng['log_del_news']." $list ".$this->lng['log_news'], $this->user->id);
-
-		$this->core->notify($this->core->lng["e_success"], $this->lng['news_del_elements']." $count1", 3, '?mode=admin&do=news');
+		$this->db->actlog($this->lng['log_del_news']." $news_list ".$this->lng['log_news'], $this->user->id);
+		$this->core->notify($this->core->lng["e_success"],
+			$this->lng['news_del_elements']." $count1",
+			3,
+			'?mode=admin&do=news'
+		);
 
 	}
 
@@ -177,26 +198,46 @@ class submodule{
 		return ob_get_clean();
 	}
 
+	private function get_preview($title='', $text='', $category='', $cid=0, $vote=0, $planed_publish=false){
+		$data = array(
+			"TITLE" => $this->db->HSC($title),
+			"PLANED_PUBLISH" => new DateTime($planed_publish),
+			"TEXT" => $text,
+			"CATEGORY" => $this->db->HSC($category),
+			"CID" => intval($cid),
+			"LIKES" => (!$vote) ? '' : $this->core->sp(MCR_THEME_MOD."admin/news/new-preview-likes.html"),
+		);
+
+		return $this->core->sp(MCR_THEME_MOD."admin/news/new-preview.html", $data);
+	}
+
+	private function publish_time() {
+		$time = new DateTime();
+
+		return $time->format('d.m.Y H:i:s');
+	}
+
 	private function is_fill_title($title) {
 		if (!$title) {
 			$this->core->notify(
-				$this->core->lng["e_msg"], 
+				$this->core->lng["e_msg"],
 				$this->lng['news_title_is_null'],
 				2
 			);
 		}
 	}
 
-	private function get_preview($title='', $text='', $category='', $cid=0, $vote=0){
-		$data = array(
-			"TITLE" => $this->db->HSC($title),
-			"TEXT" => $text,
-			"CATEGORY" => $this->db->HSC($category),
-			"CID" => intval($cid),
-			"LIKES" => ($vote!==1) ? '' : $this->core->sp(MCR_THEME_MOD."admin/news/new-preview-likes.html"),
-		);
-
-		return $this->core->sp(MCR_THEME_MOD."admin/news/new-preview.html", $data);
+	function checktime($hour, $min, $sec) {
+		if ($hour < 0 || $hour > 23 || !is_numeric($hour)) {
+			return false;
+		}
+		if ($min < 0 || $min > 59 || !is_numeric($min)) {
+			return false;
+		}
+		if ($sec < 0 || $sec > 59 || !is_numeric($sec)) {
+			return false;
+		}
+		return true;
 	}
 
 	private function add(){
@@ -215,7 +256,7 @@ class submodule{
 
 		if($_SERVER['REQUEST_METHOD']=='POST'){
 			// TITLE
-			$title = (@$_POST['title'] == '')?false:$this->db->safesql(@$_POST['title']);
+			$title = (empty(trim(@$_POST['title'])))?false:$this->db->safesql(@$_POST['title']);
 			$this->is_fill_title( $title );
 
 			$category_id = intval(@$_POST['cid']);
@@ -232,44 +273,65 @@ class submodule{
 			$text = $this->db->safesql(htmLawed(trim(@$_POST['text'])));
 			// NEWS IS HIDDEN
 			$hidden	= (intval(@$_POST['hidden'])===1)?true:false;
+			// NEWS DATA
+			$new_data = array(
+				"planed_news" => (@$_POST['planed_publish']=='on')?true:false,
+				"time_last" => time(),
+				"uid_last" => $this->user->id
+			);
+			$data = $this->db->safesql(json_encode($new_data));
+			// NEWS PUBLISH DATE
+			$publish_date = @$_POST['publish_time'];
+			list($date, $time) = explode(' ', $publish_date);
+			list($day, $mouth, $year) = explode('.', $date);
+			list($hour, $minute, $second) = explode(':', $time);
+			$time = new DateTime();
+
+			// Prepare data for create news
+			$n = array(
+				'category_id' => $category_id,
+				'title' => $title,
+				'news_text' => $text,
+				'vote' => (!$vote)?0:1,
+				'discus' => (!$discus)?0:1,
+				'attach' => (!$attach)?0:1,
+				'img' => $img,
+				'user_id' => $this->user->id,
+				'date' => (@$_POST['planed_publish']=='on')?(
+					(checkdate($mouth, $day, $year)
+					 && $this->checktime($hour, $minute, $second))?(
+						$year.'-'.$mouth.'-'.$day.' '.$hour.':'.$minute.':'.$second
+					):(false)
+				):(
+					$time->format('Y-m-d H:i:s')
+				),
+				'data' => $data,
+				'hidden' => (!$hidden)?0:1
+			);
+
+			if (!$n['date']) {
+				$this->core->notify(
+					$this->core->lng["e_msg"],
+					$this->lng['news_add_time_error'],
+					2
+				);
+			}
 
 			if (isset($_POST['preview'])) {
 				$cid_ar	= $this->db->fetch_assoc($check_cid);
-				$preview = $this->get_preview($title, $text, $cid_ar['title'], $category_id, $vote);
+
+				$preview = $this->get_preview($n['title'], $n['news_text'], $cid_ar['title'], $category_id, $vote, $n['date']);
 			} else {
-				$new_data = array(
-					"time_create" => time(),
-					"time_last" => time(),
-					"uid_create" => $this->user->id,
-					"uid_last" => $this->user->id
-				);
-				$data = $this->db->safesql(json_encode($new_data));
-
-				$n = array(
-					'category_id' => $category_id,
-					'title' => $title,
-					'news_text' => $text,
-					'vote' => (!$vote)?0:1,
-					'discus' => (!$discus)?0:1,
-					'attach' => (!$attach)?0:1,
-					'img' => $img,
-					'user_id' => $this->user->id,
-					'data' => $data,
-					'hidden' => (!$hidden)?0:1
-				);
-
 				$create_news = "
 					INSERT INTO `mcr_news`
 						(`cid`, `title`, `text_html`, `vote`, `discus`, `attach`, `date`, `img`, `uid`, `data`, `hidden`)
 					VALUES
-						('{$n['category_id']}', '{$n['title']}', '{$n['news_text']}', '{$n['vote']}', '{$n['discus']}', '{$n['attach']}', NOW(), '{$n['img']}', '{$n['user_id']}', '{$n['data']}', '{$n['hidden']}')
+						('{$n['category_id']}', '{$n['title']}', '{$n['news_text']}', '{$n['vote']}', '{$n['discus']}', '{$n['attach']}', '{$n['date']}', '{$n['img']}', '{$n['user_id']}', '{$n['data']}', '{$n['hidden']}')
 				";
-
 				if (!$this->db->query($create_news)) {$this->core->notify(
 					$this->core->lng["e_msg"],
 					$this->core->lng["e_sql_critical"],
-					2,
-					'?mode=admin&do=news&op=add'
+					2
 				); }
 
 				$id = $this->db->insert_id();
@@ -292,8 +354,9 @@ class submodule{
 
 		$result = array(
 			"PAGE" => $this->lng['news_add_page_name'],
-			"CATEGORIES" => $categories,
 			"TITLE" => $this->db->HSC($title),
+			"CATEGORIES" => $categories,
+			"DATE" => $this->publish_time(),
 			"TEXT" => $text,
 			"VOTE" => $votes,
 			"DISCUS" => $discuses,
@@ -312,10 +375,11 @@ class submodule{
 		$id = intval($_GET['id']);
 		$preview = '';
 
-		$query = $this->db->query("SELECT `cid`, `title`, `text_html`, `vote`, `discus`, `attach`, `data`
-									FROM `mcr_news`
-									WHERE id='$id'");
-
+		$query = $this->db->query("
+			SELECT `cid`, `title`, `text_html`, `vote`, `discus`, `attach`, `date`, `data`, `hidden`
+			FROM `mcr_news`
+			WHERE id='$id'
+		");
 		if (!$query || $this->db->num_rows($query) <= 0) {
 			$this->core->notify(
 				$this->core->lng["e_msg"],
@@ -327,13 +391,14 @@ class submodule{
 
 		$ar = $this->db->fetch_assoc($query);
 
+		// TODO: News image
 		$categories	= $this->categories($ar['cid']);
 		$title = $this->db->HSC($ar['title']);
 		$text = $this->db->HSC($ar['text_html']);
 		$votes = (intval($ar['vote'])===1) ? 'checked' : '';
-		$discuses = (intval($ar['discus'])===1) ? 'checked' : '';
-		$attached = (intval($ar['attach'])===1) ? 'checked' : '';
-		$hidden = '';
+		$discuses = (intval($ar['discus'])===1)?'checked':'';
+		$attached = (intval($ar['attach'])===1)?'checked':'';
+		$hiddened = (intval($ar['hidden'])===1)?'checked':'';
 		$data = json_decode($ar['data']);
 
 		$bc = array(
@@ -341,12 +406,11 @@ class submodule{
 			$this->lng['news'] => ADMIN_URL."&do=news",
 			$this->lng['news_edit'] => ADMIN_URL."&do=news&op=edit&id=$id"
 		);
-
 		$this->core->bc = $this->core->gen_bc($bc);
 
 		if($_SERVER['REQUEST_METHOD']=='POST'){
 			// TITLE
-			$title = (@$_POST['title'] == '')?false:$this->db->safesql(@$_POST['title']);
+			$title = (empty(trim(@$_POST['title'])))?false:$this->db->safesql(@$_POST['title']);
 			$this->is_fill_title( $title );
 
 			$category_id = intval(@$_POST['cid']);
@@ -355,40 +419,69 @@ class submodule{
 				$this->core->notify($this->core->lng["e_msg"], $this->lng['news_e_cat_not_exist'], 2);
 			}
 
-			$vote = (intval(@$_POST['vote'])===1) ? 1 : 0;
-			$discus	= (intval(@$_POST['discus'])===1) ? 1 : 0;
-			$attach	= (intval(@$_POST['attach'])===1) ? 1 : 0;
+			$publish_date = @$_POST['publish_time'];
+			list($date, $time) = explode(' ', $publish_date);
+			list($day, $mouth, $year) = explode('.', $date);
+			list($hour, $minute, $second) = explode(':', $time);
+			$time = new DateTime();
+
+			$vote = (intval(@$_POST['vote'])===1)?1:0;
+			$discus	= (intval(@$_POST['discus'])===1)?1:0;
+			$attach	= (intval(@$_POST['attach'])===1)?1:0;
 			// NEWS IS HIDDEN
-			$hidden	= (intval(@$_POST['hidden'])===1)?true:false;
+			$hidden	= (intval(@$_POST['hidden'])===1)?1:0;
 			// NEWS CONTENT
 			$updated_text = $this->db->safesql(htmLawed(trim(@$_POST['text'])));
+			// NEWS PUBLISH DATE
+			$publish_date = (@$_POST['planed_publish']=='on')?(
+				(checkdate($mouth, $day, $year)
+				 && $this->checktime($hour, $minute, $second))?(
+					$year.'-'.$mouth.'-'.$day.' '.$hour.':'.$minute.':'.$second
+				):(false)
+			):(
+				$time->format('Y-m-d H:i:s')
+			);
+
+			if (!$publish_date) {
+				$this->core->notify(
+					$this->core->lng["e_msg"],
+					$this->lng['news_add_time_error'],
+					2
+				);
+			}
 
 			if (isset($_POST['preview'])) {
 				$cid_ar = $this->db->fetch_assoc($check_cid);
-				$preview = $this->get_preview($title, $text, $cid_ar['title'], $category_id, $vote);
+
+				$preview = $this->get_preview($title, $updated_text, $cid_ar['title'], $category_id, $vote, $publish_date);
 			} else {
 				$new_data = array(
-					"time_create" => $data->time_create,
+					"planed_news" => (@$data->planed_news
+                        || @$_POST['planed_publish']=='on')?true:false,
 					"time_last" => time(),
-					"uid_create" => $data->uid_create,
 					"uid_last" => $this->user->id
 				);
-
 				$new_data = $this->db->safesql(json_encode($new_data));
 
 				$updated_news = "
 					UPDATE `mcr_news`
 					SET 
-						`cid`='$category_id', `title`='$title', `text_html`='$updated_text',
-						`vote`='$vote', `discus`='$discus', `attach`='$attach', `data`='$new_data'
+						`cid`='$category_id', 
+						`title`='$title', 
+						`text_html`='$updated_text',
+						`vote`='$vote', 
+						`discus`='$discus', 
+						`attach`='$attach', 
+						`hidden`='$hidden', 
+						`date`='$publish_date',
+						`data`='$new_data'
 					WHERE 
 						`id`='$id'
 				";
-
 				if (!$this->db->query($updated_news)) {
 					$this->core->notify(
 						$this->core->lng["e_msg"],
-						$this->core->lng["e_sql_critical"],
+						$this->core->lng["e_sql_critical"].': '.mysqli_error($this->db->obj),
 						2,
 						'?mode=admin&do=news&op=edit&id='.$id
 					);
@@ -401,16 +494,19 @@ class submodule{
 				$this->core->notify($this->core->lng["e_success"], $this->lng['news_edit_success'], 3, '?mode=admin&do=news');
 			}
 		}
+		$date = new DateTime($ar['date']);
 
 		$result = array(
 			"PAGE" => $this->lng['news_edit_page_name'],
 			"CATEGORIES" => $categories,
 			"TITLE" => $title,
 			"TEXT" => $text,
+			"PLANED_PUBLISH" => (@$data->planed_news || @$_POST['planed_publish']=='on')?true:false,
+			"DATE" => $date->format('d.m.Y H:i:s'),
 			"VOTE" => $votes,
 			"DISCUS" => $discuses,
 			"ATTACH" => $attached,
-			"HIDDEN" => $hidden,
+			"HIDDEN" => $hiddened,
 			"BUTTON" => $this->lng['news_edit_btn'],
 			"PREVIEW" => $preview,
 		);

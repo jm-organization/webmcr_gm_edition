@@ -229,7 +229,7 @@ class user{
 
 		return array(json_decode($permissions), json_decode($permissions, true));
 	}
-
+	
 	public function set_unauth(){
 		if(isset($_COOKIE['mcr_user'])){ setcookie("mcr_user", "", time()-3600, '/'); }
 

@@ -24,6 +24,20 @@
 		</div>
 		
 		<div class="form-group">
+ 			<p id="label" style="display: inline-block; width: 100%">
+				<label style="float: left"><?php echo $this->lng_m['news_field_date']; ?></label>
+				<span style="float: right" class="switch">
+ 					<span class="button <?php if ($data['PLANED_PUBLISH']) { echo 'right'; } ?>"></span>
+					<span class="road"></span>
+ 					<input type="checkbox" name="planed_publish" style="opacity: 0; position: absolute; top: 5px; z-index: -2;" <?php if ($data['PLANED_PUBLISH']) { echo 'checked="checked"'; } ?>>
+				</span>
+			</p>			
+ 			<div class="date-publish" id="date_publish" <?php if ($data['PLANED_PUBLISH']) { echo 'style="display: block"'; } ?>>
+ 				<input type="text" name="publish_time" class="form-control" id="input_publish_time" value="<?php echo $data['DATE']; ?>">
+			</div>
+		</div>
+		
+		<div class="form-group">
 			<label class="control-label" for="inputText"><?php echo $this->lng_m['news_field_text']; ?></label>
 			<div class="controls">
 				<textarea id="inputText" class="tinymce bb-textarea input-block-level" data-for="bb-full" placeholder="<?php echo $this->lng_m['news_field_text']; ?>" name="text" rows="20"><?php echo $data['TEXT']; ?></textarea>
@@ -45,31 +59,31 @@
 					<span class="custom-control-indicator"></span>
 					<span class="custom-control-description"><?php echo $this->lng_m['news_field_vote']; ?></span>
 				</label>
+				</div>
+				<div class="controls">
+					<label class="custom-control custom-checkbox">
+						<input class="custom-control-input" type="checkbox" name="discus" value="1" <?php echo $data['DISCUS']; ?>> 
+						<span class="custom-control-indicator"></span>
+						<span class="custom-control-description"><?php echo $this->lng_m['news_field_com']; ?></span>
+					</label>
+				</div>
+				<div class="controls">
+					<label class="custom-control custom-checkbox">
+						<input class="custom-control-input" type="checkbox" name="attach" value="1" <?php echo $data['ATTACH']; ?>> 
+						<span class="custom-control-indicator"></span>
+						<span class="custom-control-description"><?php echo $this->lng_m['news_field_attach']; ?></span>
+					</label>
+				</div>
 			</div>
-			<div class="controls">
-				<label class="custom-control custom-checkbox">
-					<input class="custom-control-input" type="checkbox" name="discus" value="1" <?php echo $data['DISCUS']; ?>> 
-					<span class="custom-control-indicator"></span>
-					<span class="custom-control-description"><?php echo $this->lng_m['news_field_com']; ?></span>
-				</label>
+			
+			<div class="form-group">
+				<div class="controls">
+					<button type="submit" class="btn btn-primary" name="submit"><?php echo $data['BUTTON']; ?></button>
+					<button type="submit" class="btn" name="preview"><?php echo $this->lng_m['news_preview']; ?></button>
+				</div>
 			</div>
-			<div class="controls">
-				<label class="custom-control custom-checkbox">
-					<input class="custom-control-input" type="checkbox" name="attach" value="1" <?php echo $data['ATTACH']; ?>> 
-					<span class="custom-control-indicator"></span>
-					<span class="custom-control-description"><?php echo $this->lng_m['news_field_attach']; ?></span>
-				</label>
-			</div>
-		</div>
-
-		<div class="form-group">
-			<div class="controls">
-				<button type="submit" class="btn btn-primary" name="submit"><?php echo $data['BUTTON']; ?></button>
-				<button type="submit" class="btn" name="preview"><?php echo $this->lng_m['news_preview']; ?></button>
-			</div>
-		</div>
-	</form>
+		</form>
+		
+	</div>
 	
-</div>
-
 <?php echo $this->file_manager(); ?>

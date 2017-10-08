@@ -56,10 +56,10 @@ class module{
 		$start = $this->core->pagination($this->cfg->pagin['news'], 0, 0); // Set start pagination
 		$end = $this->cfg->pagin['news']; // Set end pagination
 
-		$where = ($cid!==false)?"WHERE `n`.cid='$cid'":"";
+		$where = ($cid!==false)?"WHERE `n`.cid='$cid' AND `n`.`hidden` = 0 OR `c`.`hidden` = 0` AND `n`.`date` != NOW()":"WHERE `n`.`hidden` = 0 AND `n`.`date` < NOW()";
 
 		$query = $this->db->query(
-			"SELECT `n`.id, `n`.cid, `n`.title, `n`.text_html, `n`.vote, `n`.discus, `n`.uid, `n`.`data`, `n`.`attach`,
+			"SELECT `n`.id, `n`.cid, `n`.title, `n`.text_html, `n`.`vote`, `n`.`discus`, `n`.`uid`, `n`.`date`, `n`.`attach`,
 				`c`.title AS `category`,
 				COUNT(DISTINCT `cm`.id) AS `comments`, COUNT(DISTINCT `v`.id) AS `views`, COUNT(DISTINCT `l`.id) AS `likes`, COUNT(DISTINCT `d`.id) AS `dislikes`
 			FROM `mcr_news` AS `n`
@@ -94,6 +94,8 @@ class module{
 			$text_pos = mb_strpos($text_with_pagebreaker, '{READMORE}', 0, 'UTF-8');
 			$text = ($text_pos !== false)?mb_substr($text_with_pagebreaker, 0, $text_pos, "UTF-8"):'null';
 
+			$date = new DateTime($ar['date']);
+
 			$new_data	= array(
 				"ID"		=> $id,
 				"CID"		=> intval($ar['cid']),
@@ -103,7 +105,7 @@ class module{
 				"UID"		=> intval($ar['uid']),
 				"COMMENTS"	=> $this->get_comments($ar['discus'], $ar['comments']),
 				"VIEWS"		=> intval($ar['views']),
-				"DATA"		=> json_decode($ar['data'], true),
+				"DATE"		=> $date->format('d.m.Y H:i'),
 				"LIKES"		=> $this->get_likes($ar['vote'], $id, $ar['likes'], $ar['dislikes']),
 				"ADMIN"		=> $this->get_admin($id, $attach),
 			);
@@ -272,14 +274,12 @@ class module{
 
 		if(intval($ar[0])>0){ return false; }
 
-		$time = time();
-
 		$uid = ($this->user->id<=0) ? 1 : $this->user->id;
 
 		$insert = $this->db->query("INSERT INTO `mcr_news_views`
 									(nid, uid, ip, `time`)
 									VALUES
-									('$nid', '$uid', '{$this->user->ip}', '$time')");
+									('$nid', '$uid', '{$this->user->ip}', NOW())");
 		if(!$insert){ $this->core->notify($this->core->lng['e_sql_critical']); }
 
 		// Последнее обновление пользователя
@@ -303,7 +303,7 @@ class module{
 		$id = intval($_GET['id']);
 
 		$query = $this->db->query("
-			SELECT `n`.id, `n`.cid, `n`.title, `n`.text_html, `n`.vote, `n`.discus, `n`.uid, `n`.`data`, `n`.`attach`,
+			SELECT `n`.id, `n`.cid, `n`.title, `n`.text_html, `n`.vote, `n`.discus, `n`.uid, `n`.`date`, `n`.`attach`,
 				`c`.title AS `category`,
 				COUNT(DISTINCT `v`.id) AS `views`,
 				COUNT(DISTINCT `l`.id) AS `likes`,
@@ -339,13 +339,15 @@ class module{
 
 		$attach = intval($ar['attach']);
 
+		$date = new DateTime($ar['date']);
+
 		$new_data = array(
 			"ID"			=> $id,
 			"CID"			=> intval($ar['cid']),
 			"TITLE"			=> $this->db->HSC($ar['title']),
 			"TEXT"			=> str_replace('<p>{READMORE}</p>', '', $ar['text_html']),
 			"UID"			=> intval($ar['uid']),
-			"DATA"			=> json_decode($ar['data'], true),
+			"DATE"			=> $date->format('d.m.Y H:i'),
 			"CATEGORY"		=> $this->db->HSC($ar['category']),
 			"VIEWS"			=> intval($ar['views']),
 			"COMMENTS"		=> $comments,
