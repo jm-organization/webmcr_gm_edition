@@ -1,6 +1,11 @@
 <div class="monitor-id" id="<?php echo $data['ID']; ?>">
 	<div class="title"><?php echo $data['TITLE']; ?> <i class="fa fa-info-circle" data-placement="right" rel="tooltip" title="<?php echo $data['TEXT']; ?>"></i></div>
-	<div class="progress-bar <?php echo $data['STATUS'] ?> progress-bar-striped progress-bar-animated active" style="width: <?php echo $data['PROGRESS']; ?>%; height: 24px;" aria-valuenow="<?php echo $data['PROGRESS']; ?>" aria-valuemin="0" aria-valuemax="100">
-		<span class="badge badge-default"><?php echo $data['STATS']; ?></span>
+	<div class="progress">
+		<div class="progress-bar <?php echo $data['STATUS'] ?> progress-bar-striped progress-bar-animated active" style="width: <?php echo $data['PROGRESS']; ?>%; height: 24px;" aria-valuenow="<?php echo $data['PROGRESS']; ?>" aria-valuemin="0" aria-valuemax="100"></div>
+		<span class="badge badge-default" style="
+			line-height: 14px;
+			height: 18px;
+			margin: 3px auto;
+		"><?php echo $data['STATS']; ?></span>
 	</div>
 </div>

@@ -107,6 +107,7 @@ body > .container > .row > .col-md-8 {
 
 #navbar-footer {
 	color: #777;
+	display: flex;
 }
 
 #navbar-footer .block-left,

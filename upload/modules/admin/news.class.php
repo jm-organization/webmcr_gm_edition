@@ -246,7 +246,9 @@ class submodule{
 		$this->core->bc = $this->core->gen_bc($bc);
 		$categories	= $this->categories();
 		// TODO: News image
-		$title = $text = $vote = $discus = $attach = $img = $preview = $hidden = $n = '';
+		$title = $text = $vote = $discus = $attach = $img = $preview = $hidden = $planed_publish = '';
+		$n = array();
+		$time = new DateTime();
 
 		if($_SERVER['REQUEST_METHOD']=='POST'){
 			// TITLE
@@ -262,11 +264,12 @@ class submodule{
 			$vote = (intval(@$_POST['vote']) == 1)?true:false;
 			$discus	= (intval(@$_POST['discus']) == 1)?true:false;
 			$attach	= (intval(@$_POST['attach']) == 1)?true:false;
+			$hidden	= (intval(@$_POST['hidden']) == 1)?true:false;
+			$planed_publish = (@$_POST['planed_publish']=='on')?'checked':'';
+			$text = htmLawed(trim(@$_POST['text']));
 
 			// NEWS CONTENT
-			$text = $this->db->safesql(htmLawed(trim(@$_POST['text'])));
-			// NEWS IS HIDDEN
-			$hidden	= (intval(@$_POST['hidden'])===1)?true:false;
+			$news_text = $this->db->safesql($text);
 			// NEWS DATA
 			$new_data = array(
 				"planed_news" => (@$_POST['planed_publish']=='on')?true:false,
@@ -275,23 +278,25 @@ class submodule{
 			);
 			$data = $this->db->safesql(json_encode($new_data));
 			// NEWS PUBLISH DATE
-			$publish_date = @$_POST['publish_time'];
-			list($date, $time) = explode(' ', $publish_date);
-			list($day, $mouth, $year) = explode('.', $date);
-			list($hour, $minute, $second) = explode(':', $time);
-			$time = new DateTime();
+			$second = $minute = $hour = $day = $mouth = $year = '';
+			if (@$_POST['planed_publish']==='on') {
+				$publish_date = @$_POST['publish_time'];
+				list( $format_date, $format_time ) = explode( ' ', $publish_date );
+				list( $day, $mouth, $year ) = explode( '.', $format_date );
+				list( $hour, $minute, $second ) = explode( ':', $format_time );
+			}
 
 			// Prepare data for create news
 			$n = array(
 				'category_id' => $category_id,
 				'title' => $title,
-				'news_text' => $text,
+				'news_text' => $news_text,
 				'vote' => (!$vote)?0:1,
 				'discus' => (!$discus)?0:1,
 				'attach' => (!$attach)?0:1,
 				'img' => $img,
 				'user_id' => $this->user->id,
-				'date' => (@$_POST['planed_publish']=='on')?(
+				'date' => (@$_POST['planed_publish']==='on')?(
 					(checkdate($mouth, $day, $year)
 					 && $this->checktime($hour, $minute, $second))?(
 						$year.'-'.$mouth.'-'.$day.' '.$hour.':'.$minute.':'.$second
@@ -314,7 +319,7 @@ class submodule{
 			if (isset($_POST['preview'])) {
 				$cid_ar	= $this->db->fetch_assoc($check_cid);
 
-				$preview = $this->get_preview($n['title'], str_replace('{READMORE}', '', htmLawed(trim(@$_POST['text']))), $cid_ar['title'], $category_id, $vote, $n['date']);
+				$preview = $this->get_preview($n['title'], str_replace('{READMORE}', '<hr>', $text), $cid_ar['title'], $category_id, $vote, $n['date']);
 			} else {
 				$create_news = "
 					INSERT INTO `mcr_news`
@@ -346,17 +351,18 @@ class submodule{
 			}
 		}
 
+		$d58 = new DateTime(@$n['date']);
 		$result = array(
 			"PAGE" => $this->lng['news_add_page_name'],
 			"TITLE" => $this->db->HSC($title),
 			"CATEGORIES" => $categories,
-			"PLANED_PUBLISH" => (@$_POST['planed_publish']=='on')?'checked':'',
-			"DATE" => $n['date'],
-			"TEXT" => htmLawed(trim(@$_POST['text'])),
+			"PLANED_PUBLISH" => $planed_publish,
+			"DATE" => (empty($n))?'':$d58->format('d.m.Y H:i:s'),
+			"TEXT" => $text,
 			"VOTE" => ($vote)?'checked':'',
 			"DISCUS" => ($discus)?'checked':'',
 			"ATTACH" => ($attach)?'checked':'',
-			"HIDDEN" => $hidden,
+			"HIDDEN" => ($hidden)?'checked':'',
 			"BUTTON" => $this->lng['news_add_btn'],
 			"PREVIEW" => $preview,
 		);
@@ -448,7 +454,7 @@ class submodule{
 			if (isset($_POST['preview'])) {
 				$cid_ar = $this->db->fetch_assoc($check_cid);
 
-				$preview = $this->get_preview($title, $updated_text, $cid_ar['title'], $category_id, $vote, $publish_date);
+				$preview = $this->get_preview($title, str_replace('{READMORE}', '<hr>', htmLawed(trim(@$_POST['text']))), $cid_ar['title'], $category_id, $vote, $publish_date);
 			} else {
 				$new_data = array(
 					"planed_news" => (@$_POST['planed_publish']=='on')?true:false,

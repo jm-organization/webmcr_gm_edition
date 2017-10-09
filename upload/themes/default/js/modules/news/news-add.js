@@ -1,8 +1,8 @@
-function check_cpp(checkbox) {
+function check_switch(checkbox, callback_true, callback_false) {
 	if ($(checkbox).is(':checked')) {
-		$('#date_publish').show();
+		callback_true();
 	} else {
-		$('#date_publish').hide();
+		callback_false();
 	}
 }
 
@@ -21,16 +21,50 @@ $(document).ready(function () {
 		pagebreak_separator: "{READMORE}"
 	});
 
-	$('.switch').on('click', '[name="planed_publish"]', function () {
-		check_cpp(this);
+	// <<JS::SWITCH
+	$('.switch').on(
+		'click',
+		'[name="planed_publish"]'
+		+', [name="closed_comments"]',
+		function () {
+			switch (this.name) {
+				case 'planed_publish':
+					check_switch('[name="planed_publish"]', function () {
+						$('#date_publish').show();
+					}, function () {
+						$('#date_publish').hide();
+					});
+					break;
+				case 'closed_comments':
+					check_switch('[name="closed_comments"]', function () {
+						$('#date_cs').show();
+					}, function () {
+						$('#date_cs').hide();
+					});
+					break;
+				default:
+					break;
+			}
+		}
+	);
+	check_switch('[name="planed_publish"]', function () {
+		$('#date_publish').show();
+	}, function () {
+		$('#date_publish').hide();
 	});
+	check_switch('[name="closed_comments"]', function () {
+		$('#date_cs').show();
+	}, function () {
+		$('#date_cs').hide();
+	});
+	// >>
 
-	check_cpp('[name="planed_publish"]');
-
-	$('#input_publish_time').datetimepicker({
+	// DataTime Picker
+	$('#input_publish_time, #input_date_cs').datetimepicker({
 		lang:'ru',
 		timepicker:true,
 		value:'',
-		format:'d.m.Y H:i:s'
+		format:'d.m.Y H:i:s',
+		minDate:'+1970/01/02'
 	});
 });

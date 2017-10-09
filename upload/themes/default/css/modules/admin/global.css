@@ -131,7 +131,8 @@
 \*----------------------------------------*/
 
 /* Item::somethings */
-.date-publish {
+.date-publish,
+.date_cs {
 	display: none;
 }
 .date-publish * {
