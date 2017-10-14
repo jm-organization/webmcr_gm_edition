@@ -180,7 +180,7 @@ class submodule{
 				"SELECTED" => 'selected disabled',
 			);
 
-			return $this->core->sp(MCR_THEME_MOD."admin/news/cid-list-id.html", $data);
+			return $this->core->sp(MCR_THEME_MOD."admin/news/select-options.html", $data);
 		}
 
 		ob_start();
@@ -192,7 +192,37 @@ class submodule{
 				"SELECTED" => ($selected==intval($ar['id'])) ? 'selected' : '',
 			);
 
-			echo $this->core->sp(MCR_THEME_MOD."admin/news/cid-list-id.html", $data);
+			echo $this->core->sp(MCR_THEME_MOD."admin/news/select-options.html", $data);
+		}
+
+		return ob_get_clean();
+	}
+
+	private function user_groups($user_group=-1) {
+		$id_user_group = intval($user_group);
+		$query = $this->db->query("SELECT `id`, `title` FROM `mcr_groups` ORDER BY `id` ASC");
+
+		if(!$query || $this->db->num_rows($query)<=0){
+
+			$data = array(
+				"ID" => -1,
+				"TITLE" => $this->lng['news_wo_cats'],
+				"SELECTED" => 'selected disabled',
+			);
+
+			return $this->core->sp(MCR_THEME_MOD."admin/news/select-options.html", $data);
+		}
+
+		ob_start();
+
+		while($ar = $this->db->fetch_assoc($query)){
+			$data = array(
+				"ID" => intval($ar['id']),
+				"TITLE" => $this->db->HSC($ar['title']),
+				"SELECTED" => ($id_user_group==intval($ar['id'])) ? 'selected' : '',
+			);
+
+			echo $this->core->sp(MCR_THEME_MOD."admin/news/select-options.html", $data);
 		}
 
 		return ob_get_clean();
@@ -234,6 +264,25 @@ class submodule{
 		return true;
 	}
 
+	private function check_datetime($datetime) {
+		$pattern = '/(0[1-9]|1[0-9]|2[0-9]|3[01]).(0[1-9]|1[012]).[0-9]{4} (0[1-9]|1[0-9]|2[123]):([0-5][0-9]):([0-5][0-9])/';
+
+		if (preg_match($pattern, $datetime)) {
+			list( $format_date, $format_time ) = explode(' ', $datetime);
+			list( $day, $mouth, $year ) = explode('.', $format_date);
+			list( $hour, $minute, $second ) = explode(':', $format_time);
+
+			if (
+				checkdate($mouth, $day, $year)
+				&& $this->checktime($hour, $minute, $second)
+			) {
+				return $year.'-'.$mouth.'-'.$day.' '.$hour.':'.$minute.':'.$second;
+			} else { return false; }
+		}
+
+		return null;
+	}
+
 	private function add(){
 		if(!$this->core->is_access('sys_adm_news_add')){ $this->core->notify($this->core->lng["e_msg"], $this->core->lng['e_403'], 2, '?mode=admin&do=news'); }
 
@@ -245,6 +294,7 @@ class submodule{
 
 		$this->core->bc = $this->core->gen_bc($bc);
 		$categories	= $this->categories();
+		$user_groups = $this->user_groups();
 		// TODO: News image
 		$title = $text = $vote = $discus = $attach = $img = $preview = $hidden = $planed_publish = '';
 		$n = array();
@@ -272,19 +322,17 @@ class submodule{
 			$news_text = $this->db->safesql($text);
 			// NEWS DATA
 			$new_data = array(
-				"planed_news" => (@$_POST['planed_publish']=='on')?true:false,
 				"time_last" => time(),
-				"uid_last" => $this->user->id
+				"uid_last" => $this->user->id,
+				"planed_news" => (@$_POST['planed_publish']=='on')?true:false,
+				"close_comments" => (@$_POST['closed_comments']=='on')?true:false,
+				"time_when_close_comments" => (@$_POST['date_cs'])?(
+					$this->check_datetime(@$_POST['date_cs'])
+				):(
+					false
+				),
 			);
 			$data = $this->db->safesql(json_encode($new_data));
-			// NEWS PUBLISH DATE
-			$second = $minute = $hour = $day = $mouth = $year = '';
-			if (@$_POST['planed_publish']==='on') {
-				$publish_date = @$_POST['publish_time'];
-				list( $format_date, $format_time ) = explode( ' ', $publish_date );
-				list( $day, $mouth, $year ) = explode( '.', $format_date );
-				list( $hour, $minute, $second ) = explode( ':', $format_time );
-			}
 
 			// Prepare data for create news
 			$n = array(
@@ -297,10 +345,7 @@ class submodule{
 				'img' => $img,
 				'user_id' => $this->user->id,
 				'date' => (@$_POST['planed_publish']==='on')?(
-					(checkdate($mouth, $day, $year)
-					 && $this->checktime($hour, $minute, $second))?(
-						$year.'-'.$mouth.'-'.$day.' '.$hour.':'.$minute.':'.$second
-					):(false)
+					$this->check_datetime(@$_POST['publish_time'])
 				):(
 					$time->format('Y-m-d H:i:s')
 				),
@@ -356,6 +401,7 @@ class submodule{
 			"PAGE" => $this->lng['news_add_page_name'],
 			"TITLE" => $this->db->HSC($title),
 			"CATEGORIES" => $categories,
+			"USER_GROUPS" => $user_groups,
 			"PLANED_PUBLISH" => $planed_publish,
 			"DATE" => (empty($n))?'':$d58->format('d.m.Y H:i:s'),
 			"TEXT" => $text,
@@ -420,10 +466,6 @@ class submodule{
 				$this->core->notify($this->core->lng["e_msg"], $this->lng['news_e_cat_not_exist'], 2);
 			}
 
-			$publish_date = @$_POST['publish_time'];
-			list($date, $time) = explode(' ', $publish_date);
-			list($day, $mouth, $year) = explode('.', $date);
-			list($hour, $minute, $second) = explode(':', $time);
 			$time = new DateTime();
 
 			$vote = (intval(@$_POST['vote'])===1)?1:0;
@@ -434,11 +476,8 @@ class submodule{
 			// NEWS CONTENT
 			$updated_text = $this->db->safesql(htmLawed(trim(@$_POST['text'])));
 			// NEWS PUBLISH DATE
-			$publish_date = (@$_POST['planed_publish']=='on')?(
-				(checkdate($mouth, $day, $year)
-				 && $this->checktime($hour, $minute, $second))?(
-					$year.'-'.$mouth.'-'.$day.' '.$hour.':'.$minute.':'.$second
-				):(false)
+			$publish_date = (@$_POST['planed_publish']==='on')?(
+				$this->check_datetime(@$_POST['publish_time'])
 			):(
 				$time->format('Y-m-d H:i:s')
 			);
@@ -457,9 +496,15 @@ class submodule{
 				$preview = $this->get_preview($title, str_replace('{READMORE}', '<hr>', htmLawed(trim(@$_POST['text']))), $cid_ar['title'], $category_id, $vote, $publish_date);
 			} else {
 				$new_data = array(
-					"planed_news" => (@$_POST['planed_publish']=='on')?true:false,
 					"time_last" => time(),
-					"uid_last" => $this->user->id
+					"uid_last" => $this->user->id,
+					"planed_news" => (@$_POST['planed_publish']=='on')?true:false,
+					"close_comments" => (@$_POST['closed_comments']=='on')?true:false,
+					"time_when_close_comments" => (@$_POST['date_cs'])?(
+						$this->check_datetime(@$_POST['date_cs'])
+					):(
+						false
+					),
 				);
 				$new_data = $this->db->safesql(json_encode($new_data));
 

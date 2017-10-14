@@ -38,6 +38,7 @@ class core{
 		require(MCR_LANG_PATH.$this->cfg->main['s_lang'].'/system.php');
 
 		// Set language var
+		global $lng;
 		$this->lng = $lng;
 
 		$this->title = $lng['t_main'];

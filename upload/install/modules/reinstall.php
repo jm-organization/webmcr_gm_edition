@@ -18,7 +18,7 @@ class module{
 		if($_SERVER['REQUEST_METHOD']=='POST'){
 			if(intval(@$_POST['type'])!=1){ $this->install->notify(); }
 
-			$tables = array('mcr_news_comments', 'mcr_files', 'mcr_iconomy', 'mcr_logs', 'mcr_menu', 'mcr_menu_adm', 'mcr_menu_adm_icons',
+			$tables = array('mcr_l10n_phrases', 'mcr_l10n_languages', 'mcr_news_comments', 'mcr_files', 'mcr_iconomy', 'mcr_logs', 'mcr_menu', 'mcr_menu_adm', 'mcr_menu_adm_icons',
 							'mcr_monitoring', 'mcr_news_views', 'mcr_news_votes', 'mcr_online', 'mcr_permissions',
 							'mcr_statics', 'mcr_news', 'mcr_users', 'mcr_news_cats', 'mcr_menu_adm_groups', 'mcr_groups');
 

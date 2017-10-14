@@ -1,3 +1,22 @@
+CREATE TABLE IF NOT EXISTS `mcr_l10n_phrases` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `language_id` int(10) DEFAULT NULL,
+  `phrase_key` varchar(128) NOT NULL,
+  `phrase_value` text NOT NULL,
+  `module_id` int(10) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `phrase_key` (`phrase_key`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+#line
+CREATE TABLE IF NOT EXISTS `mcr_l10n_languages` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `parent_language` int(10) DEFAULT NULL,
+  `language_info` varchar(255) NOT NULL,
+  `phrases` text NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `language_info` (`language_info`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+#line
 CREATE TABLE IF NOT EXISTS `mcr_news_comments` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `nid` int(10) NOT NULL DEFAULT '0',
@@ -412,6 +431,12 @@ CREATE TABLE IF NOT EXISTS `~us~` (
   KEY `~us_gid~` (`~us_gid~`),
   KEY `~us_login~_2` (`~us_login~`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+#line
+ALTER TABLE `mcr_l10n_phrases`
+  ADD CONSTRAINT `mcr_l10n_phrases_ibfk_1` FOREIGN KEY (`language_id`) REFERENCES `mcr_l10n_languages` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+#line
+ALTER TABLE `mcr_l10n_languages`
+  ADD CONSTRAINT `mcr_l10n_languages_ibfk_1` FOREIGN KEY (`parent_language`) REFERENCES `mcr_l10n_languages` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 #line
 ALTER TABLE `mcr_news_comments`
   ADD CONSTRAINT `mcr_comments_ibfk_2` FOREIGN KEY (`uid`) REFERENCES `~us~` (`~us_id~`) ON DELETE CASCADE ON UPDATE CASCADE,
