@@ -1,11 +1,5 @@
-	<nav class="navbar navbar-dark bg-inverse spl_grp_block">
-		<div class="container-fluid">
-			<div class="navbar-header">
-				<div class="navbar-text"><a class="spl-btn" data-for="spl_adm_grp_<?php echo $data['ID']; ?>" title="<?php echo $data['TEXT'];; ?>" href="#"><?php echo $data['TITLE']; ?></a></div>
-			</div>
-		</div>
-	</nav>
-
+<div class="admin-menu-groups tab-pane fade<?php echo ' '.$data['ACTIVE']; ?>" id="panel_<?php echo $data['ID']; ?>" role="tabpanel" aria-labelledby="panel_<?php echo $data['ID']; ?>">
 	<ul class="spl-body" id="spl_adm_grp_<?php echo $data['ID']; ?>">
 		<?php echo $data['ITEMS']; ?>
 	</ul>
+</div>

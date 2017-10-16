@@ -103,8 +103,11 @@ class submodule{
 		if(!$query || $this->db->num_rows($query)<=0){ return $this->core->sp(MCR_THEME_MOD."admin/panel_menu/menu-groups/group-none.html"); }
 
 		ob_start();
-		
+
+		$counter = 0;
 		while($ar = $this->db->fetch_assoc($query)){
+			$counter++;
+
 			$id = intval($ar['id']);
 
 			if(!$this->core->is_access($ar['access'])){ continue; }
@@ -120,6 +123,7 @@ class submodule{
 				"TITLE"		=> $this->db->HSC($ar['title']),
 				"TEXT"		=> $this->db->HSC($ar['text']),
 				"ITEMS"		=> $this->item_list($list),
+				"ACTIVE" => ($counter == 1)?"show active":"",
 				//"STATUS"	=> $status,
 			);
 
@@ -131,10 +135,43 @@ class submodule{
 		return ob_get_clean();
 	}
 
+	private function group_tabs_array() {
+		$query = $this->db->query("SELECT id, title, `text`, `access`
+									FROM `mcr_menu_adm_groups`
+									ORDER BY `priority` ASC");
+
+
+		if(!$query || $this->db->num_rows($query)<=0){ return $this->core->sp(MCR_THEME_MOD."admin/panel_menu/menu-groups/group-none.html"); }
+
+		ob_start();
+
+		$counter = 0;
+		while($ar = $this->db->fetch_assoc($query)){
+			$counter++;
+
+			$id = intval($ar['id']);
+
+			if(!$this->core->is_access($ar['access'])){ continue; }
+
+			$data = array(
+				"ID" => $id,
+				"TITLE" => $this->db->HSC($ar['title']),
+				"ACTIVE" => ($counter == 1)?"active":"",
+			);
+
+			echo $this->core->sp(MCR_THEME_MOD."admin/panel_menu/menu-groups/group-tab.html", $data);
+		}
+
+		//echo $this->core->sp(MCR_THEME_MOD."admin/panel_menu/menu-groups/group-id.html", $data);
+
+		return ob_get_clean();
+	}
+
 	private function group_list(){
 
 		$data = array(
-			"GROUPS" => $this->group_array()
+			"GROUPS" => $this->group_array(),
+			"TABS" => $this->group_tabs_array(),
 		);
 
 		return $this->core->sp(MCR_THEME_MOD."admin/panel_menu/menu-groups/group-list.html", $data);

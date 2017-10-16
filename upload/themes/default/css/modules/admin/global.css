@@ -144,3 +144,28 @@
 .date-publish .time-hour,
 .date-publish .time-minute
 { width: 28px; }
+.user {
+	height: 35px;
+	line-height: 35px;
+	display: flex;
+	margin-right: 20px;
+}
+.user span {
+	padding-right: 15px;
+	font-size: 18px;
+	display: inline-block;
+}
+.user img {
+	display: inline-block;
+}
+.notifys {
+	position: absolute;
+	top: 15px;
+	right: 20px;
+	display: flex;
+	max-width: 270px;
+	height: auto;
+}
+.panel-menu-tabs {  border-right: 1px solid #dddddd;  }
+.nav-pills .nav-link {  color: #585858;  }
+.nav-pills .nav-item.show .nav-link, .nav-pills .nav-link.active {  background-color: #563d7c;  }

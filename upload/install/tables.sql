@@ -1078,8 +1078,8 @@ INSERT INTO `mcr_menu_adm` (`id`, `gid`, `title`, `text`, `url`, `target`, `acce
 (17, 1, 'Модули', 'Управление модулями', '~base_url~?mode=admin&do=modules', '_self', 'sys_adm_m_i_modules', 4, 22),
 (18, 1, 'Лог действий', 'Журнал действий пользователей', '~base_url~?mode=admin&do=logs', '_self', 'sys_adm_m_i_logs', 5, 23),
 (19, 1, 'Блоки', 'Управление Блоками', '~base_url~?mode=admin&do=blocks', '_self', 'sys_adm_m_i_blocks', 6, 18),
-(20, 1, 'Локализация::Фразы', 'Управление Фразами', '~base_url~?mode=admin&do=l10n_phrases', '_self', 'sys_adm_m_i_l10n', 6, 18),
-(21, 1, 'Локализация::Языки', 'Управление Языками', '~base_url~?mode=admin&do=l10n_languages', '_self', 'sys_adm_m_i_l10n', 6, 18);
+(20, 1, 'Локализация Фразы', 'Управление Фразами', '~base_url~?mode=admin&do=l10n_phrases', '_self', 'sys_adm_m_i_l10n', 6, 18),
+(21, 1, 'Локализация Языки', 'Управление Языками', '~base_url~?mode=admin&do=l10n_languages', '_self', 'sys_adm_m_i_l10n', 6, 18);
 #line
 CREATE TABLE IF NOT EXISTS `mcr_menu_adm_groups` (
   `id` int(10) NOT NULL AUTO_INCREMENT,

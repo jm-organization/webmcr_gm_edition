@@ -53,8 +53,16 @@ $data_global = array(
 	"SEARCH"		=> $core->search()
 );
 
+$view = '';
+
+if ($mode == 'admin') {
+	$view = $core->sp(MCR_THEME_PATH."/modules/admin/global.html", $data_global);
+} else {
+	$view = $core->sp(MCR_THEME_PATH."global.html", $data_global);
+}
+
 // Write global template
-echo $core->sp(MCR_THEME_PATH."global.html", $data_global);
+echo $view;
 
 if(!$core->cfg->main['debug'] || !@$core->user->permissions->sys_debug){ exit; }
 
