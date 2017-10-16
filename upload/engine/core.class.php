@@ -1,4 +1,14 @@
 <?php
+/*
+ * Изменения разработчиками JM Organization
+ *
+ * @contact: admin@jm-org.net
+ * @web-site: www.jm-org.net
+ *
+ * @supplier: Magicmen
+ * @script_author: Qexy
+ *
+ **/
 
 if(!defined("MCR")){ exit("Hacking Attempt!"); }
 
@@ -13,6 +23,8 @@ class core{
 
 	public $lng, $lng_m, $lng_b, $cfg_m, $cfg_b = array();
 
+	public $l10n;
+
 	public $csrf_time	= 3600;
 
 	public $captcha		= array(
@@ -22,24 +34,21 @@ class core{
 	);
 
 	public function __construct(){
+		require(MCR_TOOL_PATH.'filter.class.php'); // Load filter function
 
-		// Load filter function
-		require(MCR_TOOL_PATH.'filter.class.php');
-
-		// Load class cfg
-		require(MCR_TOOL_PATH.'config.class.php');
-
-		// Create & set new object of cfg
+		require(MCR_TOOL_PATH.'config.class.php'); // Load Configs class
 		$this->cfg = new config();
 
-		if(!file_exists(MCR_LANG_PATH.$this->cfg->main['s_lang'].'/system.php')){ exit("Language path not found"); }
-
-		// Load language package
+		if (!file_exists(MCR_LANG_PATH.$this->cfg->main['s_lang'].'/system.php')) {
+			exit("Language path not found");
+		}
 		require(MCR_LANG_PATH.$this->cfg->main['s_lang'].'/system.php');
-
-		// Set language var
-		global $lng;
+		
 		$this->lng = $lng;
+
+		// Load class l10n - Localization
+		require(MCR_TOOL_PATH.'l10n.class.php');
+		$this->l10n = new l10n($this);
 
 		$this->title = $lng['t_main'];
 
@@ -173,7 +182,8 @@ class core{
 		exit;
 	}
 
-	public function colorize($str, $color, $format='<font color="{COLOR}">{STRING}</font>'){
+	public function colorize($str, $color){
+		$format = '<span style="color: {COLOR};">{STRING}</span>';
 
 		return str_replace(array('{COLOR}', '{STRING}'), array($color, $str), $format);
 	}
