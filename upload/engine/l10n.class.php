@@ -171,6 +171,7 @@ class l10n {
 
 			foreach ($phrases as $key => $value) {
 				if ($phrase == $key) return $value;
+
                         }
                 } }
 
