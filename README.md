@@ -1,4 +1,6 @@
-WebMcr Personal Version for Grand-Mine
+# MagicMCR 
+#### WebMCR Personal Version for Grand-Mine
+---
 
 Установка: Залить все файлы на сайт и следовать инструкциям установщика
 
