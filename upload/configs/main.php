@@ -1,8 +1,8 @@
 <?php
 $main = array (
-  's_name' => 'WebMCR',
+  's_name' => 'MagicMCR',
   's_about' => 'Система управления сайтом',
-  's_keywords' => 'Minecraft, webmcr, сервер, Qexy',
+  's_keywords' => 'Minecraft, webmcr, Magicmen, magicmcr, сервер, Qexy',
   's_dpage' => 'news',
   's_theme' => 'default',
   'rewrite' => false,
