@@ -20,15 +20,52 @@ class submodule {
 		if(!$this->core->is_access('sys_adm_l10n')){ $this->core->notify('403'); }
 
 		$bc = array(
-			$this->l10n->translate('mod_name_admin') => ADMIN_URL,
-			$this->l10n->translate('news') => ADMIN_URL."&do=news"
+			$this->l10n->gettext('module_admin-panel') => ADMIN_URL,
+			$this->l10n->gettext('languages') => ADMIN_URL."&do=news"
 		);
 		$this->core->bc = $this->core->gen_bc($bc);
 
 		$this->core->header .= $this->core->sp(MCR_THEME_MOD."admin/l10n/languages/header.html");
 	}
 
+	public function languages_list($languages) {
+		ob_start();
+
+		while ($language = $this->core->db->fetch_assoc($languages)) {
+			$title = json_decode($language['settings'])->title;
+
+			$data = array(
+				"ID" => $language['id'],
+				"TITLE" => $title,
+				"LOCALE" => $language['language']
+			);
+
+			echo $this->core->sp(MCR_THEME_MOD."admin/l10n/languages/language.html", $data);
+		}
+
+		return ob_get_clean();
+	}
+	
+	public function all_languages() {
+		$languages = $this->l10n->get_languages();
+		$languages_list = (isset($languages))?$this->languages_list($languages):'';
+
+		$data = array(
+			"LANGUAGES_LIST" => $languages_list,
+		);
+
+		return $this->core->sp(MCR_THEME_MOD."admin/l10n/languages/languages.html", $data);
+	}
+
 	public function add() {
+
+	}
+
+	public function edit() {
+
+	}
+
+	public function delete() {
 
 	}
 
@@ -37,7 +74,9 @@ class submodule {
 
 		switch ($op) {
 			case 'add': $content = $this->add(); break;
-			default: $content = ''; break;
+			case 'edit': $content = $this->edit(); break;
+			case 'delete': $content = $this->delete(); break;
+			default: $content = $this->all_languages(); break;
 		}
 
 		return $content;

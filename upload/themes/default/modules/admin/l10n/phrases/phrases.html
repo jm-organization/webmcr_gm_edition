@@ -1,0 +1,21 @@
+<div class="form-block">
+
+    <div class="block-header">
+        <div class="block-name"><?php echo $this->l10n->gettext('phrases'); ?></div>
+    </div>
+
+    <div class="block-line"></div>
+
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th><?php echo $this->l10n->gettext('language'); ?></th>
+            <th><?php echo $this->l10n->gettext('phrases_list_title'); ?></th>
+            <th><?php echo $this->l10n->gettext('action'); ?></th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php echo $data['PHRASES_LIST']?>
+        </tbody>
+    </table>
+</div>
