@@ -61,15 +61,19 @@ class submodule{
 			}
 		}
 
-		$query = $this->db->query("SELECT `n`.id, `n`.cid, `n`.title, `c`.title AS `category`
-									FROM `mcr_news` AS `n`
-									LEFT JOIN `mcr_news_cats` AS `c`
-										ON `c`.id=`n`.cid
-									$where
-									ORDER BY $sort $sortby
-									LIMIT $start, $end");
-
-		
+		$query = $this->db->query("
+			SELECT 
+				`n`.id, 
+				`n`.cid, 
+				`n`.title, 
+				`c`.title AS `category`
+			FROM `mcr_news` AS `n`
+			LEFT JOIN `mcr_news_cats` AS `c` 
+			ON `c`.id=`n`.cid
+			$where
+			ORDER BY $sort $sortby
+			LIMIT $start, $end
+		");
 
 		if(!$query || $this->db->num_rows($query)<=0){ return $this->core->sp(MCR_THEME_MOD."admin/news/new-none.html"); }
 
@@ -306,7 +310,7 @@ class submodule{
 			$this->is_fill_title( $title );
 
 			$category_id = intval(@$_POST['cid']);
-			$check_cid = $this->db->query("SELECT title FROM `mcr_news_cats` WHERE id='$category_id'");
+			$check_cid = $this->db->query("SELECT `title` FROM `mcr_news_cats` WHERE id='$category_id'");
 			if (!$check_cid || $this->db->num_rows($check_cid) <= 0) {
 				$this->core->notify($this->core->lng["e_msg"], $this->lng['news_e_cat_not_exist'], 2);
 			}
