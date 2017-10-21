@@ -10,7 +10,7 @@
 .idea_modules/
 
 # Idea:
-.idea/*
+.idea/
 
 ## File-based project format:
 *.iws
@@ -43,4 +43,5 @@ vcs.xml
 /upload/engine/libs/htmLawed/htmLawed_README.txt
 
 # NetBeans
-/upload/nbproject/*
+nbproject/*
+nbproject/private/*

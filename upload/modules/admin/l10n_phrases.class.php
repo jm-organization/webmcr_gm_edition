@@ -14,7 +14,7 @@ class submodule {
 
 	public function __construct($core) {
 		$this->core = $core;
-		$this->db	= $core->db;
+		$this->db = $core->db;
 		$this->l10n = $core->l10n;
 
 		if(!$this->core->is_access('sys_adm_l10n')){ $this->core->notify('403'); }
@@ -36,7 +36,6 @@ class submodule {
 
 			$data = array(
 				"ID" => $phrase['id'],
-				"LANGUAGE_TITLE" => $language_title,
 				"PHRASE" => $phrase['phrase_key'],
 				"PHRASE_VALUE" => $phrase['phrase_value']
 			);
@@ -52,7 +51,8 @@ class submodule {
 		$phrases_list = (isset($phrases))?$this->phrases_list($phrases):'';
 
 		$data = array(
-			"PHRASES_LIST" => $phrases_list
+			"LANGUAGE_TITLE" => $this->l10n->get_locale()->locale,
+                        "PHRASES_LIST" => $phrases_list
 		);
 
 		return $this->core->sp(MCR_THEME_MOD."admin/l10n/phrases/phrases.html", $data);

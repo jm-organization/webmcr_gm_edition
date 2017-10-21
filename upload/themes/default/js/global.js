@@ -273,7 +273,21 @@ var mcr = {
 				}
 			}
 		});
-	}
+	},
+        
+        init_database: function(selector = '.magic-datatables', settings = {
+            searching: true,
+            pagin: true,
+            select: true
+        }) {
+            var db_settings = (typeof settings !== 'undefined')?settings:{
+                searching: true,
+                pagin: true,
+                select: true
+            };
+            
+            $(selector).DataTable(db_settings);
+        }
 };
 
 // Функции, вызываемые при загрузке

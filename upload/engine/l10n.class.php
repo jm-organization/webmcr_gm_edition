@@ -64,7 +64,9 @@ class l10n {
 
 		$languages = $this->core->db->query("
 			SELECT 
-				`language`,
+                            `id`,
+                            `language`,
+                            `settings`
 			FROM `mcr_l10n_languages`
 			WHERE 
 				`language`='$user_locale'
@@ -73,9 +75,12 @@ class l10n {
 		");
 
 		if ($languages && $this->core->db->num_rows($languages) == 1) {
-			$language = $this->core->db->fetch_assoc($languages)[0];
+			$language = $this->core->db->fetch_assoc($languages);
 
-			return $language;
+			return (object)array(
+                            'title' => json_decode($language['settings'])->title,
+                            'locale' => $language['language']
+                        );
 		}
 
 		return 'ru-RU';
@@ -118,9 +123,6 @@ class l10n {
 	}
 
 	public function get_phrases($phrase = '', $is_all = true) {
-		$start = $this->core->pagination($this->configs->pagin['adm_news'], 0, 0); // Set start pagination
-		$end = $this->configs->pagin['adm_news'];
-
 		if ($is_all) {
 			$sql = "
 				SELECT 
@@ -130,8 +132,7 @@ class l10n {
 					`phrase_value`
 				FROM `mcr_l10n_phrases` AS `phrases`
 				INNER JOIN `mcr_l10n_languages` AS `languages`
-				ON `phrases`.`language_id` = `languages`.`id`
-				LIMIT $start, $end;
+				ON `phrases`.`language_id` = `languages`.`id`;
 			";
 		} else {
 			$sql = "
@@ -164,7 +165,7 @@ class l10n {
 	 * @return string $value
 	 */
 	public function gettext($phrase) {
-		$query = $this->get_languages($this->get_locale(), false);
+		$query = $this->get_languages($this->get_locale()->locale, false);
 
 		if (isset($query)) { while ($ar = $this->core->db->fetch_assoc($query)) {
 			$phrases = json_decode($ar['phrases'], true);
