@@ -1,0 +1,36 @@
+<div class="form-block">
+    <form method="post">
+        <div class="form-group row">
+            <label for="language" class="col-sm-4 col-form-label text-right"><?php echo $this->l10n->gettext('language'); ?></label>
+            <div class="col-sm-6 float-left">
+                <select class="form-control custom-select" id="language" name="language">
+                    <option><?php echo $this->l10n->gettext('select_language'); ?></option>
+                    <?php echo $data['LANGUAGES']; ?>
+                </select>
+            </div>
+        </div>
+        
+        <div class="form-group row">
+            <label for="phrase" class="col-sm-4 col-form-label text-right"><?php echo $this->l10n->gettext('phrase'); ?></label>
+            <div class="col-sm-6 float-left">
+                <input type="text" class="form-control" id="phrase" name="phrase_key" value="<?php echo $data['PHRASE_KEY']; ?>">
+                <small class="form-text text-muted">(<?php echo $this->l10n->gettext('mast_be_unique'); ?>)</small>
+            </div>
+        </div>
+        
+        <div class="form-group row">
+            <label for="value" class="col-sm-4 col-form-label text-right"><?php echo $this->l10n->gettext('phrase_value'); ?></label>
+            <div class="col-sm-6 float-left">
+                <textarea class="form-control" id="value" name="phrase_value" rows="5"><?php echo $data['PHRASE_VALUE']; ?></textarea>
+            </div>
+        </div>
+        
+        <div class="form-group row">
+            <label for="value" class="col-sm-4 col-form-label text-right"></label>
+            <div class="col-sm-6">
+                <button type="submit" class="btn btn-success"><?php echo $this->l10n->gettext('btn_add'); ?></button>
+                <a href="<?php echo ADMIN_URL.'&do=l10n_phrases'; ?>" class="btn btn-outline-primary" role="button"><?php echo $this->l10n->gettext('btn_cancel'); ?></a>
+            </div>
+        </div>
+    </form>
+</div>

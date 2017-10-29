@@ -196,7 +196,7 @@ body > .container > .row > .col-md-8 {
 
 .block-line {
 	margin: 10px 0px;
-	border-top: 1px solid #eee;
+	border-top: 1px solid #dddddd;
 }
 
 .pagination { text-align: center; margin: 0px; }

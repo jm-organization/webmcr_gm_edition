@@ -137,10 +137,11 @@ class l10n {
 		} else {
 			$sql = "
 				SELECT 
+                    `language_id`,
 					`phrase_key`,
 					`phrase_value`
 				FROM `mcr_l10n_phrases`
-				WHERE `phrase_key`= '$phrase';
+				WHERE `phrase_key`= '$phrase' OR `id`='$phrase';
 			";
 		}
 

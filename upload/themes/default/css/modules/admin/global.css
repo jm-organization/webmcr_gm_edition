@@ -162,10 +162,86 @@
 	position: absolute;
 	top: 15px;
 	right: 20px;
-	display: flex;
-	max-width: 270px;
+	display: inline-block;
+	min-width: 270px;
 	height: auto;
+        z-index: 1;
 }
 .panel-menu-tabs {  border-right: 1px solid #dddddd;  }
 .nav-pills .nav-link {  color: #585858;  }
 .nav-pills .nav-item.show .nav-link, .nav-pills .nav-link.active {  background-color: #563d7c;  }
+
+.block-name {
+    width: 100%!important;
+    text-shadow: none;
+}
+.block-name p#title {
+    display: inline-block;
+    width: auto;
+    min-height: 48px;
+    margin: 0 0 9px 0;
+    float: left;
+}
+.block-name p#title > .title {
+    font-size: 22px;
+    line-height: 28px;
+    font-weight: bold;
+    text-shadow: none;
+    color: black;
+}
+.block-name p#title:not(small) {
+    min-height: 28px;
+}
+.block-name p#title > .title + small {
+    font-size: 85%;
+    line-height: 17px;
+    font-weight: normal;
+    opacity: 06;
+    display: block;
+    width: 100%;
+    margin-top: 3px;
+}
+.block-name p#actions {
+    display: inline-table;
+    width: auto;
+    min-height: 48px;
+    margin: 0 15px 9px 0;
+    float: right;
+}
+.block-name p#actions > a {
+    margin: 5px 0
+}
+.block-name p#actions > button {
+    line-height: 18px;
+    font-size: 18px;
+    padding: 7px 9px 6px 14px;
+    text-align: center;
+}
+.block-name p#actions > button:hover {
+    color: white!important;
+}
+
+.l10n-action {
+    width: 15%!important;
+    text-align: right;
+}
+td.l10n-action {
+    padding: 0!important;
+    line-height: 24px;
+    font-size: 20px;
+}
+td.l10n-action > a {
+    display: inline-block;
+    padding: 7px 10px;
+}
+.l10n-action > a#edit { color: #72b748 }
+.l10n-action > a#delete { color: #d9534f }
+.l10n-action > a:hover { color: #636c72!important; background: #ffffff!important }
+
+td.l10n-action > label.custom-checkbox {
+    display: inline;
+    margin: 9px;
+}
+tr:hover td.l10n-action > label.custom-checkbox .custom-control-input:not(:checked) + .custom-control-indicator {
+    background: #ffffff;
+}
