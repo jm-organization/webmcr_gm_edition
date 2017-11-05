@@ -14,7 +14,7 @@
             <label for="phrase" class="col-sm-4 col-form-label text-right"><?php echo $this->l10n->gettext('phrase'); ?></label>
             <div class="col-sm-6 float-left">
                 <input type="text" class="form-control" id="phrase" name="phrase_key" value="<?php echo $data['PHRASE_KEY']; ?>">
-                <small class="form-text text-muted">(<?php echo $this->l10n->gettext('mast_be_unique'); ?>)</small>
+                <small class="form-text text-muted">(<?php echo $this->l10n->gettext('must_be_unique'); ?>)</small>
             </div>
         </div>
         
@@ -28,7 +28,7 @@
         <div class="form-group row">
             <label for="value" class="col-sm-4 col-form-label text-right"></label>
             <div class="col-sm-6">
-                <button type="submit" class="btn btn-success"><?php echo $this->l10n->gettext('btn_add'); ?></button>
+                <button type="submit" class="btn btn-success"><?php echo $this->l10n->gettext('btn_save'); ?></button>
                 <a href="<?php echo ADMIN_URL.'&do=l10n_phrases'; ?>" class="btn btn-outline-primary" role="button"><?php echo $this->l10n->gettext('btn_cancel'); ?></a>
             </div>
         </div>

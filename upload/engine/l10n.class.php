@@ -18,6 +18,17 @@ class l10n {
 		$this->configs = $core->cfg;
 
 		$this->locale = $this->configs->main['s_lang'];
+        
+        $locale_path = MCR_CACHE_PATH.'l10n/'.$this->get_config_locale();
+        
+        if (!file_exists($locale_path) || (
+            !file_exists($locale_path.'/.info') && !file_exists($locale_path.'/.cache')
+        )) { 
+            if (!file_exists(MCR_CACHE_PATH.'l10n')) { mkdir(MCR_CACHE_PATH.'l10n'); }
+            if (!file_exists($locale_path)) { mkdir($locale_path); }
+            
+            $this->set_cache();             
+        }
 	}
 
 	/**
@@ -62,25 +73,23 @@ class l10n {
 		$config_locale = $this->get_config_locale();
 		$user_locale = $this->get_user_locale();
 
-		$languages = $this->core->db->query("
+		$languages = $this->db->query("
 			SELECT 
-                            `id`,
-                            `language`,
-                            `settings`
+                `id`,
+                `language`,
+                `settings`
 			FROM `mcr_l10n_languages`
-			WHERE 
-				`language`='$user_locale'
-			OR 
-				`language`= '$config_locale'
+			WHERE `language`='$user_locale' OR `language`= '$config_locale'
 		");
 
-		if ($languages && $this->core->db->num_rows($languages) == 1) {
-			$language = $this->core->db->fetch_assoc($languages);
+		if ($languages && $this->db->num_rows($languages) == 1) {
+			$language = $this->db->fetch_assoc($languages);
 
 			return (object)array(
-                            'title' => json_decode($language['settings'])->title,
-                            'locale' => $language['language']
-                        );
+                'settings' => $language['settings'],
+                'title' => json_decode($language['settings'])->title,
+                'locale' => $language['language']
+            );
 		}
 
 		return 'ru-RU';
@@ -99,7 +108,7 @@ class l10n {
 	 *
 	 * @return null|db $results
 	 */
-	public function get_languages($language = 'ru_RU', $is_all = true) {
+	public function get_languages($language = 'ru-RU', $is_all = true) {
 		if ($is_all) {
 			$sql = "SELECT `id`, `language`, `settings` FROM `mcr_l10n_languages`";
 		} else {
@@ -113,9 +122,9 @@ class l10n {
 			";
 		}
 
-		$results = $this->core->db->query($sql);
+        $results = $this->db->query($sql);
 
-		if ($results || $this->core->db->num_rows($results) > 0) {
+		if ($results || $this->db->num_rows($results) > 0) {
 			return $results;
 		}
 
@@ -145,9 +154,9 @@ class l10n {
 			";
 		}
 
-		$results = $this->core->db->query($sql);
+		$results = $this->db->query($sql);
 
-		if ($results || $this->core->db->num_rows($results) > 0) {
+		if ($results || $this->db->num_rows($results) > 0) {
 			return $results;
 		}
 
@@ -165,18 +174,28 @@ class l10n {
 	 *
 	 * @return string $value
 	 */
-	public function gettext($phrase) {
-		$query = $this->get_languages($this->get_locale()->locale, false);
-
-		if (isset($query)) { while ($ar = $this->core->db->fetch_assoc($query)) {
-			$phrases = json_decode($ar['phrases'], true);
-
-			foreach ($phrases as $key => $value) {
-				if ($phrase == $key) return $value;
-
-                        }
-                } }
-
+	public function gettext($phrase, $text = null) {
+        $locale = $this->get_config_locale();
+        $locale_cache_path = MCR_CACHE_PATH.'l10n/'.$locale;
+        $phrases = file_get_contents($locale_cache_path.'/.cache');
+        
+        $unjson_phrases = json_decode($phrases, true);
+        
+        foreach ($unjson_phrases as $key => $value) {
+            if ($phrase == $key) { return sprintf($value, $text); }
+        }
+        
 		return $phrase;
 	}
+    
+    public function set_cache() {
+        $locale = $this->get_locale()->locale;
+        $locale_cache_path = MCR_CACHE_PATH.'l10n/'.$locale;
+            
+        $languages = $this->get_languages($locale, false);
+        $languages = $this->db->fetch_assoc($languages);
+        
+        file_put_contents($locale_cache_path.'/.info', $languages['settings']);
+        file_put_contents($locale_cache_path.'/.cache', $languages['phrases']);
+    }
 }

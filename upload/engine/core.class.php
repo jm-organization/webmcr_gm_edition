@@ -39,6 +39,12 @@ class core{
 		require(MCR_TOOL_PATH.'config.class.php'); // Load Configs class
 		$this->cfg = new config();
 
+		// Load database class
+		require(MCR_TOOL_PATH.'db/'.$this->cfg->db['backend'].'.class.php');
+
+		// Create & set new object of database
+		$this->db = new db($this->cfg->db['host'], $this->cfg->db['user'], $this->cfg->db['pass'], $this->cfg->db['base'], $this->cfg->db['port'], $this);
+
 		if (!file_exists(MCR_LANG_PATH.$this->cfg->main['s_lang'].'/system.php')) {
 			exit("Language path not found");
 		}
@@ -51,12 +57,6 @@ class core{
 		$this->l10n = new l10n($this);
 
 		$this->title = $lng['t_main'];
-
-		// Load database class
-		require(MCR_TOOL_PATH.'db/'.$this->cfg->db['backend'].'.class.php');
-
-		// Create & set new object of database
-		$this->db = new db($this->cfg->db['host'], $this->cfg->db['user'], $this->cfg->db['pass'], $this->cfg->db['base'], $this->cfg->db['port'], $this);
 
 		// Load user class
 		require_once(MCR_TOOL_PATH.'user.class.php');
