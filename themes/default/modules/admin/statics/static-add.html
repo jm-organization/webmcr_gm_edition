@@ -1,0 +1,40 @@
+<?php echo $data['PREVIEW']; ?>
+
+<div class="form-block">
+
+	<div class="block-header">
+		<div class="block-name"><?php echo $data['PAGE']; ?></div>
+	</div>
+
+	<div class="block-line"></div>
+
+	<form method="post">
+		<div class="form-group">
+			<label for="inputTitle"><?php echo $this->lng_m['stc_field_name']; ?></label>
+			<input type="text" class="form-control" name="title" value="<?php echo $data['TITLE']; ?>" id="inputTitle" placeholder="<?php echo $this->lng_m['stc_field_name']; ?>">
+		</div>
+
+		<div class="form-group">
+			<label for="inputUniq"><?php echo $this->lng_m['stc_field_uniq']; ?></label>
+			<input type="text" class="form-control" name="uniq" value="<?php echo $data['UNIQ']; ?>" id="inputUniq" placeholder="<?php echo $this->lng_m['stc_field_uniq']; ?>">
+		</div>
+
+		<div class="form-group">
+			<label for="selectPerm"><?php echo $this->lng_m['stc_field_access']; ?></label>
+			<select size="6" class="form-control" name="permissions" id="selectPerm">
+				<?php echo $data['PERMISSIONS']; ?>
+			</select>
+		</div>
+
+		<div class="form-group">
+			<label for="inputText"><?php echo $this->lng_m['stc_field_text']; ?></label>
+			<textarea class="tinymce bb-textarea" id="inputText" data-for="stc-field" placeholder="<?php echo $this->lng_m['stc_field_text']; ?>" name="text" rows="30"><?php echo $data['TEXT']; ?></textarea>
+		</div>
+
+		<button type="submit" class="btn btn-block btn-secondary" name="preview"><?php echo $this->lng_m['stc_field_preview']; ?></button>
+		<button type="submit" class="btn btn-block btn-primary" name="submit"><?php echo $data['BUTTON']; ?></button>
+	</form>
+		
+</div>
+
+<?php echo $this->file_manager(); ?>

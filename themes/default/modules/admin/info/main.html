@@ -1,0 +1,39 @@
+<div class="form-block">
+
+	<div class="block-header">
+		<div class="block-name"><?php echo $this->lng_m['info_and_stats']; ?></div>
+	</div>
+
+	<div class="block-line"></div>
+
+	<div class="adm-info-main">
+		<form method="post"></form>
+		<ul class="nav nav-tabs" id="myTab">
+			<li class="nav-item"><a class="nav-link active" href="<?php echo ADMIN_URL; ?>&do=info&op=main"><?php echo $this->lng_m['info']; ?></a></li>
+			<li class="nav-item"><a class="nav-link" href="<?php echo ADMIN_URL; ?>&do=info&op=extensions"><?php echo $this->lng_m['info_ext']; ?></a></li>
+			<li class="nav-item"><a class="nav-link" href="<?php echo ADMIN_URL; ?>&do=info&op=stats"><?php echo $this->lng_m['info_stats']; ?></a></li>
+		</ul>
+		 
+		<div class="tab-content">
+			<ul class="thumbnails row">
+				<li class="col-md-6">
+					<div class="thumbnail">
+						<h3><?php echo $this->lng_m['info_news']; ?></h3>
+						<p><span id="api-engine-news"></span></p>
+					</div>
+				</li>
+					
+				<li class="col-md-6">
+					<div class="thumbnail">
+						<h3><?php echo $this->lng_m['info_eng_ver']; ?></h3>
+						<p><b><?php echo $this->lng_m['info_eng_ver_now']; ?></b>: <span id="engine-version"><?php echo VERSION; ?></span></p>
+						<p><b><?php echo $this->lng_m['info_eng_ver_last']; ?></b>: <span id="api-engine-version"></span></p>
+						<p><b><?php echo $this->lng_m['info_eng_ver_git']; ?></b>: <span id="git-engine-version"></span></p>
+						<p><b><?php echo $this->lng_m['info_eng_ver_dev']; ?></b>: <span id="git-dev-version"></span></p>
+					</div>
+				</li>
+			</ul>
+		</div>
+	</div>
+		
+</div>

@@ -1,0 +1,28 @@
+<form class="form-block" method="post" action="<?php echo ADMIN_URL.'&do=l10n_languages&op=delete'; ?>">
+
+    <div class="block-header">
+        <div class="block-name">
+            <p id="title">
+                <span class="title"><?php echo $this->l10n->gettext('languages'); ?></span>
+            </p>
+            <p id="actions" class="btn-group" role="group">
+                <a role="button" href="<?php echo ADMIN_URL.'&do=l10n_languages&op=add'; ?>" class="btn btn-primary"><?php echo $this->l10n->gettext('btn-add-language'); ?></a>
+                <button type="submit" class="btn btn-outline-primary text-danger"><i class="fa fa-trash" aria-hidden="true"></i></button>
+            </p>
+        </div>    
+    </div>
+
+    <div class="block-line"></div>
+
+    <table class="table table-hover" id="languages">
+        <thead>
+        <tr>
+            <th class="l10n-languages"><?php echo $this->l10n->gettext('languages_list_title'); ?></th>
+            <th class="l10n-action"><?php echo $this->l10n->gettext('action'); ?></th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php echo $data['LANGUAGES_LIST']?>
+        </tbody>
+    </table>
+</form>

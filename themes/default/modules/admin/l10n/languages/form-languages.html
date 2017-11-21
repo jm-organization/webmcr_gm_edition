@@ -1,0 +1,101 @@
+<div class="form-block">
+    <form method="post">
+        <div class="form-group row">
+            <label for="language_title" class="col-sm-4 col-form-label text-right"><?php echo $this->l10n->gettext('title'); ?>:</label>
+            <div class="col-sm-6 float-left">
+                <input type="text" class="form-control" id="language_title" name="language_title" value="<?php echo @$data['LANGUAGE_TITLE']; ?>">
+            </div>
+        </div>
+        
+        <div class="form-group row">
+            <label for="language_parent" class="col-sm-4 col-form-label text-right"><?php echo $this->l10n->gettext('parent_language'); ?>:</label>
+            <div class="col-sm-6 float-left">
+                <select class="form-control custom-select" id="language_parent" name="language_parent">
+                    <option value="0"><?php echo $this->l10n->gettext('no_parent'); ?></option>
+                    <?php echo @$data['PARENT_LANGUAGES']; ?>
+                </select>
+            </div>
+        </div>
+        
+        <hr>
+        
+        <div class="form-group row">
+            <label for="locale" class="col-sm-4 col-form-label text-right"><?php echo $this->l10n->gettext('locale'); ?>:</label>
+            <div class="col-sm-6 float-left">
+                <select class="form-control custom-select" id="locale" name="locale">
+                    <option><?php echo $this->l10n->gettext('select_locale'); ?></option>
+                    <?php echo @$data['LOCALES']; ?>
+                </select>
+            </div>
+        </div>
+        
+        <div class="form-group row">
+            <label class="col-sm-4 col-form-label text-right"><?php echo $this->l10n->gettext('text_direction'); ?>:</label>
+            <div class="col-sm-6 float-left custom-controls-stacked">
+                <label class="custom-control custom-radio">
+                    <input id="text_lr" name="text_direction" type="radio" class="custom-control-input" value="ltr" <?php echo ($data['TEXT_DIRECTION']=='ltr')?'checked':''; ?>>
+                    <span class="custom-control-indicator"></span>
+                    <span class="custom-control-description"><?php echo $this->l10n->gettext('left_to_right'); ?></span>
+                </label>
+
+                <label class="custom-control custom-radio">
+                    <input id="text_rl" name="text_direction" type="radio" class="custom-control-input" value="rtl" <?php echo ($data['TEXT_DIRECTION']=='rtl')?'checked':''; ?>>
+                    <span class="custom-control-indicator"></span>
+                    <span class="custom-control-description"><?php echo $this->l10n->gettext('right_to_left'); ?></span>
+                </label>
+            </div>
+        </div>
+        
+        <hr>
+        
+        <div class="form-group row">
+            <label class="col-sm-4 col-form-label text-right"><?php echo $this->l10n->gettext('date_format'); ?>:</label>
+            <div class="col-sm-6 float-left custom-controls-stacked" data-role="selects">
+                <?php echo $data['DATE_FORMATS']?>
+                <div data-format-id="other" class="date_format">
+                    <label class="custom-control custom-radio">
+                        <input name="date_format" id="other_dfs" type="radio" class="custom-control-input" value="other">
+                        <span class="custom-control-indicator"></span>
+                        <span class="custom-control-description"><?php echo $this->l10n->gettext('other'); ?>:</span>
+                    </label>
+                    <div role="small">
+                        <div class="col-sm-4 float-left" style="padding-left: 0!important;">
+                            <input type="text" readonly class="form-control" data-id="other" id="other_date_format" value="">
+                        </div><br><br>
+                        <small class="form-text text-muted" style="margin-top: -6px!important;"><?php echo $this->l10n->gettext('must_php_date_syntax'); ?></small>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="form-group row">
+            <label class="col-sm-4 col-form-label text-right"><?php echo $this->l10n->gettext('time_format'); ?>:</label>
+            <div class="col-sm-6 float-left custom-controls-stacked" data-role="selects">
+                <?php echo $data['TIME_FORMATS']; ?>
+                <div data-format-id="other" class="time_format">
+                    <label class="custom-control custom-radio">
+                        <input name="time_format" id="other_tfs" type="radio" class="custom-control-input" value="other">
+                        <span class="custom-control-indicator"></span>
+                        <span class="custom-control-description"><?php echo $this->l10n->gettext('other'); ?>:</span>
+                    </label>
+                    <div role="small">
+                        <div class="col-sm-4 float-left" style="padding-left: 0!important;">
+                            <input type="text" readonly class="form-control" data-id="other" id="other_time_format" value="">
+                        </div><br><br>
+                        <small class="form-text text-muted" style="margin-top: -6px!important;"><?php echo $this->l10n->gettext('must_php_time_syntax'); ?></small>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <hr>
+        
+        <div class="form-group row">
+            <label for="value" class="col-sm-4 col-form-label text-right"></label>
+            <div class="col-sm-6">
+                <button type="submit" class="btn btn-success"><?php echo $this->l10n->gettext('btn_save'); ?></button>
+                <a href="<?php echo ADMIN_URL.'&do=l10n_languages'; ?>" class="btn btn-outline-primary" role="button"><?php echo $this->l10n->gettext('btn_cancel'); ?></a>
+            </div>
+        </div>
+    </form>
+</div>

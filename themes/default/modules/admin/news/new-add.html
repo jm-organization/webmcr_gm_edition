@@ -1,0 +1,153 @@
+<?php echo $data['PREVIEW']; ?>
+
+<div class="form-block">
+ 
+	<div class="block-header">
+		<div class="block-name"><?php echo $data['PAGE']; ?></div>
+ 	</div>
+ 
+	<hr>
+ 
+	<form method="post">
+		<div class="form-row">
+			<div class="form-group col-md-12">
+				<label for="inputTitle"><?php echo $this->lng_m['news_field_name']; ?></label>
+				<input type="text" class="form-control" name="title" required="required" value="<?php echo $data['TITLE']; ?>" id="inputTitle" placeholder="<?php echo $this->lng_m['news_field_name']; ?>">
+			</div>
+		</div>
+
+		<div class="form-row">
+			<div class="form-group col-md-12">
+				<label for="inputCategory"><?php echo $this->lng_m['news_field_cat']; ?></label>
+				<select name="cid" class="form-control" id="inputCategory"><?php echo $data['CATEGORIES']; ?></select>
+			</div>
+		</div>
+
+		<div class="form-row">
+			<div class="form-group col-md-12">
+				<p id="label_pp" style="display: inline-block; width: 100%">
+					<span style="float: left; line-height: 24px;"><?php echo $this->lng_m['news_field_date']; ?></span>
+					<label style="float: right;" id="switch_pp" class="switch">
+						<input type="checkbox" name="planed_publish" <?php echo $data['PLANED_PUBLISH']; ?>>
+						<span class="slider round"></span>
+					</label>
+				</p>
+				<div class="date-publish" id="date_publish">
+					<input type="text" name="publish_time" class="form-control" id="input_publish_time" placeholder="<?php echo $this->lng_m['news_field_d_ph']; ?>" value="<?php echo $data['DATE']; ?>">
+				</div>
+			</div>
+		</div>
+  
+		<div class="form-row">
+			<div class="form-group col-md-12">
+				<label for="inputText"><?php echo $this->lng_m['news_field_text']; ?></label>
+				<textarea id="inputText" class="tinymce bb-textarea input-block-level" data-for="bb-full" name="text" rows="20"><?php echo $data['TEXT']; ?></textarea>
+				<small id="textHelp" class="form-text text-muted"><?php echo $this->lng_m['news_field_text_desc']; ?></small>
+			</div>
+		</div>
+
+		<div class="form-row">
+			<div class="form-check col-md-12">
+				<p style="display: inline-block; width: 100%">
+					<span style="float: left; line-height: 24px;"><?php echo $this->lng_m['news_field_hidden']; ?></span>
+					<label style="float: right;" class="switch">
+						<input type="checkbox" class="form-check-input" name="hidden" value="1" <?php echo $data['HIDDEN']; ?>>
+						<span class="slider round"></span>
+					</label>
+				</p>
+			</div>
+		</div>
+
+		<div class="form-row">
+			<div class="form-check col-md-12">
+				<p style="display: inline-block; width: 100%">
+					<span style="float: left; line-height: 24px;"><?php echo $this->lng_m['news_field_vote']; ?></span>
+					<label style="float: right;" class="switch">
+						<input type="checkbox" class="form-check-input" name="vote" value="1" <?php echo $data['VOTE']; ?>>
+						<span class="slider round"></span>
+					</label>
+				</p>
+			</div>
+		</div>
+
+		<div class="form-row">
+			<div class="form-check col-md-12">
+				<p style="display: inline-block; width: 100%">
+					<span style="float: left; line-height: 24px;"><?php echo $this->lng_m['news_field_com']; ?></span>
+					<label style="float: right;" class="switch">
+						<input type="checkbox" class="form-check-input" name="discus" value="1" <?php echo $data['DISCUS']; ?>>
+						<span class="slider round"></span>
+					</label>
+				</p>
+			</div>
+		</div>
+
+		<div class="form-row">
+			<div class="form-check col-md-12">
+				<p style="display: inline-block; width: 100%">
+					<span style="float: left; line-height: 24px;"><?php echo $this->lng_m['news_field_attach']; ?></span>
+					<label style="float: right;" class="switch">
+						<input type="checkbox" class="form-check-input" name="attach" value="1" <?php echo $data['ATTACH']; ?>>
+						<span class="slider round"></span>
+					</label>
+				</p>
+			</div>
+		</div>
+
+		<hr>
+
+		<div class="form-row">
+			<div class="form-group col-md-12">
+				<p id="label_sc" style="display: inline-block; width: 100%">
+					<span style="float: left; line-height: 24px;"><?php echo $this->lng_m['news_field_comment_close']; ?></span>
+					<label style="float: right;" id="switch_sc" class="switch">
+						<input type="checkbox" name="closed_comments">
+						<span class="slider round"></span>
+					</label>
+				</p>
+				<div class="date_cs" id="date_cs">
+					<input type="text" name="date_cs" class="form-control" id="input_date_cs" placeholder="<?php echo $this->lng_m['news_field_cc_ph']; ?>" data-start="<?php echo date('d.m.Y', time());?>" value="">
+				</div>
+			</div>
+		</div>
+
+		<div class="form-row">
+			<div class="form-group col-md-4">
+				<label for="comment_chars" class="col-form-label">Email</label>
+				<input type="email" class="form-control" id="comment_chars" name="comment_chars" placeholder="">
+				<small class="form-text text-muted">kek</small>
+			</div>
+
+			<div class="form-group col-md-3">
+				<label for="comment_chars" class="col-form-label">frequency</label>
+				<input type="email" class="form-control" id="comment_frequency" name="comment_fq" placeholder="">
+			</div>
+
+			<div class="form-group col-md-5">
+				<label for="comment_chars" class="col-form-label">user group</label>
+				<div class="input-group">
+					<select class="form-control" name="user_group">
+						<option selected disabled>Select this</option>
+						<?php echo $data['USER_GROUPS']; ?>
+					</select>
+					<span class="input-group-addon" id="basic-addon2">и выше.</span>
+				</div>
+				<small class="form-text text-muted">kek</small>
+			</div>
+		</div>
+  
+		<div class="form-row">
+			<div class="form-group col-md-12">
+				<div class="controls">
+					<button type="submit" class="btn btn-primary" name="submit"><?php echo $data['BUTTON']; ?></button>
+					<button type="submit" class="btn btn-outline-primary" name="preview"><?php echo $this->lng_m['news_preview']; ?></button>
+
+					<a href="/?mode=admin&do=news" class="btn btn-outline-secondary"><?php echo $this->lng['cancel']; ?></a>
+				</div>
+			</div>
+		</div>
+ 	</form>
+ 
+</div>
+
+<?php echo $this->file_manager(); ?>

@@ -1,0 +1,15 @@
+<form class="form-inline pull-xs-right" method="get" action="<?php echo BASE_URL; ?>">
+	<input type="hidden" name="mode" value="search">
+	<input type="hidden" name="type" id="search-hidden" value="news">
+
+	<div class="btn-group">
+		<a class="btn btn-secondary dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></a>
+		<ul class="dropdown-menu" id="search-selector">
+			<?php echo $data['SEARCH_ELEMENTS']; ?>
+		</ul>
+	</div>
+
+	<input type="text" class="form-control" required name="value" placeholder="<?php echo $this->lng['ph_search']; ?>">
+
+	<button type="submit" class="btn btn-secondary"><i class="fa fa-search"></i></button>
+</form>
