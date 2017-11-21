@@ -1,16 +1,16 @@
 <div class="form-block">
-	<div class="block-header"><?php echo $this->lng_m['mod_name']; ?></div>
+	<div class="block-header"><?php echo $this->l10n->gettext('mod_name'); ?></div>
 	<div class="block-line"></div>
 
 	<div class="mcr-restore">
 		<form method="post">
 
 			<div class="form-group">
-				<label for="inputEmail"><?php echo $this->lng['email']; ?></label>
-				<input type="email" class="form-control" name="email" id="inputEmail" placeholder="<?php echo $this->lng['email']; ?>" required>
+				<label for="inputEmail"><?php echo $this->l10n->gettext('email'); ?></label>
+				<input type="email" class="form-control" name="email" id="inputEmail" placeholder="<?php echo $this->l10n->gettext('email'); ?>" required>
 			</div>
 
-			<button type="submit" class="btn btn-primary btn-block"><?php echo $this->lng_m['btn_restore']; ?></button>
+			<button type="submit" class="btn btn-primary btn-block"><?php echo $this->l10n->gettext('btn_restore'); ?></button>
 		</form>
 	</div>
 </div>

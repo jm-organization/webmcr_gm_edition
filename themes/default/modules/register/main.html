@@ -1,5 +1,5 @@
 <div class="form-block">
-	<div class="block-header"><?php echo $this->lng_m['mod_name']; ?></div>
+	<div class="block-header"><?php echo $this->l10n->gettext('register'); ?></div>
 	<div class="block-line"></div>
 	
 	<div class="mcr-register">
@@ -7,31 +7,31 @@
 		<form class="form-horizontal" method="post">
 			
 			<div class="form-group">
-				<label class="control-label" for="inputLogin"><?php echo $this->lng['login']; ?></label>
-				<input type="text" name="login" class="form-control" id="inputLogin" pattern="^[a-zA-Z0-9-_]{3,}$" maxlength="32" placeholder="<?php echo $this->lng['login']; ?>" required>
+				<label class="control-label" for="inputLogin"><?php echo $this->l10n->gettext('login'); ?></label>
+				<input type="text" name="login" class="form-control" id="inputLogin" pattern="^[a-zA-Z0-9-_]{3,}$" maxlength="32" placeholder="<?php echo $this->l10n->gettext('login'); ?>" required>
 			</div>
 			
 			<div class="form-group">
-				<label class="control-label" for="inputEmail"><?php echo $this->lng['email']; ?></label>
-				<input type="email" name="email" class="form-control" id="inputEmail" placeholder="<?php echo $this->lng['email']; ?>" required>
+				<label class="control-label" for="inputEmail"><?php echo $this->l10n->gettext('email'); ?></label>
+				<input type="email" name="email" class="form-control" id="inputEmail" placeholder="<?php echo $this->l10n->gettext('email'); ?>" required>
 			</div>
 			
 			<div class="form-group">
-				<label class="control-label" for="inputPassword"><?php echo $this->lng['pass']; ?></label>
-				<input type="password" name="password" class="form-control" id="inputPassword" pattern="^[^']{6,}$" placeholder="<?php echo $this->lng['pass']; ?>" required>
+				<label class="control-label" for="inputPassword"><?php echo $this->l10n->gettext('password'); ?></label>
+				<input type="password" name="password" class="form-control" id="inputPassword" pattern="^[^']{6,}$" placeholder="<?php echo $this->l10n->gettext('password'); ?>" required>
 			</div>
 			
 			<div class="form-group">
-				<label class="control-label" for="inputRePassword"><?php echo $this->lng_m['repass']; ?></label>
-				<input type="password" name="repassword" class="form-control" id="inputRePassword" pattern="^[^']{6,}$" placeholder="<?php echo $this->lng_m['repass']; ?>" required>
+				<label class="control-label" for="inputRePassword"><?php echo $this->l10n->gettext('repass'); ?></label>
+				<input type="password" name="repassword" class="form-control" id="inputRePassword" pattern="^[^']{6,}$" placeholder="<?php echo $this->l10n->gettext('repass'); ?>" required>
 			</div>
 			
 			<div class="form-group">
-				<label class="control-label" for="inputGender"><?php echo $this->lng['gender']; ?></label>
+				<label class="control-label" for="inputGender"><?php echo $this->l10n->gettext('gender'); ?></label>
 				<select name="gender" class="form-control" id="inputGender">
-					<option value="0"><?php echo $this->lng['gender_n']; ?></option>
-					<option value="1"><?php echo $this->lng['gender_m']; ?></option>
-					<option value="2"><?php echo $this->lng['gender_w']; ?></option>
+					<option value="0"><?php echo $this->l10n->gettext('gender_n'); ?></option>
+					<option value="1"><?php echo $this->l10n->gettext('gender_m'); ?></option>
+					<option value="2"><?php echo $this->l10n->gettext('gender_w'); ?></option>
 				</select>
 			</div>
 			
@@ -44,10 +44,10 @@
 			<label class="custom-control custom-checkbox">
 				<input class="custom-control-input" type="checkbox" name="accept" value="1" required>
 				<span class="custom-control-indicator"></span>
-				<span class="custom-control-description"><?php echo $this->lng_m['accept']; ?></span>
+				<span class="custom-control-description"><?php echo $this->l10n->gettext('register_accept'); ?></span>
 			</label>
 			
-			<button type="submit" id="postbut" name="submit" class="btn btn-primary btn-block"><?php echo $this->lng_m['btn']; ?></button>
+			<button type="submit" id="postbut" name="submit" class="btn btn-primary btn-block"><?php echo $this->l10n->gettext('sign_up'); ?></button>
 		</form>
 	</div>
 </div>
