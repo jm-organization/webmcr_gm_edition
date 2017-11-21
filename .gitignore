@@ -42,9 +42,20 @@ vcs.xml
 /engine/libs/htmLawed/htmLawed_TESTCASE.txt
 /engine/libs/htmLawed/htmLawed_README.txt
 
-# NetBeans
-nbproject/*
-nbproject/private/*
-.buildpath
-.project
+### NetBeans template
+/nbproject/private/
+/build/
+/nbbuild/
+/dist/
+/nbdist/
+.nb-gradle/
+
+### Composer template
+composer.phar
+#vendor/
+composer.lock
+
+# Commit your application's lock file https://getcomposer.org/doc/01-basic-usage.md#commit-your-composer-lock-file-to-version-control
+# You may choose to ignore a library lock file http://getcomposer.org/doc/02-libraries.md#lock-file
+# composer.lock
 
