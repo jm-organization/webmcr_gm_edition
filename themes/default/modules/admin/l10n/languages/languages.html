@@ -6,7 +6,7 @@
                 <span class="title"><?php echo $this->l10n->gettext('languages'); ?></span>
             </p>
             <p id="actions" class="btn-group" role="group">
-                <a role="button" href="<?php echo ADMIN_URL.'&do=l10n_languages&op=add'; ?>" class="btn btn-primary"><?php echo $this->l10n->gettext('btn-add-language'); ?></a>
+                <a role="button" href="<?php echo ADMIN_URL.'&do=l10n_languages&op=add'; ?>" class="btn btn-primary"><?php echo $this->l10n->gettext('language_add'); ?></a>
                 <button type="submit" class="btn btn-outline-primary text-danger"><i class="fa fa-trash" aria-hidden="true"></i></button>
             </p>
         </div>    
@@ -17,7 +17,7 @@
     <table class="table table-hover" id="languages">
         <thead>
         <tr>
-            <th class="l10n-languages"><?php echo $this->l10n->gettext('languages_list_title'); ?></th>
+            <th class="l10n-languages"><?php echo $this->l10n->gettext('languages_list'); ?></th>
             <th class="l10n-action"><?php echo $this->l10n->gettext('action'); ?></th>
         </tr>
         </thead>

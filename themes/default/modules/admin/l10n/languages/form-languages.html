@@ -8,7 +8,7 @@
         </div>
         
         <div class="form-group row">
-            <label for="language_parent" class="col-sm-4 col-form-label text-right"><?php echo $this->l10n->gettext('parent_language'); ?>:</label>
+            <label for="language_parent" class="col-sm-4 col-form-label text-right"><?php echo $this->l10n->gettext('language_parent'); ?>:</label>
             <div class="col-sm-6 float-left">
                 <select class="form-control custom-select" id="language_parent" name="language_parent">
                     <option value="0"><?php echo $this->l10n->gettext('no_parent'); ?></option>
@@ -82,7 +82,7 @@
                         <div class="col-sm-4 float-left" style="padding-left: 0!important;">
                             <input type="text" readonly class="form-control" data-id="other" id="other_time_format" value="">
                         </div><br><br>
-                        <small class="form-text text-muted" style="margin-top: -6px!important;"><?php echo $this->l10n->gettext('must_php_time_syntax'); ?></small>
+                        <small class="form-text text-muted" style="margin-top: -6px!important;"><?php echo $this->l10n->gettext('must_php_date_syntax'); ?></small>
                     </div>
                 </div>
             </div>
@@ -93,8 +93,8 @@
         <div class="form-group row">
             <label for="value" class="col-sm-4 col-form-label text-right"></label>
             <div class="col-sm-6">
-                <button type="submit" class="btn btn-success"><?php echo $this->l10n->gettext('btn_save'); ?></button>
-                <a href="<?php echo ADMIN_URL.'&do=l10n_languages'; ?>" class="btn btn-outline-primary" role="button"><?php echo $this->l10n->gettext('btn_cancel'); ?></a>
+                <button type="submit" class="btn btn-success"><?php echo $this->l10n->gettext('save'); ?></button>
+                <a href="<?php echo ADMIN_URL.'&do=l10n_languages'; ?>" class="btn btn-outline-primary" role="button"><?php echo $this->l10n->gettext('cancel'); ?></a>
             </div>
         </div>
     </form>

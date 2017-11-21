@@ -509,7 +509,7 @@ class submodule {
                 $bc = array(
                     $this->l10n->gettext('module_admin-panel') => ADMIN_URL,
                     $this->l10n->gettext('languages') => ADMIN_URL."&do=l10n_languages",
-                    $this->l10n->gettext('edit_language') => ADMIN_URL."&do=l10n_languages&op=edit"
+                    $this->l10n->gettext('language_edit') => ADMIN_URL."&do=l10n_languages&op=edit"
                 );
                 $this->core->bc = $this->core->gen_bc($bc);
 

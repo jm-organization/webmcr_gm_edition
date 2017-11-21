@@ -445,7 +445,7 @@ class submodule {
                 $bc = array(
                     $this->l10n->gettext('module_admin-panel') => ADMIN_URL,
                     $this->l10n->gettext('phrases') => ADMIN_URL."&do=l10n_phrases",
-                    $this->l10n->gettext('add-phrase') => ADMIN_URL."&do=l10n_phrases&op=add"
+                    $this->l10n->gettext('phrase_add') => ADMIN_URL."&do=l10n_phrases&op=add"
                 );
                 $this->core->bc = $this->core->gen_bc($bc);
 
@@ -455,7 +455,7 @@ class submodule {
                 $bc = array(
                     $this->l10n->gettext('module_admin-panel') => ADMIN_URL,
                     $this->l10n->gettext('phrases') => ADMIN_URL."&do=l10n_phrases",
-                    $this->l10n->gettext('edit-phrase') => ADMIN_URL."&do=l10n_phrases&op=edit"
+                    $this->l10n->gettext('phrase_edit') => ADMIN_URL."&do=l10n_phrases&op=edit"
                 );
                 $this->core->bc = $this->core->gen_bc($bc);
 
