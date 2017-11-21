@@ -35,7 +35,7 @@
      <div class="col-md-8">
       <h1 class="display-3"><?php echo $data['CFG']['s_name']; ?></h1>
       <p><?php echo $data['CFG']['s_about'] ?></p>
-      <p><a class="btn btn-success btn-lg" href="index.php?mode=start" role="button"><i class="fa fa-download"></i> <?php echo $this->lng['load_client']; ?></a></p>
+      <p><a class="btn btn-success btn-lg" href="index.php?mode=start" role="button"><i class="fa fa-download"></i> <?php echo $this->l10n->gettext('load_client'); ?></a></p>
      </div>
 
      <div class="col-md-4">
@@ -67,12 +67,12 @@
    </div>
   </div>
   
-  <div id="js-loader" title="<?php echo $this->lng['loading']; ?>"><img src="<?php echo STYLE_URL; ?>img/loading.gif" alt="<?php echo $this->lng['loading']; ?>" /></div>
+  <div id="js-loader" title="<?php echo $this->l10n->gettext('loading'); ?>"><img src="<?php echo STYLE_URL; ?>img/loading.gif" alt="<?php echo $this->l10n->gettext('loading'); ?>" /></div>
   
   <nav class="navbar fixed-bottom navbar-light bg-faded">
    <div class="container">
     <div id="navbar-footer">
-     <div class="block-left"><?php echo $this->lng['copy_pre']; ?> <?php echo $data['CFG']['s_name']; ?> <?php echo $this->lng['copy_app']; ?></div>
+     <div class="block-left"><!-- TODO: echo $data['CFG']['s_name']; --><?php echo $this->l10n->gettext('copyright'); ?></div>
      <div class="block-right"><?php echo FEEDBACK; ?> | <?php echo VERSION; ?></div>
     </div>
    </div>
