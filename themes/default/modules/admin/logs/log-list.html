@@ -2,7 +2,7 @@
 	<div class="form-block">
 
 		<div class="block-header">
-			<div class="block-name"><?php echo $this->lng_m['logs_views']; ?></div>
+			<div class="block-name"><?php echo $this->l10n->gettext('logs_views'); ?></div>
 		</div>
 
 		<div class="block-line"></div>
@@ -12,9 +12,9 @@
 				<thead>
 					<tr>
 						<th><a href="#" class="sort-trigger" data-field="id" data-order="desc">#</a></th>
-						<th><a href="#" class="sort-trigger" data-field="user" data-order="desc"><?php echo $this->lng_m['logs_user']; ?></a></th>
-						<th><a href="#" class="sort-trigger" data-field="msg" data-order="desc"><?php echo $this->lng_m['logs_action']; ?></a></th>
-						<th><a href="#" class="sort-trigger" data-field="date" data-order="desc"><?php echo $this->lng_m['logs_date']; ?></a></th>
+						<th><a href="#" class="sort-trigger" data-field="user" data-order="desc"><?php echo $this->l10n->gettext('logs_user'); ?></a></th>
+						<th><a href="#" class="sort-trigger" data-field="msg" data-order="desc"><?php echo $this->l10n->gettext('logs_action'); ?></a></th>
+						<th><a href="#" class="sort-trigger" data-field="date" data-order="desc"><?php echo $this->l10n->gettext('logs_date'); ?></a></th>
 					</tr>
 				</thead>
 
@@ -29,9 +29,9 @@
 		<div class="left-act"><?php echo $data['PAGINATION']; ?></div>
 		<div class="right-act">
 			<div class="input-group">
-				<input type="text" class="adm-search-input form-control" id="adm-search-id" placeholder="<?php echo $this->lng['ph_search']; ?>">
+				<input type="text" class="adm-search-input form-control" id="adm-search-id" placeholder="<?php echo $this->l10n->gettext('search'); ?>">
 				<div class="input-group-btn">
-					<button class="btn btn-default adm-search" data-for="#adm-search-id" type="button" rel="tooltip" title="<?php echo $this->lng['search']; ?>"><i class="fa fa-search"></i></button>
+					<button class="btn btn-default adm-search" data-for="#adm-search-id" type="button" rel="tooltip" title="<?php echo $this->l10n->gettext('search'); ?>"><i class="fa fa-search"></i></button>
 				</div>
 			</div>
 		</div>

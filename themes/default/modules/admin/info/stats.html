@@ -1,7 +1,7 @@
 <div class="form-block">
 
 	<div class="block-header">
-		<div class="block-name"><?php echo $this->lng_m['info_and_stats']; ?></div>
+		<div class="block-name"><?php echo $this->l10n->gettext('info_and_stats'); ?></div>
 	</div>
 
 	<div class="block-line"></div>
@@ -9,40 +9,40 @@
 	<div class="adm-info-stats">
 		<form method="post"></form>
 		<ul class="nav nav-tabs" id="myTab">
-			<li class="nav-item"><a class="nav-link" href="<?php echo ADMIN_URL; ?>&do=info&op=main"><?php echo $this->lng_m['info']; ?></a></li>
-			<li class="nav-item"><a class="nav-link" href="<?php echo ADMIN_URL; ?>&do=info&op=extensions"><?php echo $this->lng_m['info_ext']; ?></a></li>
-			<li class="nav-item"><a class="nav-link active" href="<?php echo ADMIN_URL; ?>&do=info&op=stats"><?php echo $this->lng_m['info_stats']; ?></a></li>
+			<li class="nav-item"><a class="nav-link" href="<?php echo ADMIN_URL; ?>&do=info&op=main"><?php echo $this->l10n->gettext('info'); ?></a></li>
+			<li class="nav-item"><a class="nav-link" href="<?php echo ADMIN_URL; ?>&do=info&op=extensions"><?php echo $this->l10n->gettext('info_ext'); ?></a></li>
+			<li class="nav-item"><a class="nav-link active" href="<?php echo ADMIN_URL; ?>&do=info&op=stats"><?php echo $this->l10n->gettext('info_stats'); ?></a></li>
 		</ul>
 		 
 		<div class="tab-content">
 			<ul class="thumbnails row">
 				<li class="col-md-6">
 					<div class="thumbnail">
-						<h3><?php echo $this->lng_m['info_news_stats']; ?></h3>
+						<h3><?php echo $this->l10n->gettext('info_news_stats'); ?></h3>
 						<div class="table-responsive">
 							<table class="table table-hover">
 								<tr>
-									<td><?php echo $this->lng_m['info_count_news']; ?></td>
+									<td><?php echo $this->l10n->gettext('info_count_news'); ?></td>
 									<td class="text-right"><?php echo $data['COUNT_NEWS']; ?></td>
 								</tr>
 
 								<tr>
-									<td><?php echo $this->lng_m['info_count_views']; ?></td>
+									<td><?php echo $this->l10n->gettext('info_count_views'); ?></td>
 									<td class="text-right"><?php echo $data['COUNT_VIEWS']; ?></td>
 								</tr>
 
 								<tr>
-									<td><?php echo $this->lng_m['info_count_votes']; ?></td>
+									<td><?php echo $this->l10n->gettext('info_count_votes'); ?></td>
 									<td class="text-right"><?php echo $data['COUNT_VOTES']; ?></td>
 								</tr>
 
 								<tr>
-									<td><?php echo $this->lng_m['info_count_cats']; ?></td>
+									<td><?php echo $this->l10n->gettext('info_count_cats'); ?></td>
 									<td class="text-right"><?php echo $data['COUNT_CATEGORIES']; ?></td>
 								</tr>
 
 								<tr>
-									<td><?php echo $this->lng_m['info_count_coms']; ?></td>
+									<td><?php echo $this->l10n->gettext('info_count_coms'); ?></td>
 									<td class="text-right"><?php echo $data['COUNT_COMMENTS']; ?></td>
 								</tr>
 							</table>
@@ -52,18 +52,18 @@
 					
 				<li class="col-md-6">
 					<div class="thumbnail">
-						<h3><?php echo $this->lng_m['info_users_stats']; ?></h3>
+						<h3><?php echo $this->l10n->gettext('info_users_stats'); ?></h3>
 						<div class="table-responsive">
 							<table class="table table-hover users_stats">
 								<?php echo $data['USERS_STATS']; ?>
 								<tfoot>
 									<tr>
-										<td><b><?php echo $this->lng_m['info_count_users']; ?></b></td>
+										<td><b><?php echo $this->l10n->gettext('info_count_users'); ?></b></td>
 										<td class="text-right"><?php echo $data['COUNT_USERS']; ?></td>
 									</tr>
 
 										<tr>
-										<td><b><?php echo $this->lng_m['info_count_groups']; ?></b></td>
+										<td><b><?php echo $this->l10n->gettext('info_count_groups'); ?></b></td>
 										<td class="text-right"><?php echo $data['COUNT_GROUPS']; ?></td>
 									</tr>
 								</tfoot>
@@ -74,16 +74,16 @@
 
 				<li class="col-md-12">
 					<div class="thumbnail">
-						<h3><?php echo $this->lng_m['info_other']; ?></h3>
+						<h3><?php echo $this->l10n->gettext('info_other'); ?></h3>
 						<div class="table-responsive">
 							<table class="table table-hover">
 								<tr>
-									<td><?php echo $this->lng_m['info_count_statics']; ?></td>
+									<td><?php echo $this->l10n->gettext('info_count_statics'); ?></td>
 									<td class="text-right"><?php echo $data['COUNT_STATICS']; ?></td>
 								</tr>
 
 								<tr>
-									<td><?php echo $this->lng_m['info_count_perms']; ?></td>
+									<td><?php echo $this->l10n->gettext('info_count_perms'); ?></td>
 									<td class="text-right"><?php echo $data['COUNT_PERMISSIONS']; ?></td>
 								</tr>
 							</table>

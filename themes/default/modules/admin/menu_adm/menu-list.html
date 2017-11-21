@@ -2,7 +2,7 @@
 	<div class="form-block">
 		
 		<div class="block-header">
-			<div class="block-name"><?php echo $this->lng_m['manucp']; ?></div>
+			<div class="block-name"><?php echo $this->l10n->gettext('manucp'); ?></div>
 		</div>
 		
 		<div class="block-line"></div>
@@ -12,9 +12,9 @@
 				<thead>
 					<tr>
 						<th><a href="#" class="sort-trigger" data-field="id" data-order="desc">#</a></th>
-						<th><a href="#" class="sort-trigger" data-field="title" data-order="desc"><?php echo $this->lng_m['mcp_field_name']; ?></a></th>
-						<th><a href="#" class="sort-trigger" data-field="group" data-order="desc"><?php echo $this->lng_m['mcp_field_group']; ?></a></th>
-						<th class="action"><?php echo $this->lng_m['mcp_field_action']; ?> <input type="checkbox" class="check-all" data-for="check-input"></th>
+						<th><a href="#" class="sort-trigger" data-field="title" data-order="desc"><?php echo $this->l10n->gettext('mcp_field_name'); ?></a></th>
+						<th><a href="#" class="sort-trigger" data-field="group" data-order="desc"><?php echo $this->l10n->gettext('mcp_field_group'); ?></a></th>
+						<th class="action"><?php echo $this->l10n->gettext('mcp_field_action'); ?> <input type="checkbox" class="check-all" data-for="check-input"></th>
 					</tr>
 				</thead>
 				
@@ -31,13 +31,13 @@
 		<div class="right-act">
 			<div class="row">
 				<div class="input-group">
-					<input type="text" class="adm-search-input form-control" id="adm-search-id" placeholder="<?php echo $this->lng['ph_search']; ?>">
+					<input type="text" class="adm-search-input form-control" id="adm-search-id" placeholder="<?php echo $this->l10n->gettext('search'); ?>">
 					<div class="input-group-btn">
 						<div class="btn-group">
-							<button class="btn btn-secondary adm-search" data-for="#adm-search-id" type="button" rel="tooltip" title="<?php echo $this->lng['search']; ?>"><i class="fa fa-search"></i></button>
+							<button class="btn btn-secondary adm-search" data-for="#adm-search-id" type="button" rel="tooltip" title="<?php echo $this->l10n->gettext('search'); ?>"><i class="fa fa-search"></i></button>
 							<a class="btn btn-secondary" href="<?php echo ADMIN_URL; ?>&do=menu_adm&op=add"><i class="fa fa-plus"></i></a>
 							<a class="btn btn-secondary edit" data-for="check-input" data-link="<?php echo ADMIN_URL; ?>&do=menu_adm&op=edit&id=" href="#"><i class="fa fa-pencil"></i></a>
-							<button class="btn btn-secondary remove" data-for="check-input" data-text="<?php echo $this->lng_m['mcp_accept']; ?>?" type="submit" name="delete"><i class="fa fa-times"></i></button>
+							<button class="btn btn-secondary remove" data-for="check-input" data-text="<?php echo $this->l10n->gettext('mcp_accept'); ?>?" type="submit" name="delete"><i class="fa fa-times"></i></button>
 						</div>
 					</div>
 				</div>

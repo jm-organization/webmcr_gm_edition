@@ -1,7 +1,7 @@
 <div class="form-block">
 
 	<div class="block-header">
-		<div class="block-name"><?php echo $this->lng_m['info_ext']; ?></div>
+		<div class="block-name"><?php echo $this->l10n->gettext('info_ext'); ?></div>
 	</div>
 
 	<div class="block-line"></div>
@@ -9,9 +9,9 @@
 	<div class="adm-info-modules">
 		<form method="post"></form>
 		<ul class="nav nav-tabs" id="myTab">
-			<li class="nav-item"><a class="nav-link" href="<?php echo ADMIN_URL; ?>&do=info&op=main"><?php echo $this->lng_m['info']; ?></a></li>
-			<li class="nav-item"><a class="nav-link active" href="<?php echo ADMIN_URL; ?>&do=info&op=extensions"><?php echo $this->lng_m['info_ext']; ?></a></li>
-			<li class="nav-item"><a class="nav-link" href="<?php echo ADMIN_URL; ?>&do=info&op=stats"><?php echo $this->lng_m['info_stats']; ?></a></li>
+			<li class="nav-item"><a class="nav-link" href="<?php echo ADMIN_URL; ?>&do=info&op=main"><?php echo $this->l10n->gettext('info'); ?></a></li>
+			<li class="nav-item"><a class="nav-link active" href="<?php echo ADMIN_URL; ?>&do=info&op=extensions"><?php echo $this->l10n->gettext('info_ext'); ?></a></li>
+			<li class="nav-item"><a class="nav-link" href="<?php echo ADMIN_URL; ?>&do=info&op=stats"><?php echo $this->l10n->gettext('info_stats'); ?></a></li>
 		</ul>
 		 
 		<div class="tab-content">

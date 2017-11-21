@@ -13,43 +13,43 @@
 		<address>
 			<dl>
 
-				<dt><?php echo $this->lng_m['block_field_author']; ?>:</dt>
+				<dt><?php echo $this->l10n->gettext('block_field_author'); ?>:</dt>
 				<dd><?php echo $data['AUTHOR']; ?></dd>
 
-				<dt><?php echo $this->lng_m['block_field_site']; ?>:</dt>
+				<dt><?php echo $this->l10n->gettext('block_field_site'); ?>:</dt>
 				<dd><a href="<?php echo $data['SITE']; ?>" target="_blank"><?php echo $data['SITE']; ?></a></dd>
 
-				<dt><?php echo $this->lng_m['block_field_email']; ?>:</dt>
+				<dt><?php echo $this->l10n->gettext('block_field_email'); ?>:</dt>
 				<dd><a href="mailto:<?php echo $data['EMAIL']; ?>"><?php echo $data['EMAIL']; ?></a></dd>
 
-				<dt><?php echo $this->lng_m['block_field_ver']; ?>:</dt>
+				<dt><?php echo $this->l10n->gettext('block_field_ver'); ?>:</dt>
 				<dd><?php echo $data['VERSION']; ?> <?php echo $data['UPDATE_RESULT']; ?></dd>
 			</dl>
 		</address>
 
 		<div class="form-group">
-			<label for="inputStatus"><?php echo $this->lng_m['block_field_status']; ?></label>
+			<label for="inputStatus"><?php echo $this->l10n->gettext('block_field_status'); ?></label>
 			<select class="form-control" name="status" id="inputStatus">
-				<option value="0"><?php echo $this->lng_m['block_off']; ?></option>
-				<option value="1" <?php echo $data['STATUS']; ?>><?php echo $this->lng_m['block_on']; ?></option>
+				<option value="0"><?php echo $this->l10n->gettext('block_off'); ?></option>
+				<option value="1" <?php echo $data['STATUS']; ?>><?php echo $this->l10n->gettext('block_on'); ?></option>
 			</select>
 		</div>
 
 		<div class="form-group">
-			<label for="inputUpdate"><?php echo $this->lng_m['block_field_upd']; ?></label>
+			<label for="inputUpdate"><?php echo $this->l10n->gettext('block_field_upd'); ?></label>
 			<select class="form-control" name="updates" id="inputUpdate">
-				<option value="0"><?php echo $this->lng_m['block_off1']; ?></option>
-				<option value="1" <?php echo $data['UPDATE_CHECK']; ?>><?php echo $this->lng_m['block_on1']; ?></option>
+				<option value="0"><?php echo $this->l10n->gettext('block_off1'); ?></option>
+				<option value="1" <?php echo $data['UPDATE_CHECK']; ?>><?php echo $this->l10n->gettext('block_on1'); ?></option>
 			</select>
 		</div>
 
 		<div class="form-group">
-			<label for="inputUrl"><?php echo $this->lng_m['block_field_url']; ?></label>
+			<label for="inputUrl"><?php echo $this->l10n->gettext('block_field_url'); ?></label>
 			<input type="text" class="form-control" id="inputUrl" name="updater" value="<?php echo $data['UPDATE_URL']; ?>">
 		</div>
 
 		<div class="form-group">
-			<label for="inputPos"><?php echo $this->lng_m['block_field_pos']; ?></label>
+			<label for="inputPos"><?php echo $this->l10n->gettext('block_field_pos'); ?></label>
 			<input type="text" class="form-control" id="inputPos" name="position" value="<?php echo $data['POSITION']; ?>">
 		</div>
 

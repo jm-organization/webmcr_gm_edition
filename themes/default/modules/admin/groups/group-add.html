@@ -9,8 +9,8 @@
 	<form method="post">
 		
 		<div class="form-group">
-			<label class="control-label" for="inputTitle"><?php echo $this->lng_m['grp_field_name']; ?></label>
-			<input type="text" class="form-control" name="title" value="<?php echo $data['TITLE']; ?>" id="inputTitle" placeholder="<?php echo $this->lng_m['grp_field_name']; ?>" required>
+			<label class="control-label" for="inputTitle"><?php echo $this->l10n->gettext('grp_field_name'); ?></label>
+			<input type="text" class="form-control" name="title" value="<?php echo $data['TITLE']; ?>" id="inputTitle" placeholder="<?php echo $this->l10n->gettext('grp_field_name'); ?>" required>
 		</div>
 		
 		<div class="form-group">
@@ -19,11 +19,11 @@
 		</div>
 		
 		<div class="form-group">
-			<label class="control-label" for="textareaText"><?php echo $this->lng_m['grp_field_desc']; ?></label>
-			<textarea name="text" class="form-control" placeholder="<?php echo $this->lng_m['grp_field_desc']; ?>" rows="8" maxlength="255" id="textareaText"><?php echo $data['TEXT']; ?></textarea>
+			<label class="control-label" for="textareaText"><?php echo $this->l10n->gettext('grp_field_desc'); ?></label>
+			<textarea name="text" class="form-control" placeholder="<?php echo $this->l10n->gettext('grp_field_desc'); ?>" rows="8" maxlength="255" id="textareaText"><?php echo $data['TEXT']; ?></textarea>
 		</div>
 		
-		<legend><?php echo $this->lng_m['grp_field_perm']; ?></legend>
+		<legend><?php echo $this->l10n->gettext('grp_field_perm'); ?></legend>
 		
 		<table class="table table-striped table-sm">
 			<tbody>

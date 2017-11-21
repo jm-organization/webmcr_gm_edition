@@ -8,32 +8,32 @@
 
 	<form method="post">
 		<div class="form-group">
-			<label for="inputTitle"><?php echo $this->lng_m['menu_field_name']; ?></label>
-			<input type="text" class="form-control" name="title" value="<?php echo $data['TITLE']; ?>" id="inputTitle" placeholder="<?php echo $this->lng_m['menu_field_name']; ?>">
+			<label for="inputTitle"><?php echo $this->l10n->gettext('menu_field_name'); ?></label>
+			<input type="text" class="form-control" name="title" value="<?php echo $data['TITLE']; ?>" id="inputTitle" placeholder="<?php echo $this->l10n->gettext('menu_field_name'); ?>">
 		</div>
 
 		<div class="form-group">
-			<label for="inputUrl"><?php echo $this->lng_m['menu_field_link']; ?></label>
-			<input type="text" class="form-control" name="url" value="<?php echo $data['URL']; ?>" id="inputUrl" placeholder="<?php echo $this->lng_m['menu_field_link']; ?>">
+			<label for="inputUrl"><?php echo $this->l10n->gettext('menu_field_link'); ?></label>
+			<input type="text" class="form-control" name="url" value="<?php echo $data['URL']; ?>" id="inputUrl" placeholder="<?php echo $this->l10n->gettext('menu_field_link'); ?>">
 		</div>
 
 		<div class="form-group">
-			<label for="selectParent"><?php echo $this->lng_m['menu_field_pos']; ?></label>
+			<label for="selectParent"><?php echo $this->l10n->gettext('menu_field_pos'); ?></label>
 			<select size="6" class="form-control" name="parent" id="selectParent">
 				<?php echo $data['PARENTS']; ?>
 			</select>
 		</div>
 
 		<div class="form-group">
-			<label for="selectTarget"><?php echo $this->lng_m['menu_field_target']; ?></label>
+			<label for="selectTarget"><?php echo $this->l10n->gettext('menu_field_target'); ?></label>
 			<select id="selectTarget" class="form-control" name="target">
-				<option value="_self"><?php echo $this->lng_m['menu_target_self']; ?></option>
-				<option value="_blank" <?php echo $data['TARGET']; ?>><?php echo $this->lng_m['menu_target_blank']; ?></option>
+				<option value="_self"><?php echo $this->l10n->gettext('menu_target_self'); ?></option>
+				<option value="_blank" <?php echo $data['TARGET']; ?>><?php echo $this->l10n->gettext('menu_target_blank'); ?></option>
 			</select>
 		</div>
 
 		<div class="form-group">
-			<label for="selectPerm"><?php echo $this->lng_m['menu_field_access']; ?></label>
+			<label for="selectPerm"><?php echo $this->l10n->gettext('menu_field_access'); ?></label>
 			<select size="6" class="form-control" name="permissions" id="selectPerm">
 				<?php echo $data['PERMISSIONS']; ?>
 			</select>
