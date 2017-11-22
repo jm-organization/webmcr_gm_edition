@@ -49,6 +49,8 @@ vcs.xml
 /dist/
 /nbdist/
 .nb-gradle/
+/nbproject/project.properties
+/nbproject/project.xml
 
 ### Composer template
 composer.phar

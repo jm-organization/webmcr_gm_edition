@@ -7,6 +7,7 @@
  * @Date: 15.10.2017
  * @Time: 21:20
  */
+
 class l10n {
 	public $core, $configs, $db;
 

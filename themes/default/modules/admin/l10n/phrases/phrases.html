@@ -1,4 +1,6 @@
 <form class="form-block" method="post" action="<?php echo ADMIN_URL.'&do=l10n_phrases&op=delete'; ?>">
+    <input type="hidden" name="language" value="<?php echo (isset($_GET['language']))?$_GET['language']:0 ?>">
+
     <div class="block-header">
         <div class="block-name">
             <p id="title">
@@ -27,4 +29,4 @@
         <?php echo $data['PHRASES_LIST']?>
         </tbody>
     </table>
-</div>
+</form>
