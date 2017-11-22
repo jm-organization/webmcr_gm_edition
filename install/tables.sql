@@ -1085,8 +1085,8 @@ INSERT INTO `mcr_menu_adm` (`id`, `gid`, `title`, `text`, `url`, `target`, `acce
 (17, 1, 'Модули', 'Управление модулями', '~base_url~?mode=admin&do=modules', '_self', 'sys_adm_m_i_modules', 4, 22),
 (18, 1, 'Лог действий', 'Журнал действий пользователей', '~base_url~?mode=admin&do=logs', '_self', 'sys_adm_m_i_logs', 5, 23),
 (19, 1, 'Блоки', 'Управление Блоками', '~base_url~?mode=admin&do=blocks', '_self', 'sys_adm_m_i_blocks', 6, 18),
-(20, 1, 'Локализация Фразы', 'Управление Фразами', '~base_url~?mode=admin&do=l10n_phrases', '_self', 'sys_adm_m_i_l10n', 6, 18),
-(21, 1, 'Локализация Языки', 'Управление Языками', '~base_url~?mode=admin&do=l10n_languages', '_self', 'sys_adm_m_i_l10n', 6, 18);
+(20, 1, 'Локализация: Фразы', 'Управление фразами', '~base_url~?mode=admin&do=l10n_phrases', '_self', 'sys_adm_m_i_l10n', 6, 25),
+(21, 1, 'Локализация: Языки', 'Управление языками', '~base_url~?mode=admin&do=l10n_languages', '_self', 'sys_adm_m_i_l10n', 6, 26);
 #line
 CREATE TABLE IF NOT EXISTS `mcr_menu_adm_groups` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
@@ -1135,7 +1135,9 @@ INSERT INTO `mcr_menu_adm_icons` (`id`, `title`, `img`) VALUES
 (21, 'Монитор', 'monitor.png'),
 (22, 'Сеть', 'network.png'),
 (23, 'Открытая книга', 'logs.png'),
-(24, 'Пустое древо', 'gealogy.png');
+(24, 'Пустое древо', 'gealogy.png'),
+(25, 'Языки', 'languages.png'),
+(26, 'Фразы', 'phrases.png');
 #line
 CREATE TABLE IF NOT EXISTS `mcr_monitoring` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
