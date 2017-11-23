@@ -200,8 +200,6 @@ body > .container > .row > .col-md-8 {
 
 .pagination { text-align: center; margin: 0px; }
 
-.form-block .block-header .btn-group { margin-right: 10px; }
-
 .form-block .block-name i { margin-right: 5px; }
 .form-block > .block-header > .block-name,
 .form-block > .block-header > .block-right {

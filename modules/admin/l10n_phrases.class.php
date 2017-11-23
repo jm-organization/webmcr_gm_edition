@@ -137,6 +137,27 @@ class submodule {
         return ob_get_clean();
     }
 
+    protected function rebuild_phrases($phrases_in_json) {
+        $phrses = str_replace('{"', "{\n\t\t\"", $phrases_in_json);
+        $phrses = str_replace('":"', "\": \"", $phrses);
+        $phrses = str_replace('","', "\",\n\t\t\"", $phrses);
+
+        return str_replace('"}', "\"\n\t}", $phrses);
+    }
+
+    protected function save_language($filename, $file_content) {
+        header('Content-Description: File Transfer');
+        header('Content-Type: application/json');
+        header('Content-Disposition: attachment; filename='.$filename.'.json');
+        header('Content-Transfer-Encoding: binary');
+        header('Expires: 0');
+        header('Cache-Control: must-revalidate');
+        header('Pragma: public');
+        header('Content-Length: ' . strlen($file_content));
+
+        echo $file_content;
+    }
+
     protected function update_language($sql_to_get, $new_phrase, $action=false) {
         $data_lang = $this->db->query($sql_to_get);
         if (!$data_lang || $this->db->num_rows($data_lang) <=0) { return null; };
@@ -166,7 +187,7 @@ class submodule {
                 $this->l10n->gettext('error_message'),
                 $this->l10n->gettext('error_sql_critical').".\n".$this->l10n->gettext('languages_update'),
                 2,
-                '?mode=admin&do=l10n_phrases&language='.$language['id'].($action)?'&op='.$action:''
+                '?mode=admin&do=l10n_phrases&language='.$language['id'].(($action)?'&op='.$action:'')
             ); };
 
             $this->l10n->update_cache($language['language']);
@@ -223,7 +244,7 @@ class submodule {
         if ($_SERVER['REQUEST_METHOD']=='POST') {
             $post = array(
                 'language' => intval(@$_POST['language']),
-                'phrase_value' => htmLawed(@$_POST['phrase_value']),
+                'phrase_value' => htmLawed(str_replace('"','`',@$_POST['phrase_value'])),
                 'phrase_key' => (preg_match($validphrase,trim( @$_POST['phrase_key'])) == 1)?trim( @$_POST['phrase_key']):false,
             );
 
@@ -349,7 +370,7 @@ class submodule {
         if ($_SERVER['REQUEST_METHOD']=='POST') {
             $post = array(
                 'language' => intval(@$_POST['language']),
-                'phrase_value' => htmLawed(@$_POST['phrase_value']),
+                'phrase_value' => htmLawed(str_replace('"','`',@$_POST['phrase_value'])),
                 'phrase_key' => (strlen(trim(@$_POST['phrase_key'])) > 1)?(
                     (preg_match($validphrase,trim( @$_POST['phrase_key'])) == 1)?trim(@$_POST['phrase_key']):false
                 ):(false),
@@ -513,6 +534,56 @@ class submodule {
         );
     }
 
+    protected function export($language) {
+        switch ($language) {
+            case 0:
+                $sql = "SELECT `phrase_key`, `phrase_value` FROM `mcr_l10n_phrases`";
+                $language = $this->db->query($sql);
+
+                $phrases_in_json = "{\n\t\"Language\": \"Russian (master)\",\n\t\"locale\": \"ru-RU\",\n\t\"date_format\": \"\",\n\t\"time_format\": \"\",\n\t\"text_direction\": \"\",\n\t\"phrases\": {\n\t\t";
+
+                $total =  $this->db->num_rows($language);
+                $current = 0;
+                while ($phrase = $this->db->fetch_assoc($language)) {
+                    $current++;
+
+                    if ($current == $total) {
+                        $phrases_in_json .= '"'.$phrase['phrase_key'].'": "'.$phrase['phrase_value'].'"'."\n\t}";
+                    } else {
+                        $phrases_in_json .= '"'.$phrase['phrase_key'].'": "'.$phrase['phrase_value'].'",'."\n\t\t";
+                    }
+                }
+
+                $phrases_in_json .= "\n}";
+
+                if (ob_get_level()) {
+                    ob_end_clean();
+                }
+
+                $this->save_language('Russian_Master', $phrases_in_json);
+                break;
+            default:
+                $sql = "SELECT `phrases`, `settings` FROM `mcr_l10n_languages` WHERE `id`='$language'";
+                $language = $this->db->query($sql);
+
+                $language = $this->db->fetch_assoc($language);
+
+                $language_settings = json_decode($language['settings']);
+                $language_title = Locale::getDisplayLanguage($language_settings->locale, 'en');
+
+                $phrases_in_json = "{\n\t\"Language\": \"$language_settings->title\",\n\t\"locale\": \"{$language_settings->locale}\",\n\t\"date_format\": \"{$language_settings->date_format}\",\n\t\"time_format\": \"{$language_settings->time_format}\",\n\t\"text_direction\": \"{$language_settings->text_direction}\",\n\t\"phrases\": {\n\t\t";
+                $phrases_in_json .= $this->rebuild_phrases($language['phrases']);
+                $phrases_in_json .= "\n}";
+
+                if (ob_get_level()) {
+                    ob_end_clean();
+                }
+
+                $this->save_language($language_title, $phrases_in_json);
+                break;
+        }
+    }
+
 	public function content() {
         $op = (isset($_GET['op'])) ? $_GET['op'] : '';
         $language = (isset($_GET['language'])) ? intval($_GET['language']) : 0;
@@ -538,7 +609,9 @@ class submodule {
 
                 $content = $this->edit(); 
                 break;
-            case 'delete': $this->delete(); break;
+            case 'delete': $content = ''; $this->delete(); break;
+
+            case 'export': $content = ''; $this->export($language); break;
 
             default:
                 if ($language != 0) {

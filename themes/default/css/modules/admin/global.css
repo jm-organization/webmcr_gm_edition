@@ -217,16 +217,18 @@
     margin: 0 0 9px 0;
     float: right;
 }
-.block-name p#actions > a {
+.block-name p#actions > span[role="group"] { margin-left: 9px; }
+.block-name p#actions > span[role="group"] > a,
+.block-name p#actions > span[role="group"] > button {
     margin: 5px 0
 }
-.block-name p#actions > button {
+.block-name p#actions > span[role="group"] > button {
     line-height: 18px;
     font-size: 18px;
     padding: 7px 9px 6px 14px;
     text-align: center;
 }
-.block-name p#actions > button:hover {
+.block-name p#actions > span[role="group"] > button:hover {
     color: white!important;
 }
 

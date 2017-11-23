@@ -53,10 +53,11 @@ input, select, textarea {
 }
 
 .container {
-	width: 1170px;
+	width: 100%;
+	max-width: 1170px;
 	min-height: 100%;
 	display: block;
-	margin: auto;
+	margin: 0 auto;
 	position: relative;
 	padding: 0px 15px;
 }

@@ -27,7 +27,7 @@ class l10n {
             $locale_path = MCR_CACHE_PATH.'l10n/'.$locale;
 
             if (!file_exists($locale_path) || (
-                !file_exists($locale_path.'/.info') && !file_exists($locale_path.'/.cache')
+                !file_exists($locale_path.'/.info') || !file_exists($locale_path.'/.cache')
             )) { 
                 if (!file_exists(MCR_CACHE_PATH.'l10n')) { mkdir(MCR_CACHE_PATH.'l10n'); }
                 if (!file_exists($locale_path)) { mkdir($locale_path); }
@@ -105,7 +105,7 @@ class l10n {
         $phrase = (ctype_digit($phrase))?sprintf($closer, $phrase):$phrase;
         
         foreach ($unjson_phrases as $key => $value) {
-            if ($phrase == $key) { return sprintf($value, $text); }
+            if ($phrase == $key) { return str_replace('`','"',sprintf($value, $text)); }
         }
         
 		return $phrase;

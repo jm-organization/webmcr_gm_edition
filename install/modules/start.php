@@ -41,6 +41,8 @@ class module{
 
 			if(@ini_get('allow_url_fopen')=='0' || @ini_get('allow_url_fopen')=='false'){ $this->install->notify($this->lng['e_msg'], $this->lng['e_fopen'], 'install/'); }
 
+			if(!class_exists('Locale')){ $this->install->notify($this->lng['e_msg'], 'l10n', 'install/'); }
+
 			if(!function_exists('ImageCreateFromJpeg')){ $this->install->notify($this->lng['e_msg'], $this->lng['e_gd'], 'install/'); }
 
 			if(!function_exists('mysql_query') && !function_exists('mysqli_query')){ $this->install->notify($this->lng['e_msg'], $this->lng['e_mysql_not_found'], 'install/'); }
@@ -76,7 +78,9 @@ class module{
 
 			"REG_GLOB" => (@ini_get('register_globals')=='on') ? '<b class="red">'.$this->lng['on'].'</b>' : '<b class="green">Выкл.</b>',
 
-			"URL_FOPEN" => (@ini_get('allow_url_fopen')=='1' || @ini_get('allow_url_fopen')=='true') ? '<b class="green">'.$this->lng['on'].'</b>' : '<b class="red">'.$this->lng['off'].'</b>',
+			"LOCALIZATION" => (class_exists('Locale')) ? '<b class="green">'.$this->lng['on'].'</b>' : '<b class="red">'.$this->lng['off'].'</b>',
+
+            "URL_FOPEN" => (@ini_get('allow_url_fopen')=='1' || @ini_get('allow_url_fopen')=='true') ? '<b class="green">'.$this->lng['on'].'</b>' : '<b class="red">'.$this->lng['off'].'</b>',
 
 			"GD" => (function_exists('ImageCreateFromJpeg')) ? '<b class="green">'.$this->lng['yes'].'</b>' : '<b class="red">'.$this->lng['no'].'</b>',
 
