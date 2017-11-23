@@ -1,7 +1,14 @@
 <div class="form-block">
 
 	<div class="block-header">
-		<div class="block-name"><?php echo $this->lng_m['mod_name']; ?></div>
+		<div class="block-name">
+			<p id="title">
+				<span class="title"><?php echo $this->l10n->gettext('module_admin-panel'); ?></span>
+			</p>
+			<p id="actions" class="btn-group" role="group">
+				<a role="button" href="<?php echo ADMIN_URL; ?>" class="btn btn-primary"><?php echo $this->l10n->gettext('btn-add-menu_item'); ?></a>
+			</p>
+		</div>
 	</div>
 
 	<div class="block-line"></div>

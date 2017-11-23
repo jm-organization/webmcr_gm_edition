@@ -88,6 +88,8 @@ class submodule {
         $languages_qr = $this->db->query($get_languages);
 
         ob_start();
+            echo "<option value='0' style='color:#d9534f;' selected>Русский</option>";
+
         while ($item = $this->db->fetch_assoc($languages_qr)) {
             $settings = json_decode($item['settings']);
 
@@ -97,7 +99,7 @@ class submodule {
 
             $select = ($item['id'] == $language)?'selected':'';
 
-            echo "<option value='{$item['id']}'$select>".$settings->title."</option>";
+            echo "<option value='{$item['id']}'$select>{$settings->title}</option>";
         }
         $languages_list = ob_get_clean();
         
@@ -114,10 +116,12 @@ class submodule {
 		return $this->core->sp(MCR_THEME_MOD."admin/l10n/phrases/phrases.html", $data);
 	}
     
-    protected function languages($select_language = 0) {
+    protected function languages($select_language = -1) {
         $languages = $this->l10n->get_languages();
-		
+		$select = ($select_language==0)?'selected':0;
+
         ob_start();
+            echo "<option value='0' style='color:#d9534f;'{$select}>Русский (master)</option>";
 
 		while ($language = $this->core->db->fetch_assoc($languages)) {
             
@@ -133,12 +137,19 @@ class submodule {
         return ob_get_clean();
     }
 
-    protected function update_language($sql_to_get, $new_phrase) {
+    protected function update_language($sql_to_get, $new_phrase, $action=false) {
         $data_lang = $this->db->query($sql_to_get);
         if (!$data_lang || $this->db->num_rows($data_lang) <=0) { return null; };
 
         foreach ($data_lang as $language) {
             $phrases = json_decode($language['phrases'], true);
+
+            if ($action == 'add' && array_key_exists(strval($new_phrase['key']), $phrases)) {$this->core->notify(
+                $this->l10n->gettext('error_message'),
+                $this->l10n->gettext('phrase_is_exist', $new_phrase['key']),
+                2,
+                '?mode=admin&do=l10n_phrases&language='.$language['id'].(($action)?'&op='.$action:'')
+            );}
 
             $phrase[strval($new_phrase['key'])] = $new_phrase['value'];
 
@@ -155,20 +166,55 @@ class submodule {
                 $this->l10n->gettext('error_message'),
                 $this->l10n->gettext('error_sql_critical').".\n".$this->l10n->gettext('languages_update'),
                 2,
-                '?mode=admin&do=l10n_phrases'
+                '?mode=admin&do=l10n_phrases&language='.$language['id'].($action)?'&op='.$action:''
             ); };
 
             $this->l10n->update_cache($language['language']);
         }
     }
 
-    protected function update_child_languages($parent, $new_phrase) {
+    protected function update_child_languages($parent, $new_phrase, $action=false) {
         switch ($parent) {
             case 0: $languages = "SELECT `id`, `language`, `phrases` FROM `mcr_l10n_languages`"; break;
             default : $languages = "SELECT `id`, `language`, `phrases` FROM `mcr_l10n_languages` WHERE `parent_language`='{$parent}'"; break;
         }
         
-        $this->update_language($languages, $new_phrase);
+        $this->update_language($languages, $new_phrase, $action);
+    }
+
+    protected function delete_phrases($children, $phrases) {
+        $child_languages = $this->db->query($children);
+        if (!$child_languages || $this->db->num_rows($child_languages) <=0) { return null; };
+
+        while ($child = $this->db->fetch_Assoc($child_languages)) {
+            $child_language_phrases = json_decode($child['phrases'], true);
+
+            foreach ($child_language_phrases as $key => $value) {
+                foreach ($phrases as $phrase) { if ($phrase == $key) {
+                    unset($child_language_phrases[$key]);
+                } }
+            }
+
+            $child_language_phrases = json_encode($child_language_phrases, JSON_UNESCAPED_UNICODE);
+
+            $update_child = "
+                UPDATE `mcr_l10n_languages`
+                SET `phrases`='{$child_language_phrases}'
+                WHERE `id`='{$child['id']}'
+            ";
+            $this->db->query($update_child);
+
+            $this->l10n->update_cache($child['language']);
+        }
+    }
+
+    protected function delete_child_phrases($parent, $phrases) {
+        switch ($parent) {
+            case 0: $children = "SELECT `id`, `phrases`, `language` FROM `mcr_l10n_languages`"; break;
+            default: $children = "SELECT `id`, `phrases`, `language` FROM `mcr_l10n_languages` WHERE `parent_language`='{$parent}'"; break;
+        }
+
+        $this->delete_phrases($children, $phrases);
     }
 
     protected function add() {
@@ -178,7 +224,7 @@ class submodule {
             $post = array(
                 'language' => intval(@$_POST['language']),
                 'phrase_value' => htmLawed(@$_POST['phrase_value']),
-                'phrase_key' => (preg_match($validphrase,trim( @$_POST['phrase_key'])))?trim( @$_POST['phrase_key']):false,
+                'phrase_key' => (preg_match($validphrase,trim( @$_POST['phrase_key'])) == 1)?trim( @$_POST['phrase_key']):false,
             );
 
             if (!$post['phrase_key']) {
@@ -209,15 +255,15 @@ class submodule {
                     ); }
                         
                     $new_phrase = array('key'=>$phrase_key,'value'=>$phrase_value);
-                    $this->update_child_languages(0, $new_phrase);
+                    $this->update_child_languages(0, $new_phrase, 'add');
                     break;
                 default: 
                     $language = "SELECT `id`, `language`, `phrases` FROM `mcr_l10n_languages` WHERE `id`='{$post['language']}'";
                     $new_phrase = array('key'=>$phrase_key,'value'=>$phrase_value);
                     
-                    $this->update_language($language, $new_phrase);
+                    $this->update_language($language, $new_phrase, 'add');
                     
-                    $this->update_child_languages($post['language'], $new_phrase);
+                    $this->update_child_languages($post['language'], $new_phrase, 'add');
                     break;
             }
             
@@ -234,7 +280,7 @@ class submodule {
                 $this->l10n->gettext('success'),
                 $this->l10n->gettext('success_add_phrase'),
                 3,
-                '?mode=admin&do=l10n_phrases'
+                '?mode=admin&do=l10n_phrases&language='.$post['language']
             );
         }
 
@@ -248,19 +294,16 @@ class submodule {
 	}
 
 	protected function edit() {
-        $phrase_key = $phrase_value = '';
         $validphrase = "/[a-zA-Z0-9_-]*/";
 
         $language = intval(@$_GET['language']);
-        $phrase = (strlen(@$_GET['phrase']) > 1)?(
-            (preg_match($validphrase, trim(@$_GET['phrase'])))?trim(@$_GET['phrase']):false
-        ):(false);
+        $phrase = (preg_match($validphrase, trim(@$_GET['phrase'])) == 1)?trim(@$_GET['phrase']):false;
 
         if (!$phrase) { $this->core->notify(
             $this->l10n->gettext('error_message'),
             $this->l10n->gettext('invalid_data').': `phrase_key`.',
             2,
-            '?mode=admin&do=l10n_phrases'
+            '?mode=admin&do=l10n_phrases&language='.$language
         ); }
 
         switch ($language) {
@@ -276,7 +319,7 @@ class submodule {
                         $this->l10n->gettext('error_message'),
                         $this->l10n->gettext('invalid_data'),
                         2,
-                        '?mode=admin&do=l10n_phrases'
+                        '?mode=admin&do=l10n_phrases&language='.$language
                     );
                 }
                 $current_language = $this->db->fetch_assoc($languages);
@@ -295,7 +338,7 @@ class submodule {
                         $this->l10n->gettext('error_message'),
                         $this->l10n->gettext('invalid_data'),
                         2,
-                        '?mode=admin&do=l10n_phrases'
+                        '?mode=admin&do=l10n_phrases&language='.$language
                     );
                 }
                 $current_language = $this->db->fetch_assoc($languages);
@@ -303,14 +346,13 @@ class submodule {
                 break;
         }
 
-        $phrase_key = $phrase;
-        $phrase_value = $phrases[$phrase];
-
         if ($_SERVER['REQUEST_METHOD']=='POST') {
             $post = array(
                 'language' => intval(@$_POST['language']),
                 'phrase_value' => htmLawed(@$_POST['phrase_value']),
-                'phrase_key' => (preg_match($validphrase,trim( @$_POST['phrase_key'])))?trim( @$_POST['phrase_key']):false,
+                'phrase_key' => (strlen(trim(@$_POST['phrase_key'])) > 1)?(
+                    (preg_match($validphrase,trim( @$_POST['phrase_key'])) == 1)?trim(@$_POST['phrase_key']):false
+                ):(false),
             );
 
             if (!$post['phrase_key']) {
@@ -318,7 +360,7 @@ class submodule {
                     $this->l10n->gettext('error_message'),
                     $this->l10n->gettext('invalid_data'),
                     2,
-                    '?mode=admin&do=l10n_phrases&op=add'
+                    '?mode=admin&do=l10n_phrases&op=edit&language='.$post['language']
                 );
             }
 
@@ -339,19 +381,19 @@ class submodule {
                         $this->l10n->gettext('error_message'),
                         $this->l10n->gettext('error_sql_critical').'. '.$this->l10n->gettext('save_phrase'),
                         2,
-                        '?mode=admin&do=l10n_phrases&op=add'
+                        '?mode=admin&do=l10n_phrases&op=edit&language='.$post['language']
                     ); }
 
                     $new_phrase = array('key'=>$phrase_key,'value'=>$phrase_value);
-                    $this->update_child_languages(0, $new_phrase);
+                    $this->update_child_languages(0, $new_phrase, 'edit');
                     break;
                 default:
                     $language = "SELECT `id`, `language`, `phrases` FROM `mcr_l10n_languages` WHERE `id`='{$post['language']}'";
                     $new_phrase = array('key'=>$phrase_key,'value'=>$phrase_value);
 
-                    $this->update_language($language, $new_phrase);
+                    $this->update_language($language, $new_phrase, 'edit');
 
-                    $this->update_child_languages($post['language'], $new_phrase);
+                    $this->update_child_languages($post['language'], $new_phrase, 'edit');
                     break;
             }
 
@@ -368,14 +410,14 @@ class submodule {
                 $this->l10n->gettext('success'),
                 $this->l10n->gettext('success_edit_phrase'),
                 3,
-                '?mode=admin&do=l10n_phrases'
+                '?mode=admin&do=l10n_phrases&language='.$post['language']
             );
         }
         
         $data = array(
             'LANGUAGES' => $this->languages($language),
-            'PHRASE_KEY' => $phrase_key,
-            'PHRASE_VALUE' => $phrase_value,
+            'PHRASE_KEY' => $phrase,
+            'PHRASE_VALUE' => $phrases[$phrase],
         );
 
         return $this->core->sp(MCR_THEME_MOD."admin/l10n/phrases/form-phrases.html", $data);
@@ -383,46 +425,81 @@ class submodule {
 	}
 
 	protected function delete() {
-        if ($_SERVER['REQUEST_METHOD'] == 'GET') { 
-            $phrases = (intval(@$_GET['phrase']) >= 1)?$this->db->safesql(intval(@$_GET['phrase'])):false; 
-        
-            if (!$phrases) {
+        $validphrase = "/[a-zA-Z0-9_-]*/";
+
+        if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+            $phrases[] = (strlen(@$_GET['phrase']) > 1)?(
+                (preg_match($validphrase, trim(@$_GET['phrase'])) == 1)?trim(@$_GET['phrase']):false
+            ):(false);
+            $language = (isset($_GET['language']))?$_GET['language']:0;
+
+            if (!$phrases[0]) {
                 $this->core->notify(
                     $this->l10n->gettext('error_message'),
                     $this->l10n->gettext('error_not_found'),
                     2,
-                    '?mode=admin&do=l10n_phrases'
+                    '?mode=admin&do=l10n_phrases&language='.$language
                 );
             }
         } 
         
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $phrases = $_POST['phrases_id'];
-            
+            $language = $_POST['language'];
+
             if (empty($phrases)) {
                 $this->core->notify(
                     $this->l10n->gettext('error_message'),
                     $this->l10n->gettext('phrases_not_selected'),
                     2,
-                    '?mode=admin&do=l10n_phrases'
+                    '?mode=admin&do=l10n_phrases&language='.$language
                 );
             }
-            
-            $phrases = $this->core->filter_int_array($phrases);
+
             $phrases = array_unique($phrases);
-            $phrases = $this->db->safesql(implode(", ", $phrases));
+            foreach ($phrases as $phrase) {
+                if (preg_match($validphrase, $phrase) != 1) {
+                    $this->core->notify(
+                        $this->l10n->gettext('error_message'),
+                        $this->l10n->gettext('error_not_found'),
+                        2,
+                        '?mode=admin&do=l10n_phrases&language='.$language
+                    );
+                }
+            }
         }
-        
-        /*if (!$this->db->remove_fast("mcr_l10n_phrases", "`id` IN ($phrases)")) {
-            $this->core->notify(
-                $this->l10n->gettext('error_message'),
-                $this->l10n->gettext('error_sql_critical'),
-                2,
-                '?mode=admin&do=l10n_phrases'
-            );
+
+        /**
+         * @var submodule $language
+         * @var submodule $phrases
+         */
+
+        if ($language < 0) { $this->core->notify(
+            $this->l10n->gettext('error_message'),
+            $this->l10n->gettext('unknown_language'),
+            2,
+            '?mode=admin&do=l10n_phrases'
+        ); }
+
+        switch ($language) {
+            case 0:
+                $this->delete_child_phrases(0, $phrases);
+
+                $phrases = "'".implode("', '", $phrases)."'";
+
+                $this->db->remove_fast("mcr_l10n_phrases", "`phrase_key` IN ($phrases)");
+                break;
+            default:
+                $parent = "SELECT `id`, `language`, `phrases` FROM `mcr_l10n_languages` WHERE `id`='{$language}'";
+
+                $this->delete_phrases($parent, $phrases);
+
+                $this->delete_child_phrases($language, $phrases);
+                break;
         }
 
         $count1 = $this->db->affected_rows();
+        $phrases = (is_array($phrases))?"'".implode("', '", $phrases)."'":$phrases;
 
         // Последнее обновление пользователя
         $this->db->update_user($this->user);
@@ -432,8 +509,8 @@ class submodule {
             $this->l10n->gettext('success'),
             $this->l10n->gettext('success_delete_phrases')." $count1",
             3,
-            '?mode=admin&do=l10n_phrases'
-        );*/
+            '?mode=admin&do=l10n_phrases&language='.$language
+        );
     }
 
 	public function content() {

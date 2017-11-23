@@ -147,8 +147,7 @@ class submodule {
     protected function languages_list($languages) {
 		ob_start();
 
-        $current = 0;
-		while ($language = $this->db->fetch_assoc($languages)) {
+        while ($language = $this->db->fetch_assoc($languages)) {
 			$title = json_decode($language['settings'])->title;
 
 			$data = array(
