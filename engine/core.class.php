@@ -72,7 +72,7 @@ class core{
 		// Create & set new object of menu
 		$this->menu = new menu($this);
 
-		$base_url = ($this->cfg->main['install']) ? $this->base_url() : $this->cfg->main['s_root'];
+		$base_url = ($this->cfg->main['install']) ? $this->cfg->main['s_root'] : $this->base_url();
 
 		// Generate CSRF Secure key
 		define("MCR_SECURE_KEY", $this->gen_csrf_secure());// System constants

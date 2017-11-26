@@ -234,11 +234,11 @@
 
 .table-hover tbody tr:hover { background-color: rgba(0,0,0,.0015); }
 
+/* Localization module */
 #phrases .l10n-action {
     width: 15%!important;
     text-align: right;
 }
-
 #languages .l10n-action {
     width: 25%!important;
     text-align: right;
@@ -265,17 +265,80 @@ td.l10n-action > label.custom-checkbox {
 tr:hover td.l10n-action > label.custom-checkbox .custom-control-input:not(:checked) + .custom-control-indicator {
     background: #ffffff;
 }
-
 .date_format, .time_format { margin-bottom: 5px!important }
 .date_format label, .time_format label { margin-bottom: 0!important; }
-.date_format > small, 
-.date_format > [role="small"], 
-.time_format > small, 
+.date_format > small,
+.date_format > [role="small"],
+.time_format > small,
 .time_format > [role="small"] {
     margin-top: -1px!important;
     margin-left: 20px!important;
 }
 
+/* News module */
+.news-id { width: 5%!important; }
+.news-category { width: 25%!important; }
+.news-action { width: 15%!important; }
+.news-id,
+.news-action,
+.news-category { text-align: right; }
+td.news-action { border-left: 1px solid #ddd; }
+td.news-id { border-right: 1px solid #ddd; }
+td.news-title {
+    height: 42px;
+    padding: 3px 4px 3px 6px!important;
+}
+td.news-title > #left {
+    float: left;
+    height: 42px;
+    width: 42px;
+    display: inline-block;
+    margin-right: 6px;
+    padding: 0;
+    cursor: pointer;
+}
+td.news-title > #right {
+    float: left;
+    width: calc(100% - 48px);
+    margin: 0;
+    padding: 0;
+}
+td.news-title > #top,
+td.news-title > #bottom {
+    height: 21px;
+    display: block;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+td.news-title > #right > #top {  }
+td.news-title > #right > #bottom {  }
+td.news-title p { display: inline; margin: 0; }
+td.news-title p > i {
+    padding-left: 7px;
+    opacity: 0.55;
+}
+td.news-title p > i:hover { opacity: 1; }
+.news-action > a#edit { color: #72b748 }
+.news-action > a#delete { color: #d9534f }
+.news-action > a:hover { color: #636c72!important; background: #fbfac7!important; }
+td.news-action {
+    padding: 0!important;
+    line-height: 24px;
+    font-size: 20px;
+    border-left: 1px solid #ddd;
+}
+td.news-action > a {
+    display: inline-block;
+    padding: 7px 10px;
+}
+td.news-action > label.custom-checkbox {
+    display: inline;
+    margin: 9px;
+    vertical-align: middle;
+}
+
+/* debatable's design adaptation */
 .dataTables_wrapper select {
     padding: 3px 4px;
     border-radius: 3px;

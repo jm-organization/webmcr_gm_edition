@@ -292,6 +292,8 @@ var mcr = {
 
 // Функции, вызываемые при загрузке
 $(function(){
+    $('[data-toggle="tooltip"]').tooltip();
+
 	$('input[type="file"].file-inputs').bootstrapFileInput();
 
 	// Загрузка мониторинга

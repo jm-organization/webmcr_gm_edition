@@ -107,6 +107,20 @@ class module{
 
 			if(!$query){ $this->install->notify($this->lng['e_add_economy'], $this->lng['e_msg'], 'install/?do=step_2'); }
 
+			$db->query("INSERT INTO `mcr_news` (`cid`, `title`, `text_html`, `vote`, `discus`, `attach`, `hidden`, `uid`, `date`, `img`, `data`) VALUE (
+			  1, 'О проекте', '<h2><strong>MagicMCR&nbsp;</strong></h2>
+<p>powered by WebMCR.&nbsp;</p>
+<h3>О проекте&nbsp;</h3>
+<p>Публичный проект JM Organization для проекта Grand-Mine. Проект носит кодовое название webmcr_gm_edition. Разрабатывается разработчиком Magicfar4 aka Magicmen. Данный проект представляет из себя cms для сайтов проектов игры Minecrfat. Проект основывается уже на готовой cms от разработчиков.&nbsp;</p>
+{READMORE}
+<h3>Установка&nbsp;</h3>
+<p>Залить все скачанные файлы на сайт и следовать инструкциям установщика.&nbsp;</p>
+<h3>Контакты&nbsp;</h3>
+<p>Сайт официального разработчика: <a href=\"http://webmcr.com\">http://webmcr.com</a>&nbsp;</p>
+<p>Официальный Wiki: <a href=\"http://wiki.webmcr.com/\">http://wiki.webmcr.com/&nbsp;</a></p>
+<p>Mind 42 - <a href=\"http://mind42.com/mindmap/a2e9fdc9-a645-42db-80e0-c338f8a27c2c%20\">http://mind42.com/mindmap/a2e9fdc9-a645-42db-80e0-c338f8a27c2c&nbsp;</a></p>
+<p>Сайт организации, которая адaптировала движок для проекта:&nbsp; <a href=\"http://www.jm-org.net/\">http://www.jm-org.net/</a>&nbsp;</p>', 0, 1, 0, 0, 1, NOW(), '', '{\"time_last\":1511640157,\"uid_last\":1,\"planed_news\":true,\"close_comments\":false,\"time_when_close_comments\":false}');");
+
 			$_SESSION['step_2'] = true;
 
 			$this->install->notify('', '', 'install/?do=step_3');

@@ -9,38 +9,11 @@
  *
  * @documentation:
  */
+
+require_once MCR_LIBS_PATH.'htmLawed/htmLawed.php';
+
 class submodule {
 	private $core, $db, $l10n, $user;
-    
-    private $locales = array(
-        'af-ZA', 'am-ET', 'ar-AR', 'ay-BO', 'az-AZ', 'be-BY', 'bg-BG', 'bn-IN',
-        'bs-BA', 'ca-ES', 'cs-CZ', 'cy-GB', 'da-DK', 'de-DE', 'el-GR', 'en-GB',
-        'en-US', 'eo-EO', 'es-CL', 'es-CO', 'es-ES', 'es-LA', 'fr-CA', 'fr-FR',
-        'ga-IE', 'gl-ES', 'gu-IN', 'ha-NG', 'he-IL', 'hi-IN', 'hr-HR', 'ht-HT', 
-        'hu-HU', 'hy-AM', 'id-ID', 'ig-NG', 'is-IS', 'it-IT', 'ja-JP', 'jv-ID', 
-        'ka-GE', 'kk-KZ', 'km-KH', 'kn-IN', 'ko-KR', 'ku-TR', 'la-VA', 'li-NL', 
-        'lo-LA', 'lt-LT', 'lv-LV', 'mg-MG', 'mk-MK', 'ml-IN', 'mn-MN', 'mr-IN', 
-        'ms-MY', 'mt-MT', 'my-MM', 'nb-NO', 'ne-NP', 'nl-NL', 'nn-NO', 'or-IN',
-        'pa-IN', 'pl-PL', 'ps-AF', 'pt-BR', 'pt-PT', 'qu-PE', 'rm-CH', 'ro-RO', 
-        'ru-RU', 'sa-IN', 'sk-SK', 'sl-SI', 'so-SO', 'sq-AL', 'sr-RS', 'sv-SE', 
-        'sw-KE', 'ta-IN', 'te-IN', 'tg-TJ', 'th-TH', 'tl-PH', 'tl-ST', 'tr-TR', 
-        'tt-RU', 'uk-UA', 'ur-PK', 'uz-UZ', 'vi-VN', 'xh-ZA', 'yi-DE', 'yo-NG',
-        'zh-CN', 'zh-HK', 'zh-TW', 'zu-ZA'
-    );
-    
-    private $date_formats = array(
-        'M j, Y' => '%b %d, %Y', 
-        'F j, Y' => '%B %d, %Y', 
-        'j M Y' => '%d %b %Y', 
-        'j F Y' => '%d %B %Y', 
-        'j/n/y' => '%d/%m/%y',
-        'n/j/y' => '%m/%d/%y', 
-        'd.m.Y' => '%d.%m.%Y'
-    );
-    
-    private $time_formats = array(
-        'g:i A', 'H:i'
-    );
 
     public function __construct($core) {
 		$this->core = $core;
@@ -87,7 +60,7 @@ class submodule {
     protected function locales_list($l='') {
         ob_start();
 
-		foreach ($this->locales as $locale) {
+		foreach ($this->l10n->locales as $locale) {
             $locale_language = Locale::getDisplayLanguage($locale, $this->l10n->get_config_locale());
             $locale_title = mb_convert_case($locale_language, MB_CASE_TITLE, "UTF-8").' ('.explode('-', $locale)[1].')';
             
@@ -103,7 +76,7 @@ class submodule {
         ob_start();
 
         $counter = 0;
-		foreach ($this->date_formats as $key => $value) {
+		foreach ($this->l10n->date_formats as $key => $value) {
             $counter++;
             
             $date = array(
@@ -124,7 +97,7 @@ class submodule {
         ob_start();
 
         $counter = 0;
-		foreach ($this->time_formats as $time_format) {
+		foreach ($this->l10n->time_formats as $time_format) {
             $counter++;
             
             $time = new DateTime('18:30');
@@ -197,7 +170,7 @@ class submodule {
 				$result = '{';	
 					
                 while ($phrase = $this->db->fetch_assoc($query)) {
-					$result .= '"'.$phrase['phrase_key'].'":"'.$phrase['phrase_value'].'",';
+					$result .= '"'.$phrase['phrase_key'].'":"'.str_replace('"', '\"', $phrase['phrase_value']).'",';
 				}
 				
 				$result = substr($result, 0, -1).'}';
@@ -324,8 +297,6 @@ class submodule {
         $language = $this->db->query($language);
         
         $parent_language = $locale = $title = $date_format = $time_format = $text_direction = '';
-        
-        $settings = array();
         
         if ($this->db->num_rows($language) == 1) {
             $p = $this->db->fetch_assoc($language);
@@ -465,7 +436,9 @@ class submodule {
             $languages = array_unique($languages);
             $languages = "'".implode("', '", $languages)."'";
         }
-        
+
+        /** @var submodule $languages */
+
         if (!$this->db->remove_fast("mcr_l10n_languages", "`language` IN ($languages)")) {
             $this->core->notify(
                 $this->l10n->gettext('error_message'),
@@ -514,9 +487,9 @@ class submodule {
 
                 $content = $this->edit(); 
                 break;
-			case 'delete': $this->delete(); break;
+			case 'delete': $content = ''; $this->delete(); break;
             
-			case 'phrases': $this->show_phrases(); break;
+			case 'phrases': $content = '';  $this->show_phrases(); break;
             
 			default: $content = $this->all_languages(); break;
 		}

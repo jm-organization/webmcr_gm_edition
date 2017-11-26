@@ -15,161 +15,25 @@ if(!defined("MCR")){ exit("Hacking Attempt!"); }
 require_once MCR_LIBS_PATH.'htmLawed/htmLawed.php';
 
 class submodule{
-	private $core, $db, $cfg, $user, $lng;
+	private $core, $db, $cfg, $user, $lng, $l10n;
 
 	public function __construct($core){
 		$this->core = $core;
-		$this->db	= $core->db;
-		$this->cfg	= $core->cfg;
+		$this->db = $core->db;
+		$this->cfg = $core->cfg;
 		$this->user	= $core->user;
-		$this->lng	= $core->lng_m;
+		$this->lng = $core->lng_m;
+		$this->l10n = $core->l10n;
 
 		if(!$this->core->is_access('sys_adm_news')){ $this->core->notify($this->core->lng['403'], $this->core->lng['e_403']); }
 
 		$bc = array(
-			$this->lng['mod_name'] => ADMIN_URL,
-			$this->lng['news'] => ADMIN_URL."&do=news"
+            $this->l10n->gettext('module_admin-panel') => ADMIN_URL,
+            $this->l10n->gettext('news') => ADMIN_URL."&do=news"
 		);
-
 		$this->core->bc = $this->core->gen_bc($bc);
 
 		$this->core->header .= $this->core->sp(MCR_THEME_MOD."admin/news/header.html");
-	}
-
-	private function news_array(){
-
-		$start		= $this->core->pagination($this->cfg->pagin['adm_news'], 0, 0); // Set start pagination
-		$end		= $this->cfg->pagin['adm_news']; // Set end pagination
-
-		$where		= "";
-		$sort		= "`n`.id";
-		$sortby		= "DESC";
-
-		if(isset($_GET['search']) && !empty($_GET['search'])){
-			$search = $this->db->safesql(urldecode($_GET['search']));
-			$where = "WHERE `n`.title LIKE '%$search%'";
-		}
-
-		if(isset($_GET['sort']) && !empty($_GET['sort'])){
-			$expl = explode(' ', $_GET['sort']);
-
-			$sortby = ($expl[0]=='asc') ? "ASC" : "DESC";
-
-			switch(@$expl[1]){
-				case 'title': $sort = "`n`.title"; break;
-				case 'category': $sort = "`c`.title"; break;
-			}
-		}
-
-		$query = $this->db->query("
-			SELECT 
-				`n`.id, 
-				`n`.cid, 
-				`n`.title, 
-				`c`.title AS `category`
-			FROM `mcr_news` AS `n`
-			LEFT JOIN `mcr_news_cats` AS `c` 
-			ON `c`.id=`n`.cid
-			$where
-			ORDER BY $sort $sortby
-			LIMIT $start, $end
-		");
-
-		if(!$query || $this->db->num_rows($query)<=0){ return $this->core->sp(MCR_THEME_MOD."admin/news/new-none.html"); }
-
-		ob_start();
-
-		while($ar = $this->db->fetch_assoc($query)){
-
-			$page_data = array(
-				"ID" => intval($ar['id']),
-				"CID" => intval($ar['cid']),
-				"TITLE" => $this->db->HSC($ar['title']),
-				"CATEGORY" => $this->db->HSC($ar['category'])
-			);
-		
-			echo $this->core->sp(MCR_THEME_MOD."admin/news/new-id.html", $page_data);
-		}
-
-		return ob_get_clean();
-	}
-
-	private function news_list(){
-
-		$sql = "SELECT COUNT(*) FROM `mcr_news`";
-		$page = "?mode=admin&do=news";
-
-		if(isset($_GET['search']) && !empty($_GET['search'])){
-			$search = $this->db->safesql(urldecode($_GET['search']));
-			$sql = "SELECT COUNT(*) FROM `mcr_news` WHERE title LIKE '%$search%'";
-			$search = $this->db->HSC(urldecode($_GET['search']));
-			$page .= "&search=$search";
-		}
-
-		if(isset($_GET['sort']) && !empty($_GET['sort'])){
-			$page .= '&sort='.$this->db->HSC(urlencode($_GET['sort']));
-		}
-
-		$query = $this->db->query($sql);
-
-		$ar = @$this->db->fetch_array($query);
-
-		$data = array(
-			"PAGINATION" => $this->core->pagination($this->cfg->pagin['adm_news'], $page.'&pid=', $ar[0]),
-			"NEWS" => $this->news_array()
-		);
-
-		return $this->core->sp(MCR_THEME_MOD."admin/news/new-list.html", $data);
-	}
-
-	private function delete(){
-		if (!$this->core->is_access('sys_adm_news_delete')) { $this->core->notify($this->core->lng["e_msg"], $this->core->lng['e_403'], 2, '?mode=admin&do=news'); }
-
-		if ($_SERVER['REQUEST_METHOD']!='POST') {
-			$this->core->notify(
-				$this->core->lng["e_msg"],
-				$this->core->lng['e_hack'],
-				2,
-				'?mode=admin&do=news'
-			);
-		}
-			
-		$news_list = @$_POST['id'];
-
-		if (empty($news_list)) {
-			$this->core->notify(
-				$this->core->lng["e_msg"],
-				$this->lng['news_not_selected'],
-				2,
-				'?mode=admin&do=news'
-			);
-		}
-
-		$news_list = $this->core->filter_int_array($news_list);
-		$news_list = array_unique($news_list);
-		$news_list = $this->db->safesql(implode(", ", $news_list));
-
-		if (!$this->db->remove_fast("mcr_news", "id IN ($news_list)")) {
-			$this->core->notify(
-				$this->core->lng["e_msg"],
-				$this->core->lng["e_sql_critical"],
-				2,
-				'?mode=admin&do=news'
-			);
-		}
-
-		$count1 = $this->db->affected_rows();
-
-		// Последнее обновление пользователя
-		$this->db->update_user($this->user);
-		// Лог действия
-		$this->db->actlog($this->lng['log_del_news']." $news_list ".$this->lng['log_news'], $this->user->id);
-		$this->core->notify($this->core->lng["e_success"],
-			$this->lng['news_del_elements']." $count1",
-			3,
-			'?mode=admin&do=news'
-		);
-
 	}
 
 	private function categories($selected=1){
@@ -287,6 +151,81 @@ class submodule{
 		return null;
 	}
 
+	private function get_short_information($article) {
+		$short_information = '';
+
+		if ($article['date'] > (new DateTime())->format('Y-m-d H:i:s')) {
+			$short_information .= '<i class="fa fa-calendar" aria-hidden="true"data-toggle="tooltip" data-placement="top" title="'.$this->l10n->gettext('planed_article').'"></i>';
+		}
+
+		if ($article['hidden'] == 1) {
+			$short_information .= '<i class="fa fa-eye-slash" aria-hidden="true"data-toggle="tooltip" data-placement="top" title="'.$this->l10n->gettext('hidden_article').'"></i>';
+		}
+
+		if ($article['attach'] == 1) {
+			$short_information .= '<i class="fa fa-paperclip" aria-hidden="true"data-toggle="tooltip" data-placement="top" title="'.$this->l10n->gettext('fixed_article').'"></i>';
+		}
+
+		return $short_information;
+	}
+
+	private function news_array(){
+		$query = $this->db->query("
+			SELECT 
+				`n`.`id`, 
+				`n`.`cid`, 
+				`n`.`title`, 
+				`c`.`title` AS `category`,
+				`n`.`date`,
+				`n`.`hidden`,
+				`n`.`attach`,
+				`n`.`data`,
+				`n`.`uid`,
+				`u`.`login`,
+				`n`.`img`
+			FROM `mcr_news` AS `n`
+			LEFT JOIN `mcr_news_cats` AS `c` ON `c`.id=`n`.`cid` 
+			LEFT JOIN `mcr_users` AS `u` ON `u`.id=`n`.`uid`
+		");
+		if(!$query || $this->db->num_rows($query)<=0){ return null; }
+
+		ob_start();
+
+		while($ar = $this->db->fetch_assoc($query)){
+			$article_data = json_decode($ar['data']);
+
+			$author = $this->l10n->gettext('article_writer').': '.$ar['login'];
+
+			$editor = $this->db->query("SELECT `id`, `login` FROM `mcr_users` WHERE `id`='{$article_data->uid_last}'");
+			$editor = $this->db->fecth_assoc($editor);
+
+			$editor = $this->l10n->gettext('article_editor').": <a href='/?mode=users&id={$editor['id']}'>{$editor['login']}</a>";
+
+			$page_data = array(
+				"ID" => intval($ar['id']),
+				"CID" => intval($ar['cid']),
+				"TITLE" => $this->db->HSC($ar['title']),
+				"CATEGORY" => $this->db->HSC($ar['category']),
+				"DATE" => $this->l10n->localize($ar['date'], 'datetime', $this->l10n->get_date_format()),
+				"INFORMATION" => $this->get_short_information($ar),
+				"IMG" => (trim($ar['img']))?trim($ar['img']):false,
+				"AUTHOR" => "$author | $editor"
+			);
+
+			echo $this->core->sp(MCR_THEME_MOD."admin/news/new-id.html", $page_data);
+		}
+
+		return ob_get_clean();
+	}
+
+	private function news_list(){
+		$data = array(
+			"NEWS" => $this->news_array()
+		);
+
+		return $this->core->sp(MCR_THEME_MOD."admin/news/new-list.html", $data);
+	}
+
 	private function add(){
 		if(!$this->core->is_access('sys_adm_news_add')){ $this->core->notify($this->core->lng["e_msg"], $this->core->lng['e_403'], 2, '?mode=admin&do=news'); }
 
@@ -361,7 +300,8 @@ class submodule{
 				$this->core->notify(
 					$this->core->lng["e_msg"],
 					$this->lng['news_add_time_error'],
-					2
+					2,
+					'?mode=admin&do=news&op=add'
 				);
 			}
 
@@ -378,8 +318,9 @@ class submodule{
 				";
 				if (!$this->db->query($create_news)) {$this->core->notify(
 					$this->core->lng["e_msg"],
-					$this->core->lng["e_sql_critical"],
-					2
+					$this->core->lng["e_sql_critical"].mysqli_error($this->db->obj),
+					2,
+					'?mode=admin&do=news&op=add'
 				); }
 
 				$id = $this->db->insert_id();
@@ -563,17 +504,67 @@ class submodule{
 		return $this->core->sp(MCR_THEME_MOD."admin/news/new-add.html", $result);
 	}
 
+	private function delete(){
+		if (!$this->core->is_access('sys_adm_news_delete')) { $this->core->notify($this->core->lng["e_msg"], $this->core->lng['e_403'], 2, '?mode=admin&do=news'); }
+
+		if ($_SERVER['REQUEST_METHOD']!='POST') {
+			$this->core->notify(
+				$this->core->lng["e_msg"],
+				$this->core->lng['e_hack'],
+				2,
+				'?mode=admin&do=news'
+			);
+		}
+
+		$news_list = @$_POST['id'];
+
+		if (empty($news_list)) {
+			$this->core->notify(
+				$this->core->lng["e_msg"],
+				$this->lng['news_not_selected'],
+				2,
+				'?mode=admin&do=news'
+			);
+		}
+
+		$news_list = $this->core->filter_int_array($news_list);
+		$news_list = array_unique($news_list);
+		$news_list = $this->db->safesql(implode(", ", $news_list));
+
+		if (!$this->db->remove_fast("mcr_news", "id IN ($news_list)")) {
+			$this->core->notify(
+				$this->core->lng["e_msg"],
+				$this->core->lng["e_sql_critical"],
+				2,
+				'?mode=admin&do=news'
+			);
+		}
+
+		$count1 = $this->db->affected_rows();
+
+		// Последнее обновление пользователя
+		$this->db->update_user($this->user);
+		// Лог действия
+		$this->db->actlog($this->lng['log_del_news']." $news_list ".$this->lng['log_news'], $this->user->id);
+		$this->core->notify($this->core->lng["e_success"],
+			$this->lng['news_del_elements']." $count1",
+			3,
+			'?mode=admin&do=news'
+		);
+
+	}
+
 	public function content(){
 
 		$op = (isset($_GET['op'])) ? $_GET['op'] : 'list';
 		$content = '';
 
 		switch($op){
-			case 'add':		$content = $this->add(); break;
-			case 'edit':	$content = $this->edit(); break;
-			case 'delete':	$this->delete(); break;
+			case 'add':	$content = $this->add(); break;
+			case 'edit': $content = $this->edit(); break;
+			case 'delete': $this->delete(); break;
 
-			default:		$content = $this->news_list(); break;
+			default: $content = $this->news_list(); break;
 		}
 
 		return $content;

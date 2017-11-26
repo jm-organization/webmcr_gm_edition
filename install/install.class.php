@@ -23,19 +23,18 @@ class install{
 		define('DIR_INSTALL_THEME', DIR_INSTALL.'theme/');
 
 		require_once(DIR_ROOT.'configs/main.php');
-
 		$this->cfg['main'] = $main;
 
 		require_once(DIR_ROOT.'configs/db.php');
-
 		$this->cfg['db'] = $db;
 
 		require_once(DIR_ROOT.'configs/mail.php');
-
 		$this->cfg['mail'] = $mail;
 
-		require_once(DIR_ROOT.'language/'.$main['s_lang'].'/install.php');
+		require_once(DIR_ROOT.'configs/modules/users.php');
+		$this->cfg['modules']['users'] = $cfg;
 
+		require_once(DIR_ROOT.'language/'.$main['s_lang'].'/install.php');
 		$this->lng = $lng;
 
 		$this->title = $lng['mod_name'];

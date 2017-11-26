@@ -13,6 +13,36 @@ class l10n {
 
 	public $locale;
 
+    public $locales = array(
+        'af-ZA', 'am-ET', 'ar-AR', 'ay-BO', 'az-AZ', 'be-BY', 'bg-BG', 'bn-IN',
+        'bs-BA', 'ca-ES', 'cs-CZ', 'cy-GB', 'da-DK', 'de-DE', 'el-GR', 'en-GB',
+        'en-US', 'eo-EO', 'es-CL', 'es-CO', 'es-ES', 'es-LA', 'fr-CA', 'fr-FR',
+        'ga-IE', 'gl-ES', 'gu-IN', 'ha-NG', 'he-IL', 'hi-IN', 'hr-HR', 'ht-HT',
+        'hu-HU', 'hy-AM', 'id-ID', 'ig-NG', 'is-IS', 'it-IT', 'ja-JP', 'jv-ID',
+        'ka-GE', 'kk-KZ', 'km-KH', 'kn-IN', 'ko-KR', 'ku-TR', 'la-VA', 'li-NL',
+        'lo-LA', 'lt-LT', 'lv-LV', 'mg-MG', 'mk-MK', 'ml-IN', 'mn-MN', 'mr-IN',
+        'ms-MY', 'mt-MT', 'my-MM', 'nb-NO', 'ne-NP', 'nl-NL', 'nn-NO', 'or-IN',
+        'pa-IN', 'pl-PL', 'ps-AF', 'pt-BR', 'pt-PT', 'qu-PE', 'rm-CH', 'ro-RO',
+        'ru-RU', 'sa-IN', 'sk-SK', 'sl-SI', 'so-SO', 'sq-AL', 'sr-RS', 'sv-SE',
+        'sw-KE', 'ta-IN', 'te-IN', 'tg-TJ', 'th-TH', 'tl-PH', 'tl-ST', 'tr-TR',
+        'tt-RU', 'uk-UA', 'ur-PK', 'uz-UZ', 'vi-VN', 'xh-ZA', 'yi-DE', 'yo-NG',
+        'zh-CN', 'zh-HK', 'zh-TW', 'zu-ZA'
+    );
+
+    public $date_formats = array(
+        'M j, Y' => '%b %d, %Y',
+        'F j, Y' => '%B %d, %Y',
+        'j M Y' => '%d %b %Y',
+        'j F Y' => '%d %B %Y',
+        'j/n/y' => '%d/%m/%y',
+        'n/j/y' => '%m/%d/%y',
+        'd.m.Y' => '%d.%m.%Y'
+    );
+
+    public $time_formats = array(
+        'g:i A', 'H:i'
+    );
+
 	public function __construct($core) {
 		$this->core = $core;
 		$this->db = $core->db;
@@ -60,9 +90,12 @@ class l10n {
 	 */
 	public function get_config_locale() {
 		$locale_pattern = "/([a-z]{2})-([A-Z]{2})/";
-		$locale = (preg_match($locale_pattern, $this->locale) == 1)?$this->locale:'ru-RU';
 
-		return $locale;
+		if (preg_match($locale_pattern, $this->locale) == 1) {
+		    return $this->locale;
+        }
+
+		return 'ru-RU';
 	}
 
 	/**
@@ -82,8 +115,48 @@ class l10n {
 
 		return $locale;
 	}
-    
-    /**
+
+	/**
+	 * @function: get_locale_info
+	 *
+	 * @documentation:
+	 *
+	 * @param $key
+	 *
+	 * @return null
+	 */
+	public function get_locale_info($key) {
+		$locale = $this->get_config_locale();
+		$locale_info_path = MCR_CACHE_PATH.'l10n/'.$locale;
+		$locale_info = file_get_contents($locale_info_path.'/.info');
+
+		$locale_info = json_decode($locale_info, true);
+
+		if (array_key_exists($key, $locale_info)) {
+			return $locale_info[$key];
+		}
+
+		return null;
+	}
+
+	/**
+	 * @function: get_date_format
+	 *
+	 * @documentation:
+	 *
+	 * @return mixed|string
+	 */
+	public function get_date_format() {
+		$date_format = $this->get_locale_info('date_format');
+
+		if (array_key_exists($date_format, $this->date_formats)) {
+			return $this->date_formats[$date_format];
+		}
+
+		return '%d %b %Y';
+	}
+
+	/**
 	 * @function: gettext
 	 *
 	 * @documentation: Функция, ищащая фразу во фразах языка,
@@ -91,6 +164,8 @@ class l10n {
 	 * отдаёт её содержимое. Иначе - саму фразу.
 	 *
 	 * @param $phrase
+	 *
+	 * @param null $text
 	 *
 	 * @return string $value
 	 */
@@ -110,8 +185,16 @@ class l10n {
         
 		return $phrase;
 	}
-    
-    public function set_cache($locale=false) {
+
+	/**
+	 * @function: set_cache
+	 *
+	 * @documentation:
+	 *
+	 * @param bool $locale
+	 *
+	 */
+	public function set_cache($locale=false) {
         $locale = ($locale)?$locale:Locale::getDefault();
         $locale_cache_path = MCR_CACHE_PATH.'l10n/'.$locale;
         if (!file_exists($locale_cache_path)) { mkdir(MCR_CACHE_PATH.'l10n/'.$locale); }
@@ -122,8 +205,17 @@ class l10n {
         file_put_contents($locale_cache_path.'/.info', $languages['settings']);
         file_put_contents($locale_cache_path.'/.cache', $languages['phrases']);
     }
-    
-    public function update_cache($locale, $route='') {
+
+	/**
+	 * @function: update_cache
+	 *
+	 * @documentation:
+	 *
+	 * @param $locale
+	 * @param string $route
+	 *
+	 */
+	public function update_cache($locale, $route='') {
         $pattern = '/([a-z]{2})-([A-Z]{2})/';
         $locale = (preg_match($pattern, $locale) == 1)?$locale:false;
         $locale_cache_path = MCR_CACHE_PATH.'l10n/'.$locale;
@@ -140,8 +232,18 @@ class l10n {
         file_put_contents($locale_cache_path.'/.info', $languages['settings']);
         file_put_contents($locale_cache_path.'/.cache', $languages['phrases']);
     }
-    
-    public function delete_cache($locales, $route='') {
+
+	/**
+	 * @function: delete_cache
+	 *
+	 * @documentation:
+	 *
+	 * @param $locales
+	 * @param string $route
+	 *
+	 * @return bool
+	 */
+	public function delete_cache($locales, $route='') {
         $locales = explode(', ', str_replace("'", '', $locales));
              
         foreach ($locales as $locale) {
@@ -160,13 +262,18 @@ class l10n {
         return false;
     }
 
-    /**
-     * @param $text
-     * @param string $type
-     * @param string $datetime_format
-     * @return string
-     */
-    public function localize($text, $type = 'string', $datetime_format = '') {
+	/**
+	 * @function: localize
+	 *
+	 * @documentation:
+	 *
+	 * @param $text
+	 * @param string $type
+	 * @param string $datetime_format
+	 *
+	 * @return string
+	 */
+	public function localize($text, $type = 'string', $datetime_format = '') {
         $l_text = '';
 
 	    switch($type) {
@@ -185,8 +292,18 @@ class l10n {
         
         return $l_text;
     }
-    
-    public function localize_detetime($format, $timestamp) {
+
+	/**
+	 * @function: localize_detetime
+	 *
+	 * @documentation:
+	 *
+	 * @param $format
+	 * @param $timestamp
+	 *
+	 * @return string
+	 */
+	public function localize_detetime($format, $timestamp) {
         $locale = $this->get_locale();
         $date_str = strftime($format, $timestamp);
         
@@ -231,6 +348,16 @@ class l10n {
 		return null;
 	}
 
+	/**
+	 * @function: get_phrases
+	 *
+	 * @documentation:
+	 *
+	 * @param string $phrase
+	 * @param bool $is_all
+	 *
+	 * @return null
+	 */
 	public function get_phrases($phrase = '', $is_all = true) {
 		if ($is_all) {
 			$sql = "

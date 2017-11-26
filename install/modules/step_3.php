@@ -15,7 +15,7 @@ class module{
 
 	public function content(){
 		if(!isset($_SESSION['step_2'])){ $this->install->notify('', '', 'install/?do=step_2'); }
-		if(isset($_SESSION['step_3'])){ $this->install->notify('', '', 'install/?do=finish'); }
+		if(isset($_SESSION['step_3'])){ $this->install->notify('', '', 'install/?do=step_4'); }
 
 		$_SESSION['fs_name']		= $this->cfg['main']['s_name'];
 		$_SESSION['fs_about']		= $this->cfg['main']['s_about'];
@@ -30,8 +30,6 @@ class module{
 		$_SESSION['fs_smtp_pass']	= $this->cfg['mail']['smtp_pass'];
 		$_SESSION['fs_smtp_tls']	= ($this->cfg['mail']['smtp_tls']) ? 'selected' : '';
 
-		var_dump(INSTALL);
-		
 		$time = time();
 
 		if($_SERVER['REQUEST_METHOD']=='POST'){
@@ -47,8 +45,6 @@ class module{
 			$this->cfg['main']['s_root_full'] = URL_ROOT_FULL;
 
 			$this->cfg['main']['mcr_secury'] = $this->install->random(20, false);
-
-			$this->cfg['main']['install'] = true;
 
 			$this->cfg['mail']['from'] = $this->install->HSC(@$_POST['from']);
 
@@ -80,7 +76,7 @@ class module{
 
 			if(!($api = file_get_contents("http://api.webmcr.com/?do=install&domain=".$_SERVER['SERVER_NAME']))){ /* SUCCESS */ }
 
-			$this->install->notify($this->lng_m['finish'], $this->lng_m['mod_name'], 'install/?mode=settings');
+			$this->install->notify('', '', 'install/?do=step_4');
 
 		}
 

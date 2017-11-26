@@ -56,12 +56,12 @@ class module{
 
 			$tables = file(DIR_INSTALL.'tables.sql');
 
-			$ctables	= $this->cfg['db']['tables'];
+			$ctables = $this->cfg['db']['tables'];
 
-			$ug_f		= $ctables['ugroups']['fields'];
-			$ic_f		= $ctables['iconomy']['fields'];
-			$logs_f		= $ctables['logs']['fields'];
-			$us_f		= $ctables['users']['fields'];
+			$ug_f = $ctables['ugroups']['fields'];
+			$ic_f = $ctables['iconomy']['fields'];
+			$logs_f	= $ctables['logs']['fields'];
+			$us_f = $ctables['users']['fields'];
 
 			@$db->query("SET GLOBAL sql_mode='NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION'");
 

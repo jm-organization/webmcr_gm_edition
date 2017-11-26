@@ -82,7 +82,7 @@ class module{
 		ob_start();
 
 		if (!$query || $this->db->num_rows($query) <= 0) { 
-			echo $this->core->sp(MCR_THEME_MOD."news/new-none.html"); 
+			echo $this->core->sp(MCR_THEME_MOD."news/new-none.html");
 			return ob_get_clean();
 		}
 
@@ -345,7 +345,7 @@ class module{
 			"ID"			=> $id,
 			"CID"			=> intval($ar['cid']),
 			"TITLE"			=> $this->db->HSC($ar['title']),
-			"TEXT"			=> str_replace('<p>{READMORE}</p>', '', $ar['text_html']),
+			"TEXT"			=> str_replace('{READMORE}', '', $ar['text_html']),
 			"UID"			=> intval($ar['uid']),
 			"DATE"			=> $date->format('d.m.Y H:i'),
 			"CATEGORY"		=> $this->db->HSC($ar['category']),

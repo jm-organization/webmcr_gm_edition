@@ -14,7 +14,13 @@ class module{
 	}
 
 	public function content(){
-		if(!isset($_SESSION['step_3'])){ $this->install->notify('', '', 'install/?do=step_3'); }
+		if(!isset($_SESSION['step_5'])){ $this->install->notify('', '', 'install/?do=step_5'); }
+
+		$this->cfg['main']['install'] = true;
+
+		if(!$this->install->savecfg($this->cfg['main'], 'main.php', 'main')){
+			$this->install->notify($this->lng['e_write'], $this->lng['e_msg'], 'install/?mode=finish');
+		}
 
 		$data = array();
 

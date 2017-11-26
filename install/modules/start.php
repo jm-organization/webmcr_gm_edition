@@ -53,6 +53,8 @@ class module{
 
 			if(!$this->check_write_all(DIR_ROOT.'configs/modules')){ $this->install->notify($this->lng['e_msg'], $this->lng['e_perm_modules'], 'install/'); }
 
+			if(!is_writable(DIR_ROOT.'configs/modules/users.php') || !is_readable(DIR_ROOT.'configs/modules/users.php')){ $this->install->notify($this->lng['e_msg'], $this->lng['e_perm_modules'], 'install/'); }
+
 			if(!$this->check_write_all(DIR_ROOT.'cache')){ $this->install->notify($this->lng['e_msg'], $this->lng['e_perm_cache'], 'install/'); }
 
 			if(!is_writable(DIR_ROOT.'uploads') || !is_readable(DIR_ROOT.'uploads')){ $this->install->notify($this->lng['e_msg'], $this->lng['e_perm_uploads'], 'install/'); }
@@ -91,6 +93,8 @@ class module{
 			"FOLDER_CONFIGS" => ($this->check_write_all(DIR_ROOT.'configs')) ? '<b class="green">'.$this->lng['yes'].'</b>' : '<b class="red">'.$this->lng['no'].'</b>',
 
 			"FOLDER_MODULES" => ($this->check_write_all(DIR_ROOT.'configs/modules')) ? '<b class="green">'.$this->lng['yes'].'</b>' : '<b class="red">'.$this->lng['no'].'</b>',
+
+			"USERS" => (is_writable(DIR_ROOT.'configs/modules/users.php') && is_readable(DIR_ROOT.'configs/modules/users.php')) ? '<b class="green">'.$this->lng['yes'].'</b>' : '<b class="red">'.$this->lng['no'].'</b>',
 
 			"FOLDER_CACHE" => ($this->check_write_all(DIR_ROOT.'cache')) ? '<b class="green">'.$this->lng['yes'].'</b>' : '<b class="red">'.$this->lng['no'].'</b>',
 

@@ -1,0 +1,52 @@
+<div class="form-block">
+
+	<div class="block-header">
+		<div class="block-name"><?php echo $this->lng_m['mod_name_cp']; ?></div>
+	</div>
+
+	<div class="block-line"></div>
+
+	<div class="adm-us">
+		 
+		<div class="tab-content">
+			<div class="tab-pane active">
+
+				<form class="form-horizontal" method="post">
+
+					<div class="control-group">
+						<label class="control-label" for="input_use_comments"><?php echo $this->lng_m['use_comments']; ?></label>
+						<div class="controls">
+							<select name="use_comments" id="input_use_comments">
+								<option value="0">Нет</option>
+								<option value="1" <?php echo $data['USE_COMMENTS']; ?>>Да</option>
+							</select>
+						</div>
+					</div>
+
+					<div class="control-group">
+						<label class="control-label" for="input_rop_users"><?php echo $this->lng_m['users_on_page']; ?></label>
+						<div class="controls">
+							<input type="text" class="span10" name="users_on_page" value="<?php echo $data['CFG']['users_on_page']; ?>" id="input_rop_users" placeholder="<?php echo $this->lng_m['users_on_page']; ?>">
+						</div>
+					</div>
+
+					<div class="control-group">
+						<label class="control-label" for="input_rop_comments"><?php echo $this->lng_m['comments_on_page']; ?></label>
+						<div class="controls">
+							<input type="text" class="span10" name="comments_on_page" value="<?php echo $data['CFG']['comments_on_page']; ?>" id="input_rop_comments" placeholder="<?php echo $this->lng_m['comments_on_page']; ?>">
+						</div>
+					</div>
+
+					<div class="control-group">
+						<div class="controls">
+							<button type="submit" name="submit" class="btn"><?php echo $this->lng['save']; ?></button>
+						</div>
+					</div>
+
+				</form>
+			
+			</div>
+		</div>
+	</div>
+		
+</div>

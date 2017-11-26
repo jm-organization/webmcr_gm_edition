@@ -158,6 +158,20 @@ class submodule {
         echo $file_content;
     }
 
+    protected function value_slashes_strip($value) {
+    	$array = array();
+
+    	if (is_array($value)) {
+    		foreach ($value as $phrase_key => $phrase_value) {
+				$array[$phrase_key] = str_replace('"', '\"', $phrase_value);
+			}
+
+			return $array;
+    	}
+
+		return str_replace('"', '\"', $value);
+	}
+
     protected function update_language($sql_to_get, $new_phrase, $action=false) {
         $data_lang = $this->db->query($sql_to_get);
         if (!$data_lang || $this->db->num_rows($data_lang) <=0) { return null; };
@@ -174,9 +188,11 @@ class submodule {
 
             $phrase[strval($new_phrase['key'])] = $new_phrase['value'];
 
+            $phrases = $this->value_slashes_strip($phrases);
+
             $phrases = array_merge($phrases, $phrase);
             ksort($phrases);
-            $phrases = $this->db->safesql(json_encode($phrases, JSON_UNESCAPED_UNICODE));
+            $phrases = json_encode($phrases, JSON_UNESCAPED_UNICODE);
 
             $update_phrases = "
                 UPDATE `mcr_l10n_languages` 
@@ -244,7 +260,7 @@ class submodule {
         if ($_SERVER['REQUEST_METHOD']=='POST') {
             $post = array(
                 'language' => intval(@$_POST['language']),
-                'phrase_value' => htmLawed(str_replace('"','`',@$_POST['phrase_value'])),
+                'phrase_value' => $this->value_slashes_strip(@$_POST['phrase_value']),
                 'phrase_key' => (preg_match($validphrase,trim( @$_POST['phrase_key'])) == 1)?trim( @$_POST['phrase_key']):false,
             );
 
@@ -253,14 +269,14 @@ class submodule {
                     $this->l10n->gettext('error_message'),
                     $this->l10n->gettext('invalid_data'),
                     2,
-                    '?mode=admin&do=l10n_phrases&op=add'
+                    '?mode=admin&do=l10n_phrases&op=add&language='.$post['language']
                 );
             }
             
             $closer = "_%s_";
             $phrase_key = $this->db->safesql((ctype_digit($post['phrase_key']))?sprintf($closer, $post['phrase_key']):$post['phrase_key']);
-            $phrase_value = $this->db->safesql($post['phrase_value']);
-            
+            $phrase_value = $post['phrase_value'];
+
             switch ($post['language']) {
                 case 0:
                     $add_master_phrase = "
@@ -272,7 +288,7 @@ class submodule {
                         $this->l10n->gettext('error_message'),
                         $this->l10n->gettext('error_sql_critical').'. '.$this->l10n->gettext('save_phrase'),
                         2,
-                        '?mode=admin&do=l10n_phrases&op=add'
+                        '?mode=admin&do=l10n_phrases&op=add&language='.$post['language']
                     ); }
                         
                     $new_phrase = array('key'=>$phrase_key,'value'=>$phrase_value);
@@ -370,7 +386,7 @@ class submodule {
         if ($_SERVER['REQUEST_METHOD']=='POST') {
             $post = array(
                 'language' => intval(@$_POST['language']),
-                'phrase_value' => htmLawed(str_replace('"','`',@$_POST['phrase_value'])),
+                'phrase_value' => $this->value_slashes_strip(@$_POST['phrase_value']),
                 'phrase_key' => (strlen(trim(@$_POST['phrase_key'])) > 1)?(
                     (preg_match($validphrase,trim( @$_POST['phrase_key'])) == 1)?trim(@$_POST['phrase_key']):false
                 ):(false),
@@ -387,7 +403,7 @@ class submodule {
 
             $closer = "_%s_";
             $phrase_key = $this->db->safesql((ctype_digit($post['phrase_key']))?sprintf($closer, $post['phrase_key']):$post['phrase_key']);
-            $phrase_value = $this->db->safesql($post['phrase_value']);
+            $phrase_value = $post['phrase_value'];
 
             switch ($post['language']) {
                 case 0:
@@ -438,7 +454,7 @@ class submodule {
         $data = array(
             'LANGUAGES' => $this->languages($language),
             'PHRASE_KEY' => $phrase,
-            'PHRASE_VALUE' => $phrases[$phrase],
+            'PHRASE_VALUE' => stripcslashes($phrases[$phrase]),
         );
 
         return $this->core->sp(MCR_THEME_MOD."admin/l10n/phrases/form-phrases.html", $data);
@@ -599,12 +615,20 @@ class submodule {
 
                 $content = $this->add(); 
                 break;
-            case 'edit': 
-                $bc = array(
-                    $this->l10n->gettext('module_admin-panel') => ADMIN_URL,
-                    $this->l10n->gettext('phrases') => ADMIN_URL."&do=l10n_phrases",
-                    $this->l10n->gettext('phrase_edit') => ADMIN_URL."&do=l10n_phrases&op=edit"
-                );
+            case 'edit':
+				$bc = array(
+					$this->l10n->gettext('module_admin-panel') => ADMIN_URL,
+					$this->l10n->gettext('phrases') => ADMIN_URL."&do=l10n_phrases",
+					$this->l10n->gettext('phrase_edit') => ADMIN_URL."&do=l10n_phrases&op=edit"
+				);
+				if ($language != 0) {
+					$bc = array(
+						$this->l10n->gettext('module_admin-panel') => ADMIN_URL,
+						$this->l10n->gettext('languages') => ADMIN_URL."&do=l10n_languages",
+						$this->l10n->gettext('phrases') => ADMIN_URL."&do=l10n_phrases&language=$language",
+						$this->l10n->gettext('phrase_edit') => ADMIN_URL."&do=l10n_phrases&language=$language&op=edit"
+					);
+				}
                 $this->core->bc = $this->core->gen_bc($bc);
 
                 $content = $this->edit(); 
