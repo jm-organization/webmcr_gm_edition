@@ -92,7 +92,7 @@ class module{
 			
 			$text_with_pagebreaker = $ar['text_html'];
 			$text_pos = mb_strpos($text_with_pagebreaker, '{READMORE}', 0, 'UTF-8');
-			$text = ($text_pos !== false)?mb_substr($text_with_pagebreaker, 0, $text_pos, "UTF-8"):'null';
+			$text = ($text_pos !== false)?mb_substr($text_with_pagebreaker, 0, $text_pos, "UTF-8"):$text_with_pagebreaker;
 
 			$date = new DateTime($ar['date']);
 

@@ -280,7 +280,7 @@ class module{
 
 		$uid = intval($uid);
 
-		$query = $this->db->query("SELECT COUNT(*) FROM `mod_users_comments` WHERE uid='$uid'");
+		$query = $this->db->query("SELECT COUNT(*) FROM `mcr_users_comments` WHERE uid='$uid'");
 
 		if(!$query){ exit("SQL Error"); }
 

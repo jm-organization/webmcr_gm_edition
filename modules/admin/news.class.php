@@ -132,10 +132,13 @@ class submodule{
 		return true;
 	}
 
-	private function check_datetime($datetime) {
-		$pattern = '/(0[1-9]|1[0-9]|2[0-9]|3[01]).(0[1-9]|1[012]).[0-9]{4} (0[1-9]|1[0-9]|2[123]):([0-5][0-9]):([0-5][0-9])/';
+	function valid_date($date) {
+		$d = DateTime::createFromFormat('d.m.Y H:i:s', $date);
+		return $d && $d->format('d.m.Y H:i:s') === $date;
+	}
 
-		if (preg_match($pattern, $datetime)) {
+	private function check_datetime($datetime) {
+		if ($this->valid_date($datetime)) {
 			list( $format_date, $format_time ) = explode(' ', $datetime);
 			list( $day, $mouth, $year ) = explode('.', $format_date);
 			list( $hour, $minute, $second ) = explode(':', $format_time);
@@ -155,61 +158,88 @@ class submodule{
 		$short_information = '';
 
 		if ($article['date'] > (new DateTime())->format('Y-m-d H:i:s')) {
-			$short_information .= '<i class="fa fa-calendar" aria-hidden="true"data-toggle="tooltip" data-placement="top" title="'.$this->l10n->gettext('planed_article').'"></i>';
+			$short_information .= '<i class="fa fa-calendar" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="'.$this->l10n->gettext('planed_article').'"></i>';
 		}
 
 		if ($article['hidden'] == 1) {
-			$short_information .= '<i class="fa fa-eye-slash" aria-hidden="true"data-toggle="tooltip" data-placement="top" title="'.$this->l10n->gettext('hidden_article').'"></i>';
+			$short_information .= '<i class="fa fa-eye-slash" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="'.$this->l10n->gettext('hidden_article').'"></i>';
 		}
 
 		if ($article['attach'] == 1) {
-			$short_information .= '<i class="fa fa-paperclip" aria-hidden="true"data-toggle="tooltip" data-placement="top" title="'.$this->l10n->gettext('fixed_article').'"></i>';
+			$short_information .= '<i class="fa fa-paperclip" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="'.$this->l10n->gettext('fixed_article').'"></i>';
 		}
 
 		return $short_information;
 	}
 
+	private function get_avatar($user, $rank) {
+		if (!is_array($user)) { return null; }
+
+		$is_skin = (intval($user[$rank.'_skin'])==1) ? true : false;
+		$is_cloak = (intval($user[$rank.'_cloak'])==1) ? true : false;
+
+		$is_girl = (intval($user[$rank.'_gender'])==1) ? 'default_female' : 'default';
+
+		$avatar =  ($is_skin || $is_cloak) ? $this->db->HSC($user[$rank.'login']) : $is_girl;
+
+		return UPLOAD_URL.'skins/interface/'.$avatar.'_mini.png?'.mt_rand(1000,9999);
+	}
+
 	private function news_array(){
 		$query = $this->db->query("
 			SELECT 
-				`n`.`id`, 
-				`n`.`cid`, 
-				`n`.`title`, 
+				`n`.`id`, `n`.`cid`, `n`.`title`,
+				`n`.`date`, `n`.`hidden`, `n`.`attach`,
+				`n`.`data`, `n`.`uid`, `n`.`img`,
+				
 				`c`.`title` AS `category`,
-				`n`.`date`,
-				`n`.`hidden`,
-				`n`.`attach`,
-				`n`.`data`,
-				`n`.`uid`,
-				`u`.`login`,
-				`n`.`img`
+				`c`.`description` AS `category_description`,
+				
+				`u`.`login` AS `author_login`, `u`.`is_skin` AS `author_skin`, 
+				`u`.`is_cloak` AS `author_cloak`, `u`.`gender` AS `author_gender`,
+				
+				`l`.`date` AS `edit_date`,
+				
+				`ue`.`login` AS `editor_login`, `ue`.`is_skin` AS `editor_skin`, 
+				`ue`.`is_cloak` AS `editor_cloak`, `ue`.`gender` AS `editor_gender`
 			FROM `mcr_news` AS `n`
-			LEFT JOIN `mcr_news_cats` AS `c` ON `c`.id=`n`.`cid` 
-			LEFT JOIN `mcr_users` AS `u` ON `u`.id=`n`.`uid`
+			LEFT JOIN `mcr_news_cats` AS `c` 
+				ON `c`.id=`n`.`cid` 
+			LEFT JOIN `mcr_users` AS `u` 
+				ON `u`.id=`n`.`uid`
+			LEFT JOIN `mcr_logs_of_edit` AS `l` 
+				ON `l`.`things`=`n`.`id` AND `l`.`table`='mcr_news'
+			LEFT JOIN `mcr_users` AS `ue` 
+				ON `ue`.id=`l`.`editor`
 		");
 		if(!$query || $this->db->num_rows($query)<=0){ return null; }
 
 		ob_start();
 
 		while($ar = $this->db->fetch_assoc($query)){
-			$article_data = json_decode($ar['data']);
+			$author = $this->l10n->gettext('article_writer').": <a href='/?mode=users&uid={$ar['author_login']}'>{$ar['author_login']}</a>";
+			$editor = $this->l10n->gettext('article_editor').": <a href='/?mode=users&uid={$ar['editor_login']}'>{$ar['editor_login']}</a>";
 
-			$author = $this->l10n->gettext('article_writer').': '.$ar['login'];
+			$author_avatar = $this->get_avatar($ar, 'author');
+			$editor_avatar = $this->get_avatar($ar, 'editor');
 
-			$editor = $this->db->query("SELECT `id`, `login` FROM `mcr_users` WHERE `id`='{$article_data->uid_last}'");
-			$editor = $this->db->fecth_assoc($editor);
-
-			$editor = $this->l10n->gettext('article_editor').": <a href='/?mode=users&id={$editor['id']}'>{$editor['login']}</a>";
+			$avatars = "
+				<img class='user_a-news_avatar' width='18px' src='$author_avatar' data-toggle='tooltip' data-placement='top' title='{$this->l10n->gettext('article_writer')}'>
+			".(($ar['editor_login'])?("
+				<img class='user_e-news_avatar' width='18px' src='$editor_avatar' data-toggle='tooltip' data-placement='top' title='{$this->l10n->gettext('article_editor')}'>
+			"):null);
 
 			$page_data = array(
 				"ID" => intval($ar['id']),
 				"CID" => intval($ar['cid']),
 				"TITLE" => $this->db->HSC($ar['title']),
 				"CATEGORY" => $this->db->HSC($ar['category']),
+				"DESCRIPTION" => $this->db->HSC($ar['category_description']),
 				"DATE" => $this->l10n->localize($ar['date'], 'datetime', $this->l10n->get_date_format()),
 				"INFORMATION" => $this->get_short_information($ar),
-				"IMG" => (trim($ar['img']))?trim($ar['img']):false,
-				"AUTHOR" => "$author | $editor"
+				"IMG" => (trim($ar['img']))?trim($ar['img']):'http://magicmcr.jm-org.net/themes/default/img/cacke.128.png',
+				"AUTHORS" => "$author".(($ar['editor_login'])?(", $editor"):null),
+				"USER_AVATARS" => $avatars,
 			);
 
 			echo $this->core->sp(MCR_THEME_MOD."admin/news/new-id.html", $page_data);
@@ -265,10 +295,9 @@ class submodule{
 			$news_text = $this->db->safesql($text);
 			// NEWS DATA
 			$new_data = array(
-				"time_last" => time(),
-				"uid_last" => $this->user->id,
 				"planed_news" => (@$_POST['planed_publish']=='on')?true:false,
 				"close_comments" => (@$_POST['closed_comments']=='on')?true:false,
+
 				"time_when_close_comments" => (@$_POST['date_cs'])?(
 					$this->check_datetime(@$_POST['date_cs'])
 				):(
@@ -316,7 +345,7 @@ class submodule{
 					VALUES
 						('{$n['category_id']}', '{$n['title']}', '{$n['news_text']}', '{$n['vote']}', '{$n['discus']}', '{$n['attach']}', '{$n['date']}', '{$n['img']}', '{$n['user_id']}', '{$n['data']}', '{$n['hidden']}')
 				";
-				if (!$this->db->query($create_news)) {$this->core->notify(
+				if (!$this->db->query($create_news)) { $this->core->notify(
 					$this->core->lng["e_msg"],
 					$this->core->lng["e_sql_critical"].mysqli_error($this->db->obj),
 					2,
@@ -361,7 +390,7 @@ class submodule{
 		return $this->core->sp(MCR_THEME_MOD."admin/news/new-add.html", $result);
 	}
 
-	private function edit(){
+	private function  edit(){
 		if(!$this->core->is_access('sys_adm_news_edit')){ $this->core->notify($this->core->lng["e_msg"], $this->core->lng['e_403'], 2, '?mode=admin&do=news'); }
 
 		$id = intval($_GET['id']);
@@ -421,7 +450,7 @@ class submodule{
 			// NEWS CONTENT
 			$updated_text = $this->db->safesql(htmLawed(trim(@$_POST['text'])));
 			// NEWS PUBLISH DATE
-			$publish_date = (@$_POST['planed_publish']==='on')?(
+			$publish_date = (!empty(@$_POST['planed_publish']) && @$_POST['planed_publish'] == 'on')?(
 				$this->check_datetime(@$_POST['publish_time'])
 			):(
 				$time->format('Y-m-d H:i:s')
@@ -431,7 +460,8 @@ class submodule{
 				$this->core->notify(
 					$this->core->lng["e_msg"],
 					$this->lng['news_add_time_error'],
-					2
+					2,
+					'?mode=admin&do=news&op=edit&id='.$id
 				);
 			}
 
@@ -441,8 +471,6 @@ class submodule{
 				$preview = $this->get_preview($title, str_replace('{READMORE}', '<hr>', htmLawed(trim(@$_POST['text']))), $cid_ar['title'], $category_id, $vote, $publish_date);
 			} else {
 				$new_data = array(
-					"time_last" => time(),
-					"uid_last" => $this->user->id,
 					"planed_news" => (@$_POST['planed_publish']=='on')?true:false,
 					"close_comments" => (@$_POST['closed_comments']=='on')?true:false,
 					"time_when_close_comments" => (@$_POST['date_cs'])?(
@@ -476,6 +504,22 @@ class submodule{
 						'?mode=admin&do=news&op=edit&id='.$id
 					);
 				}
+
+				$loe_row = "SELECT `id` FROM `mcr_logs_of_edit` WHERE `things`='$id' AND `table`='mcr_news'";
+				$loe_row = $this->db->query($loe_row);
+				if (!$loe_row || $this->db->num_rows($loe_row) <= 0) {
+					$loe = "
+						INSERT INTO `mcr_logs_of_edit` (`editor`, `things`, `table`, `date`)
+						VALUES ('{$this->user->id}', '{$id}', 'mcr_news', NOW())
+					";
+				} else {
+					$loe = "
+						UPDATE `mcr_logs_of_edit` 
+						SET `editor`='{$this->user->id}', `things`='{$id}', `table`='mcr_news', `date`=NOW()
+						WHERE `things`='$id' AND `table`='mcr_news'
+					";
+				}
+				$this->db->query($loe);
 
 				// Последнее обновление пользователя
 				$this->db->update_user($this->user);

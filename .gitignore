@@ -63,5 +63,5 @@ composer.lock
 
 ### MagicMCR Template
 #uploads
-uploads/tmp
+uploads/tmp/*
 

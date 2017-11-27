@@ -10,7 +10,7 @@
   "homepage": "http://www.jm-org.net/portfolio/magicmcr",
   "license": "GPL-3.0",
   "require": {
-    "php": "^5.3"
+    "php": "^5.6"
   },
   "suggest": {
 

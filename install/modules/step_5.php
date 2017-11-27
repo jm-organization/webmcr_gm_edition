@@ -29,10 +29,10 @@ class module{
 		$error = $this->db->error();
 
 		if(!empty($error)){
-			$this->install->notify($this->lng['e_connection'].' | '.$error, $this->lng['e_msg'], 'install/?do=step_1');
+			$this->install->notify($this->lng['e_connection'].' | '.$error, $this->lng['e_msg'], 'install/?do=step_5');
 		}
 
-		$this->install->title = $this->lng['mod_name'].' — '.$this->lng['step_4'];
+		$this->install->title = $this->lng['mod_name'].' — '.$this->lng['step_5'];
 	}
 
 	public function content() {
@@ -47,14 +47,14 @@ class module{
 				INSERT INTO `mcr_menu` (`title`, `parent`, `url`, `target`, `permissions`) 
 				VALUES ('Пользователи', 0, '/?mode=users', '_self', 'mod_users_list');
 			")) {
-				$this->install->notify($this->lng['e_msg'], $this->lng['e_add_menu'], '?mode=step_3');
+				$this->install->notify($this->lng['e_msg'], $this->lng['e_add_menu'], '?mode=step_5');
 			}
 
 			if(!$this->db->query("
 				INSERT INTO `mcr_menu_adm_icons` (`title`, `img`)
 				VALUES ('Модуль пользователей', 'us.png');
 			")) {
-				$this->install->notify($this->lng['e_msg'], $this->lng['e_add_icon'], '?mode=step_3');
+				$this->install->notify($this->lng['e_msg'], $this->lng['e_add_icon'], '?mode=step_5');
 			}
 
 			$icon_id = $this->db->insert_id();
@@ -63,7 +63,7 @@ class module{
 				INSERT INTO `mcr_menu_adm` (`gid`, `title`, `text`, `url`, `target`, `access`, `priority`, `icon`)
 				VALUES (5, 'Модуль пользователей', 'Управление модулем пользователей', '/?mode=admin&do=us', '_self', 'mod_adm_m_i_us', 4, '$icon_id');
 			")){
-				$this->install->notify($this->lng['e_msg'], $this->lng['e_add_menu_adm'], '?mode=step_3');
+				$this->install->notify($this->lng['e_msg'], $this->lng['e_add_menu_adm'], '?mode=step_5');
 			}
 
 			$groups = array();
@@ -106,7 +106,7 @@ class module{
 
 			$_SESSION['step_5'] = true;
 
-			$this->install->notify($this->lng['mod_name'], $this->lng['finish'], '?mode=finish');
+			$this->install->notify($this->lng['mod_name'], $this->lng['finish'], 'install/?mode=finish');
 
 		}
 

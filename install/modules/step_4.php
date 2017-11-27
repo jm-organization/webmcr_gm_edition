@@ -34,12 +34,12 @@ class module{
 			$this->cfg['modules']['users']['comments_on_page'] = (intval(@$_POST['rop_comments'])<1) ? 1 : intval(@$_POST['rop_comments']);
 
 			if(!$this->install->savecfg($this->cfg['modules']['users'], 'modules/users.php', 'cfg')){
-				$this->install->notify($this->lng['e_msg'], $this->lng['e_settings'], '?mode=step_4');
+				$this->install->notify($this->lng['e_msg'], $this->lng['e_settings'], 'install/?mode=step_4');
 			}
 
 			$_SESSION['step_4'] = true;
 
-			$this->install->notify($this->lng['mod_name'], $this->lng['step_4'], '?mode=step_5');
+			$this->install->notify($this->lng['mod_name'], $this->lng['step_4'], 'install/?mode=step_5');
 		}
 
 		$data = array(
