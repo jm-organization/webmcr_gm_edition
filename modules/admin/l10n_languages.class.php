@@ -97,18 +97,18 @@ class submodule {
         ob_start();
 
         $counter = 0;
-		foreach ($this->l10n->time_formats as $time_format) {
+		foreach ($this->l10n->time_formats as $key => $value) {
             $counter++;
             
             $time = new DateTime('18:30');
-            $example_time = $time->format($time_format);
+            $example_time = $time->format($key);
             
             $date = array(
                 'ID' => $counter,
-                'FORMAT' => $time_format,
+                'FORMAT' => $key,
                 'EXAMPLE' => $example_time,
                 'DT' => 'time',
-                'SELECT' => ($time_format == $tf)?'checked':'',
+                'SELECT' => ($key == $tf)?'checked':'',
             );
             
             echo $this->core->sp(MCR_THEME_MOD."admin/l10n/languages/datetime_format.html", $date);

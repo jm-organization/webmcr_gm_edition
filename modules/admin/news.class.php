@@ -235,7 +235,11 @@ class submodule{
 				"TITLE" => $this->db->HSC($ar['title']),
 				"CATEGORY" => $this->db->HSC($ar['category']),
 				"DESCRIPTION" => $this->db->HSC($ar['category_description']),
-				"DATE" => $this->l10n->localize($ar['date'], 'datetime', $this->l10n->get_date_format()),
+				"DATE" => (
+					$this->l10n->localize($ar['date'], 'datetime', $this->l10n->get_date_format())
+					. " {$this->l10n->gettext('in')} " .
+					$this->l10n->localize($ar['date'], 'datetime', $this->l10n->get_time_format())
+				),
 				"INFORMATION" => $this->get_short_information($ar),
 				"IMG" => (trim($ar['img']))?trim($ar['img']):'http://magicmcr.jm-org.net/themes/default/img/cacke.128.png',
 				"AUTHORS" => "$author".(($ar['editor_login'])?(", $editor"):null),
@@ -440,7 +444,7 @@ class submodule{
 				$this->core->notify($this->core->lng["e_msg"], $this->lng['news_e_cat_not_exist'], 2);
 			}
 
-			$time = new DateTime();
+			$time = new DateTime($ar['date']);
 
 			$vote = (intval(@$_POST['vote'])===1)?1:0;
 			$discus	= (intval(@$_POST['discus'])===1)?1:0;

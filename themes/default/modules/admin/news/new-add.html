@@ -3,8 +3,12 @@
 <div class="form-block">
  
 	<div class="block-header">
-		<div class="block-name"><?php echo $data['PAGE']; ?></div>
- 	</div>
+		<div class="block-name">
+			<p id="title">
+				<span class="title"><?php echo $data['PAGE']; ?></span>
+			</p>
+		</div>
+	</div>
  
 	<hr>
  
@@ -37,7 +41,7 @@
 				</div>
 			</div>
 		</div>
-  
+
 		<div class="form-row">
 			<div class="form-group col-md-12">
 				<label for="inputText"><?php echo $this->l10n->gettext('news_field_text'); ?></label>
@@ -135,7 +139,7 @@
 				<small class="form-text text-muted">kek</small>
 			</div>
 		</div>
-  
+
 		<div class="form-row">
 			<div class="form-group col-md-12">
 				<div class="controls">

@@ -171,11 +171,11 @@ class module{
 		$ctables	= $this->cfg->db['tables'];
 		$us_f		= $ctables['users']['fields'];
 
-		$update = $this->db->query("UPDATE `{$this->cfg->tabname('users')}`
-									SET `{$us_f['pass']}`='$newpass', `{$us_f['salt']}`='$newsalt', `{$us_f['ip_last']}`='{$this->user->ip}',
-										`{$us_f['date_last']}`='$time', `{$us_f['fname']}`='$firstname', `{$us_f['lname']}`='$lastname',
-										`{$us_f['bday']}`='$birthday'
-									WHERE `{$us_f['id']}`='{$this->user->id}'");
+		$update = $this->db->query("
+			UPDATE `{$this->cfg->tabname('users')}`
+			SET `{$us_f['pass']}`='$newpass', `{$us_f['salt']}`='$newsalt', `{$us_f['ip_last']}`='{$this->user->ip}', `{$us_f['date_last']}`='$time'
+			WHERE `{$us_f['id']}`='{$this->user->id}'
+		");
 
 		if(!$update){ $this->core->notify($this->core->lng['e_attention'], $this->core->lng['e_sql_critical'], 2, '?mode=profile'); }
 

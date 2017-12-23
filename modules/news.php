@@ -6,21 +6,21 @@ class module{
 	private $core, $db, $cfg, $user, $lng;
 
 	public function __construct($core){
-		$this->core		= $core;
-		$this->db		= $core->db;
-		$this->cfg		= $core->cfg;
-		$this->user		= $core->user;
-		$this->lng		= $core->lng_m;
+		$this->core = $core;
+		$this->db = $core->db;
+		$this->cfg = $core->cfg;
+		$this->user = $core->user;
+		$this->lng = $core->lng_m;
+		$this->l10n = $core->l10n;
 
 		$bc = array(
-			$this->lng['mod_name'] => BASE_URL."?mode=news"
+			$this->l10n->gettext('module_news') => BASE_URL."?mode=news"
 		);
-
 		$this->core->bc = $this->core->gen_bc($bc);
 	}
 
 	private function get_likes($vote, $id, $likes, $dislikes){
-		if(intval($vote)===0){ return; }
+		if(intval($vote)===0){ return null; }
 		$data = array(
 			"ID" => intval($id),
 			"LIKES" => intval($likes),
@@ -31,7 +31,7 @@ class module{
 	}
 
 	private function get_comments($discus, $count){
-		if(intval($discus)<=0){ return; }
+		if(intval($discus)<=0){ return null; }
 
 		$data = array(
 			"COMMENTS" => intval($count)
@@ -42,7 +42,7 @@ class module{
 	}
 
 	private function get_admin($id, $attach){
-		if(!$this->core->is_access('sys_adm_news')){ return; }
+		if(!$this->core->is_access('sys_adm_news')){ return null; }
 
 		$data = array(
 			'ID' => $id,
@@ -53,29 +53,30 @@ class module{
 	}
 
 	private function news_array($cid=false){
-		$start = $this->core->pagination($this->cfg->pagin['news'], 0, 0); // Set start pagination
-		$end = $this->cfg->pagin['news']; // Set end pagination
+		$start = $this->core->pagination($this->cfg->pagin['news'], 0, 0);
+		$end = $this->cfg->pagin['news'];
 
-		$where = ($cid!==false)?"WHERE `n`.cid='$cid' AND `n`.`hidden` = 0 OR `c`.`hidden` = 0` AND `n`.`date` < NOW()":"WHERE `n`.`hidden` = 0 AND `n`.`date` < NOW()";
+		$standart = '`n`.`hidden` = 0 AND `n`.`date` < NOW()';
+		$category = "`n`.cid='$cid' AND `c`.`hidden` = 0";
+		$where = ($cid != false)?"$category OR $standart":$standart;
 
 		$query = $this->db->query(
-			"SELECT `n`.id, `n`.cid, `n`.title, `n`.text_html, `n`.`vote`, `n`.`discus`, `n`.`uid`, `n`.`date`, `n`.`attach`,
-				`c`.title AS `category`,
-				COUNT(DISTINCT `cm`.id) AS `comments`, COUNT(DISTINCT `v`.id) AS `views`, COUNT(DISTINCT `l`.id) AS `likes`, COUNT(DISTINCT `d`.id) AS `dislikes`
+			"SELECT 
+				`n`.id, `n`.cid, `n`.title, `n`.text_html, 
+				`n`.`vote`, `n`.`discus`, `n`.`uid`, `n`.`date`, 
+				`n`.`attach`,
+				
+				`c`.title AS `category`
 			FROM `mcr_news` AS `n`
+			
 			LEFT JOIN `mcr_news_cats` AS `c`
 				ON `c`.id=`n`.cid
-			LEFT JOIN `mcr_news_comments` AS `cm`
-				ON `cm`.nid=`n`.id
-			LEFT JOIN `mcr_news_views` AS `v`
-				ON `v`.nid=`n`.id
-			LEFT JOIN `mcr_news_votes` AS `l`
-				ON `l`.nid=`n`.id AND `l`.`value`='1'
-			LEFT JOIN `mcr_news_votes` AS `d`
-				ON `d`.nid=`n`.id AND `d`.`value`='0'
-			$where
-			GROUP BY `n`.id
+				
+			WHERE $where	
+			
+			GROUP BY `n`.`id`		
 			ORDER BY `n`.`attach` DESC, `n`.id DESC
+			
 			LIMIT $start, $end"
 		);
 
@@ -94,20 +95,21 @@ class module{
 			$text_pos = mb_strpos($text_with_pagebreaker, '{READMORE}', 0, 'UTF-8');
 			$text = ($text_pos !== false)?mb_substr($text_with_pagebreaker, 0, $text_pos, "UTF-8"):$text_with_pagebreaker;
 
-			$date = new DateTime($ar['date']);
+			$date = '<div class="date" rel="tooltip" title="'.$this->l10n->gettext('date_create').'">'.$this->l10n->localize($ar['date'], 'datetime', $this->l10n->get_date_format()).'</div>';
+			$time = '<div class="time" rel="tooltip" title="'.$this->l10n->gettext('time_create').'">'.$this->l10n->localize($ar['date'], 'datetime', $this->l10n->get_time_format()).'</div>';
 
-			$new_data	= array(
-				"ID"		=> $id,
-				"CID"		=> intval($ar['cid']),
-				"TITLE"		=> $this->db->HSC($ar['title']),
-				"CATEGORY"	=> $this->db->HSC($ar['category']),
-				"TEXT"		=> $text,
-				"UID"		=> intval($ar['uid']),
-				"COMMENTS"	=> $this->get_comments($ar['discus'], $ar['comments']),
-				"VIEWS"		=> intval($ar['views']),
-				"DATE"		=> $date->format('d.m.Y H:i'),
-				"LIKES"		=> $this->get_likes($ar['vote'], $id, $ar['likes'], $ar['dislikes']),
-				"ADMIN"		=> $this->get_admin($id, $attach),
+			$new_data = array(
+				"ID" => $id,
+				"CID" => intval($ar['cid']),
+				"TITLE" => $this->db->HSC($ar['title']),
+				"CATEGORY" => $this->db->HSC($ar['category']),
+				"TEXT" => $text,
+				"UID" => intval($ar['uid']),
+				"COMMENTS" => /*$this->get_comments($ar['discus'], $ar['comments'])*/'',
+				"VIEWS" => /*intval($ar['views'])*/'',
+				"DATE" => $date.$time,
+				"LIKES" => /*$this->get_likes($ar['vote'], $id, $ar['likes'], $ar['dislikes'])*/'',
+				"ADMIN" => $this->get_admin($id, $attach),
 			);
 
 			$attached = ($attach==1) ? '-attached' : '';
@@ -211,15 +213,15 @@ class module{
 			$color = $this->db->HSC($ar['gcolor']);
 
 			$com_data	= array(
-				"ID"				=> $id,
-				"NID"				=> $nid,
-				"TEXT"				=> $ar['text_html'],
-				"UID"				=> intval($ar['uid']),
-				"DATA"				=> json_decode($ar['data'], true),
-				"LOGIN"				=> $this->core->colorize($login, $color),
-				"ACTION_DELETE"		=> $act_del,
-				"ACTION_EDIT"		=> $act_edt,
-				"ACTION_QUOTE"		=> $act_get
+				"ID" => $id,
+				"NID" => $nid,
+				"TEXT" => $ar['text_html'],
+				"UID" => intval($ar['uid']),
+				"DATA" => json_decode($ar['data'], true),
+				"LOGIN" => $this->core->colorize($login, $color),
+				"ACTION_DELETE"	=> $act_del,
+				"ACTION_EDIT" => $act_edt,
+				"ACTION_QUOTE" => $act_get
 			);
 
 			echo $this->core->sp(MCR_THEME_MOD."news/comments/comment-id.html", $com_data);

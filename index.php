@@ -38,7 +38,7 @@ switch($mode){
 	break;
 
 	case '403':
-		$core->title = $core->lng['t_403'];
+		$core->title = $core->l10n->gettext('t_403');
 		$content = $core->sp(MCR_THEME_PATH."default_sp/403.html");
 	break;
 

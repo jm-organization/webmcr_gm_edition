@@ -6,23 +6,41 @@ class module{
 	private $install, $cfg, $lng;
 
 	public function __construct($install){
-		$this->install		= $install;
-		$this->cfg			= $install->cfg;
-		$this->lng			= $install->lng;
+		$this->install = $install;
+		$this->cfg = $install->cfg;
+		$this->lng = $install->lng;
 
 		$this->install->title = $this->lng['mod_name'].' — '.$this->lng['reinstall'];
 	}
 
 	public function content(){
-
 		if($_SERVER['REQUEST_METHOD']=='POST'){
-			if(intval(@$_POST['type'])!=1){ $this->install->notify(); }
+			if (intval(@$_POST['type']) != 1){ $this->install->notify(); }
 
-			$tables = array('mcr_users_comments', 'mcr_l10n_phrases', 'mcr_l10n_languages', 'mcr_news_comments', 'mcr_files', 'mcr_iconomy', 'mcr_logs', 'mcr_menu', 'mcr_menu_adm', 'mcr_menu_adm_icons',
-							'mcr_monitoring', 'mcr_news_views', 'mcr_news_votes', 'mcr_online', 'mcr_permissions',
-							'mcr_statics', 'mcr_news', 'mcr_users', 'mcr_news_cats', 'mcr_menu_adm_groups', 'mcr_groups');
-
-
+			$tables = array(
+				'mcr_users_comments',
+				'mcr_l10n_phrases',
+				'mcr_l10n_languages',
+				'mcr_news_comments',
+				'mcr_logs_of_edit',
+				'mcr_files',
+				'mcr_iconomy',
+				'mcr_logs',
+				'mcr_menu',
+				'mcr_menu_adm',
+				'mcr_menu_adm_icons',
+				'mcr_monitoring',
+				'mcr_news_views',
+				'mcr_news_votes',
+				'mcr_online',
+				'mcr_permissions',
+				'mcr_statics',
+				'mcr_news',
+				'mcr_users',
+				'mcr_news_cats',
+				'mcr_menu_adm_groups',
+				'mcr_groups'
+			);
 
 			require_once(DIR_ROOT.'engine/db/'.$this->cfg['db']['backend'].'.class.php');
 
@@ -31,14 +49,12 @@ class module{
 			$error = $db->error();
 
 			if(empty($error)){
+				$tables = '`'.implode('`, `', $tables).'`';
+				if (!$db->query("DROP TABLE IF EXISTS $tables")) {
+					$this->install->notify($this->lng['e_sql'].mysqli_error($db->obj).' #'.__LINE__, $this->lng['e_msg'], 'install/?do=reinstall');
+				}
 
-				$tables = implode(', ', $tables);
-
-				$drop = $db->query("DROP TABLE IF EXISTS $tables");
-
-				if(!$drop){ $this->install->notify($this->lng['e_sql'].__LINE__, $this->lng['e_msg'], 'install/?do=reinstall'); }
-
-				$this->cfg['main']['install'] = true;
+				$this->cfg['main']['install'] = false;
 				$this->cfg['main']['debug'] = true;
 
 				$this->install->savecfg($this->cfg['main'], 'main.php', 'main');

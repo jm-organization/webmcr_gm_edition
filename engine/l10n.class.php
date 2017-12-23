@@ -40,7 +40,8 @@ class l10n {
     );
 
     public $time_formats = array(
-        'g:i A', 'H:i'
+        'g:i A' => '%I:%M %p',
+		'H:i' => '%H:%M'
     );
 
 	public function __construct($core) {
@@ -156,6 +157,16 @@ class l10n {
 		return '%d %b %Y';
 	}
 
+	public function get_time_format() {
+		$time_format = $this->get_locale_info('time_format');
+
+		if (array_key_exists($time_format, $this->time_formats)) {
+			return $this->time_formats[$time_format];
+		}
+
+		return '%R';
+	}
+
 	/**
 	 * @function: gettext
 	 *
@@ -165,12 +176,14 @@ class l10n {
 	 *
 	 * @param $phrase
 	 *
-	 * @param null $text
+	 * @param null $var
+	 * @param null $locale
 	 *
 	 * @return string $value
 	 */
-	public function gettext($phrase, $text = null) {
-        $locale = $this->get_config_locale();
+	public function gettext($phrase, $var = null, $locale = null) {
+        $locale = (empty($locale))?$this->get_config_locale():$locale;
+		$locale = (preg_match('/([a-z]{2})-([A-Z]{2})/', $locale) == 1)?$locale:(function($phrase) { return $phrase; });
         $locale_cache_path = MCR_CACHE_PATH.'l10n/'.$locale;
         $phrases = file_get_contents($locale_cache_path.'/.cache');
         
@@ -178,10 +191,12 @@ class l10n {
         
         $closer = "_%s_";
         $phrase = (ctype_digit($phrase))?sprintf($closer, $phrase):$phrase;
-        
-        foreach ($unjson_phrases as $key => $value) {
-            if ($phrase == $key) { return str_replace('`','"',sprintf($value, $text)); }
-        }
+
+		foreach ($unjson_phrases as $key => $value) {
+			if ($phrase == $key) {
+				return str_replace('`','"',$value);
+			}
+		}
         
 		return $phrase;
 	}

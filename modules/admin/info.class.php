@@ -6,11 +6,11 @@ class submodule{
 	private $core, $db, $cfg, $user, $lng;
 
 	public function __construct($core){
-		$this->core		= $core;
-		$this->db		= $core->db;
-		$this->cfg		= $core->cfg;
-		$this->user		= $core->user;
-		$this->lng		= $core->lng_m;
+		$this->core	= $core;
+		$this->db = $core->db;
+		$this->cfg = $core->cfg;
+		$this->user = $core->user;
+		$this->lng = $core->lng_m;
 
 		if(!$this->core->is_access('sys_adm_info')){ $this->core->notify($this->core->lng['403'], $this->core->lng['e_403']); }
 
@@ -68,40 +68,39 @@ class submodule{
 	}
 
 	private function stats(){
-
-		$query = $this->db->query("SELECT COUNT(*) AS `users`,
-										(SELECT COUNT(*) FROM `mcr_news`) AS `news`,
-										(SELECT COUNT(*) FROM `mcr_news_cats`) AS `categories`,
-										(SELECT COUNT(*) FROM `mcr_comments`) AS `comments`,
-										(SELECT COUNT(*) FROM `mcr_statics`) AS `statics`,
-										(SELECT COUNT(*) FROM `{$this->cfg->tabname('ugroups')}`) AS `groups`,
-										(SELECT COUNT(*) FROM `mcr_news_views`) AS `views`,
-										(SELECT COUNT(*) FROM `mcr_news_votes`) AS `votes`,
-										(SELECT COUNT(*) FROM `mcr_permissions`) AS `permissions`
-									FROM `{$this->cfg->tabname('users')}`");
-
+		$query = $this->db->query("
+			SELECT COUNT(*) AS `users`,
+				(SELECT COUNT(*) FROM `mcr_news`) AS `news`,
+				(SELECT COUNT(*) FROM `mcr_news_cats`) AS `categories`,
+				(SELECT COUNT(*) FROM `mcr_users_comments`) AS `comments`,
+				(SELECT COUNT(*) FROM `mcr_statics`) AS `statics`,
+				(SELECT COUNT(*) FROM `{$this->cfg->tabname('ugroups')}`) AS `groups`,
+				(SELECT COUNT(*) FROM `mcr_news_views`) AS `views`,
+				(SELECT COUNT(*) FROM `mcr_news_votes`) AS `votes`,
+				(SELECT COUNT(*) FROM `mcr_permissions`) AS `permissions`
+			FROM `{$this->cfg->tabname('users')}`
+		");
 		if(!$query || $this->db->num_rows($query)<=0){ return; }
 
 		$ar = $this->db->fetch_assoc($query);
 
 		$data = array(
-			"COUNT_USERS"			=> intval($ar['users']),
-			"COUNT_GROUPS"			=> intval($ar['groups']),
-			"COUNT_NEWS"			=> intval($ar['news']),
-			"COUNT_COMMENTS"		=> intval($ar['comments']),
-			"COUNT_CATEGORIES"		=> intval($ar['categories']),
-			"COUNT_STATICS"			=> intval($ar['statics']),
-			"COUNT_VIEWS"			=> intval($ar['views']),
-			"COUNT_VOTES"			=> intval($ar['votes']),
-			"COUNT_PERMISSIONS"		=> intval($ar['permissions']),
-			"USERS_STATS"			=> $this->users_stats()
+			"COUNT_USERS" => intval($ar['users']),
+			"COUNT_GROUPS" => intval($ar['groups']),
+			"COUNT_NEWS" => intval($ar['news']),
+			"COUNT_COMMENTS" => intval($ar['comments']),
+			"COUNT_CATEGORIES" => intval($ar['categories']),
+			"COUNT_STATICS" => intval($ar['statics']),
+			"COUNT_VIEWS" => intval($ar['views']),
+			"COUNT_VOTES" => intval($ar['votes']),
+			"COUNT_PERMISSIONS" => intval($ar['permissions']),
+			"USERS_STATS" => $this->users_stats()
 		);
 
 		return $this->core->sp(MCR_THEME_MOD."admin/info/stats.html", $data);
 	}
 
 	private function extensions(){
-
 		return $this->core->sp(MCR_THEME_MOD."admin/info/extensions.html");
 	}
 
