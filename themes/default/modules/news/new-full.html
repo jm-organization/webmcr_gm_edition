@@ -18,8 +18,7 @@
 	<div class="block-line"></div>
 
 	<div class="block-footer">
-		<div class="date" rel="tooltip" title="<?php echo $this->l10n->gettext('date_create'); ?>"><?php echo explode(' ', $data['DATE'])[0] ?></div>
-		<div class="time" rel="tooltip" title="<?php echo $this->l10n->gettext('time_create'); ?>"><?php echo explode(' ', $data['DATE'])[1] ?></div>
+		<div class="date" rel="tooltip" title="<?php echo $this->l10n->gettext('date_create'); ?>"><?php echo $data['DATE'] ?></div>
 		<div class="category"><a href="<?php echo BASE_URL; ?>?mode=news&amp;cid=<?php echo $data['CID']; ?>" rel="tooltip" title="<?php echo $this->l10n->gettext('category'); ?>"><?php echo $data['CATEGORY']; ?></a></div>
 		<div class="readmore"><a href="<?php echo BASE_URL; ?>"><?php echo $this->l10n->gettext('go_home'); ?></a></div>
 		<div class="views" rel="tooltip" title="<?php echo $this->l10n->gettext('views'); ?>"><i class="fa fa-eye"></i><?php echo $data['VIEWS']; ?></div>

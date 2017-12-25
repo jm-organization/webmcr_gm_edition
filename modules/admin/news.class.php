@@ -394,7 +394,7 @@ class submodule{
 		return $this->core->sp(MCR_THEME_MOD."admin/news/new-add.html", $result);
 	}
 
-	private function  edit(){
+	private function edit(){
 		if(!$this->core->is_access('sys_adm_news_edit')){ $this->core->notify($this->core->lng["e_msg"], $this->core->lng['e_403'], 2, '?mode=admin&do=news'); }
 
 		$id = intval($_GET['id']);
@@ -424,7 +424,7 @@ class submodule{
 		$discuses = (intval($ar['discus'])===1)?'checked':'';
 		$attached = (intval($ar['attach'])===1)?'checked':'';
 		$hiddened = (intval($ar['hidden'])===1)?'checked':'';
-		$data = json_decode($ar['data']);
+		$data = json_decode($ar['data'], true);
 
 		$bc = array(
 			$this->lng['mod_name'] => ADMIN_URL."",
@@ -483,6 +483,7 @@ class submodule{
 						false
 					),
 				);
+				$new_data = array_merge($data, $new_data);
 				$new_data = $this->db->safesql(json_encode($new_data));
 
 				$updated_news = "
@@ -539,7 +540,7 @@ class submodule{
 			"CATEGORIES" => $categories,
 			"TITLE" => $title,
 			"TEXT" => $text,
-			"PLANED_PUBLISH" => (@$data->planed_news || @$_POST['planed_publish']=='on')?'checked':'',
+			"PLANED_PUBLISH" => (@$data['planed_news'] || @$_POST['planed_publish']=='on')?'checked':'',
 			"DATE" => $date->format('d.m.Y H:i:s'),
 			"VOTE" => $votes,
 			"DISCUS" => $discuses,

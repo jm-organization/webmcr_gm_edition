@@ -5,6 +5,8 @@ if(!defined("MCR")){ exit("Hacking Attempt!"); }
 class module{
 	private $core, $db, $cfg, $user, $lng;
 
+	private $views, $comments, $likes;
+
 	public function __construct($core){
 		$this->core = $core;
 		$this->db = $core->db;
@@ -19,26 +21,15 @@ class module{
 		$this->core->bc = $this->core->gen_bc($bc);
 	}
 
-	private function get_likes($vote, $id, $likes, $dislikes){
-		if(intval($vote)===0){ return null; }
+	private function get_likes($vote, $id, $data){
+		if (intval($vote) === 0) { return null; }
 		$data = array(
 			"ID" => intval($id),
-			"LIKES" => intval($likes),
-			"DISLIKES" => intval($dislikes)
+			"LIKES" => empty($data)?0:intval($data['likes']),
+			"DISLIKES" => empty($data)?0:intval($data['dislikes'])
 		);
 
 		return $this->core->sp(MCR_THEME_MOD."news/new-like.html", $data);
-	}
-
-	private function get_comments($discus, $count){
-		if(intval($discus)<=0){ return null; }
-
-		$data = array(
-			"COMMENTS" => intval($count)
-		);
-
-		return $this->core->sp(MCR_THEME_MOD."news/new-comments.html", $data);
-
 	}
 
 	private function get_admin($id, $attach){
@@ -58,13 +49,13 @@ class module{
 
 		$standart = '`n`.`hidden` = 0 AND `n`.`date` < NOW()';
 		$category = "`n`.cid='$cid' AND `c`.`hidden` = 0";
-		$where = ($cid != false)?"$category OR $standart":$standart;
+		$where = ($cid != false)?"($category) OR ($standart)":$standart;
 
 		$query = $this->db->query(
 			"SELECT 
 				`n`.id, `n`.cid, `n`.title, `n`.text_html, 
 				`n`.`vote`, `n`.`discus`, `n`.`uid`, `n`.`date`, 
-				`n`.`attach`,
+				`n`.`attach`, `n`.`data`,
 				
 				`c`.title AS `category`
 			FROM `mcr_news` AS `n`
@@ -90,6 +81,7 @@ class module{
 		while ($ar = $this->db->fetch_assoc($query)) {
 			$id = intval($ar['id']);
 			$attach = intval($ar['attach']);
+			$data = json_decode($ar['data'], true);
 			
 			$text_with_pagebreaker = $ar['text_html'];
 			$text_pos = mb_strpos($text_with_pagebreaker, '{READMORE}', 0, 'UTF-8');
@@ -98,6 +90,8 @@ class module{
 			$date = '<div class="date" rel="tooltip" title="'.$this->l10n->gettext('date_create').'">'.$this->l10n->localize($ar['date'], 'datetime', $this->l10n->get_date_format()).'</div>';
 			$time = '<div class="time" rel="tooltip" title="'.$this->l10n->gettext('time_create').'">'.$this->l10n->localize($ar['date'], 'datetime', $this->l10n->get_time_format()).'</div>';
 
+			$votes = isset($data['votes'])?$data['votes']:array();
+
 			$new_data = array(
 				"ID" => $id,
 				"CID" => intval($ar['cid']),
@@ -105,10 +99,10 @@ class module{
 				"CATEGORY" => $this->db->HSC($ar['category']),
 				"TEXT" => $text,
 				"UID" => intval($ar['uid']),
-				"COMMENTS" => /*$this->get_comments($ar['discus'], $ar['comments'])*/'',
-				"VIEWS" => /*intval($ar['views'])*/'',
+				"COMMENTS" => '',
+				"VIEWS" => isset($data['views'])?$data['views']:0,
 				"DATE" => $date.$time,
-				"LIKES" => /*$this->get_likes($ar['vote'], $id, $ar['likes'], $ar['dislikes'])*/'',
+				"LIKES" => $this->get_likes($ar['vote'], $id, $votes),
 				"ADMIN" => $this->get_admin($id, $attach),
 			);
 
@@ -130,11 +124,10 @@ class module{
 	}
 
 	private function news_list($cid=false){
-
 		if(!$this->core->is_access('sys_news_list')){ $this->core->notify($this->core->lng['403'], $this->lng['access_denied'], 2, "?mode=403"); }
 
-		$sql	= "SELECT COUNT(*) FROM `mcr_news`";
-		$page	= "?mode=news&pid=";
+		$sql = "SELECT COUNT(*) FROM `mcr_news`";
+		$page = "?mode=news&pid=";
 
 		if($cid!==false){
 			$cid = intval($cid);
@@ -158,7 +151,6 @@ class module{
 	}
 
 	private function comments_array($nid=1){
-
 		if(!$this->core->is_access('sys_comment_list')){
 			return $this->core->sp(MCR_THEME_MOD."news/comments/comment-access.html");
 		}
@@ -171,25 +163,33 @@ class module{
 		$us_f = $ctables['users']['fields'];
 
 		$query = $this->db->query(
-			"SELECT `c`.id, `c`.text_html, `c`.uid, `c`.`data`,
-				`u`.`{$us_f['login']}`, `g`.`{$ug_f['color']}` AS `gcolor`
+			"SELECT 
+				`c`.id, `c`.text_html, `c`.uid, 
+				`c`.`data`,
+				
+				`u`.`{$us_f['login']}`, 
+				
+				`g`.`{$ug_f['color']}` AS `gcolor`
 			FROM `mcr_news_comments` AS `c`
+			
 			LEFT JOIN `{$this->cfg->tabname('users')}` AS `u`
 				ON `u`.`{$us_f['id']}`=`c`.uid
+				
 			LEFT JOIN `{$this->cfg->tabname('ugroups')}` AS `g`
 				ON `g`.`{$ug_f['id']}`=`u`.`{$us_f['group']}`
+				
 			WHERE `c`.nid='$nid'
+			
 			ORDER BY `c`.id DESC
-			LIMIT $start, $end
-		");
-
+			
+			LIMIT $start, $end"
+		);
 		if(!$query || $this->db->num_rows($query)<=0){ return $this->core->sp(MCR_THEME_MOD."news/comments/comment-none.html"); }
 
 		ob_start();
 		
 		while ($ar = $this->db->fetch_assoc($query)) {
 			$act_del = $act_edt = $act_get = '';
-
 			$id = intval($ar['id']);
 
 			$data = array(
@@ -200,11 +200,9 @@ class module{
 			if($this->core->is_access('sys_comment_del') || $this->core->is_access('sys_comment_del_all')){
 				$act_del = $this->core->sp(MCR_THEME_MOD."news/comments/comment-act-del.html", $data);
 			}
-
 			if($this->core->is_access('sys_comment_edt') || $this->core->is_access('sys_comment_edt_all')){
 				$act_edt = $this->core->sp(MCR_THEME_MOD."news/comments/comment-act-edt.html", $data);
 			}
-
 			if($this->user->is_auth){
 				$act_get = $this->core->sp(MCR_THEME_MOD."news/comments/comment-act-get.html", $data);
 			}
@@ -212,7 +210,7 @@ class module{
 			$login = (is_null($ar[$us_f['login']])) ? 'Пользователь удален' : $this->db->HSC($ar[$us_f['login']]);
 			$color = $this->db->HSC($ar['gcolor']);
 
-			$com_data	= array(
+			$com_data = array(
 				"ID" => $id,
 				"NID" => $nid,
 				"TEXT" => $ar['text_html'],
@@ -231,9 +229,8 @@ class module{
 	
 	}
 
-	private function get_comment_form(){
-		
-		if(!$this->core->is_access('sys_comment_add')){ return; }
+	private function get_comment_form() {
+		if(!$this->core->is_access('sys_comment_add')){ return null; }
 
 		$bb = $this->core->load_bb_class();
 
@@ -242,23 +239,19 @@ class module{
 		return $this->core->sp(MCR_THEME_MOD."news/comments/comment-form.html", $data);
 	}
 
-	private function comments_list($nid=1){
-
+	private function comments_list($nid=1) {
 		$sql = "SELECT COUNT(*) FROM `mcr_news_comments` WHERE nid='$nid'";
 		$page = "?mode=news&id=$nid&pid=";
 
 		$query = $this->db->query($sql);
-
-		if (!$query) { return; }
+		if (!$query) { return null; }
 
 		$ar = $this->db->fetch_array($query);
 
-		$count = intval($ar[0]);
-
 		$data = array(
-			"PAGINATION" => $this->core->pagination($this->cfg->pagin['comments'], $page, $count),
+			"PAGINATION" => $this->core->pagination($this->cfg->pagin['comments'], $page, intval($ar[0])),
 			"COMMENTS" => $this->comments_array($nid),
-			"COUNT" => $count,
+			"COUNT" => $ar[0],
 			"COMMENTS_FORM"	=> $this->get_comment_form()
 		);
 
@@ -266,27 +259,42 @@ class module{
 	}
 
 	private function update_views($nid){
-		$query = $this->db->query("SELECT COUNT(*)
-									FROM `mcr_news_views`
-									WHERE nid='$nid' AND (uid='{$this->user->id}' OR ip='{$this->user->ip}')");
-
-		if(!$query){ $this->core->notify($this->core->lng['e_sql_critical']); }
+		$query = $this->db->query(
+			"SELECT COUNT(*)
+			FROM `mcr_news_views`
+			WHERE nid='$nid' AND (uid='{$this->user->id}' OR ip='{$this->user->ip}')"
+		);
+		if (!$query) { $this->core->notify($this->core->lng['e_sql_critical']); }
 
 		$ar = $this->db->fetch_array($query);
 
-		if(intval($ar[0])>0){ return false; }
+		if (intval($ar[0]) > 0) { return false; }
 
-		$uid = ($this->user->id<=0) ? 1 : $this->user->id;
+		$uid = ($this->user->id <= 0)?1:$this->user->id;
 
-		$insert = $this->db->query("INSERT INTO `mcr_news_views`
-									(nid, uid, ip, `time`)
-									VALUES
-									('$nid', '$uid', '{$this->user->ip}', NOW())");
-		if(!$insert){ $this->core->notify($this->core->lng['e_sql_critical']); }
+		$insert = $this->db->query(
+			"INSERT INTO `mcr_news_views` (nid, uid, ip, `time`)
+			VALUES ('$nid', '$uid', '{$this->user->ip}', NOW())"
+		);
+		if (!$insert) { $this->core->notify($this->core->lng['e_sql_critical']); }
+		$views = $this->db->query("SELECT COUNT(*) FROM `mcr_news_views` WHERE `nid`='$nid'");
+		$views = $this->db->fetch_assoc($views);
+
+		$data = $this->db->query("SELECT `data` FROM `mcr_news` WHERE `id`='$nid'");
+		$data = $this->db->fetch_assoc($data);
+
+		$data = json_decode($data['data'], true);
+		$data = array_merge($data, array('views' => intval($views)));
+		$data = json_encode($data);
+
+		if (!$this->db->query(
+			"UPDATE `mcr_news`
+			SET `data`='{$data}'
+			WHERE `id`='$nid'"
+		)) die($this->core->lng['e_sql_critical']);
 
 		// Последнее обновление пользователя
 		$this->db->update_user($this->user);
-		
 		$_SESSION['views-new-'.$nid] = true;
 
 		return true;
@@ -305,20 +313,18 @@ class module{
 		$id = intval($_GET['id']);
 
 		$query = $this->db->query("
-			SELECT `n`.id, `n`.cid, `n`.title, `n`.text_html, `n`.vote, `n`.discus, `n`.uid, `n`.`date`, `n`.`attach`,
-				`c`.title AS `category`,
-				COUNT(DISTINCT `v`.id) AS `views`,
-				COUNT(DISTINCT `l`.id) AS `likes`,
-				COUNT(DISTINCT `d`.id) AS `dislikes`
+			SELECT 
+				`n`.id, `n`.cid, `n`.title, 
+				`n`.text_html, `n`.vote, `n`.discus, 
+				`n`.uid, `n`.`date`, `n`.`attach`,
+				`n`.`data`,
+				
+				`c`.title AS `category`
 			FROM `mcr_news` AS `n`
+			
 			LEFT JOIN `mcr_news_cats` AS `c`
 				ON `c`.id=`n`.cid
-			LEFT JOIN `mcr_news_views` AS `v`
-				ON `v`.nid=`n`.id
-			LEFT JOIN `mcr_news_votes` AS `l`
-				ON `l`.nid=`n`.id AND `l`.`value`='1'
-			LEFT JOIN `mcr_news_votes` AS `d`
-				ON `d`.nid=`n`.id AND `d`.`value`='0'
+				
 			WHERE `n`.id='$id'
 			GROUP BY `n`.`id`
 		");
@@ -337,24 +343,24 @@ class module{
 			$this->update_views($id);
 		}
 
-		$comments = (intval($ar['discus']) === 1) ? $this->comments_list($id) : $this->core->sp(MCR_THEME_MOD."news/comments/comment-closed.html");;
+		$comments = (intval($ar['discus']) == 1)?$this->comments_list($id):$this->core->sp(MCR_THEME_MOD."news/comments/comment-closed.html");
 
-		$attach = intval($ar['attach']);
-
-		$date = new DateTime($ar['date']);
+		$format = $this->l10n->get_date_format().' '.$this->l10n->gettext('in').' '.$this->l10n->get_time_format();
+		$data = json_decode($ar['data'], true);
+		$votes = isset($data['votes'])?$data['votes']:array();
 
 		$new_data = array(
-			"ID"			=> $id,
-			"CID"			=> intval($ar['cid']),
-			"TITLE"			=> $this->db->HSC($ar['title']),
-			"TEXT"			=> str_replace('{READMORE}', '', $ar['text_html']),
-			"UID"			=> intval($ar['uid']),
-			"DATE"			=> $date->format('d.m.Y H:i'),
-			"CATEGORY"		=> $this->db->HSC($ar['category']),
-			"VIEWS"			=> intval($ar['views']),
-			"COMMENTS"		=> $comments,
-			"LIKES"			=> $this->get_likes($ar['vote'], $id, $ar['likes'], $ar['dislikes']),
-			"ADMIN"			=> $this->get_admin($id, $attach),
+			"ID" => $id,
+			"CID" => intval($ar['cid']),
+			"TITLE" => $this->db->HSC($ar['title']),
+			"TEXT" => str_replace('{READMORE}', '', $ar['text_html']),
+			"UID" => intval($ar['uid']),
+			"DATE" => $this->l10n->localize($ar['date'], 'datetime', $format),
+			"CATEGORY" => $this->db->HSC($ar['category']),
+			"VIEWS"	=> isset($data['views'])?$data['views']:0,
+			"COMMENTS" => $comments,
+			"LIKES"	=> $this->get_likes($ar['vote'], $id, $votes),
+			"ADMIN"	=> $this->get_admin($id, intval($ar['attach'])),
 		);
 
 		$bc = array(
