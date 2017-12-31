@@ -35,7 +35,7 @@ class submodule{
 		);
 	}
 
-	private function is_auth() {
+	private function is_unauth() {
 		if ($this->user->is_auth) return (object)array(
 			'status' => false,
 			'error' => $this->lng['e_already'],
@@ -60,10 +60,10 @@ class submodule{
 	}
 
 	private function is_vl( $login ) {
-		if (!preg_match("/^[\w\-]{3,}$/i", $login)) { return (object)array(
+		if (preg_match("/^[\w\-]{3,}$/i", $login) != 1) { return (object)array(
 			'status' => false,
 			'error' => $this->lng['e_login_regexp'],
-		); } elseif ($login == 'default') { return (object)array(
+		); } elseif (preg_match("/user|default|admin/i", $login) == 1) { return (object)array(
 			'status' => false,
 			'error' => $this->lng['e_exist'],
 		); }
@@ -120,9 +120,8 @@ class submodule{
 	private function notify($message) { $this->core->js_notify($message); }
 
 	public function content(){
-
 		if ($this->is_post()->status) {
-		if ($this->is_auth()->status) {
+		if ($this->is_unauth()->status) {
 		if ($this->is_agree_with_rules()->status) {
 
 			$raw_login = $this->db->safesql(@$_POST['login']);
@@ -150,21 +149,25 @@ class submodule{
 				$us_f = $ctables['users']['fields'];
 				$ic_f = $ctables['iconomy']['fields'];
 
-				$register_user = $this->db->query("INSERT INTO `{$this->cfg->tabname('users')}`
-										(`{$us_f['group']}`, `{$us_f['login']}`, `{$us_f['email']}`, `{$us_f['pass']}`, `{$us_f['uuid']}`,
-										`{$us_f['salt']}`, `{$us_f['tmp']}`, `{$us_f['ip_last']}`, `{$us_f['date_reg']}`, `{$us_f['gender']}`)
-									VALUES
-										('$gid', '$login', '$email', '$password', UNHEX(REPLACE(UUID(), '-', '')), '$salt', '$tmp', '$ip', 
-										NOW(), '$gender')");
-				// Говорим юзверю, что такой логин, мыло или ююайди уже занят
-				if (!$register_user) $this->notify($this->lng['e_exist']);
+				if (!$this->db->query(
+					"INSERT INTO `{$this->cfg->tabname('users')}` (
+						`{$us_f['group']}`, `{$us_f['login']}`, `{$us_f['email']}`, `{$us_f['pass']}`, `{$us_f['uuid']}`,
+						`{$us_f['salt']}`, `{$us_f['tmp']}`, `{$us_f['ip_last']}`, `{$us_f['date_reg']}`, `{$us_f['date_last']}`, 
+						`{$us_f['gender']}`
+					) VALUES (
+						'$gid', '$login', '$email', '$password', UNHEX(REPLACE(UUID(), '-', '')), 
+						'$salt', '$tmp', '$ip', NOW(), NOW(), '$gender'
+					)"
+				)) $this->notify($this->lng['e_exist'].' '.mysqli_error($this->db->obj)); // Говорим юзверю, что такой логин, мыло или ююайди уже занят
 				$id = $this->db->insert_id();
 
-				$criit = $this->db->query("INSERT INTO `{$this->cfg->tabname('iconomy')}`
-										(`{$ic_f['login']}`)
-									VALUES
-										('$login')");
-				if(!$criit){ $this->notify($this->core->lng['e_sql_critical']); }
+				if(!$this->db->query(
+					"INSERT INTO `{$this->cfg->tabname('iconomy')}` (
+						`{$ic_f['login']}`
+					) VALUES (
+						'$login'
+					)"
+				)){ $this->notify($this->core->lng['e_sql_critical']); }
 
 				// Лог действия
 				$this->db->actlog($this->lng['log_reg'], $id);

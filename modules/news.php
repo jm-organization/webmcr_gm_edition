@@ -73,7 +73,7 @@ class module{
 
 		ob_start();
 
-		if (!$query || $this->db->num_rows($query) <= 0) { 
+		if (!$query || $this->db->num_rows($query) <= 0) {
 			echo $this->core->sp(MCR_THEME_MOD."news/new-none.html");
 			return ob_get_clean();
 		}
@@ -262,7 +262,7 @@ class module{
 		$query = $this->db->query(
 			"SELECT COUNT(*)
 			FROM `mcr_news_views`
-			WHERE nid='$nid' AND (uid='{$this->user->id}' OR ip='{$this->user->ip}')"
+			WHERE nid='$nid' AND uid='{$this->user->id}'"
 		);
 		if (!$query) { $this->core->notify($this->core->lng['e_sql_critical']); }
 

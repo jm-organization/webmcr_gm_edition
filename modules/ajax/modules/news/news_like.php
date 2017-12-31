@@ -23,13 +23,13 @@ class submodule{
 		if ($value < 0 || $value > 1) { $this->core->js_notify($this->core->lng['e_hack']); }
 
 		$ar = $this->get_news_votes($nid);
-		if (intval($ar['vote'])<=0) { $this->core->js_notify($this->lng['com_vote_disabled']); }
+		if (intval($ar['vote']) <= 0) { $this->core->js_notify($this->lng['com_vote_disabled']); }
 
-		$likes = intval($ar['likes']);
-		$dislikes = intval($ar['dislikes']);
+		$votes = json_decode($ar['data'], true)['votes'];
+		$likes = intval($votes['likes']);
+		$dislikes = intval($votes['dislikes']);
 		$uid = (!$this->user->is_auth)?-1:$this->user->id;
-		$time = time();
-		$old_value = $ar['value'];
+		$old_value = isset($ar['value'])?$ar['value']:null;
 
 		if (is_null($old_value)) {
 			if (!$this->db->query(
@@ -39,21 +39,43 @@ class submodule{
 
 			$likes = ($value === 1)?$likes+1:$likes;
 			$dislikes = ($value === 0)?$dislikes+1:$dislikes;
-		} else {
+		} elseif ($old_value != $value) {
 			if (!$this->db->query(
 				"UPDATE `mcr_news_votes`
 				SET uid='$uid', `value`='$value', `time`=NOW()
-				WHERE nid='$nid' AND (uid='{$this->user->id}' OR ip='{$this->user->ip}')
+				WHERE nid='$nid' AND uid='{$this->user->id}'
 				LIMIT 1"
 			)) $this->core->js_notify($this->core->lng['e_sql_critical']);
 
 			if ($value === 1) {
 				$likes = (intval($old_value) === 1)?$likes:$likes+1;
 				$dislikes = (intval($old_value) === 1)?$dislikes:$dislikes-1;
-			}else{
+			} elseif ($value === 0) {
 				$likes = (intval($old_value) === 0)?$likes:$likes-1;
 				$dislikes = (intval($old_value) === 0)?$dislikes:$dislikes+1;
 			}
+		} else {
+			if (!$this->db->query(
+				"DELETE FROM `mcr_news_votes` WHERE `value`='$value' AND (nid='$nid' AND uid='{$this->user->id}')"
+			)) $this->core->js_notify($this->core->lng['e_sql_critical']);
+
+			if ($value === 1) {
+				$likes = (intval($old_value) === 1)?$likes-1:$likes+1;
+				$dislikes = (intval($old_value) === 1)?$dislikes:$dislikes-1;
+			} elseif ($value === 0) {
+				$likes = (intval($old_value) === 0)?$likes:$likes-1;
+				$dislikes = (intval($old_value) === 0)?$dislikes-1:$dislikes+1;
+			}
+
+			$data = json_decode($ar['data'], true);
+			$data = array_merge($data, array('votes' => array(
+				'likes' => $likes,
+				'dislikes' => $dislikes
+			)));
+			$data = json_encode($data);
+			if (!$this->db->query(
+				"UPDATE `mcr_news` SET `data`='$data' WHERE `id`='$nid'"
+			)) $this->core->js_notify($this->core->lng['e_sql_critical']);
 		}
 
 		$news_votes = $this->get_news_votes($nid);
@@ -82,20 +104,26 @@ class submodule{
 
 	private function get_news_votes($news_id) {
 		$query = $this->db->query(
-			"SELECT `n`.`vote`, `n`.`data`, COUNT(DISTINCT `l`.id) AS `likes`, COUNT(DISTINCT `d`.id) AS `dislikes`, `m`.`value`
+			"SELECT 
+				`n`.`vote`, `n`.`data`, 
+				
+				`v`.`value`
 			FROM `mcr_news` AS `n`
-			LEFT JOIN `mcr_news_votes` AS `l`
-				ON `l`.nid=`n`.id AND `l`.`value`='1'
-			LEFT JOIN `mcr_news_votes` AS `d`
-				ON `d`.nid=`n`.id AND `d`.`value`='0'
-			LEFT JOIN `mcr_news_votes` AS `m`
-				ON `m`.nid=`n`.id AND (`m`.uid='{$this->user->id}' OR `m`.ip='{$this->user->ip}')
-			WHERE `n`.id='$news_id'
-			GROUP BY `m`.`value`"
+				
+			LEFT JOIN `mcr_news_votes` AS `v`
+				ON `v`.nid=`n`.id AND `v`.uid='{$this->user->id}'
+				
+			WHERE `n`.id='$news_id' AND (`v`.nid='$news_id' AND `v`.uid='{$this->user->id}')
+			
+			GROUP BY `v`.`value`"
 		);
-		if (!$query || $this->db->num_rows($query)<=0) { $this->core->js_notify($this->core->lng['e_hack']); }
+
+		if (!$query || $this->db->num_rows($query) <= 0) {
+			$query = $this->db->query("SELECT `vote`, `data` FROM `mcr_news` WHERE `id`='$news_id'");
+
+			return $this->db->fetch_assoc($query);
+		}
 
 		return $this->db->fetch_assoc($query);
 	}
-
 }

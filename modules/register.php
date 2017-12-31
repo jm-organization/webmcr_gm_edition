@@ -30,7 +30,7 @@ class module{
 	}
 
 	private function accept(){
-		if(!isset($_GET['key'])){ $this->core->notify($this->core->lng['e_msg'], $this->core->lng['e_403'], 2, '?mode=403'); }
+		if (!isset($_GET['key'])) { $this->core->notify($this->core->lng['e_msg'], $this->core->lng['e_403'], 2, '?mode=403'); }
 
 		$key_string = $_GET['key'];
 

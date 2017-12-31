@@ -3,7 +3,7 @@ $(function(){
 
 		mcr.loading();
 
-		var nid = $(this)[0].id, value = ($(this).hasClass("like")) ? 1 : 0;
+		var nid = $(this).data('nid'), value = ($(this).hasClass("like")) ? 1 : 0;
 
 		var formdata = new FormData();
 		
@@ -27,11 +27,11 @@ $(function(){
 
 				if(!data._type){ return mcr.notify(data._title, data._message); }
 
-				$(".block-like#"+nid+" .likes").hide().fadeIn(400, function(){
+				$(".block-like#votes_"+nid+" .likes").hide().fadeIn(400, function(){
 					$(this).text(data._data.likes);
 				});
 
-				$(".block-like#"+nid+" .dislikes").hide().fadeIn(400, function(){
+				$(".block-like#votes_"+nid+" .dislikes").hide().fadeIn(400, function(){
 					$(this).text(data._data.dislikes);
 				});
 

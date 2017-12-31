@@ -1230,7 +1230,7 @@ CREATE TABLE IF NOT EXISTS `mcr_news_votes` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `nid` int(10) NOT NULL DEFAULT '0',
   `uid` int(10) NOT NULL DEFAULT '-1',
-  `value` tinyint(1) NOT NULL DEFAULT '1',
+  `value` tinyint(1) DEFAULT NULL,
   `ip` varchar(64) CHARACTER SET latin1 NOT NULL DEFAULT '127.0.0.1',
   `time` datetime NOT NULL,
   PRIMARY KEY (`id`),
