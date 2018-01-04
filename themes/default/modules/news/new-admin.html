@@ -4,8 +4,8 @@
 
 	<ul class="dropdown-menu pull-right">
 		<li class="dropdown-item"><a href="#" class="news-attach" data-id="<?php echo $data['ID']; ?>"><?php echo $data['ATTACH']; ?></a></li>
-		<li class="dropdown-item"><a href="<?php echo ADMIN_URL; ?>&do=news&op=edit&id=<?php echo $data['ID']; ?>"><?php echo $this->l10n->gettext('com_edit'); ?></a></li>
-		<li class="dropdown-item"><a href="#" class="news-delete" data-id="<?php echo $data['ID']; ?>"><?php echo $this->l10n->gettext('com_delete'); ?></a></li>
+		<li class="dropdown-item"><a href="<?php echo ADMIN_URL; ?>&do=news&op=edit&id=<?php echo $data['ID']; ?>"><?php echo $this->l10n->gettext('edit'); ?></a></li>
+		<li class="dropdown-item"><a href="#" class="news-delete" data-id="<?php echo $data['ID']; ?>"><?php echo $this->l10n->gettext('delete'); ?></a></li>
 	
 	</ul>
 </div>
