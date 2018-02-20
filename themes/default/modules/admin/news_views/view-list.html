@@ -14,8 +14,8 @@
 						<th><a href="#" class="sort-trigger" data-field="id" data-order="desc">#</a></th>
 						<th><a href="#" class="sort-trigger" data-field="news" data-order="desc"><?php echo $this->l10n->gettext('nv_field_news'); ?></a></th>
 						<th><a href="#" class="sort-trigger" data-field="user" data-order="desc"><?php echo $this->l10n->gettext('nv_field_user'); ?></a></th>
-						<th><a href="#" class="sort-trigger" data-field="date" data-order="desc"><?php echo $this->l10n->gettext('nv_field_date'); ?></a></th>
-						<th class="action"><?php echo $this->l10n->gettext('nv_field_action'); ?> <input type="checkbox" class="check-all" data-for="check-input"></th>
+						<th><a href="#" class="sort-trigger" data-field="date" data-order="desc"><?php echo $this->l10n->gettext('date'); ?></a></th>
+						<th class="action"><?php echo $this->l10n->gettext('action'); ?> <input type="checkbox" class="check-all" data-for="check-input"></th>
 					</tr>
 				</thead>
 
@@ -31,7 +31,7 @@
 		<div class="right-act">
 			<?php echo $this->l10n->gettext('nv_field_action2'); ?>:
 			<div class="btn-group">
-				<button class="btn btn-secondary remove" data-for="check-input" data-text="<?php echo $this->l10n->gettext('nv_accept'); ?>" type="submit" name="delete"><i class="fa fa-pencil"></i></button>
+				<button class="btn btn-secondary remove" data-for="check-input" data-text="<?php echo $this->l10n->gettext('remove_accept'); ?>" type="submit" name="delete"><i class="fa fa-pencil"></i></button>
 			</div>
 		</div>
 		
