@@ -30,8 +30,14 @@ class module{
 
 		$ctables	= $this->cfg->db['tables'];
 		$us_f		= $ctables['users']['fields'];
+		$date		= time();
 
-		$update = $this->db->query("UPDATE `{$this->cfg->tabname('users')}` SET `{$us_f['tmp']}`='$new_tmp', `{$us_f['date_last']}`='".$time->format('Y-m-d H:i:s')."' WHERE `{$us_f['id']}`='{$this->user->id}' LIMIT 1");
+		$update = $this->db->query("
+			UPDATE `{$this->cfg->tabname('users')}` 
+			SET `{$us_f['tmp']}`='$new_tmp', `{$us_f['date_last']}`=$date
+			WHERE `{$us_f['id']}`='{$this->user->id}'
+			LIMIT 1
+		");
 
 		if(!$update){ $this->core->notify($this->core->lng['e_attention'], $this->core->lng['e_sql_critical']); }
 
