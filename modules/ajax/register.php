@@ -148,15 +148,15 @@ class submodule{
 				$ctables = $this->cfg->db['tables'];
 				$us_f = $ctables['users']['fields'];
 				$ic_f = $ctables['iconomy']['fields'];
+				$time = time();
 
 				if (!$this->db->query(
 					"INSERT INTO `{$this->cfg->tabname('users')}` (
 						`{$us_f['group']}`, `{$us_f['login']}`, `{$us_f['email']}`, `{$us_f['pass']}`, `{$us_f['uuid']}`,
-						`{$us_f['salt']}`, `{$us_f['tmp']}`, `{$us_f['ip_last']}`, `{$us_f['date_reg']}`, `{$us_f['date_last']}`, 
-						`{$us_f['gender']}`
+						`{$us_f['salt']}`, `{$us_f['tmp']}`, `{$us_f['ip_last']}`, `{$us_f['date_reg']}`, `{$us_f['gender']}`
 					) VALUES (
 						'$gid', '$login', '$email', '$password', UNHEX(REPLACE(UUID(), '-', '')), 
-						'$salt', '$tmp', '$ip', NOW(), NOW(), '$gender'
+						'$salt', '$tmp', '$ip', $time, '$gender'
 					)"
 				)) $this->notify($this->lng['e_exist'].' '.mysqli_error($this->db->obj)); // Говорим юзверю, что такой логин, мыло или ююайди уже занят
 				$id = $this->db->insert_id();

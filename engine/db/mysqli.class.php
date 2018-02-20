@@ -100,11 +100,12 @@ class db{
 
 		$ctables	= $this->cfg->db['tables'];
 		$logs_f		= $ctables['logs']['fields'];
+		$date		= time();
 
 		$insert = $this->query("INSERT INTO `{$this->cfg->tabname('logs')}`
 										(`{$logs_f['uid']}`, `{$logs_f['msg']}`, `{$logs_f['date']}`)
 									VALUES
-										('$uid', '$msg', NOW())");
+										('$uid', '$msg', $date)");
 
 		if(!$insert){ return false; }
 
@@ -116,9 +117,10 @@ class db{
 
 		$ctables	= $this->cfg->db['tables'];
 		$us_f		= $ctables['users']['fields'];
+		$date		= time();
 
 		$update = $this->query("UPDATE `{$this->cfg->tabname('users')}`
-								SET `{$us_f['ip_last']}`='{$user->ip}', `{$us_f['date_last']}`=NOW()
+								SET `{$us_f['ip_last']}`='{$user->ip}', `{$us_f['date_last']}`=$date
 								WHERE `{$us_f['id']}`='{$user->id}'");
 
 		if(!$update){ return false; }

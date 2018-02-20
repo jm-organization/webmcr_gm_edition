@@ -64,9 +64,11 @@ class submodule{
 
 		if(empty($message_strip)){ $this->core->js_notify($this->lng['com_msg_incorrect']); }
 
+		$time = time();
+
 		$newdata = array(
-			"time_create" => time(),
-			"time_last" => time()
+			"time_create" => $time,
+			"time_last" => $time
 		);
 
 		$safedata = $this->db->safesql(json_encode($newdata));
@@ -74,7 +76,7 @@ class submodule{
 		$insert = $this->db->query("INSERT INTO `mcr_news_comments`
 										(nid, text_html, text_bb, uid, `data`, `date`)
 									VALUES
-										('$nid', '$safe_text_html', '$text_bb', '{$this->user->id}', '$safedata', NOW())");
+										('$nid', '$safe_text_html', '$text_bb', '{$this->user->id}', '$safedata', $time)");
 
 		if(!$insert){ $this->core->js_notify($this->core->lng['e_sql_critical']); }
 

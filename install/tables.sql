@@ -954,7 +954,7 @@ CREATE TABLE IF NOT EXISTS `mcr_news_comments` (
   `text_html` text NOT NULL,
   `text_bb` text NOT NULL,
   `uid` int(10) NOT NULL DEFAULT '0',
-  `date` datetime NOT NULL,
+  `date` int(10) UNSIGNED NOT NULL DEFAULT '0',
   `data` text NOT NULL,
   PRIMARY KEY (`id`),
   KEY `nid` (`nid`),
@@ -1004,7 +1004,7 @@ CREATE TABLE IF NOT EXISTS `~logs~` (
   `~logs_id~` int(10) NOT NULL AUTO_INCREMENT,
   `~logs_uid~` int(10) NOT NULL DEFAULT '0',
   `~logs_msg~` varchar(255) NOT NULL DEFAULT '',
-  `~logs_date~` datetime NOT NULL,
+  `~logs_date~` int(10) UNSIGNED NOT NULL DEFAULT '0',
   PRIMARY KEY (`~logs_id~`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 #line
@@ -1023,8 +1023,8 @@ CREATE TABLE IF NOT EXISTS `mcr_online` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `ip` varchar(16) NOT NULL DEFAULT '127.0.0.1',
   `online` tinyint(1) NOT NULL DEFAULT '0',
-  `date_create` int(10) NOT NULL DEFAULT '0',
-  `date_update` int(10) NOT NULL DEFAULT '0',
+  `date_create` int(10) UNSIGNED NOT NULL DEFAULT '0',
+  `date_update` int(10) UNSIGNED NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 #line
@@ -1136,7 +1136,7 @@ CREATE TABLE IF NOT EXISTS `mcr_monitoring` (
   `plugins` text NOT NULL,
   `map` varchar(64) NOT NULL DEFAULT '',
   `last_error` text NOT NULL,
-  `last_update` int(10) NOT NULL DEFAULT '0',
+  `last_update` int(10) UNSIGNED NOT NULL DEFAULT '0',
   `updater` int(10) NOT NULL DEFAULT '60',
   `type` varchar(32) CHARACTER SET latin1 NOT NULL DEFAULT 'MineToolsAPIPing',
   PRIMARY KEY (`id`)
@@ -1152,7 +1152,7 @@ CREATE TABLE IF NOT EXISTS `mcr_news` (
   `attach` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'Активатор закрепления',
   `hidden` tinyint(1) NOT NULL DEFAULT '0',
   `uid` int(10) NOT NULL DEFAULT '1' COMMENT 'ID добавившего пользователя',
-  `date` datetime NOT NULL,
+  `date` int(10) UNSIGNED NOT NULL DEFAULT '0',
   `img` varchar(255) DEFAULT NULL,
   `data` text DEFAULT NULL COMMENT 'Сведения о новости',
   PRIMARY KEY (`id`),
@@ -1167,7 +1167,7 @@ CREATE TABLE IF NOT EXISTS `mcr_logs_of_edit` (
   `editor` int(10) NOT NULL,
   `things` int(10) NOT NULL,
   `table` varchar(96) NOT NULL,
-  `date` datetime NOT NULL,
+  `date` int(10) UNSIGNED NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ;
 #line
@@ -1191,7 +1191,7 @@ CREATE TABLE IF NOT EXISTS `mcr_news_views` (
   `nid` int(10) NOT NULL DEFAULT '0',
   `uid` int(10) NOT NULL DEFAULT '-1',
   `ip` varchar(64) CHARACTER SET latin1 NOT NULL DEFAULT '127.0.0.1',
-  `time` datetime NOT NULL,
+  `time` int(10) UNSIGNED NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `nid` (`nid`),
   KEY `uid` (`uid`),
@@ -1205,7 +1205,7 @@ CREATE TABLE IF NOT EXISTS `mcr_news_votes` (
   `uid` int(10) NOT NULL DEFAULT '-1',
   `value` tinyint(1) DEFAULT NULL,
   `ip` varchar(64) CHARACTER SET latin1 NOT NULL DEFAULT '127.0.0.1',
-  `time` datetime NOT NULL,
+  `time` int(10) UNSIGNED NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `nid` (`nid`),
   KEY `uid` (`uid`),
@@ -1388,8 +1388,8 @@ CREATE TABLE IF NOT EXISTS `~us~` (
   `~us_is_skin~` tinyint(1) NOT NULL DEFAULT '0',
   `~us_is_cloak~` tinyint(1) NOT NULL DEFAULT '0',
   `~us_ip_last~` varchar(64) CHARACTER SET latin1 NOT NULL DEFAULT '127.0.0.1',
-  `~us_date_reg~` datetime NOT NULL,
-  `~us_date_last~` datetime NOT NULL,
+  `~us_date_reg~` int(10) UNSIGNED NOT NULL DEFAULT '0',
+  `~us_date_last~` int(10) UNSIGNED NOT NULL DEFAULT '0',
   `~us_gender~` enum('male','no_set','female') NOT NULL DEFAULT 'no_set',
   `~us_ban_server~` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`~us_id~`),

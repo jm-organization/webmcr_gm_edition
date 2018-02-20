@@ -49,13 +49,14 @@ class module{
 
 		$new_ip = $this->user->ip;
 		$password = $this->db->safesql($password);
+		$date = time();
 
 		$update = $this->db->query("
 			UPDATE `{$this->cfg->tabname('users')}`
 			SET 
 				`{$us_f['tmp']}`='$new_tmp', 
 				`{$us_f['ip_last']}`='$new_ip', 
-				`{$us_f['date_last']}`=NOW()
+				`{$us_f['date_last']}`=$date
 			WHERE `{$us_f['id']}`='$uid'
 			LIMIT 1
 		");

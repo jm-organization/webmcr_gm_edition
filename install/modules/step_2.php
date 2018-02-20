@@ -95,10 +95,14 @@ class module{
 			$ic_f		= $ctables['iconomy']['fields'];
 			$us_f		= $ctables['users']['fields'];
 
-			$query = $db->query("INSERT INTO `{$ctables['users']['name']}`
-										(`{$us_f['group']}`, `{$us_f['login']}`, `{$us_f['email']}`, `{$us_f['pass']}`, `{$us_f['uuid']}`, `{$us_f['salt']}`, `{$us_f['ip_last']}`, `{$us_f['date_reg']}`)
-									VALUES
-										('3', '$login', '$email', '$password', UNHEX(REPLACE(UUID(), '-', '')), '$salt', '$ip', NOW())");
+			$date		= time();
+
+			$query = $db->query("
+				INSERT INTO `{$ctables['users']['name']}`
+					(`{$us_f['group']}`, `{$us_f['login']}`, `{$us_f['email']}`, `{$us_f['pass']}`, `{$us_f['uuid']}`, `{$us_f['salt']}`, `{$us_f['ip_last']}`, `{$us_f['date_reg']}`)
+				VALUES
+					('3', '$login', '$email', '$password', UNHEX(REPLACE(UUID(), '-', '')), '$salt', '$ip', $date)
+			");
 
 			if(!$query){ $this->install->notify($this->lng['e_add_admin'], $this->lng['e_msg'], 'install/?do=step_2'); }
 
