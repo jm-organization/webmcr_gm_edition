@@ -3,17 +3,18 @@
 if(!defined("MCR")){ exit("Hacking Attempt!"); }
 
 class module{
-	private $core, $db, $cfg, $user, $lng;
+	private $core, $db, $cfg, $user, $l10n;
 
-	public function __construct($core){
-		$this->core		= $core;
-		$this->db		= $core->db;
-		$this->cfg		= $core->cfg;
-		$this->user		= $core->user;
-		$this->lng		= $core->lng_m;
+	public function __construct(core $core) {
+		// TODO: Edit this shit
+		$this->core	= $core;
+		$this->db = $core->db;
+		$this->cfg = $core->cfg;
+		$this->user = $core->user;
+		$this->l10n = $core->l10n;
 
 		$bc = array(
-			$this->lng['mod_name'] => BASE_URL."?mode=file"
+			$this->l10n['mod_name'] => BASE_URL."?mode=file"
 		);
 
 		$this->core->bc = $this->core->gen_bc($bc);
@@ -70,5 +71,3 @@ class module{
 		exit;
 	}
 }
-
-?>

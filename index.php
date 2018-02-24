@@ -10,20 +10,22 @@ $mode = (isset($_GET['mode']))?$_GET['mode']:$core->cfg->main['s_dpage'];
 
 if(!INSTALLED){ 
     $core->notify(
-        $core->lng['e_attention'], 
-        $core->lng['e_install'], 
+        $core->l10n->gettext('error_attention'),
+        $core->l10n->gettext('error_install'),
         4, 
         'install/'
     );     
 }
 
-if($core->cfg->func['close'] && !$core->is_access('sys_adm_main')){
-	if($core->cfg->func['close_time']<=0 || $core->cfg->func['close_time']>time()){
-		$mode = ($mode=='auth') ? 'auth' : 'close';
+if ($core->cfg->func['close'] && !$core->is_access('sys_adm_main')) {
+	if ($core->cfg->func['close_time']<=0 || $core->cfg->func['close_time'] > time()) {
+		$mode = ($mode=='auth')
+			? 'auth'
+			: 'close';
 	}
 }
 
-switch($mode){
+switch ($mode) {
 	case 'news':
 	case 'search':
 	case 'auth':
@@ -38,7 +40,7 @@ switch($mode){
 	break;
 
 	case '403':
-		$core->title = $core->l10n->gettext('t_403');
+		$core->title = $core->l10n->gettext('error_403');
 		$content = $core->sp(MCR_THEME_PATH."default_sp/403.html");
 	break;
 
@@ -50,7 +52,9 @@ switch($mode){
 $data_global = array(
     "CONTENT" => $content,
     "TITLE" => $core->title,
-    "L_BLOCKS" => ($mode != 'admin')?$core->load_def_blocks():$core->load_def_blocks(false, 'notify'),
+    "L_BLOCKS" => ($mode != 'admin')
+		?$core->load_def_blocks()
+		:$core->load_def_blocks(false, 'notify'),
     "HEADER" => $core->header,
     "DEF_HEADER" => $core->def_header,
     "CFG" => $core->cfg->main,

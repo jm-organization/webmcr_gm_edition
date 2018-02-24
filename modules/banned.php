@@ -3,37 +3,36 @@
 if(!defined("MCR")){ exit("Hacking Attempt!"); }
 
 class module{
-	private $core, $db, $cfg, $user, $lng;
+	private $core, $db, $cfg, $user, $l10n;
 
-	public function __construct($core){
-		$this->core		= $core;
-		$this->db		= $core->db;
-		$this->cfg		= $core->cfg;
-		$this->user		= $core->user;
-		$this->lng		= $core->lng_m;
+	public function __construct(core $core){
+		$this->core = $core;
+		$this->db = $core->db;
+		$this->cfg = $core->cfg;
+		$this->user = $core->user;
+		$this->l10n = $core->l10n;
 
 		$bc = array(
-			$this->lng['mod_name'] => BASE_URL."?mode=banned"
+			$this->l10n->gettext('module_ban-manager') => BASE_URL."?mode=banned"
 		);
-
 		$this->core->bc = $this->core->gen_bc($bc);
 	}
 
-	public function content(){
-
-		$time = time();
+	public function content() {
+		// TODO: Ban-Manager
+		/*$time = time();
 
 		if($this->user->is_banned===false){ $this->core->notify(); }
 
 		$expire = date("d.m.Y - H:i:s", $this->user->is_banned);
 
 		$data = array(
-			'EXPIRE' => ($this->user->is_banned<=0) ? $this->lng['ban_forever'] : $this->lng['ban_expired'].' '.$expire,
+			'EXPIRE' => ($this->user->is_banned<=0) ? $this->l10n['ban_forever'] : $this->l10n['ban_expired'].' '.$expire,
 		);
 
 		echo $this->core->sp(MCR_THEME_MOD."banned/main.html", $data);
 
-		exit;
+		exit;*/
 	}
 }
 

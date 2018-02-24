@@ -2,8 +2,8 @@
 $db = array (
   'host' => '127.0.0.1',
   'user' => 'root',
-  'pass' => '',
-  'base' => '',
+  'pass' => '5898',
+  'base' => 'webmcr_gm_edition',
   'port' => 3306,
   'backend' => 'mysqli',
   'log' => true,

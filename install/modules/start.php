@@ -35,7 +35,7 @@ class module{
 		if(isset($_SESSION['start'])){ $this->install->notify('', '', 'install/?do=step_1'); }
 
 		if($_SERVER['REQUEST_METHOD']=='POST'){
-			if(phpversion()<5.1){ $this->install->notify($this->lng['e_msg'], $this->lng['e_php_version'], 'install/'); }
+			if(phpversion()<5.5){ $this->install->notify($this->lng['e_msg'], $this->lng['e_php_version'], 'install/'); }
 
 			if(@ini_get('register_globals')=='off'){ $this->install->notify($this->lng['e_msg'], $this->lng['e_register_globals'], 'install/'); }
 
@@ -76,7 +76,7 @@ class module{
 		}
 
 		$data = array(
-			"PHP" => (phpversion()<5.1) ? '<b class="red">'.phpversion().'</b>' : '<b class="green">'.phpversion().'</b>',
+			"PHP" => (phpversion()<5.5) ? '<b class="red">'.phpversion().'</b>' : '<b class="green">'.phpversion().'</b>',
 
 			"REG_GLOB" => (@ini_get('register_globals')=='on') ? '<b class="red">'.$this->lng['on'].'</b>' : '<b class="green">Выкл.</b>',
 

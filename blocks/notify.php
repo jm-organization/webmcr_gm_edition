@@ -5,7 +5,7 @@ if(!defined("MCR")){ exit("Hacking Attempt!"); }
 class block_notify{
 	private $core, $db;
 
-	public function __construct($core){
+	public function __construct(core $core){
 		$this->core = $core;
 		$this->db = $core->db;
 	}
@@ -31,5 +31,3 @@ class block_notify{
 		return $result;
 	}
 }
-
-?>

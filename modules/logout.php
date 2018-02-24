@@ -1,51 +1,51 @@
 <?php
 
-if(!defined("MCR")){ exit("Hacking Attempt!"); }
+if (!defined("MCR")) {
+	exit("Hacking Attempt!");
+}
 
-class module{
-	private $core, $db, $user, $lng, $cfg;
+class module
+{
+	private $core, $db, $user, $l10n, $cfg;
 
-	public function __construct($core){
-		$this->core		= $core;
-		$this->db		= $core->db;
-		$this->user		= $core->user;
-		$this->cfg		= $core->cfg;
-		$this->lng		= $core->lng_m;
+	public function __construct($core)
+	{
+		$this->core = $core;
+		$this->db = $core->db;
+		$this->user = $core->user;
+		$this->cfg = $core->cfg;
+		$this->l10n = $core->l10n;
 	}
 
-	public function content(){
-		if($_SERVER['REQUEST_METHOD']!='POST'){ $this->core->notify('Hacking Attempt!'); }
+	public function content()
+	{
+		if ($_SERVER['REQUEST_METHOD'] != 'POST') {
+			$this->core->notify('Hacking Attempt!');
+		}
 
-		if(!$this->user->is_auth){ $this->core->notify($this->core->lng['403'], $this->lng['e_not_auth'], 1, '?mode=403'); }
-
-		$time = new DateTime();
+		if (!$this->user->is_auth) {
+			$this->core->notify($this->l10n->gettext('error_403'), $this->l10n->gettext('not_auth_error'), 1, '?mode=403');
+		}
 
 		// Последнее обновление пользователя
 		$this->db->update_user($this->user);
-
 		// Лог действия
-		$this->db->actlog($this->lng['log_logout'], $this->user->id);
+		$this->db->actlog($this->l10n->gettext('log_logout'), $this->user->id);
 
 		$new_tmp = $this->db->safesql($this->core->random(16));
-
-		$ctables	= $this->cfg->db['tables'];
-		$us_f		= $ctables['users']['fields'];
 		$date		= time();
-
-		$update = $this->db->query("
-			UPDATE `{$this->cfg->tabname('users')}` 
-			SET `{$us_f['tmp']}`='$new_tmp', `{$us_f['date_last']}`=$date
-			WHERE `{$us_f['id']}`='{$this->user->id}'
+    
+    if (!$this->db->query("
+			UPDATE `mcr_users` 
+			SET `tmp`='$new_tmp', `time_last`=$date
+			WHERE `id`='{$this->user->id}'
 			LIMIT 1
-		");
+		")) {
+			$this->core->notify($this->l10n->gettext('error_attention'), $this->l10n->gettext('error_sql_critical'));
+		}
 
-		if(!$update){ $this->core->notify($this->core->lng['e_attention'], $this->core->lng['e_sql_critical']); }
-
-		setcookie("mcr_user", "", time()-3600, '/');
+		setcookie("mcr_user", "", time() - 3600, '/');
 
 		$this->core->notify('', '', 1);
 	}
-
 }
-
-?>

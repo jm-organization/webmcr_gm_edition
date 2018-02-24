@@ -3,16 +3,13 @@
 if(!defined("MCR")){ exit("Hacking Attempt!"); }
 
 class module{
-	private $core, $db, $cfg, $user, $lng;
-
-	private $views, $comments, $likes;
+	private $core, $db, $cfg, $user, $l10n;
 
 	public function __construct($core){
 		$this->core = $core;
 		$this->db = $core->db;
 		$this->cfg = $core->cfg;
 		$this->user = $core->user;
-		$this->lng = $core->lng_m;
 		$this->l10n = $core->l10n;
 
 		$bc = array(
@@ -37,7 +34,9 @@ class module{
 
 		$data = array(
 			'ID' => $id,
-			'ATTACH' => ($attach==1) ? $this->lng['unattach'] : $this->lng['attach']
+			'ATTACH' => ($attach==1)
+				? $this->l10n->gettext('unattach')
+				: $this->l10n->gettext('attach')
 		);
 
 		return $this->core->sp(MCR_THEME_MOD."news/new-admin.html", $data);
@@ -112,9 +111,10 @@ class module{
 			echo $this->core->sp(MCR_THEME_MOD."news/new-id".$attached.".html", $new_data);
 		}
 
-		if($cid!==false){
+		if ($cid !== false) {
+			/** @var module $new_data */
 			$bc = array(
-				$this->lng['mod_name'] => BASE_URL."?mode=news",
+				$this->l10n->gettext('mod_name') => BASE_URL."?mode=news",
 				$new_data['CATEGORY'] => BASE_URL."?mode=news&cid=$cid"
 			);
 
@@ -125,7 +125,12 @@ class module{
 	}
 
 	private function news_list($cid=false){
-		if(!$this->core->is_access('sys_news_list')){ $this->core->notify($this->core->lng['403'], $this->lng['access_denied'], 2, "?mode=403"); }
+		if (!$this->core->is_access('sys_news_list')) { $this->core->notify(
+			$this->l10n->gettext('error_403'),
+			$this->l10n->gettext('news_access_denied'),
+			2,
+			"?mode=403"
+		); }
 
 		$sql = "SELECT COUNT(*) FROM `mcr_news`";
 		$page = "?mode=news&pid=";
@@ -263,9 +268,9 @@ class module{
 		$query = $this->db->query(
 			"SELECT COUNT(*)
 			FROM `mcr_news_views`
-			WHERE nid='$nid' AND uid='{$this->user->id}'"
+			WHERE nid='$nid' AND (uid='{$this->user->id}' OR ip='{$this->user->ip}')"
 		);
-		if (!$query) { $this->core->notify($this->core->lng['e_sql_critical']); }
+		if (!$query) { $this->core->notify($this->core->l10n->gettext('error_sql_critical')); }
 
 		$ar = $this->db->fetch_array($query);
 
@@ -278,7 +283,7 @@ class module{
 			"INSERT INTO `mcr_news_views` (nid, uid, ip, `time`)
 			VALUES ('$nid', '$uid', '{$this->user->ip}', $time)"
 		);
-		if (!$insert) { $this->core->notify($this->core->lng['e_sql_critical']); }
+		if (!$insert) { $this->core->notify($this->core->l10n->gettext('error_sql_critical')); }
 		$views = $this->db->query("SELECT COUNT(*) FROM `mcr_news_views` WHERE `nid`='$nid'");
 		$views = $this->db->fetch_assoc($views);
 
@@ -293,7 +298,7 @@ class module{
 			"UPDATE `mcr_news`
 			SET `data`='{$data}'
 			WHERE `id`='$nid'"
-		)) die($this->core->lng['e_sql_critical']);
+		)) die($this->core->l10n->gettext('error_sql_critical'));
 
 		// Последнее обновление пользователя
 		$this->db->update_user($this->user);
@@ -305,8 +310,8 @@ class module{
 	private function news_full(){
 		if (!$this->core->is_access('sys_news_full')) {
 			$this->core->notify(
-				$this->core->lng['403'],
-				$this->lng['access_denied'],
+				$this->l10n->gettext('error_403'),
+				$this->l10n->gettext('news_access_denied'),
 				2,
 				"?mode=403"
 			);
@@ -334,8 +339,8 @@ class module{
 
 		if (!$query || $this->db->num_rows($query) <= 0) {
 			$this->core->notify(
-				$this->core->lng['404'],
-				$this->core->lng['t_404']
+				$this->l10n->gettext('error_403'),
+				$this->l10n->gettext('news_not_found')
 			);
 		}
 
@@ -366,7 +371,7 @@ class module{
 		);
 
 		$bc = array(
-			$this->lng['mod_name'] => BASE_URL."?mode=news",
+			$this->l10n->gettext('module_news') => BASE_URL."?mode=news",
 			$new_data["CATEGORY"] => BASE_URL."?mode=news&cid=".$new_data["CID"],
 			$new_data["TITLE"] => ""
 		);
@@ -402,5 +407,3 @@ class module{
 		return $content;
 	}
 }
-
-?>

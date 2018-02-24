@@ -111,9 +111,11 @@ class l10n {
         $dl_formated = str_replace('-', '_', $default_locale);
        
         $language = Locale::getDisplayLanguage($default_locale, 'en-US');
-        
-        $locale = setlocale(LC_ALL, $dl_formated.'.UTF-8', $language);
 
+//      $locale = setlocale(LC_ALL, $dl_formated.'.UTF-8', $language);
+//		$locale = setlocale(LC_ALL, $dl_formated.'.utf8', $language);
+		$locale = setlocale(LC_ALL, $dl_formated.'.UTF-8', $language);
+//		var_dump($locale);
 		return $locale;
 	}
 
@@ -186,7 +188,6 @@ class l10n {
 		$locale = (preg_match('/([a-z]{2})-([A-Z]{2})/', $locale) == 1)?$locale:(function($phrase) { return $phrase; });
         $locale_cache_path = MCR_CACHE_PATH.'l10n/'.$locale;
         $phrases = file_get_contents($locale_cache_path.'/.cache');
-        
         $unjson_phrases = json_decode($phrases, true);
         
         $closer = "_%s_";
@@ -216,6 +217,8 @@ class l10n {
             
         $languages = $this->get_languages($locale, false);
         $languages = $this->db->fetch_assoc($languages);
+
+        var_dump('test');
         
         file_put_contents($locale_cache_path.'/.info', $languages['settings']);
         file_put_contents($locale_cache_path.'/.cache', $languages['phrases']);
@@ -249,16 +252,15 @@ class l10n {
     }
 
 	/**
-	 * @function: delete_cache
+	 * @function     : delete_cache
 	 *
 	 * @documentation:
 	 *
 	 * @param $locales
-	 * @param string $route
 	 *
 	 * @return bool
 	 */
-	public function delete_cache($locales, $route='') {
+	public function delete_cache($locales) {
         $locales = explode(', ', str_replace("'", '', $locales));
              
         foreach ($locales as $locale) {
@@ -294,7 +296,9 @@ class l10n {
 	    switch($type) {
             case 'string': break;
             case 'date': break;
-            case 'time': break;
+            case 'unixtime':
+				$l_text = $this->localize_detetime($datetime_format, $text);
+				break;
             case 'datetime': 
                 $datetime = new DateTime($text);
                 $dt_unix = $datetime->format("U");
