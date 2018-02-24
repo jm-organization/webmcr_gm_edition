@@ -1,11 +1,4 @@
 $(document).ready(function () {
-    mcr.init_database('#news', {
-        searching: true,
-        language: {
-            url: '/language/ru-RU/js/database.json'
-        }
-    });
-
     $("body").on("click", ".news-attach", function(){
 
         mcr.loading();

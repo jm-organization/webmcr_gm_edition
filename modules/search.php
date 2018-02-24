@@ -1,29 +1,37 @@
 <?php
 
-if(!defined("MCR")){ exit("Hacking Attempt!"); }
+if (!defined("MCR")) {
+	exit("Hacking Attempt!");
+}
 
-class module{
-	private $core, $db, $cfg, $user, $lng;
+class module
+{
+	private $core, $db, $cfg, $user, $l10n;
 
-	public function __construct($core){
-		$this->core		= $core;
-		$this->db		= $core->db;
-		$this->cfg		= $core->cfg;
-		$this->user		= $core->user;
-		$this->lng		= $core->lng_m;
+	public function __construct(core $core)
+	{
+		$this->core = $core;
+		$this->db = $core->db;
+		$this->cfg = $core->cfg;
+		$this->user = $core->user;
+		$this->l10n = $core->l10n;
 
-		$bc = array(
-			$this->lng['mod_name'] => BASE_URL."?mode=search"
-		);
-		
+		$bc = [
+			$this->l10n->gettext('module_search') => BASE_URL."?mode=search"
+		];
 		$this->core->bc = $this->core->gen_bc($bc);
 	}
 
-	public function content(){
-		
-		if(!$this->core->is_access('sys_search')){ $this->core->notify($this->core->lng['403'], $this->lng['search_perm'], 1, "?mode=403"); }
+	public function content()
+	{
 
-		if(!isset($_GET['type']) || !file_exists(MCR_MODE_PATH.'search/'.$_GET['type'].'.php')){ $this->core->notify(); }
+		if (!$this->core->is_access('sys_search')) {
+			$this->core->notify($this->l10n->gettext('error_403'), $this->l10n->gettext('search_permission_error'), 1, "?mode=403");
+		}
+
+		if (!isset($_GET['type']) || !file_exists(MCR_MODE_PATH.'search/'.$_GET['type'].'.php')) {
+			$this->core->notify();
+		}
 
 		require_once(MCR_MODE_PATH.'search/'.$_GET['type'].'.php');
 
@@ -34,5 +42,3 @@ class module{
 		return $this->core->sp(MCR_THEME_MOD."search/main.html", $data);
 	}
 }
-
-?>

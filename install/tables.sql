@@ -20,6 +20,10 @@ CREATE TABLE IF NOT EXISTS `mcr_l10n_languages` (
 INSERT INTO `mcr_l10n_languages` (`parent_language`, `language`, `settings`, `phrases`) VALUES
   (NULL, 'ru-RU', '{"title":"Русский","locale":"ru-RU","text_direction":"ltr","date_format":"F j, Y","time_format":"H:i"}', 'null');
 #line
+UPDATE `mcr_l10n_languages`
+SET `parent_language`=1
+WHERE id=1;
+#line
 INSERT INTO `mcr_l10n_phrases` (`language_id`, `phrase_key`, `phrase_value`) VALUES
 (1, 'access_by_admin', 'Доступ %s ограничен администрацией'),
 (1, 'action', 'Действие'),
@@ -176,7 +180,6 @@ INSERT INTO `mcr_l10n_phrases` (`language_id`, `phrase_key`, `phrase_value`) VAL
 (1, 'com_vote_perm', 'У вас нет доступа для голосования'),
 (1, 'com_vote_success', 'Голос успешно учтен'),
 (1, 'com_wait', 'Для повторного добавления комментария необходимо подождать'),
-(1, 'com_wait1', 'сек.'),
 (1, 'com_without_news', 'Без новости'),
 (1, 'quote', 'Цитировать'),
 (1, 'comment_accept', 'Вы уверены, что хотите удалить выбранные комментарии'),
@@ -1233,7 +1236,7 @@ CREATE TABLE IF NOT EXISTS `mcr_news_votes` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `nid` int(10) NOT NULL DEFAULT '0',
   `uid` int(10) NOT NULL DEFAULT '-1',
-  `value` tinyint(1) DEFAULT NULL,
+  `value` tinyint(1) NOT NULL,
   `ip` varchar(64) CHARACTER SET latin1 NOT NULL DEFAULT '127.0.0.1',
   `time` datetime NOT NULL,
   PRIMARY KEY (`id`),
@@ -1371,7 +1374,7 @@ INSERT INTO `mcr_permissions` (`title`, `description`, `value`, `system`, `type`
 ('Пункт меню "Блоки"', 'Доступ к пункту меню "Блоки" в панели управления.', 'sys_adm_m_i_blocks', 1, 'boolean', 'false', '{"time_create":1005553535,"time_last":1005553535,"login_create":"admin","login_last":"admin"}'),
 ('Пункт меню "Локализация"', 'Доступ к пункту меню "Локализация" в панели управления.', 'sys_adm_m_i_l10n', 1, 'boolean', 'false', '{"time_create":1005553535,"time_last":1005553535,"login_create":"admin","login_last":"admin"}'),
 ('Редактирование блоков', 'Доступ к редактированию блоков', 'sys_adm_blocks_edit', 1, 'boolean', 'false', '{"time_create":1005553535,"time_last":1005553535,"login_create":"admin","login_last":"admin"}'),
-('Доступ к блоку онлайна', 'Дает доступ к просмотру блока онлайн статистики', 'block_online', 0, 'boolean', 'true', '{"time_create":1005553535,"time_last":1005553535,"login_create":"admin","login_last":"admin"}'),
+('Доступ к блоку онлайна', 'Дает доступ к просмотру блока онлайн статистики', 'block_online', 1, 'boolean', 'true', '{"time_create":1005553535,"time_last":1005553535,"login_create":"admin","login_last":"admin"}'),
 ('Доступ к блоку баннера', 'Дает доступ к просмотру блока баннера', 'block_banner', 1, 'boolean', 'true', '{"time_create":1005553535,"time_last":1005553535,"login_create":"admin","login_last":"admin"}'),
 ('Доступ к списку пользователей', 'Доступ к просмотру списка пользователей', 'mod_users_list', 0, 'boolean', 'false', '{"time_create":1005553535,"time_last":1005553535,"login_create":"admin","login_last":"admin"}'),
 ('Доступ к информации о пользователе', 'Доступ к просмотру полной информации о пользователе', 'mod_users_full', 0, 'boolean', 'false', '{"time_create":1005553535,"time_last":1005553535,"login_create":"admin","login_last":"admin"}'),

@@ -14,5 +14,3 @@ $cfg = array(
 	'PERMISSIONS' => 'block_online',
 	'TIMEOUT' => 60,
 );
-
-?>

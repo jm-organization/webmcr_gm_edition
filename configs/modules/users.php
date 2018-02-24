@@ -9,9 +9,9 @@ $cfg = array (
   'MOD_VERSION' => '1.3',
   'MOD_URL_UPDATE' => 'http://update.webmcr.com/?do=modules&op=users',
   'MOD_CHECK_UPDATE' => true,
-  'install' => true,
+  'install' => false,
   'enable_comments' => true,
-  'users_on_page' => 10,
-  'comments_on_page' => 10,
+  'users_on_page' => 15,
+  'comments_on_page' => 7,
 );
 ?>

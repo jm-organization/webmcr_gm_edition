@@ -1,92 +1,127 @@
 <?php
 
-if(!defined("MCR")){ exit("Hacking Attempt!"); }
+if (!defined("MCR")) {
+	exit("Hacking Attempt!");
+}
 
-class cloak{
+class cloak
+{
 	private $mp = 16;
+	private $core, $l10n, $db, $user, $cfg;
 
-	private $core, $lng, $db, $user, $cfg;
-	
-	public function __construct($core, $obj){
-		$this->core		= $core;
-		$this->user		= $core->user;
-		$this->db		= $core->db;
-		$this->lng		= $core->lng;
-		$this->cfg		= $core->cfg;
+	public function __construct(core $core, $cloak)
+	{
+		$this->core = $core;
+		$this->user = $core->user;
+		$this->db = $core->db;
+		$this->l10n = $core->l10n;
+		$this->cfg = $core->cfg;
 
-		if(!is_writable(MCR_CLOAK_PATH)){ $this->core->notify($this->lng['e_msg'], $this->lng['cloak_e_folder_perm'], 2, '?mode=profile'); }
+		if (!is_writable(MCR_CLOAK_PATH)) {
+			$this->core->notify($this->l10n->gettext('error_message'), $this->l10n->gettext('cloak_folder_permission_error'), 2, '?mode=profile');
+		}
 
-		$size = intval($obj['size']);
-		$tmp = $obj['tmp_name'];
+		$size = intval($cloak['size']);
+		$tmp = $cloak['tmp_name'];
 
-		switch(intval($obj['error'])){
-			case 0: break;
+		switch (intval($cloak['error'])) {
+			case 0:
+				break;
 
 			case 1:
-			case 2: $this->core->notify($this->lng['e_msg'], $this->lng['cloak_e_size'], 2, '?mode=profile'); break;
+			case 2:
+				$this->core->notify($this->l10n->gettext('error_message'), $this->l10n->gettext('error_cloak_size'), 2, '?mode=profile');
+				break;
 
 			case 3:
-			case 4: $this->core->notify("", $this->lng['cloak_e'], 2, '?mode=profile'); break;
+			case 4:
+				$this->core->notify("", $this->l10n->gettext('error_cloak_load'), 2, '?mode=profile');
+				break;
 
-			case 6: $this->core->notify($this->lng['e_msg'], $this->lng['cloak_e_temp'], 2, '?mode=profile'); break;
+			case 6:
+				$this->core->notify($this->l10n->gettext('error_message'), $this->l10n->gettext('error_cloak_tempfile'), 2, '?mode=profile');
+				break;
 
-			case 7: $this->core->notify($this->lng['e_msg'], $this->lng['cloak_e_perm'], 2, '?mode=profile'); break;
+			case 7:
+				$this->core->notify($this->l10n->gettext('error_message'), $this->l10n->gettext('cloak_permission_error'), 2, '?mode=profile');
+				break;
 
-			default: $this->core->notify("", $this->lng['cloak_e_undefined'], 2, '?mode=profile'); break;
+			default:
+				$this->core->notify("", $this->l10n->gettext('error_unknown'), 2, '?mode=profile');
+				break;
 		}
 
-		if(($size/1024)>$this->user->permissions->sys_max_file_size){ $this->core->notify($this->lng['e_msg'], $this->lng['cloak_e_size'], 2, '?mode=profile'); }
-		
-		if(!file_exists($tmp)){
-			$this->core->notify($this->lng['e_msg'], $this->lng['cloak_e_tempfile'], 2, '?mode=profile');
+		if (($size / 1024) > $this->user->permissions->sys_max_file_size) {
+			$this->core->notify($this->l10n->gettext('error_message'), $this->l10n->gettext('error_cloak_size'), 2, '?mode=profile');
 		}
 
-		if(substr($obj['name'], -4)!='.png'){ $this->core->notify($this->lng['e_msg'], $this->lng['cloak_e_png'], 2, '?mode=profile'); }
+		if (!file_exists($tmp)) {
+			$this->core->notify($this->l10n->gettext('error_message'), $this->l10n->gettext('error_cloak_tempfile'), 2, '?mode=profile');
+		}
+
+		if (substr($cloak['name'], -4) != '.png') {
+			$this->core->notify($this->l10n->gettext('error_message'), $this->l10n->gettext('error_cloak_format'), 2, '?mode=profile');
+		}
 
 		$get_size = @getimagesize($tmp);
 
-		if(!$get_size){ $this->core->notify($this->lng['e_msg'], $this->lng['cloak_e_png'], 2, '?mode=profile'); }
+		if (!$get_size) {
+			$this->core->notify($this->l10n->gettext('error_message'), $this->l10n->gettext('error_cloak_isnt_png'), 2, '?mode=profile');
+		}
 
 		$width = $get_size[0];
 		$height = $get_size[1];
 
-		if(!$this->is_cloak_valid($get_size)){ $this->core->notify($this->lng['e_msg'], $this->lng['cloak_e_format'], 2, '?mode=profile'); }
+		if (!$this->is_cloak_valid($get_size)) {
+			$this->core->notify($this->l10n->gettext('error_message'), $this->l10n->gettext('error_cloak_format'), 2, '?mode=profile');
+		}
 
 		// Resave head of skin +
-		if(!file_exists(MCR_SKIN_PATH.'interface/'.$this->user->login.'_mini.png')){
-			if(!copy(MCR_SKIN_PATH.'interface/default_mini.png', MCR_SKIN_PATH.'interface/'.$this->user->login.'_mini.png')){ $this->core->notify("", $this->lng['cloak_e_save'], 2, '?mode=profile'); }
+		if (!file_exists(MCR_SKIN_PATH.'interface/'.$this->user->login.'_mini.png')) {
+			if (!copy(MCR_SKIN_PATH.'interface/default_mini.png', MCR_SKIN_PATH.'interface/'.$this->user->login.'_mini.png')) {
+				$this->core->notify("", $this->l10n->gettext('error_cloak_save'), 2, '?mode=profile');
+			}
 		}
 		// Resave head of skin -
 
 		// Create and save preview of cloak +
 		$new_preview = $this->create_preview($tmp);
 
-		if($new_preview===false){ $this->core->notify($this->lng['e_msg'], $this->lng['cloak_e_png'], 2, '?mode=profile'); }
+		if ($new_preview === false) {
+			$this->core->notify($this->l10n->gettext('error_message'), $this->l10n->gettext('error_cloak_isnt_png'), 2, '?mode=profile');
+		}
 
 		imagepng($new_preview, MCR_SKIN_PATH.'interface/'.$this->user->login.'.png');
 		// Create and save preview of cloak -
 
 		// Save new cloak +
-		if(!copy($tmp, MCR_CLOAK_PATH.$this->user->login.'.png')){ $this->core->notify("", $this->lng['cloak_e_save'], 2, '?mode=profile'); }
+		if (!file_exists(MCR_CLOAK_PATH.$this->user->login.'.png') && !copy($tmp, MCR_CLOAK_PATH.$this->user->login.'.png')) {
+			$this->core->notify("", $this->l10n->gettext('error_cloak_save'), 2, '?mode=profile');
+		}
 		// Save new cloak -
 	}
 
 	/**
-	  * Создание миниатюры
-	  * @param $path - путь к изображению
-	  * @param $size - размер
-	  * @return resource
-	  */
-	public function create_preview($path, $size=224){
+	 * Создание миниатюры
+	 *
+	 * @param $path - путь к изображению
+	 * @param $size - размер
+	 *
+	 * @return resource
+	 */
+	public function create_preview($path, $size = 224)
+	{
 		//header('Content-Type: image/png');
 
 		$image = @imagecreatefrompng($path);
 
-		if(!$image){ return false; }
+		if (!$image) {
+			return false;
+		}
 
-		if(file_exists(MCR_SKIN_PATH.$this->user->skin.'.png')){
+		if (file_exists(MCR_SKIN_PATH.$this->user->skin.'.png')) {
 			$skin_path = MCR_SKIN_PATH.$this->user->skin.'.png';
-		}else{
+		} else {
 			$skin_path = MCR_SKIN_PATH.'default.png';
 		}
 
@@ -118,20 +153,25 @@ class cloak{
 		$this->core->imageflip($preview, $skin, $mp_x_h + 4 * $multiple, 20 * $multiple, 12 * $multiple, 20 * $multiple, 4 * $multiple, 12 * $multiple);
 		imagecopy($preview, $skin, $mp_x_h + 8 * $multiple, 20 * $multiple, 12 * $multiple, 20 * $multiple, 4 * $multiple, 12 * $multiple);
 		imagecopy($preview, $skin, $mp_x_h + 4 * $multiple, 0 * $multiple, 56 * $multiple, 8 * $multiple, 8 * $multiple, 8 * $multiple);
-		
-		$mp_x = ($this->cfg->main['hd_cloaks']) ? 64 : 22;
+
+		$mp_x = ($this->cfg->main['hd_cloaks'])
+			? 64
+			: 22;
 
 		$multiple_c = $cloak_size[0] / $mp_x;
 
-		$mp_x_h = ($multiple_c > $multiple) ? ($size_x * $multiple_c) / 2 : ($size_x * $multiple) / 2;
-		$mp_result = ($multiple_c > $multiple) ? $multiple_c : $multiple;
+		$mp_x_h = ($multiple_c > $multiple)
+			? ($size_x * $multiple_c) / 2
+			: ($size_x * $multiple) / 2;
+		$mp_result = ($multiple_c > $multiple)
+			? $multiple_c
+			: $multiple;
 
 		$preview_cloak = imagecreatetruecolor($size_x * $mp_result, 32 * $mp_result);
 		$transparent = imagecolorallocatealpha($preview_cloak, 255, 255, 255, 127);
 		imagefill($preview_cloak, 0, 0, $transparent);
 
-		imagecopyresized(
-			$preview_cloak, // result image
+		imagecopyresized($preview_cloak, // result image
 			$image, // source image
 			round(3 * $mp_result), // start x point of result
 			round(8 * $mp_result), // start y point of result
@@ -145,18 +185,7 @@ class cloak{
 
 		imagecopyresized($preview_cloak, $preview, 0, 0, 0, 0, imagesx($preview_cloak), imagesy($preview_cloak), imagesx($preview), imagesy($preview));
 
-		imagecopyresized(
-			$preview_cloak,
-			$image,
-			$mp_x_h + 3 * $mp_result,
-			round(8 * $mp_result),
-			round(1 * $multiple_c),
-			round(1 * $multiple_c),
-			round(10 * $mp_result),
-			round(16 * $mp_result),
-			round(10 * $multiple_c),
-			round(16 * $multiple_c)
-		);
+		imagecopyresized($preview_cloak, $image, $mp_x_h + 3 * $mp_result, round(8 * $mp_result), round(1 * $multiple_c), round(1 * $multiple_c), round(10 * $mp_result), round(16 * $mp_result), round(10 * $multiple_c), round(16 * $multiple_c));
 
 		$fullsize = imagecreatetruecolor($size, $size);
 
@@ -175,34 +204,48 @@ class cloak{
 	}
 
 	/**
-	  * Валидация формата изображения
-	  * @param $tmp - путь к изображению
-	  * @return boolean
-	  * - Проверяет права на максимальный размер изображения
-	  */
-	public function is_cloak_valid($size){
+	 * Валидация формата изображения
+	 *
+	 * @param $tmp - путь к изображению
+	 *
+	 * @return boolean
+	 * - Проверяет права на максимальный размер изображения
+	 */
+	public function is_cloak_valid($size)
+	{
 		$formats = $this->core->get_array_formats($this->cfg->main['hd_cloaks']);
 
 		$max_ratio = $this->user->permissions->sys_max_ratio;
 
-		if($max_ratio<=0){ return false; }
+		if ($max_ratio <= 0) {
+			return false;
+		}
 
 		$width = $formats[$max_ratio]["cloak_w"];
 		$height = $formats[$max_ratio]["cloak_h"];
 
-		if($size[0]>$width || $size[1]>$height){ return false; }
+		if ($size[0] > $width || $size[1] > $height) {
+			return false;
+		}
 
-		if(!$this->cfg->main['hd_cloaks']){
-			if($width<22 || $height<17){ return false; }
-			if(round($size[0]/$size[1], 2) != 1.29){ return false; }
-		}else{
-			if($width<64 || $height<32){ return false; }
-			if(round($size[0]/$size[1], 2) != 2){ return false; }
+		if (!$this->cfg->main['hd_cloaks']) {
+			if ($width < 22 || $height < 17) {
+				return false;
+			}
+			if (round($size[0] / $size[1], 2) != 1.29) {
+				return false;
+			}
+		} else {
+			if ($width < 64 || $height < 32) {
+				return false;
+			}
+			if (round($size[0] / $size[1], 2) != 2) {
+				return false;
+			}
 		}
 
 		return true;
 	}
-	
 }
 
 ?>

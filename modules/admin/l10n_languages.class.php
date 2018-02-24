@@ -447,7 +447,7 @@ class submodule {
                 '?mode=admin&do=l10n_languages'
             );
         }
-        $this->l10n->delete_cache($languages, '?mode=admin&do=l10n_languages');
+        $this->l10n->delete_cache($languages);
 
         $count1 = $this->db->affected_rows();
 

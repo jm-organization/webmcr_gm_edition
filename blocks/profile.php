@@ -5,7 +5,7 @@ if(!defined("MCR")){ exit("Hacking Attempt!"); }
 class block_profile{
 	private $core, $user;
 
-	public function __construct($core){
+	public function __construct(core $core){
 		$this->core = $core;
 		$this->user = $core->user;
 	}
@@ -18,5 +18,3 @@ class block_profile{
 		return $this->core->sp(MCR_THEME_PATH."blocks/profile/$authfile.html");
 	}
 }
-
-?>

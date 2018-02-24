@@ -226,11 +226,13 @@ class submodule {
         while ($child = $this->db->fetch_Assoc($child_languages)) {
             $child_language_phrases = json_decode($child['phrases'], true);
 
-            foreach ($child_language_phrases as $key => $value) {
-                foreach ($phrases as $phrase) { if ($phrase == $key) {
-                    unset($child_language_phrases[$key]);
-                } }
-            }
+            foreach ($phrases as $phrase) {
+				unset($child_language_phrases[$phrase]);
+			}
+
+			$child_language_phrases = array_map(function($phrase) {
+				return str_replace('"', '\"', $phrase);
+			}, $child_language_phrases);
 
             $child_language_phrases = json_encode($child_language_phrases, JSON_UNESCAPED_UNICODE);
 

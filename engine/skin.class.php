@@ -1,61 +1,91 @@
 <?php
 
-if(!defined("MCR")){ exit("Hacking Attempt!"); }
+if (!defined("MCR")) {
+	exit("Hacking Attempt!");
+}
 
-class skin{
+class skin
+{
 	private $mp = 64;
+	private $core, $l10n, $db, $user;
 
-	private $core, $lng, $db, $user;
-	
-	public function __construct($core, $obj){
+	public function __construct(core $core, $obj)
+	{
 		$this->core = $core;
 		$this->user = $core->user;
-		$this->db	= $core->db;
-		$this->lng	= $core->lng;
+		$this->db = $core->db;
+		$this->l10n = $core->l10n;
 
-		if(!is_writable(MCR_SKIN_PATH)){ $this->core->notify($this->lng['e_msg'], $this->lng['skin_e_folder_perm'], 2, '?mode=profile'); }
-		if(!is_writable(MCR_SKIN_PATH.'interface/')){ $this->core->notify($this->lng['e_msg'], $this->lng['skin_e_intf_perm'], 2, '?mode=profile'); }
+		if (!is_writable(MCR_SKIN_PATH)) {
+			$this->core->notify($this->l10n->gettext('error_message'), $this->l10n->gettext('skin_folder_permission_error'), 2, '?mode=profile');
+		}
+		if (!is_writable(MCR_SKIN_PATH.'interface/')) {
+			$this->core->notify($this->l10n->gettext('error_message'), $this->l10n->gettext('skin_intf_permission_error'), 2, '?mode=profile');
+		}
 
 		$size = intval($obj['size']);
 		$tmp = $obj['tmp_name'];
 
-		switch(intval($obj['error'])){
-			case 0: break;
+		switch (intval($obj['error'])) {
+			case 0:
+				break;
 
 			case 1:
-			case 2: $this->core->notify($this->lng['e_msg'], $this->lng['skin_e_size'], 2, '?mode=profile'); break;
+			case 2:
+				$this->core->notify($this->l10n->gettext('error_message'), $this->l10n->gettext('skin_size'), 2, '?mode=profile');
+				break;
 
 			case 3:
-			case 4: $this->core->notify("", $this->lng['skin_e'], 2, '?mode=profile'); break;
+			case 4:
+				$this->core->notify("", $this->l10n->gettext('error_skin_save'), 2, '?mode=profile');
+				break;
 
-			case 6: $this->core->notify($this->lng['e_msg'], $this->lng['skin_e_temp'], 2, '?mode=profile'); break;
+			case 6:
+				$this->core->notify($this->l10n->gettext('error_message'), $this->l10n->gettext('error_skin_folder_temp'), 2, '?mode=profile');
+				break;
 
-			case 7: $this->core->notify($this->lng['e_msg'], $this->lng['skin_e_perm'], 2, '?mode=profile'); break;
+			case 7:
+				$this->core->notify($this->l10n->gettext('error_message'), $this->l10n->gettext('skin_permission_error'), 2, '?mode=profile');
+				break;
 
-			default: $this->core->notify("", $this->lng['skin_e_undefined'], 2, '?mode=profile'); break;
+			default:
+				$this->core->notify("", $this->l10n->gettext('skin_not_set'), 2, '?mode=profile');
+				break;
 		}
 
-		if(($size/1024)>$this->user->permissions->sys_max_file_size){ $this->core->notify($this->lng['e_msg'], $this->lng['skin_e_size'], 2, '?mode=profile'); }
-		
-		if(!file_exists($tmp)){ $this->core->notify($this->lng['e_msg'], $this->lng['skin_e_tempfile'], 2, '?mode=profile'); }
+		if (($size / 1024) > $this->user->permissions->sys_max_file_size) {
+			$this->core->notify($this->l10n->gettext('error_message'), $this->l10n->gettext('skin_size'), 2, '?mode=profile');
+		}
 
-		if(substr($obj['name'], -4)!='.png'){ $this->core->notify($this->lng['e_msg'], $this->lng['skin_e_png'], 2, '?mode=profile'); }
+		if (!file_exists($tmp)) {
+			$this->core->notify($this->l10n->gettext('error_message'), $this->l10n->gettext('error_skin_tempfile'), 2, '?mode=profile');
+		}
+
+		if (substr($obj['name'], -4) != '.png') {
+			$this->core->notify($this->l10n->gettext('error_message'), $this->l10n->gettext('error_skin_isnt_png'), 2, '?mode=profile');
+		}
 
 		$get_size = @getimagesize($tmp);
 
-		if(!$get_size){ $this->core->notify($this->lng['e_msg'], $this->lng['skin_e_png'], 2, '?mode=profile'); }
+		if (!$get_size) {
+			$this->core->notify($this->l10n->gettext('error_message'), $this->l10n->gettext('error_skin_isnt_png'), 2, '?mode=profile');
+		}
 
 		$width = $get_size[0];
 		$height = $get_size[1];
 
-		if(!$this->is_skin_valid($get_size)){ $this->core->notify($this->lng['e_msg'], $this->lng['skin_e_format'], 2, '?mode=profile'); }
+		if (!$this->is_skin_valid($get_size)) {
+			$this->core->notify($this->l10n->gettext('error_message'), $this->l10n->gettext('error_skin_format'), 2, '?mode=profile');
+		}
 
 		$multiple = $width / $this->mp;
 
 		// Create and save head of skin +
 		$new_head = $this->create_head($tmp, $multiple);
 
-		if($new_head===false){ $this->core->notify($this->lng['e_msg'], $this->lng['skin_e_png'], 2, '?mode=profile'); }
+		if ($new_head === false) {
+			$this->core->notify($this->l10n->gettext('error_message'), $this->l10n->gettext('error_skin_isnt_png'), 2, '?mode=profile');
+		}
 
 		imagepng($new_head, MCR_SKIN_PATH.'interface/'.$this->user->login.'_mini.png');
 		// Create and save head of skin -
@@ -63,20 +93,27 @@ class skin{
 		// Create and save preview of skin +
 		$new_preview = $this->create_preview($tmp, $multiple);
 
-		if($new_preview===false){ $this->core->notify($this->lng['e_msg'], $this->lng['skin_e_png'], 2, '?mode=profile'); }
+		if ($new_preview === false) {
+			$this->core->notify($this->l10n->gettext('error_message'), $this->l10n->gettext('error_skin_isnt_png'), 2, '?mode=profile');
+		}
 
 		imagepng($new_preview, MCR_SKIN_PATH.'interface/'.$this->user->login.'.png');
 		// Create and save preview of skin -
 
-		if(!copy($tmp, MCR_SKIN_PATH.$this->user->login.'.png')){ $this->core->notify("", $this->lng['skin_e_save'], 2, '?mode=profile'); }
+		if (!file_exists(MCR_SKIN_PATH.$this->user->login.'.png') && !copy($tmp, MCR_SKIN_PATH.$this->user->login.'.png')) {
+			$this->core->notify("", $this->l10n->gettext('error_skin_save'), 2, '?mode=profile');
+		}
 		// Save new skin -
 	}
 
-	public function create_head($path, $multiple=1, $size=151){
+	public function create_head($path, $multiple = 1, $size = 151)
+	{
 
 		$image = @imagecreatefrompng($path);
 
-		if(!$image){ return false; }
+		if (!$image) {
+			return false;
+		}
 
 		$new = imagecreatetruecolor($size, $size);
 
@@ -88,11 +125,14 @@ class skin{
 		return $new;
 	}
 
-	public function create_preview($path, $multiple=1, $size=224){
+	public function create_preview($path, $multiple = 1, $size = 224)
+	{
 
 		$image = @imagecreatefrompng($path);
 
-		if(!$image){ return false; }
+		if (!$image) {
+			return false;
+		}
 
 		$preview = imagecreatetruecolor(32 * $multiple, 32 * $multiple);
 
@@ -120,7 +160,6 @@ class skin{
 		imagecopy($preview, $image, $mp_x_h + 8 * $multiple, 20 * $multiple, 12 * $multiple, 20 * $multiple, 4 * $multiple, 12 * $multiple);
 		imagecopy($preview, $image, $mp_x_h + 4 * $multiple, 0 * $multiple, 56 * $multiple, 8 * $multiple, 8 * $multiple, 8 * $multiple);
 
-
 		$fullsize = imagecreatetruecolor($size, $size);
 
 		imagesavealpha($fullsize, true);
@@ -138,32 +177,42 @@ class skin{
 	}
 
 	/**
-	  * Валидация формата изображения
-	  * @param $tmp - путь к изображению
-	  * @return boolean
-	  * - Проверяет права на максимальный размер изображения
-	  */
-	public function is_skin_valid($size){
+	 * Валидация формата изображения
+	 *
+	 * @param $tmp - путь к изображению
+	 *
+	 * @return boolean
+	 * - Проверяет права на максимальный размер изображения
+	 */
+	public function is_skin_valid($size)
+	{
 		$formats = $this->core->get_array_formats();
 
 		$max_ratio = $this->user->permissions->sys_max_ratio;
 
-		if($max_ratio<=0){ return false; }
+		if ($max_ratio <= 0) {
+			return false;
+		}
 
 		$width = $formats[$max_ratio]["skin_w"];
 		$height = $formats[$max_ratio]["skin_h"];
 
-		if($size[0]>$width || $size[1]>$height){ return false; }
+		if ($size[0] > $width || $size[1] > $height) {
+			return false;
+		}
 
-		if($width<64 || $height<32){ return false; }
+		if ($width < 64 || $height < 32) {
+			return false;
+		}
 
-		if($width%$height != 0){ return false; }
+		if ($width % $height != 0) {
+			return false;
+		}
 
-		if($size[0]/$size[1] != 2 && $size[0]/$size[1] != 1){ return false; }
+		if ($size[0] / $size[1] != 2 && $size[0] / $size[1] != 1) {
+			return false;
+		}
 
 		return true;
 	}
-	
 }
-
-?>

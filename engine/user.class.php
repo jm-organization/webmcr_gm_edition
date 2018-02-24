@@ -4,7 +4,7 @@ if(!defined("MCR")){ exit("Hacking Attempt!"); }
 
 class user{
 	// Set default system vars
-	private $core, $db, $cfg, $lng;
+	private $core, $db, $cfg, $l10n;
 
 	// Set default user vars
 	public $email, $login, $login_v2, $group, $group_v2, $uuid, $group_desc, $password, $salt, $tmp, $ip, $data, $permissions, $permissions_v2;
@@ -23,16 +23,22 @@ class user{
 	public $gid = -1;
 	public $auth;
 
-	public function __construct($core){
+	/**
+	 * user constructor.
+	 *
+	 * @param core $core
+	 *
+	 *
+	 * @documentation:
+	 */
+	public function __construct(core $core){
 		$this->core = $core;
 		$this->db = $core->db;
 		$this->cfg = $core->cfg;
-		$this->lng = $core->lng;
+		$this->l10n = $core->l10n;
 
-		$this->login = $this->lng['u_group_def'];
-		$this->group = $this->lng['u_group_def'];
-
-		$this->group_desc = $this->lng['u_group_desc_def'];
+		$this->group = 'user';
+		$this->group_desc = 'default group';
 
 		// Set now ip
 		$this->ip = $this->ip();
@@ -52,7 +58,7 @@ class user{
 		if(!isset($user_cookie[0], $user_cookie[1])){ $this->set_unauth(); $this->core->notify(); }
 
 		$uid = intval($user_cookie[0]);
-		$hash = $user_cookie[1];
+		//$hash = $user_cookie[1];
 
 		$ctables	= $this->cfg->db['tables'];
 
@@ -60,20 +66,28 @@ class user{
 		$us_f	= $ctables['users']['fields'];
 		$ic_f	= $ctables['iconomy']['fields'];
 
-		$query = $this->db->query("SELECT `u`.`{$us_f['group']}`, `u`.`{$us_f['login']}`, `u`.`{$us_f['email']}`, `u`.`{$us_f['pass']}`, `u`.`{$us_f['salt']}`,
-											`u`.`{$us_f['tmp']}`, `u`.`{$us_f['date_reg']}`, `u`.`{$us_f['date_last']}`,
-											`u`.`{$us_f['gender']}`,
-											`u`.`{$us_f['is_skin']}`, `u`.`{$us_f['is_cloak']}`, `u`.`{$us_f['uuid']}`,
-											`g`.`{$ug_f['title']}`, `g`.`{$ug_f['text']}`, `g`.`{$ug_f['perm']}`, `g`.`{$ug_f['color']}` AS `gcolor`,
-											`i`.`{$ic_f['money']}`, `i`.`{$ic_f['rm']}`, `i`.`{$ic_f['bank']}`
-									FROM `{$this->cfg->tabname('users')}` AS `u`
-									INNER JOIN `{$this->cfg->tabname('ugroups')}` AS `g`
-										ON `g`.`{$ug_f['id']}`=`u`.`{$us_f['group']}`
-									LEFT JOIN `{$this->cfg->tabname('iconomy')}` AS `i`
-										ON `i`.`{$ic_f['login']}`=`u`.`{$us_f['login']}`
-									WHERE `u`.`{$us_f['id']}`='$uid'");
-
-		if(!$query || $this->db->num_rows($query)<=0){ $this->set_unauth(); $this->core->notify(); }
+		$query = $this->db->query(
+			"SELECT 
+				`u`.`{$us_f['group']}`, `u`.`{$us_f['login']}`, `u`.`{$us_f['email']}`, 
+				`u`.`{$us_f['pass']}`, `u`.`{$us_f['salt']}`, `u`.`{$us_f['tmp']}`, 
+				`u`.`{$us_f['date_reg']}`, `u`.`{$us_f['date_last']}`, `u`.`{$us_f['gender']}`,
+				`u`.`{$us_f['is_skin']}`, `u`.`{$us_f['is_cloak']}`, `u`.`{$us_f['uuid']}`,
+				
+				`g`.`{$ug_f['title']}`, `g`.`{$ug_f['text']}`, `g`.`{$ug_f['perm']}`, 
+				`g`.`{$ug_f['color']}` AS `gcolor`,
+				
+				`i`.`{$ic_f['money']}`, `i`.`{$ic_f['rm']}`, `i`.`{$ic_f['bank']}`
+			FROM `{$this->cfg->tabname('users')}` AS `u`
+			
+			INNER JOIN `{$this->cfg->tabname('ugroups')}` AS `g`
+				ON `g`.`{$ug_f['id']}`=`u`.`{$us_f['group']}`
+				
+			LEFT JOIN `{$this->cfg->tabname('iconomy')}` AS `i`
+				ON `i`.`{$ic_f['login']}`=`u`.`{$us_f['login']}`
+				
+			WHERE `u`.`{$us_f['id']}`='$uid'"
+		);
+		if (!$query || $this->db->num_rows($query)<=0) { $this->set_unauth(); $this->core->notify(); }
 
 		$ar = $this->db->fetch_assoc($query);
 
@@ -150,15 +164,22 @@ class user{
 		$this->cloak = ($this->is_cloak) ? $this->login : '';
 
 		// Gender
-		$this->gender = ($ar[$us_f['gender']]=='female')?
-			$this->lng['gender_w']:(($ar[$us_f['gender']]=='male')?
-				$this->lng['gender_m']:(($ar[$us_f['gender']]=='no_set')?$this->lng['gender_n']:''
-			)
-		);
+		$this->gender = ($ar[$us_f['gender']] == 'female')
+			?$this->l10n->gettext('gender_w')
+			:(($ar[$us_f['gender']]=='male')
+				?$this->l10n->gettext('gender_m')
+				:(($ar[$us_f['gender']]=='no_set')
+					?$this->l10n->gettext('gender_n')
+					:''
+				)
+			);
 
-		// TODO: important
-		$this->time_create = intval($ar[$us_f['date_reg']]);
-		$this->time_last = intval($ar[$us_f['date_last']]);
+		//$format = $this->l10n->get_date_format().' '.$this->l10n->gettext('in').' '.$this->l10n->get_time_format();
+		//$this->time_create = $this->l10n->localize($ar[$us_f['date_reg']], 'datetime', $format);
+		//$this->time_last = $this->l10n->localize($ar[$us_f['date_last']], 'datetime', $format);
+
+		$this->time_create = $ar[$us_f['date_reg']];
+		$this->time_last = $ar[$us_f['date_last']];
 
 		// Game money balance
 		$this->money = floatval($ar[$ic_f['money']]);
@@ -169,6 +190,7 @@ class user{
 		// Bank money balance (for plugins)
 		$this->bank	= floatval($ar[$ic_f['bank']]);
 
+		return $this;
 	}
 
 	private function load_auth(){
@@ -183,7 +205,7 @@ class user{
 
 		$query = $this->db->query("SELECT `value`, `type`, `default` FROM `mcr_permissions`");
 
-		if(!$query || $this->db->num_rows($query)<=0){ return; }
+		if(!$query || $this->db->num_rows($query)<=0){ return null; }
 
 		$array = array();
 
@@ -253,5 +275,3 @@ class user{
 		return mb_substr($ip, 0, 16, "UTF-8");
 	}
 }
-
-?>
