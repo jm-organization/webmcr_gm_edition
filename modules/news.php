@@ -45,8 +45,9 @@ class module{
 	private function news_array($cid=false){
 		$start = $this->core->pagination($this->cfg->pagin['news'], 0, 0);
 		$end = $this->cfg->pagin['news'];
+		$time = time();
 
-		$standart = '`n`.`hidden` = 0 AND `n`.`date` < NOW()';
+		$standart = "`n`.`hidden` = 0 AND `n`.`date` < $time";
 		$category = "`n`.cid='$cid' AND `c`.`hidden` = 0";
 		$where = ($cid != false)?"($category) OR ($standart)":$standart;
 
@@ -86,8 +87,8 @@ class module{
 			$text_pos = mb_strpos($text_with_pagebreaker, '{READMORE}', 0, 'UTF-8');
 			$text = ($text_pos !== false)?mb_substr($text_with_pagebreaker, 0, $text_pos, "UTF-8"):$text_with_pagebreaker;
 
-			$date = '<div class="date" rel="tooltip" title="'.$this->l10n->gettext('date_create').'">'.$this->l10n->localize($ar['date'], 'datetime', $this->l10n->get_date_format()).'</div>';
-			$time = '<div class="time" rel="tooltip" title="'.$this->l10n->gettext('time_create').'">'.$this->l10n->localize($ar['date'], 'datetime', $this->l10n->get_time_format()).'</div>';
+			$date = '<div class="date" rel="tooltip" title="'.$this->l10n->gettext('date_create').'">'.$this->l10n->localize($ar['date'], 'timestamp', $this->l10n->get_date_format()).'</div>';
+			$time = '<div class="time" rel="tooltip" title="'.$this->l10n->gettext('time_create').'">'.$this->l10n->localize($ar['date'], 'timestamp', $this->l10n->get_time_format()).'</div>';
 
 			$votes = isset($data['votes'])?$data['votes']:array();
 
@@ -276,10 +277,11 @@ class module{
 		if (intval($ar[0]) > 0) { return false; }
 
 		$uid = ($this->user->id <= 0)?1:$this->user->id;
+		$time = time();
 
 		$insert = $this->db->query(
 			"INSERT INTO `mcr_news_views` (nid, uid, ip, `time`)
-			VALUES ('$nid', '$uid', '{$this->user->ip}', NOW())"
+			VALUES ('$nid', '$uid', '{$this->user->ip}', $time)"
 		);
 		if (!$insert) { $this->core->notify($this->core->l10n->gettext('error_sql_critical')); }
 		$views = $this->db->query("SELECT COUNT(*) FROM `mcr_news_views` WHERE `nid`='$nid'");
@@ -360,7 +362,7 @@ class module{
 			"TITLE" => $this->db->HSC($ar['title']),
 			"TEXT" => str_replace('{READMORE}', '', $ar['text_html']),
 			"UID" => intval($ar['uid']),
-			"DATE" => $this->l10n->localize($ar['date'], 'datetime', $format),
+			"DATE" => $this->l10n->localize($ar['date'], 'timestamp', $format),
 			"CATEGORY" => $this->db->HSC($ar['category']),
 			"VIEWS"	=> isset($data['views'])?$data['views']:0,
 			"COMMENTS" => $comments,

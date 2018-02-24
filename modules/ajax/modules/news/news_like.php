@@ -30,11 +30,12 @@ class submodule{
 		$dislikes = intval($votes['dislikes']);
 		$uid = (!$this->user->is_auth)?-1:$this->user->id;
 		$old_value = isset($ar['value'])?$ar['value']:null;
+		$time = time();
 
 		if (is_null($old_value)) {
 			if (!$this->db->query(
 				"INSERT INTO `mcr_news_votes` (nid, uid, `value`, ip, `time`)
-				VALUES ('$nid', '$uid', '$value', '{$this->user->ip}', NOW())"
+				VALUES ('$nid', '$uid', '$value', '{$this->user->ip}', $time)"
 			)) $this->core->js_notify($this->core->lng['e_sql_critical']);
 
 			$likes = ($value === 1)?$likes+1:$likes;
@@ -42,7 +43,7 @@ class submodule{
 		} elseif ($old_value != $value) {
 			if (!$this->db->query(
 				"UPDATE `mcr_news_votes`
-				SET uid='$uid', `value`='$value', `time`=NOW()
+				SET uid='$uid', `value`='$value', `time`=$time
 				WHERE nid='$nid' AND uid='{$this->user->id}'
 				LIMIT 1"
 			)) $this->core->js_notify($this->core->lng['e_sql_critical']);

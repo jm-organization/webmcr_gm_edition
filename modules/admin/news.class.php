@@ -99,7 +99,7 @@ class submodule{
 	private function get_preview($title='', $text='', $category='', $cid=0, $vote=0, $planed_publish=false){
 		$data = array(
 			"TITLE" => $this->db->HSC($title),
-			"PLANED_PUBLISH" => new DateTime($planed_publish),
+			"PLANED_PUBLISH" => date('d.m.Y H:i:s', $planed_publish),
 			"TEXT" => $text,
 			"CATEGORY" => $this->db->HSC($category),
 			"CID" => intval($cid),
@@ -275,7 +275,7 @@ class submodule{
 		// TODO: News image
 		$title = $text = $vote = $discus = $attach = $img = $preview = $hidden = $planed_publish = '';
 		$n = array();
-		$time = new DateTime();
+		$time = time();
 
 		if($_SERVER['REQUEST_METHOD']=='POST'){
 			// TITLE
@@ -309,6 +309,7 @@ class submodule{
 				),
 			);
 			$data = $this->db->safesql(json_encode($new_data));
+			$date = (@$_POST['planed_publish']==='on')? strtotime($this->check_datetime(@$_POST['publish_time'])) : $time;
 
 			// Prepare data for create news
 			$n = array(
@@ -320,11 +321,7 @@ class submodule{
 				'attach' => (!$attach)?0:1,
 				'img' => $img,
 				'user_id' => $this->user->id,
-				'date' => (@$_POST['planed_publish']==='on')?(
-					$this->check_datetime(@$_POST['publish_time'])
-				):(
-					$time->format('Y-m-d H:i:s')
-				),
+				'date' => $date,
 				'data' => $data,
 				'hidden' => (!$hidden)?0:1
 			);
@@ -444,8 +441,6 @@ class submodule{
 				$this->core->notify($this->core->lng["e_msg"], $this->lng['news_e_cat_not_exist'], 2);
 			}
 
-			$time = new DateTime($ar['date']);
-
 			$vote = (intval(@$_POST['vote'])===1)?1:0;
 			$discus	= (intval(@$_POST['discus'])===1)?1:0;
 			$attach	= (intval(@$_POST['attach'])===1)?1:0;
@@ -454,11 +449,7 @@ class submodule{
 			// NEWS CONTENT
 			$updated_text = $this->db->safesql(htmLawed(trim(@$_POST['text'])));
 			// NEWS PUBLISH DATE
-			$publish_date = (!empty(@$_POST['planed_publish']) && @$_POST['planed_publish'] == 'on')?(
-				$this->check_datetime(@$_POST['publish_time'])
-			):(
-				$time->format('Y-m-d H:i:s')
-			);
+			$publish_date = (!empty(@$_POST['planed_publish']) && @$_POST['planed_publish'] == 'on')? strtotime($this->check_datetime(@$_POST['publish_time'])) : intval($ar['date']);
 
 			if (!$publish_date) {
 				$this->core->notify(
@@ -515,12 +506,12 @@ class submodule{
 				if (!$loe_row || $this->db->num_rows($loe_row) <= 0) {
 					$loe = "
 						INSERT INTO `mcr_logs_of_edit` (`editor`, `things`, `table`, `date`)
-						VALUES ('{$this->user->id}', '{$id}', 'mcr_news', NOW())
+						VALUES ('{$this->user->id}', '{$id}', 'mcr_news', '$publish_date')
 					";
 				} else {
 					$loe = "
 						UPDATE `mcr_logs_of_edit` 
-						SET `editor`='{$this->user->id}', `things`='{$id}', `table`='mcr_news', `date`=NOW()
+						SET `editor`='{$this->user->id}', `things`='{$id}', `table`='mcr_news', `date`='$publish_date'
 						WHERE `things`='$id' AND `table`='mcr_news'
 					";
 				}
@@ -533,7 +524,7 @@ class submodule{
 				$this->core->notify($this->core->lng["e_success"], $this->lng['news_edit_success'], 3, '?mode=admin&do=news');
 			}
 		}
-		$date = new DateTime($ar['date']);
+		$date = intval($ar['date']);
 
 		$result = array(
 			"PAGE" => $this->lng['news_edit_page_name'],
@@ -541,7 +532,7 @@ class submodule{
 			"TITLE" => $title,
 			"TEXT" => $text,
 			"PLANED_PUBLISH" => (@$data['planed_news'] || @$_POST['planed_publish']=='on')?'checked':'',
-			"DATE" => $date->format('d.m.Y H:i:s'),
+			"DATE" => date('d.m.Y H:i:s', $date),
 			"VOTE" => $votes,
 			"DISCUS" => $discuses,
 			"ATTACH" => $attached,

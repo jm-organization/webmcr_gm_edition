@@ -33,13 +33,14 @@ class module
 		$this->db->actlog($this->l10n->gettext('log_logout'), $this->user->id);
 
 		$new_tmp = $this->db->safesql($this->core->random(16));
-
-		if (!$this->db->query(
-			"UPDATE `mcr_users` 
-			SET `tmp`='$new_tmp', `time_last`=NOW() 
-			WHERE `id`='{$this->user->id}' 
-			LIMIT 1"
-		)) {
+		$date		= time();
+    
+    if (!$this->db->query("
+			UPDATE `mcr_users` 
+			SET `tmp`='$new_tmp', `time_last`=$date
+			WHERE `id`='{$this->user->id}'
+			LIMIT 1
+		")) {
 			$this->core->notify($this->l10n->gettext('error_attention'), $this->l10n->gettext('error_sql_critical'));
 		}
 
