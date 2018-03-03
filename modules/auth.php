@@ -21,21 +21,17 @@ class module{
 		$login = $this->db->safesql($_POST['login']);
 		$remember = (isset($_POST['remember']) && intval($_POST['remember'])==1) ? true : false;
 
-		$ctables = $this->cfg->db['tables'];
-		$ug_f = $ctables['ugroups']['fields'];
-		$us_f = $ctables['users']['fields'];
-
 		$query = $this->db->query(
 			"SELECT 
-				`u`.`{$us_f['id']}`, `u`.`{$us_f['pass']}`, `u`.`{$us_f['salt']}`,
+				`u`.`id`, `u`.`password`, `u`.`salt`,
 				
-				`g`.`{$ug_f['perm']}`
-			FROM `{$this->cfg->tabname('users')}` AS `u`
+				`g`.`permissions`
+			FROM `mcr_users` AS `u`
 			
-			INNER JOIN `{$this->cfg->tabname('ugroups')}` AS `g`
-				ON `g`.`{$ug_f['id']}`=`u`.`{$us_f['group']}`
+			INNER JOIN `mcr_groups` AS `g`
+				ON `g`.`id`=`u`.`gid`
 				
-			WHERE `u`.`{$us_f['login']}`='$login' OR `u`.`{$us_f['email']}`='$login'
+			WHERE `u`.`login`='$login' OR `u`.`email`='$login'
 			
 			LIMIT 1"
 		);
@@ -48,14 +44,14 @@ class module{
 
 		$ar = $this->db->fetch_assoc($query);
 
-		$uid = intval($ar[$us_f['id']]);
-		$permissions = json_decode($ar[$ug_f['perm']], true);
-		$password = $this->user->auth->createHash(@$_POST['password'], $ar[$us_f['salt']]);
+		$uid = intval($ar['id']);
+		$permissions = json_decode($ar['permissions'], true);
+		$password = $this->user->auth->createHash(@$_POST['password'], $ar['salt']);
 
 		if (!$this->user->auth->authentificate(
 			@$_POST['password'],
-			$ar[$us_f['pass']],
-			$ar[$us_f['salt']]
+			$ar['password'],
+			$ar['salt']
 		)) { $this->core->notify(
 			$this->l10n->gettext('error_message'),
 			$this->l10n->gettext('wrong_pass')
@@ -68,12 +64,12 @@ class module{
 		$date = time();
 
 		if (!$this->db->query("
-			UPDATE `{$this->cfg->tabname('users')}`
+			UPDATE `mcr_users`
 			SET 
-				`{$us_f['tmp']}`='$new_tmp', 
-				`{$us_f['ip_last']}`='$new_ip', 
-				`{$us_f['date_last']}`=$date
-			WHERE `{$us_f['id']}`='$uid'
+				`tmp`='$new_tmp', 
+				`ip_last`='$new_ip', 
+				`time_last`=$date
+			WHERE `id`='$uid'
 			LIMIT 1
 		")) { $this->core->notify(
 			$this->l10n->gettext('error_attention'),

@@ -32,7 +32,7 @@
 				<p id="label_pp" style="display: inline-block; width: 100%">
 					<span style="float: left; line-height: 24px;"><?php echo $this->l10n->gettext('news_field_date'); ?></span>
 					<label style="float: right;" id="switch_pp" class="switch">
-						<input type="checkbox" name="planed_publish" <?php echo $data['PLANED_PUBLISH']; ?>>
+						<input type="checkbox" name="planed_publish" value="1" <?php echo $data['PLANED_PUBLISH']; ?>>
 						<span class="slider round"></span>
 					</label>
 				</p>
@@ -105,7 +105,7 @@
 				<p id="label_sc" style="display: inline-block; width: 100%">
 					<span style="float: left; line-height: 24px;"><?php echo $this->l10n->gettext('news_field_comment_close'); ?></span>
 					<label style="float: right;" id="switch_sc" class="switch">
-						<input type="checkbox" name="closed_comments">
+						<input type="checkbox" name="closed_comments" value="1">
 						<span class="slider round"></span>
 					</label>
 				</p>

@@ -186,15 +186,12 @@ class submodule
 			if ($email) {
 			if ($password) {
 			if ($this->is_captcha()) {
-				$ctables = $this->cfg->db['tables'];
-				$us_f = $ctables['users']['fields'];
-				$ic_f = $ctables['iconomy']['fields'];
 				$time = time();
 
 				if (!$this->db->query(
-					"INSERT INTO `{$this->cfg->tabname('users')}` (
-						`{$us_f['group']}`, `{$us_f['login']}`, `{$us_f['email']}`, `{$us_f['pass']}`, `{$us_f['uuid']}`,
-						`{$us_f['salt']}`, `{$us_f['tmp']}`, `{$us_f['ip_last']}`, `{$us_f['date_reg']}`, `{$us_f['gender']}`
+					"INSERT INTO `mcr_users` (
+						`gid`, `login`, `email`, `password`, `uuid`,
+						`salt`, `tmp`, `ip_last`, `time_create`, `gender`
 					) VALUES (
 						'$gid', '$login', '$email', '$password', UNHEX(REPLACE(UUID(), '-', '')), 
 						'$salt', '$tmp', '$ip', $time, '$gender'
@@ -207,7 +204,7 @@ class submodule
 				$id = $this->db->insert_id();
 
 				if (!$this->db->query(
-					"INSERT INTO `{$this->cfg->tabname('iconomy')}` (`{$ic_f['login']}`) 
+					"INSERT INTO `mcr_iconomy` (`login`) 
 					VALUES ( '$login')"
 				)) {
 					$this->notify($this->l10n->gettext('error_sql_critical'));

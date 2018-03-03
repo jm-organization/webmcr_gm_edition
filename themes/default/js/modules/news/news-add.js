@@ -79,5 +79,5 @@ $(document).ready(function () {
 		value:'',
 		format:'d.m.Y H:i:s',
 		minDate:'+1970/01/02'
-	});
+    });
 });
