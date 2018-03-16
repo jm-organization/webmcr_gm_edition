@@ -4,12 +4,12 @@ if(!defined("MCR")){ exit("Hacking Attempt!"); }
 
 ini_set("upload_max_filesize", "50M");
 ini_set("post_max_size", "50M");
-@date_default_timezone_set('Europe/Moscow');
+@date_default_timezone_set('Europe/Kiev');
 
 // System constants
-define('PROGNAME', 'WebMCR Reloaded'. MCR);
-define('VERSION', 'WebMCR Beta 1.4.2');
-define('FEEDBACK', '<a href="http://webmcr.com" target="_blank">'.PROGNAME.'</a> &copy; 2013-'.date("Y").' Qexy'); 
+define('PROGNAME', 'MagicMCR'. MCR);
+define('VERSION', 'webmcr_gm_edition_0.3.4');
+define('FEEDBACK', PROGNAME.' powered by <a href="http://webmcr.com" target="_blank">WebMCR</a> &copy; 2017-'.date("Y").' <a href="http://www.jm-org.net/about/#Magicmen">Magicmen</a>');
 define('MCR_ROOT', dirname(__FILE__).'/');
 define('MCR_MODE_PATH', MCR_ROOT.'modules/');
 define('MCR_TOOL_PATH', MCR_ROOT.'engine/');
@@ -52,4 +52,3 @@ define('META_JSON_DATA', json_encode($meta_json_data));
 
 // Csrf security validation
 $core->csrf_check();
-?>

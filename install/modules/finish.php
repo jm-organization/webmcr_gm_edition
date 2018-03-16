@@ -5,7 +5,7 @@ if(!defined("MCR")){ exit("Hacking Attempt!"); }
 class module{
 	private $install, $cfg, $lng;
 
-	public function __construct($install){
+	public function __construct(install $install){
 		$this->install = $install;
 		$this->cfg = $install->cfg;
 		$this->lng = $install->lng;
@@ -28,7 +28,7 @@ class module{
 	public function content(){
 		if(!isset($_SESSION['step_5'])){ $this->install->notify('', '', 'install/?do=step_5'); }
 
-		if ($this->cfg['main']['install'] != true) {
+		if ($this->cfg['main']['install'] == false) {
 
 			$date = time();
 
@@ -44,7 +44,7 @@ class module{
 <p>Сайт официального разработчика: <a href=\"http://webmcr.com\">http://webmcr.com</a>&nbsp;</p>
 <p>Официальный Wiki: <a href=\"http://wiki.webmcr.com/\">http://wiki.webmcr.com/&nbsp;</a></p>
 <p>Mind 42 - <a href=\"http://mind42.com/mindmap/a2e9fdc9-a645-42db-80e0-c338f8a27c2c%20\">http://mind42.com/mindmap/a2e9fdc9-a645-42db-80e0-c338f8a27c2c&nbsp;</a></p>
-<p>Сайт организации, которая адaптировала движок для проекта:&nbsp; <a href=\"http://www.jm-org.net/\">http://www.jm-org.net/</a>&nbsp;</p>', 0, 1, 0, 0, 1, $date, 'http://magicmcr.jm-org.net/themes/default/img/cacke.128.png', '{\"planed_news\":true,\"close_comments\":false,\"time_when_close_comments\":false}');");
+<p>Сайт организации, которая адaптировала движок для проекта:&nbsp; <a href=\"http://www.jm-org.net/\">http://www.jm-org.net/</a>&nbsp;</p>', 0, 1, 0, 0, 1, $date, '/themes/default/img/cacke.128.png', '{\"planed_news\":true,\"close_comments\":false,\"time_when_close_comments\":false}');");
 
 			$query = $this->db->query("SELECT `phrase_key`, `phrase_value` FROM mcr_l10n_phrases");
 			if ($query || $this->db->num_rows($query) > 0) {
@@ -65,8 +65,8 @@ class module{
 			}
 
 			$this->cfg['main']['install'] = true;
-			if(!$this->install->savecfg($this->cfg['main'], 'main.php', 'main')){
-				$this->install->notify($this->lng['e_write'], $this->lng['e_msg'], 'install/?mode=finish');
+			if($this->install->savecfg($this->cfg['main'], 'main.php', 'main')){
+				$this->install->notify($this->lng['e_success'], 'installed', 'install/?mode=finish');
 			}
 		}
 

@@ -106,7 +106,7 @@ class submodule
 	{
 		$data = [
 			"TITLE" => $this->db->HSC($title),
-			"PLANED_PUBLISH" => date('d.m.Y H:i:s', $planed_publish),
+			"PLANED_PUBLISH" => $this->l10n->parse_date($planed_publish, ['date'=>'date_create','time'=>'time_create']),
 			"TEXT" => $text,
 			"CATEGORY" => $this->db->HSC($category),
 			"CID" => intval($cid),
@@ -142,13 +142,6 @@ class submodule
 		}
 
 		return true;
-	}
-
-	function valid_date($date)
-	{
-		$d = DateTime::createFromFormat('d.m.Y H:i:s', $date);
-
-		return $d && $d->format('d.m.Y H:i:s') === $date;
 	}
 
 	private function get_short_information($article)
@@ -324,7 +317,7 @@ class submodule
 			];
 			$data = $this->db->safesql(json_encode($new_data));
 			$date = (@$_POST['planed_publish'] == 1)
-				? @$_POST['publish_time']
+				? (new DateTime(@$_POST['publish_time']))->getTimestamp()
 				: $time;
 
 			// Prepare data for create news
@@ -377,7 +370,7 @@ class submodule
 			"CATEGORIES" => $categories,
 			"USER_GROUPS" => $user_groups,
 			"PLANED_PUBLISH" => $planed_publish,
-			"DATE" => (empty($n)) ? date('d.m.Y H:i:s', $time) : '',
+			"DATE" => (empty($n)) ? date('d.m.Y H:i:s', $time) : date('d.m.Y H:i:s', $n['date']),
 			"TEXT" => $text,
 			"VOTE" => ($vote) ? 'checked' : '',
 			"DISCUS" => ($discus) ? 'checked' : '',
@@ -391,7 +384,7 @@ class submodule
 	private function edit()
 	{
 		if (!$this->core->is_access('sys_adm_news_edit')) {
-			$this->core->notify($this->l10n["e_msg"], $this->l10n->gettext('e_403'), 2, '?mode=admin&do=news');
+			$this->core->notify($this->l10n->gettext('error_message'), $this->l10n->gettext('error_403'), 2, '?mode=admin&do=news');
 		}
 
 		$id = intval($_GET['id']);
@@ -403,7 +396,7 @@ class submodule
 			WHERE id='$id'
 		");
 		if (!$query || $this->db->num_rows($query) <= 0) {
-			$this->core->notify($this->l10n["e_msg"], $this->l10n["e_sql_critical"], 2, '?mode=admin&do=news');
+			$this->core->notify($this->l10n->gettext('error_message'), $this->l10n->gettext('error_sql_critical'), 2, '?mode=admin&do=news');
 		}
 
 		$ar = $this->db->fetch_assoc($query);
@@ -425,6 +418,8 @@ class submodule
 		];
 		$this->core->bc = $this->core->gen_bc($bc);
 
+		$time = time();
+
 		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 			// TITLE
 			$title = (empty(trim(@$_POST['title'])))
@@ -435,7 +430,7 @@ class submodule
 			$category_id = intval(@$_POST['cid']);
 			$check_cid = $this->db->query("SELECT title FROM `mcr_news_cats` WHERE id='$category_id'");
 			if (!$check_cid || $this->db->num_rows($check_cid) <= 0) {
-				$this->core->notify($this->l10n["e_msg"], $this->l10n->gettext('news_e_cat_not_exist'), 2);
+				$this->core->notify($this->l10n->gettext('error_message'), $this->l10n->gettext('news_e_cat_not_exist'), 2);
 			}
 
 			$vote = (intval(@$_POST['vote']) === 1) ? 1 : 0;
@@ -446,12 +441,12 @@ class submodule
 			// NEWS CONTENT
 			$updated_text = $this->db->safesql(htmLawed(trim(@$_POST['text'])));
 			// NEWS PUBLISH DATE
-			$publish_date = (!empty(@$_POST['planed_publish']) && @$_POST['planed_publish'] == 'on')
-				? strtotime($this->check_datetime(@$_POST['publish_time']))
-				: intval($ar['date']);
+			$publish_date = (!empty(@$_POST['planed_publish']) && @$_POST['planed_publish'] == 1)
+				? (new DateTime(@$_POST['publish_time']))->getTimestamp()
+				: $time;
 
 			if (!$publish_date) {
-				$this->core->notify($this->l10n["e_msg"], $this->l10n->gettext('news_add_time_error'), 2, '?mode=admin&do=news&op=edit&id='.$id);
+				$this->core->notify($this->l10n->gettext('error_message'), $this->l10n->gettext('news_add_time_error'), 2, '?mode=admin&do=news&op=edit&id='.$id);
 			}
 
 			if (isset($_POST['preview'])) {
@@ -460,10 +455,10 @@ class submodule
 				$preview = $this->get_preview($title, str_replace('{READMORE}', '<hr>', htmLawed(trim(@$_POST['text']))), $cid_ar['title'], $category_id, $vote, $publish_date);
 			} else {
 				$new_data = [
-					"planed_news" => (@$_POST['planed_publish'] == 'on')
+					"planed_news" => (@$_POST['planed_publish'] == 1)
 						? true
 						: false,
-					"close_comments" => (@$_POST['closed_comments'] == 'on')
+					"close_comments" => (@$_POST['closed_comments'] == 1)
 						? true
 						: false,
 					"time_when_close_comments" => (@$_POST['date_cs'])
@@ -489,7 +484,7 @@ class submodule
 						`id`='$id'
 				";
 				if (!$this->db->query($updated_news)) {
-					$this->core->notify($this->l10n["e_msg"], $this->core->lng["e_sql_critical"].': '.mysqli_error($this->db->obj), 2, '?mode=admin&do=news&op=edit&id='.$id);
+					$this->core->notify($this->l10n->gettext('error_message'), $this->l10n->gettext('error_sql_critical'), 2, '?mode=admin&do=news&op=edit&id='.$id);
 				}
 
 				$loe_row = "SELECT `id` FROM `mcr_logs_of_edit` WHERE `things`='$id' AND `table`='mcr_news'";
@@ -512,7 +507,7 @@ class submodule
 				$this->db->update_user($this->user);
 				// Лог действия
 				$this->db->actlog($this->l10n->gettext('log_edit_news')." #$id ".$this->l10n->gettext('log_news'), $this->user->id);
-				$this->core->notify($this->l10n["e_success"], $this->l10n->gettext('news_edit_success'), 3, '?mode=admin&do=news');
+				$this->core->notify($this->l10n->gettext('error_success'), $this->l10n->gettext('news_edit_success'), 3, '?mode=admin&do=news');
 			}
 		}
 		$date = intval($ar['date']);
@@ -522,7 +517,7 @@ class submodule
 			"CATEGORIES" => $categories,
 			"TITLE" => $title,
 			"TEXT" => $text,
-			"PLANED_PUBLISH" => (@$data['planed_news'] || @$_POST['planed_publish'] == 'on')
+			"PLANED_PUBLISH" => (@$data['planed_news'] || @$_POST['planed_publish'] == 1)
 				? 'checked'
 				: '',
 			"DATE" => date('d.m.Y H:i:s', $date),
@@ -543,11 +538,11 @@ class submodule
 			$this->core->notify($this->l10n->gettext('error_message'), $this->l10n->gettext('error_403'), 2, '?mode=admin&do=news');
 		}
 
-		if ($_SERVER['REQUEST_METHOD'] != 'POST') {
-			$this->core->notify($this-$this->l10n->gettext('error_message'), $this->l10n->gettext('error_hack'), 2, '?mode=admin&do=news');
+		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+			$news_list = @$_POST['id'];
+		} else {
+			$news_list[] = @$_GET['id'];
 		}
-
-		$news_list = @$_POST['id'];
 
 		if (empty($news_list)) {
 			$this->core->notify($this->l10n->gettext('error_message'), $this->l10n->gettext('news_not_selected'), 2, '?mode=admin&do=news');
@@ -567,35 +562,24 @@ class submodule
 		$this->db->update_user($this->user);
 		// Лог действия
 		$this->db->actlog($this->l10n->gettext('log_del_news')." $news_list ".$this->l10n->gettext('log_news'), $this->user->id);
-		$this->core->notify($this->l10n->gettext('e_success'), $this->l10n->gettext('news_del_elements')." $count1", 3, '?mode=admin&do=news');
+		$this->core->notify($this->l10n->gettext('error_success'), $this->l10n->gettext('news_del_elements')." $count1", 3, '?mode=admin&do=news');
 	}
 
 	public function content()
 	{
-
 		$op = (isset($_GET['op']))
 			? $_GET['op']
 			: 'list';
 		$content = '';
 
 		switch ($op) {
-			case 'add':
-				$content = $this->add();
-				break;
-			case 'edit':
-				$content = $this->edit();
-				break;
-			case 'delete':
-				$this->delete();
-				break;
+			case 'add': $content = $this->add(); break;
+			case 'edit': $content = $this->edit(); break;
+			case 'delete': $this->delete(); break;
 
-			default:
-				$content = $this->news_list();
-				break;
+			default: $content = $this->news_list(); break;
 		}
 
 		return $content;
 	}
 }
-
-?>

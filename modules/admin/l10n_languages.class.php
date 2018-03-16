@@ -199,7 +199,7 @@ class submodule {
     
     protected function add() {
         if ($_SERVER['REQUEST_METHOD']=='POST') {
-            $post = array(
+        	$post = array(
                 'language_title' => $_POST['language_title'],
                 'language_parent' => ($_POST['language_parent'])?$_POST['language_parent']:0,
                 'locale' => $_POST['locale'],

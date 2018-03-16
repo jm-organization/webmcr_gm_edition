@@ -8,7 +8,7 @@ class submodule
 {
 	private $core, $db, $user, $cfg, $l10n;
 
-	public function __construct($core)
+	public function __construct(core $core)
 	{
 		$this->core = $core;
 		$this->db = $core->db;

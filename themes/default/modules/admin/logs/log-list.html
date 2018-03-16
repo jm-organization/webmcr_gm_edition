@@ -2,10 +2,26 @@
 	<div class="form-block">
 
 		<div class="block-header">
-			<div class="block-name"><?php echo $this->l10n->gettext('logs_views'); ?></div>
+			<div class="block-name">
+				<p id="title">
+					<span class="title"><?php echo $this->l10n->gettext('logs'); ?></span>
+				</p>
+				<p id="actions">
+					<span class="btn-group" role="group">
+						<input type="text" class="adm-search-input form-control" id="adm-search-id" placeholder="<?php echo $this->l10n->gettext('search_placeholder'); ?>">
+						<span class="input-group-prepend">
+							<button class="btn btn-secondary adm-search" data-for="#adm-search-id" type="button" rel="tooltip" title="<?php echo $this->l10n->gettext('search'); ?>"><i class="fa fa-search"></i></button>
+						</span>
+                    </span>
+				</p>
+			</div>
 		</div>
 
+		<?php if (!empty($data['PAGINATION'])) {?>
 		<div class="block-line"></div>
+
+		<div class="left-act"><?php echo $data['PAGINATION']; ?></div>
+		<?php } ?>
 
 		<div class="table-responsive">
 			<table class="table table-striped table table-hover">
@@ -23,18 +39,5 @@
 				</tbody>
 			</table>
 		</div>
-	</div>
-
-	<div class="form-block actions">
-		<div class="left-act"><?php echo $data['PAGINATION']; ?></div>
-		<div class="right-act">
-			<div class="input-group">
-				<input type="text" class="adm-search-input form-control" id="adm-search-id" placeholder="<?php echo $this->l10n->gettext('search'); ?>">
-				<div class="input-group-btn">
-					<button class="btn btn-default adm-search" data-for="#adm-search-id" type="button" rel="tooltip" title="<?php echo $this->l10n->gettext('search'); ?>"><i class="fa fa-search"></i></button>
-				</div>
-			</div>
-		</div>
-		
 	</div>
 </form>

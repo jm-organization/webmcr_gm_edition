@@ -98,6 +98,9 @@
 
 .form-block.new-full .block-footer .date { border-right: 1px solid #eee; }
 
+.form-block .block-footer .date,
+.form-block .block-footer .time { display: inline; }
+
 .form-block.new-full .block-footer .category { border-left: 1px solid #eee; margin-left: -3px; }
 
 .form-block.new-full .block-footer .comments,
@@ -232,7 +235,83 @@
     color: white!important;
 }
 
+.block-name p#actions > span[role="group"] > input:not(:last-child) {
+	border-top-right-radius: 0;
+	border-bottom-right-radius: 0;
+}
+
+.block-name p#actions > span[role="group"] > .input-group-prepend:not(:first-child) button {
+	border-left: 0;
+	border-top-left-radius: 0;
+	border-bottom-left-radius: 0;
+}
+
+.table-responsive {
+	margin: 10px 0;
+}
+.table-responsive table {
+	width: 100%;
+	background: #FFF;
+	border: 1px solid rgba(0,0,0,.15);
+	box-shadow: none;
+	border-radius: .25rem;
+	text-align: left;
+	color: rgba(0,0,0,0.87);
+	border-collapse: separate;
+	border-spacing: 0;
+	margin: 0;
+}
+.table-responsive table > thead {
+	font-weight: bold;
+	border-color: rgba(0,0,0,.15);
+	background: #F7F7F7;
+}
+.table-responsive table > thead a,
+.table-responsive table > thead a:hover,
+.table-responsive table > thead a:active {
+	color: #000;
+	cursor: pointer;
+}
+.table-responsive table > thead th { border: 0; border-bottom: 1px solid rgba(0,0,0,.15)!important; }
+.table-responsive table > thead th a { cursor: pointer; }
+.table-responsive table > thead tr:first-child > th:first-child { border-top-left-radius: .25rem; }
+.table-responsive table > thead tr:first-child > th:last-child { border-top-right-radius: .25rem; }
+.table-responsive table td,
+.table-responsive table th {
+	vertical-align: top;
+	border-top: 0;
+	border-bottom: 1px solid #eceeef;
+}
+.table-responsive table tr:last-child td,
+.table-responsive table tr:last-child th { border-bottom: 0; }
+
 .table-hover tbody tr:hover { background-color: rgba(0,0,0,.0015); }
+
+#permissions-container {
+	position: relative;
+}
+#permissions-container span {
+	position: relative;
+	display: block;
+	margin-bottom: 10px;
+	font-size: 18px;
+	background: #f5f5f5;
+	z-index: 2;
+	cursor: pointer;
+}
+#permissions-container span > i.fa {
+	position: absolute;
+	right: 6px;
+	top: 4px;
+}
+#permissions.hide + span > i.fa:before { content: "\f0d7"; }
+#permissions.opened + span > i.fa:before { content: "\f0d8"; }
+#permissions-container #permissions {
+	position: absolute;
+	bottom: -100%;
+	z-index: -1;
+	opacity: 0;
+}
 
 /* Localization module */
 #phrases .l10n-action {

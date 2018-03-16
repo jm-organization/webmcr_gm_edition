@@ -2,19 +2,44 @@
 	<div class="form-block">
 
 		<div class="block-header">
-			<div class="block-name"><?php echo $this->l10n->gettext('comments'); ?></div>
+			<div class="block-name">
+				<p id="title">
+					<span class="title"><?php echo $this->l10n->gettext('comments'); ?></span>
+				</p>
+				<p id="actions">
+					<span class="btn-group">
+						<a href="#" class="btn btn-secondary edit" data-for="check-input" data-link="<?php echo ADMIN_URL; ?>&do=comments&op=edit&id="><i class="fa fa-pencil"></i></a>
+						<button class="btn btn-secondary remove" data-for="check-input" data-text="<?php echo $this->l10n->gettext('comment_accept'); ?>" type="submit" name="delete"><i class="fa fa-times"></i></button>
+					</span>
+
+					<span class="btn-group" role="group">
+						<input type="text" class="adm-search-input form-control" id="adm-search-id" placeholder="<?php echo $this->l10n->gettext('search_placeholder'); ?>">
+						<span class="input-group-prepend">
+							<button class="btn btn-secondary adm-search" data-for="#adm-search-id" type="button" rel="tooltip" title="<?php echo $this->l10n->gettext('search'); ?>"><i class="fa fa-search"></i></button>
+						</span>
+                    </span>
+
+					<span class="btn-group" role="group">
+                    	<a role="button" href="<?php echo ADMIN_URL; ?>&do=comments&op=add" class="btn btn-primary"><?php echo $this->l10n->gettext('add'); ?></a>
+                    </span>
+				</p>
+			</div>
 		</div>
 
+		<?php if (!empty($data['PAGINATION'])) {?>
 		<div class="block-line"></div>
 
-		<div class="table-responsive">
-			<table class="table table-striped">
+		<div class="left-act"><?php echo $data['PAGINATION']; ?></div>
+		<?php } ?>
+
+		<div class="table-responsive" data-name="comments">
+			<table class="table">
 				<thead>
 					<tr>
-						<th><a href="#" class="sort-trigger" data-field="id" data-order="desc">#</a></th>
-						<th><a href="#" class="sort-trigger" data-field="user" data-order="desc"><?php echo $this->l10n->gettext('com_col_user'); ?></a></th>
-						<th><a href="#" class="sort-trigger" data-field="comment" data-order="desc"><?php echo $this->l10n->gettext('com_col_comment'); ?></a></th>
-						<th><a href="#" class="sort-trigger" data-field="news" data-order="desc"><?php echo $this->l10n->gettext('com_col_news'); ?></a></th>
+						<th><a class="sort-trigger" data-field="id" data-order="desc">#</a></th>
+						<th><a class="sort-trigger" data-field="user" data-order="desc"><?php echo $this->l10n->gettext('comment_col_user'); ?></a></th>
+						<th><a class="sort-trigger" data-field="comment" data-order="desc"><?php echo $this->l10n->gettext('comment_col_comment'); ?></a></th>
+						<th><a class="sort-trigger" data-field="news" data-order="desc"><?php echo $this->l10n->gettext('comment_col_news'); ?></a></th>
 						<th class="action"><?php echo $this->l10n->gettext('action'); ?> <input type="checkbox" class="check-all" data-for="check-input"></th>
 					</tr>
 				</thead>
@@ -24,21 +49,5 @@
 				</tbody>
 			</table>
 		</div>
-	</div>
-
-	<div class="form-block actions">
-		<div class="left-act"><?php echo $data['PAGINATION']; ?></div>
-		<div class="right-act">
-			<div class="input-group">
-				<input type="text" class="adm-search-input form-control" id="adm-search-id" placeholder="<?php echo $this->l10n->gettext('ph_search'); ?>">
-				<div class="input-group-btn">
-					<button class="btn btn-secondary adm-search" data-for="#adm-search-id" type="button" rel="tooltip" title="<?php echo $this->l10n->gettext('search'); ?>"><i class="fa fa-search"></i></button>
-					<a class="btn btn-secondary" href="<?php echo ADMIN_URL; ?>&do=comments&op=add"><i class="fa fa-plus"></i></a>
-					<a class="btn btn-secondary edit" data-for="check-input" data-link="<?php echo ADMIN_URL; ?>&do=comments&op=edit&id=" href="#"><i class="fa fa-pencil"></i></a>
-					<button class="btn btn-secondary remove" data-for="check-input" data-text="<?php echo $this->l10n->gettext('com_accept'); ?>?" type="submit" name="delete"><i class="fa fa-times"></i></button>
-				</div>
-			</div>
-		</div>
-		
 	</div>
 </form>

@@ -21,8 +21,7 @@
 
 	<div class="block-footer">
 		<?php if ($data['PLANED_PUBLISH']) { ?>
-		<div class="date" rel="tooltip" title="<?php echo $this->l10n->gettext('news_field_cdate'); ?>"><?php echo $data['PLANED_PUBLISH']->format("d.m.Y"); ?></div>
-		<div class="time" rel="tooltip" title="<?php echo $this->l10n->gettext('news_field_tdate'); ?>"><?php echo $data['PLANED_PUBLISH']->format("H:i"); ?></div>
+		<?php echo $data['PLANED_PUBLISH']; ?>
 		<?php } ?>
 		<div class="category"><a target="_blank" href="<?php echo BASE_URL; ?>?mode=news&amp;cid=<?php echo $data['CID']; ?>" rel="tooltip" title="Категория"><?php echo $data['CATEGORY']; ?></a></div>
 		<div class="readmore"><a target="_blank" href="<?php echo BASE_URL; ?>"><?php echo $this->l10n->gettext('news_go_home'); ?></a></div>
