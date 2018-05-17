@@ -3,20 +3,20 @@
 if(!defined("MCR")){ exit("Hacking Attempt!"); }
 
 class submodule{
-	private $core, $db, $cfg, $user, $lng;
+	private $core, $db, $cfg, $user, $l10n;
 
-	public function __construct($core){
+	public function __construct(core $core){
 		$this->core		= $core;
 		$this->db		= $core->db;
 		$this->cfg		= $core->cfg;
 		$this->user		= $core->user;
-		$this->lng		= $core->lng_m;
+		$this->l10n		= $core->l10n;
 
-		if(!$this->core->is_access('sys_adm_news_votes')){ $this->core->notify($this->core->lng['403'], $this->core->lng['e_403']); }
+		if(!$this->core->is_access('sys_adm_news_votes')){ $this->core->notify($this->l10n->gettext('403'), $this->l10n->gettext('e_403')); }
 
 		$bc = array(
-			$this->lng['mod_name'] => ADMIN_URL,
-			$this->lng['votes'] => ADMIN_URL."&do=news_votes"
+			$this->l10n->gettext('mod_name') => ADMIN_URL,
+			$this->l10n->gettext('votes') => ADMIN_URL."&do=news_votes"
 		);
 
 		$this->core->bc = $this->core->gen_bc($bc);
@@ -29,11 +29,6 @@ class submodule{
 		$start		= $this->core->pagination($this->cfg->pagin['adm_news_votes'], 0, 0); // Set start pagination
 		$end		= $this->cfg->pagin['adm_news_votes']; // Set end pagination
 
-		$ctables	= $this->cfg->db['tables'];
-
-		$ug_f		= $ctables['ugroups']['fields'];
-		$us_f		= $ctables['users']['fields'];
-
 		$sort		= "`v`.id";
 		$sortby		= "DESC";
 
@@ -45,22 +40,33 @@ class submodule{
 			switch(@$expl[1]){
 				case 'news': $sort = "`n`.title"; break;
 				case 'value': $sort = "`v`.`value`"; break;
-				case 'user': $sort = "`u`.`{$us_f['login']}`"; break;
+				case 'user': $sort = "`u`.`login`"; break;
 				case 'date': $sort = "`v`.`time`"; break;
 			}
 		}
 
-		$query = $this->db->query("SELECT `v`.id, `v`.nid, `v`.uid, `v`.`value`, `v`.`time`, `n`.title,
-										`u`.`{$us_f['login']}`, `u`.`{$us_f['color']}`, `g`.`{$ug_f['color']}` AS `gcolor`
-									FROM `mcr_news_votes` AS `v`
-									LEFT JOIN `mcr_news` AS `n`
-										ON `n`.id=`v`.nid
-									LEFT JOIN `{$this->cfg->tabname('users')}` AS `u`
-										ON `u`.`{$us_f['id']}`=`v`.uid
-									LEFT JOIN `{$this->cfg->tabname('ugroups')}` AS `g`
-										ON `g`.`{$ug_f['id']}`=`u`.`{$us_f['group']}`
-									ORDER BY $sort $sortby
-									LIMIT $start, $end");
+		$query = $this->db->query(
+			"SELECT 
+				`v`.id, `v`.nid, `v`.uid, `v`.`value`, `v`.`time`, 
+				
+				`n`.title,
+				
+				`u`.`login`, `g`.`color` AS `color`
+			FROM `mcr_news_votes` AS `v`
+			
+			LEFT JOIN `mcr_news` AS `n`
+				ON `n`.id=`v`.nid
+				
+			LEFT JOIN `mcr_users` AS `u`
+				ON `u`.`id`=`v`.uid
+				
+			LEFT JOIN `mcr_groups` AS `g`
+				ON `g`.`id`=`u`.`gid`
+				
+			ORDER BY $sort $sortby
+			
+			LIMIT $start, $end"
+		);
 
 		if(!$query || $this->db->num_rows($query)<=0){ return $this->core->sp(MCR_THEME_MOD."admin/news_votes/vote-none.html"); }
 
@@ -70,17 +76,16 @@ class submodule{
 
 			if(empty($ar['title'])){
 				$status_class = 'error';
-				$new = $this->lng['nvt_news_deleted'];
+				$new = $this->l10n->gettext('nvt_news_deleted');
 			}else{
 				$status_class = '';
 				$new = $this->db->HSC($ar['title']);
 			}
 
-			$value = (intval($ar['value'])===1) ? 'icon-thumbs-up' : 'icon-thumbs-down';
+			$value = (intval($ar['value']) == 1) ? 'fa-thumbs-o-up' : 'fa-thumbs-o-down';
 
-			$login = (is_null($ar[$us_f['login']])) ? 'Пользователь удален' : $this->db->HSC($ar[$us_f['login']]);
-
-			$color = (empty($ar[$us_f['color']])) ? $this->db->HSC($ar['gcolor']) : $this->db->HSC($ar[$us_f['color']]);
+			$login = (is_null($ar['login'])) ? 'Пользователь удален' : $this->db->HSC($ar['login']);
+			$color = $ar['color'];
 
 			$page_data = array(
 				"ID" => intval($ar['id']),
@@ -120,13 +125,13 @@ class submodule{
 	}
 
 	private function delete(){
-		if(!$this->core->is_access('sys_adm_news_votes_delete')){ $this->core->notify($this->core->lng["e_msg"], $this->core->lng['e_403'], 2, '?mode=admin&do=news_votes'); }
+		if(!$this->core->is_access('sys_adm_news_votes_delete')){ $this->core->notify($this->l10n["e_msg"], $this->l10n->gettext('e_403'), 2, '?mode=admin&do=news_votes'); }
 
-		if($_SERVER['REQUEST_METHOD']!='POST'){ $this->core->notify($this->core->lng["e_msg"], $this->core->lng['e_hack'], 2, '?mode=admin&do=news_votes'); }
+		if($_SERVER['REQUEST_METHOD']!='POST'){ $this->core->notify($this->l10n["e_msg"], $this->l10n->gettext('e_hack'), 2, '?mode=admin&do=news_votes'); }
 			
 		$list = @$_POST['id'];
 
-		if(empty($list)){ $this->core->notify($this->core->lng["e_msg"], $this->lng['nvt_not_selected'], 2, '?mode=admin&do=news_votes'); }
+		if(empty($list)){ $this->core->notify($this->l10n["e_msg"], $this->l10n->gettext('nvt_not_selected'), 2, '?mode=admin&do=news_votes'); }
 
 		$list = $this->core->filter_int_array($list);
 
@@ -134,7 +139,7 @@ class submodule{
 
 		$list = $this->db->safesql(implode(", ", $list));
 
-		if(!$this->db->remove_fast("mcr_news_votes", "id IN ($list)")){ $this->core->notify($this->core->lng["e_msg"], $this->core->lng["e_sql_critical"], 2, '?mode=admin&do=news_votes'); }
+		if(!$this->db->remove_fast("mcr_news_votes", "id IN ($list)")){ $this->core->notify($this->l10n["e_msg"], $this->l10n["e_sql_critical"], 2, '?mode=admin&do=news_votes'); }
 
 		$count1 = $this->db->affected_rows();
 
@@ -142,9 +147,9 @@ class submodule{
 		$this->db->update_user($this->user);
 
 		// Лог действия
-		$this->db->actlog($this->lng['log_del_nvt']." $list ".$this->lng['log_nvt'], $this->user->id);
+		$this->db->actlog($this->l10n->gettext('log_del_nvt')." $list ".$this->l10n->gettext('log_nvt'), $this->user->id);
 
-		$this->core->notify($this->core->lng["e_success"], $this->lng['nvt_del_elements']." $count1", 3, '?mode=admin&do=news_votes');
+		$this->core->notify($this->l10n["e_success"], $this->l10n->gettext('nvt_del_elements')." $count1", 3, '?mode=admin&do=news_votes');
 
 	}
 

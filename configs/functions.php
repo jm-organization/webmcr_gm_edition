@@ -1,10 +1,10 @@
 <?php
 $func = array (
-  'advice' => true,
+  'advice' => false,
   'breadcrumbs' => true,
   'close' => false,
   'close_time' => 0,
-  'ipreglimit' => 1,
+  'ipreglimit' => 0,
   'whitelist' => '',
 );
 ?>

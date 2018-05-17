@@ -15,7 +15,7 @@ function load_online(){
 		contentType: false,
 		processData: false,
 		data: formdata,
-		timeout: 2000,
+		// timeout: 2000,
 		error: function(data){
 			mcr.logger(data);
 			mcr.notify(lng.error, 'error');
@@ -60,7 +60,7 @@ function update_online(){
 		contentType: false,
 		processData: false,
 		data: formdata,
-		timeout: 2000,
+		// timeout: 2000,
 		error: function(data){
 			mcr.logger(data);
 			mcr.notify(lng.error, lng.error);
@@ -71,8 +71,14 @@ function update_online(){
 }
 
 $(function(){
-
 	setTimeout(update_online, 300);
-
 	setTimeout(load_online, 700);
 });
+/*
+
+$(document).ready(function () {
+
+	update_online();
+	load_online();
+
+});*/

@@ -1,6 +1,6 @@
 <?php
 $cfg = array (
-  'ENABLE' => true,
+  'ENABLE' => false,
   'POSITION' => 5,
   'TITLE' => 'Разработчик',
   'DESC' => 'Блок вывода баннера',
@@ -8,8 +8,8 @@ $cfg = array (
   'SITE' => 'http://qexy.org',
   'EMAIL' => 'admin@qexy.org',
   'VERSION' => '1.0',
-  'UPDATES' => true,
-  'UPDATER' => 'http://update.webmcr.com/?do=blocks&op=banner',
+  'UPDATES' => false,
+  'UPDATER' => '',
   'PERMISSIONS' => 'block_banner',
 );
 ?>

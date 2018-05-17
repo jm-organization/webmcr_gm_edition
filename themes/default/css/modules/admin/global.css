@@ -425,7 +425,7 @@ td.news-title p#img > img.user_a-news_avatar {
 }
 .news-action > a#edit { color: #72b748 }
 .news-action > a#delete { color: #d9534f }
-.news-action > a:hover { color: #636c72!important; box-shadow: 0 0 20px 5px #fbfac7; }
+.news-action > a:hover { color: #636c72!important; text-shadow: 3px 2px 5px #d2d2d2; }
 td.news-action {
     padding: 0!important;
     line-height: 24px;

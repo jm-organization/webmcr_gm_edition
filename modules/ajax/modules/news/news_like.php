@@ -3,27 +3,27 @@
 if(!defined("MCR")){ exit("Hacking Attempt!"); }
 
 class submodule{
-	private $core, $db, $cfg, $user, $lng;
+	private $core, $db, $cfg, $user, $l10n;
 
-	public function __construct($core){
+	public function __construct(core $core){
 		$this->core	= $core;
 		$this->db = $core->db;
 		$this->cfg = $core->cfg;
 		$this->user = $core->user;
-		$this->lng = $core->load_language('news');
+		$this->l10n = $core->l10n;
 	}
 
 	public function content(){
-		if ($_SERVER['REQUEST_METHOD']!='POST') { $this->core->js_notify($this->core->lng['e_hack']); }
-		if (!$this->core->is_access('sys_news_like')) { $this->core->js_notify($this->lng['com_vote_perm']); }
+		if ($_SERVER['REQUEST_METHOD']!='POST') { $this->core->js_notify($this->l10n->gettext('error_hack')); }
+		if (!$this->core->is_access('sys_news_like')) { $this->core->js_notify($this->l10n->gettext('com_vote_perm')); }
 
 		$nid = intval(@$_POST['nid']);
 		$value = intval(@$_POST['value']);
 
-		if ($value < 0 || $value > 1) { $this->core->js_notify($this->core->lng['e_hack']); }
+		if ($value < 0 || $value > 1) { $this->core->js_notify($this->l10n->gettext('error_hack')); }
 
 		$ar = $this->get_news_votes($nid);
-		if (intval($ar['vote']) <= 0) { $this->core->js_notify($this->lng['com_vote_disabled']); }
+		if (intval($ar['vote']) <= 0) { $this->core->js_notify($this->l10n->gettext('com_vote_disabled')); }
 
 		$votes = json_decode($ar['data'], true)['votes'];
 		$likes = intval($votes['likes']);
@@ -36,7 +36,7 @@ class submodule{
 			if (!$this->db->query(
 				"INSERT INTO `mcr_news_votes` (nid, uid, `value`, ip, `time`)
 				VALUES ('$nid', '$uid', '$value', '{$this->user->ip}', $time)"
-			)) $this->core->js_notify($this->core->lng['e_sql_critical']);
+			)) $this->core->js_notify($this->l10n->gettext('error_sql_critical'));
 
 			$likes = ($value === 1)?$likes+1:$likes;
 			$dislikes = ($value === 0)?$dislikes+1:$dislikes;
@@ -46,7 +46,7 @@ class submodule{
 				SET uid='$uid', `value`='$value', `time`=$time
 				WHERE nid='$nid' AND uid='{$this->user->id}'
 				LIMIT 1"
-			)) $this->core->js_notify($this->core->lng['e_sql_critical']);
+			)) $this->core->js_notify($this->l10n->gettext('error_sql_critical'));
 
 			if ($value === 1) {
 				$likes = (intval($old_value) === 1)?$likes:$likes+1;
@@ -58,7 +58,7 @@ class submodule{
 		} else {
 			if (!$this->db->query(
 				"DELETE FROM `mcr_news_votes` WHERE `value`='$value' AND (nid='$nid' AND uid='{$this->user->id}')"
-			)) $this->core->js_notify($this->core->lng['e_sql_critical']);
+			)) $this->core->js_notify($this->l10n->gettext('error_sql_critical'));
 
 			if ($value === 1) {
 				$likes = (intval($old_value) === 1)?$likes-1:$likes+1;
@@ -76,7 +76,7 @@ class submodule{
 			$data = json_encode($data);
 			if (!$this->db->query(
 				"UPDATE `mcr_news` SET `data`='$data' WHERE `id`='$nid'"
-			)) $this->core->js_notify($this->core->lng['e_sql_critical']);
+			)) $this->core->js_notify($this->l10n->gettext('error_sql_critical'));
 		}
 
 		$news_votes = $this->get_news_votes($nid);
@@ -89,18 +89,18 @@ class submodule{
 		$data = json_encode($data);
 		if (!$this->db->query(
 			"UPDATE `mcr_news` SET `data`='$data' WHERE `id`='$nid'"
-		)) $this->core->js_notify($this->core->lng['e_sql_critical']);
+		)) $this->core->js_notify($this->l10n->gettext('error_sql_critical'));
 
 		// Последнее обновление пользователя
 		$this->db->update_user($this->user);
 		// Лог действия
-		$this->db->actlog($this->lng['log_com_vote']." #$nid", $this->user->id);
+		$this->db->actlog($this->l10n->gettext('log_com_vote')." #$nid", $this->user->id);
 
 		$data = array(
 			'likes' => $likes,
 			'dislikes' => $dislikes
 		);
-		$this->core->js_notify($this->lng['com_vote_success'], $this->core->lng['e_success'], true, $data);
+		$this->core->js_notify($this->l10n->gettext('com_vote_success'), $this->l10n->gettext('error_success'), true, $data);
 	}
 
 	private function get_news_votes($news_id) {
