@@ -14,21 +14,26 @@
  </head>
  
  <body>
-  
-  <nav class="navbar navbar-toggleable-md navbar-light bg-faded">
-   <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbar-header" aria-controls="navbar-header" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-   </button>
-   <a class="navbar-brand" href="<?php echo BASE_URL; ?>"><?php echo $data['CFG']['s_name']; ?></a>
-   
-   <div class="collapse navbar-collapse" id="navbar-header">
-    <ul class="navbar-nav mr-auto mt-2 mt-md-0">
-     <?php echo $data['MENU']; ?>
-    </ul>
-    <?php echo $data['SEARCH']; ?>
+
+  <nav class="navbar navbar-toggleable-md navbar-light fixed-top">
+   <div class="container">
+    <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbar-header" aria-controls="navbar-header" aria-expanded="false" aria-label="Toggle navigation">
+     <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <a class="navbar-brand mb-0 h1" href="<?php echo BASE_URL; ?>"><?php echo $data['CFG']['s_name']; ?></a>
+
+    <div class="collapse navbar-collapse" id="navbar-header">
+     <ul class="navbar-nav mr-auto mt-2 mt-md-0">
+      <?php echo $data['MENU']; ?>
+     </ul>
+     <?php echo $data['SEARCH']; ?>
+    </div>
    </div>
+
+   <div class="bg"></div>
   </nav>
-  
+
   <header class="jumbotron jumbotron-fluid">
    <div class="container">
     <div class="row">
@@ -69,7 +74,7 @@
   
   <div id="js-loader" title="<?php echo $this->l10n->gettext('loading'); ?>"><img src="<?php echo STYLE_URL; ?>img/loading.gif" alt="<?php echo $this->l10n->gettext('loading'); ?>" /></div>
   
-  <nav class="navbar fixed-bottom navbar-light bg-faded">
+  <nav class="navbar navbar-light bg-faded">
    <div class="container">
     <div id="navbar-footer">
      <div class="block-left"><?php echo $this->l10n->gettext('copyright', $data['CFG']['s_name']); ?></div>

@@ -3,22 +3,21 @@
 if(!defined("MCR")){ exit("Hacking Attempt!"); }
 
 class submodule{
-	private $core, $db, $cfg, $user, $lng;
+	private $core, $db, $cfg, $user, $l10n;
 
-	public function __construct($core){
+	public function __construct(core $core){
 		$this->core		= $core;
 		$this->db		= $core->db;
 		$this->cfg		= $core->cfg;
 		$this->user		= $core->user;
-		$this->lng		= $core->lng_m;
+		$this->l10n		= $core->l10n;
 
-		if(!$this->core->is_access('sys_adm_settings')){ $this->core->notify($this->core->lng['403'], $this->core->lng['e_403']); }
+		if(!$this->core->is_access('sys_adm_settings')){ $this->core->notify($this->l10n->gettext('403'), $this->l10n->gettext('error_403')); }
 
 		$bc = array(
-			$this->lng['mod_name'] => ADMIN_URL,
-			$this->lng['settings'] => ADMIN_URL."&do=settings"
+			$this->l10n->gettext('mod_name') => ADMIN_URL,
+			$this->l10n->gettext('settings') => ADMIN_URL."&do=settings"
 		);
-
 		$this->core->bc = $this->core->gen_bc($bc);
 
 		$this->core->header .= $this->core->sp(MCR_THEME_MOD."admin/settings/header.html");
@@ -121,7 +120,7 @@ class submodule{
 			$cfg['s_client']		= $this->core->safestr(@$_POST['s_client']);
 
 			$s_theme = $this->core->safestr(@$_POST['s_theme']);
-			if(!$this->is_theme_exist($s_theme)){ $this->core->notify($this->core->lng["e_msg"], $this->lng['set_theme_incorrect'], 2, '?mode=admin&do=settings'); }
+			if(!$this->is_theme_exist($s_theme)){ $this->core->notify($this->l10n->gettext('error_msg'), $this->l10n->gettext('set_theme_incorrect'), 2, '?mode=admin&do=settings'); }
 			$cfg['s_theme'] = $s_theme;
 
 			$this->cfg->db['log']			= (intval(@$_POST['log']) === 1) ? true : false;
@@ -132,7 +131,7 @@ class submodule{
 
 			$captcha = intval(@$_POST['captcha']);
 
-			if(!$this->is_captcha_exist($captcha)){ $this->core->notify($this->core->lng["e_msg"], $this->lng['set_captcha_incorrect'], 2, '?mode=admin&do=settings'); }
+			if(!$this->is_captcha_exist($captcha)){ $this->core->notify($this->l10n->gettext('error_msg'), $this->l10n->gettext('set_captcha_incorrect'), 2, '?mode=admin&do=settings'); }
 			$cfg['captcha']		= $captcha;
 
 			$cfg['rc_public']	= $this->core->safestr(@$_POST['rc_public']);
@@ -143,17 +142,17 @@ class submodule{
 
 			$cfg['kc_private']	= $this->core->safestr(@$_POST['kc_private']);
 
-			if(!$this->cfg->savecfg($cfg)){ $this->core->notify($this->core->lng["e_msg"], $this->lng['set_e_cfg_save'], 2, '?mode=admin&do=settings'); }
+			if(!$this->cfg->savecfg($cfg)){ $this->core->notify($this->l10n->gettext('error_msg'), $this->l10n->gettext('set_e_cfg_save'), 2, '?mode=admin&do=settings'); }
 			
-			if(!$this->cfg->savecfg($this->cfg->db, 'db.php', 'db')){ $this->core->notify($this->core->lng["e_msg"], $this->lng['set_e_cfg_save'], 2, '?mode=admin&do=settings'); }
+			if(!$this->cfg->savecfg($this->cfg->db, 'db.php', 'db')){ $this->core->notify($this->l10n->gettext('error_msg'), $this->l10n->gettext('set_e_cfg_save'), 2, '?mode=admin&do=settings'); }
 
 			// Последнее обновление пользователя
 			$this->db->update_user($this->user);
 
 			// Лог действия
-			$this->db->actlog($this->lng['log_set_main_save'], $this->user->id);
+			$this->db->actlog($this->l10n->gettext('log_set_main_save'), $this->user->id);
 			
-			$this->core->notify($this->core->lng["e_success"], $this->lng['set_save_success'], 3, '?mode=admin&do=settings');
+			$this->core->notify($this->l10n->gettext('error_success'), $this->l10n->gettext('set_save_success'), 3, '?mode=admin&do=settings');
 		}
 
 		$data = array(
@@ -196,19 +195,19 @@ class submodule{
 			$post_keys = array_keys($post);
 			rsort($post_keys);
 
-			if($cfg_keys!==$post_keys){ $this->core->notify($this->core->lng["e_msg"], $this->lng['set_e_hash'], 2, '?mode=admin&do=settings&op=pagin'); }
+			if($cfg_keys!==$post_keys){ $this->core->notify($this->l10n->gettext('error_msg'), $this->l10n->gettext('set_e_hash'), 2, '?mode=admin&do=settings&op=pagin'); }
 
 			$cfg = $this->to_int_keys($post);
 
-			if(!$this->cfg->savecfg($cfg, 'pagin.php', 'pagin')){ $this->core->notify($this->core->lng["e_msg"], $this->lng['set_e_cfg_save'], 2, '?mode=admin&do=settings&op=pagin'); }
+			if(!$this->cfg->savecfg($cfg, 'pagin.php', 'pagin')){ $this->core->notify($this->l10n->gettext('error_msg'), $this->l10n->gettext('set_e_cfg_save'), 2, '?mode=admin&do=settings&op=pagin'); }
 
 			// Последнее обновление пользователя
 			$this->db->update_user($this->user);
 
 			// Лог действия
-			$this->db->actlog($this->lng['log_set_pagin_save'], $this->user->id);
+			$this->db->actlog($this->l10n->gettext('log_set_pagin_save'), $this->user->id);
 			
-			$this->core->notify($this->core->lng["e_success"], $this->lng['set_save_success'], 3, '?mode=admin&do=settings&op=pagin');
+			$this->core->notify($this->l10n->gettext('error_success'), $this->l10n->gettext('set_save_success'), 3, '?mode=admin&do=settings&op=pagin');
 		}
 
 		$data = array(
@@ -242,15 +241,15 @@ class submodule{
 
 			$cfg['smtp_tls']		= (intval(@$_POST['smtp_tls']) === 1) ? true : false;
 
-			if(!$this->cfg->savecfg($cfg, 'mail.php', 'mail')){ $this->core->notify($this->core->lng["e_msg"], $this->lng['set_e_cfg_save'], 2, '?mode=admin&do=settings&op=mail'); }
+			if(!$this->cfg->savecfg($cfg, 'mail.php', 'mail')){ $this->core->notify($this->l10n->gettext('error_msg'), $this->l10n->gettext('set_e_cfg_save'), 2, '?mode=admin&do=settings&op=mail'); }
 
 			// Последнее обновление пользователя
 			$this->db->update_user($this->user);
 
 			// Лог действия
-			$this->db->actlog($this->lng['log_set_mail_save'], $this->user->id);
+			$this->db->actlog($this->l10n->gettext('log_set_mail_save'), $this->user->id);
 			
-			$this->core->notify($this->core->lng["e_success"], $this->lng['set_save_success'], 3, '?mode=admin&do=settings&op=mail');
+			$this->core->notify($this->l10n->gettext('error_success'), $this->l10n->gettext('set_save_success'), 3, '?mode=admin&do=settings&op=mail');
 		}
 
 		$data = array(
@@ -286,9 +285,9 @@ class submodule{
 
 		if($_SERVER['REQUEST_METHOD']=='POST'){
 
-			if(!isset($_POST['key']) || !isset($cfg[$_POST['key']])){ $this->core->notify($this->core->lng["e_msg"], $this->core->lng['e_hack'], 2, '?mode=admin&do=settings&op=search'); }
+			if(!isset($_POST['key']) || !isset($cfg[$_POST['key']])){ $this->core->notify($this->l10n->gettext('error_msg'), $this->l10n->gettext('error_hack'), 2, '?mode=admin&do=settings&op=search'); }
 
-			if(!$this->core->validate_perm(@$_POST['permissions'])){ $this->core->notify($this->core->lng["e_msg"], $this->core->lng['e_hack'], 2, '?mode=admin&do=settings&op=search'); }
+			if(!$this->core->validate_perm(@$_POST['permissions'])){ $this->core->notify($this->l10n->gettext('error_msg'), $this->l10n->gettext('error_hack'), 2, '?mode=admin&do=settings&op=search'); }
 
 			$key = $_POST['key'];
 
@@ -297,15 +296,15 @@ class submodule{
 				"permissions" => $this->core->safestr(@$_POST['permissions']),
 			);
 
-			if(!$this->cfg->savecfg($cfg, 'search.php', 'search')){ $this->core->notify($this->core->lng["e_msg"], $this->lng['set_e_cfg_save'], 2, '?mode=admin&do=settings&op=search'); }
+			if(!$this->cfg->savecfg($cfg, 'search.php', 'search')){ $this->core->notify($this->l10n->gettext('error_msg'), $this->l10n->gettext('set_e_cfg_save'), 2, '?mode=admin&do=settings&op=search'); }
 
 			// Последнее обновление пользователя
 			$this->db->update_user($this->user);
 
 			// Лог действия
-			$this->db->actlog($this->lng['log_set_search_save'], $this->user->id);
+			$this->db->actlog($this->l10n->gettext('log_set_search_save'), $this->user->id);
 			
-			$this->core->notify($this->core->lng["e_success"], $this->lng['set_save_success'], 3, '?mode=admin&do=settings&op=search');
+			$this->core->notify($this->l10n->gettext('error_success'), $this->l10n->gettext('set_save_success'), 3, '?mode=admin&do=settings&op=search');
 		}
 
 		$data = array(
@@ -331,15 +330,15 @@ class submodule{
 
 			$cfg['ipreglimit'] = (intval(@$_POST['input_reglimit'])<=0) ? 0 : intval(@$_POST['input_reglimit']);
 
-			if(!$this->cfg->savecfg($cfg, 'functions.php', 'func')){ $this->core->notify($this->core->lng["e_msg"], $this->lng['set_e_cfg_save'], 2, '?mode=admin&do=settings&op=functions'); }
+			if(!$this->cfg->savecfg($cfg, 'functions.php', 'func')){ $this->core->notify($this->l10n->gettext('error_msg'), $this->l10n->gettext('set_e_cfg_save'), 2, '?mode=admin&do=settings&op=functions'); }
 
 			// Последнее обновление пользователя
 			$this->db->update_user($this->user);
 
 			// Лог действия
-			$this->db->actlog($this->lng['log_set_func_save'], $this->user->id);
+			$this->db->actlog($this->l10n->gettext('log_set_func_save'), $this->user->id);
 			
-			$this->core->notify($this->core->lng["e_success"], $this->lng['set_save_success'], 3, '?mode=admin&do=settings&op=functions');
+			$this->core->notify($this->l10n->gettext('error_success'), $this->l10n->gettext('set_save_success'), 3, '?mode=admin&do=settings&op=functions');
 		}
 
 		$data = array(
@@ -371,15 +370,15 @@ class submodule{
 			
 			$db['port'] = intval(@$_POST['port']);
 
-			if(!$this->cfg->savecfg($db, 'db.php', 'db')){ $this->core->notify($this->core->lng["e_msg"], $this->lng['set_e_cfg_save'], 2, '?mode=admin&do=settings&op=base'); }
+			if(!$this->cfg->savecfg($db, 'db.php', 'db')){ $this->core->notify($this->l10n->gettext('error_msg'), $this->l10n->gettext('set_e_cfg_save'), 2, '?mode=admin&do=settings&op=base'); }
 
 			// Последнее обновление пользователя
 			$this->db->update_user($this->user);
 
 			// Лог действия
-			$this->db->actlog($this->lng['log_set_base_save'], $this->user->id);
+			$this->db->actlog($this->l10n->gettext('log_set_base_save'), $this->user->id);
 			
-			$this->core->notify($this->core->lng["e_success"], $this->lng['set_save_success'], 3, '?mode=admin&do=settings&op=base');
+			$this->core->notify($this->l10n->gettext('error_success'), $this->l10n->gettext('set_save_success'), 3, '?mode=admin&do=settings&op=base');
 		}
 
 		$data = array(

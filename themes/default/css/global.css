@@ -8,6 +8,26 @@
 	src: url("../fonts/Hattori-Hanzo.otf");
 }
 
+header.jumbotron {
+	background-image: url(/themes/default/img/header-bg.png);
+	background-position: center;
+	background-repeat: no-repeat;
+}
+
+.navbar .bg {
+	background: white;
+	background-position: center;
+	background-repeat: no-repeat;
+	width: 100%;
+	height: 100%;
+	content: '';
+	top: 0;
+	left: 0;
+	position: absolute;
+	z-index: -1;
+	opacity: 0.1;
+}
+
 a:hover {
 	text-decoration: none;
 }
@@ -682,6 +702,10 @@ input[type="submit"]:focus {
 
 	body > .container {
 		padding-bottom: 130px;
+	}
+
+	.navbar > .container {
+		width: 100%;
 	}
 
 	#js-loader {

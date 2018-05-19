@@ -309,6 +309,28 @@ $(function(){
 	$('body').tooltip({selector: '[rel=tooltip]'});
 	//$('[rel=tooltip]').tooltip({container: 'body'}); // If jump elements
 
+	$(window).scroll(function () {
+		var scroll = $(window).scrollTop();
+		var opacity = 0.2;
+
+		if (scroll > 150) {
+			if (scroll >= 480) {
+				opacity = 1;
+			}
+
+			opacity = opacity + ((scroll - 150) / 100);
+
+			$('.navbar .bg').css('opacity', opacity);
+		} else {
+
+            $('.navbar .bg').css('opacity', 0.2);
+		}
+    });
+
+	$('.navbar-toggler ').on('click', function(){
+		$('nav.navbar').toggleClass('bg-faded');
+	});
+
 	// Обработчик закрытия блока оповещений
 	$('body').on('click', '#js-notify > #close', function(){
 
