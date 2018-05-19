@@ -185,5 +185,3 @@ class submodule
 		return $this->group_list();
 	}
 }
-
-?>

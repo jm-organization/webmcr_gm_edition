@@ -149,7 +149,7 @@ class submodule{
 		// Лог действия
 		$this->db->actlog($this->l10n->gettext('log_del_nvt')." $list ".$this->l10n->gettext('log_nvt'), $this->user->id);
 
-		$this->core->notify($this->l10n["e_success"], $this->l10n->gettext('nvt_del_elements')." $count1", 3, '?mode=admin&do=news_votes');
+		$this->core->notify($this->l10n["e_success"], sprintf($this->l10n->gettext('elements_deleted'), $count1), 3, '?mode=admin&do=news_votes');
 
 	}
 

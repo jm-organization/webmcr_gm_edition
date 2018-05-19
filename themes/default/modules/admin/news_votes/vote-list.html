@@ -2,10 +2,23 @@
 	<div class="form-block">
 
 		<div class="block-header">
-			<div class="block-name"><?php echo $this->l10n->gettext('votes'); ?></div>
+			<div class="block-name">
+				<p id="title">
+					<span class="title"><?php echo $this->l10n->gettext('votes'); ?></span>
+				</p>
+				<p id="actions">
+					<span class="btn-group">
+						<button class="btn btn-secondary remove" data-for="check-input" data-text="<?php echo $this->l10n->gettext('remove_accept'); ?>" type="submit" name="delete"><i class="fa fa-times"></i></button>
+					</span>
+				</p>
+			</div>
 		</div>
 
+		<?php if (!empty($data['PAGINATION'])) {?>
 		<div class="block-line"></div>
+
+		<div class="left-act"><?php echo $data['PAGINATION']; ?></div>
+		<?php } ?>
 
 		<div class="table-responsive">
 			<table class="table table-striped table table-hover">
@@ -25,16 +38,5 @@
 				</tbody>
 			</table>
 		</div>
-	</div>
-
-	<div class="form-block actions">
-		<div class="left-act"><?php echo $data['PAGINATION']; ?></div>
-		<div class="right-act">
-			<?php echo $this->l10n->gettext('nvt_field_action2'); ?>: 
-			<div class="btn-group">
-				<button class="btn btn-secondary remove" data-for="check-input" data-text="<?php echo $this->l10n->gettext('remove_accept'); ?>" type="submit" name="delete"><i class="fa fa-pencil"></i></button>
-			</div>
-		</div>
-		
 	</div>
 </form>
