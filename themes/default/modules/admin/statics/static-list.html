@@ -25,6 +25,12 @@
 				</p>
 			</div>
 		</div>
+
+        <?php if (!empty($data['PAGINATION'])) {?>
+        <div class="block-line"></div>
+
+        <div class="left-act"><?php echo $data['PAGINATION']; ?></div>
+        <?php } ?>
 		
 		<div class="table-responsive">
 			<table class="table table-striped">

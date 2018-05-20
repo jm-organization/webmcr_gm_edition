@@ -12,6 +12,6 @@ $cfg = array (
   'install' => false,
   'enable_comments' => true,
   'users_on_page' => 15,
-  'comments_on_page' => 7,
+  'comments_on_page' => 15,
 );
 ?>
