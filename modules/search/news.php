@@ -55,7 +55,7 @@ class submodule
 
 			$data = [
 				"ID" => intval($ar['id']),
-				"TITLE" => $ar['title'],
+				"TITLE" => $title,
 				//"CID"		=> intval($ar['cid']),
 				//"CATEGORY"	=> $this->db->HSC($ar['category']),
 				"TEXT" => $text
@@ -102,5 +102,3 @@ class submodule
 		return $this->core->sp(MCR_THEME_MOD."search/results.html", $data);
 	}
 }
-
-?>
