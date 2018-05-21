@@ -63,12 +63,20 @@ composer.lock
 
 ### MagicMCR Template
 #uploads
+!.htaccess
+cache/*
+!cache/l10n/ru-RU/.cache
 uploads/tmp/*
-/cache/
-
-/themes/default/bootstrap/scss/
-/themes/default/bootstrap/js/tests/
-/themes/default/bootstrap/js/bootstrap.bundle.js
-/themes/default/bootstrap/js/dist/
-/themes/default/bootstrap/js/src/
+/uploads/skins/*
 /themes/default/bootstrap/
+!/uploads/tmp/.htaccess
+!/uploads/skins/.htaccess
+!/uploads/skins/interface/.htaccess
+!/uploads/skins/index.php
+!/uploads/skins/interface/index.php
+!/uploads/skins/interface/default_female.png
+!/uploads/skins/interface/default_mini.png
+!/uploads/skins/interface/default_mini_female.png
+!/uploads/skins/interface/default.png
+!/uploads/skins/default.png
+!/uploads/skins/default_female.png

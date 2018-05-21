@@ -10,7 +10,7 @@ class install{
 	public $header = '';
 
 	public function __construct(){
-		$https = (@$_SERVER['HTTPS']=='on' || $_SERVER['HTTP_X_FORWARDED_PROTO']=='https') ? 'https' : 'http';
+		$https = (@$_SERVER['HTTPS']=='on' || (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO']=='https')) ? 'https' : 'http';
 
 		define('PROGNAME', 'WebMCR Reloaded');
 		define('VERSION', 'WebMCR Beta 1.4.1');
