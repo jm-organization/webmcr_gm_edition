@@ -1,7 +1,7 @@
 <div class="form-block comment-form">
 
 	<div class="block-header">
-		<?php echo $this->lng_m['add_comment']; ?>
+		<?php echo $this->l10n->gettext('add_comment'); ?>
 	</div>
 
 	<div class="block-line"></div>
@@ -10,11 +10,9 @@
 		<form method="post">
 			<?php echo $data['BB_PANEL']; ?>
 
-			<textarea name="message" data-for="bb-comments" placeholder="<?php echo $this->lng_m['message']; ?>" required></textarea>
+			<textarea class="form-control" rows="7" name="message" data-for="bb-comments" placeholder="<?php echo $this->l10n->gettext('message'); ?>" required style="margin-bottom: 15px"></textarea>
 
-			<div class="text-right">
-				<button type="submit" class="btn btn-primary" id="add_comment"><?php echo $this->lng['add']; ?></button>
-			</div>
+			<button type="submit" class="btn btn-primary pull-right" id="add_comment"><?php echo $this->l10n->gettext('add'); ?></button>
 		</form>
 	</div>
 </div>

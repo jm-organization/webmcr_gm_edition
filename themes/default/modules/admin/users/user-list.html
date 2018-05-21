@@ -2,10 +2,40 @@
 	<div class="form-block">
 		
 		<div class="block-header">
-			<div class="block-name"><?php echo $this->lng_m['users']; ?></div>
+			<div class="block-name">
+				<p id="title">
+					<span class="title"><?php echo $this->l10n->gettext('users'); ?></span>
+				</p>
+				<p id="actions">
+					<span class="btn-group" role="group">
+						<button class="btn btn-secondary text-danger remove" data-for="check-input" data-text="<?php echo $this->l10n->gettext('user_accept2'); ?>?" type="submit" name="ban"><i class="fa fa-ban"></i></button>
+						<button class="btn btn-secondary text-success remove" data-for="check-input" data-text="<?php echo $this->l10n->gettext('user_accept3'); ?>?" type="submit" name="unban"><i class="fa fa-check"></i></button>
+					</span>
+
+					<span class="btn-group" role="group">
+						<a href="#" class="btn btn-secondary edit" data-for="check-input" data-link="<?php echo ADMIN_URL; ?>&do=users&op=edit&id="><i class="fa fa-pencil"></i></a>
+						<button class="btn btn-secondary remove" data-for="check-input" data-text="<?php echo $this->l10n->gettext('user_accept'); ?>" type="submit" name="delete"><i class="fa fa-times"></i></button>
+					</span>
+
+					<span class="btn-group" role="group">
+						<input type="text" class="adm-search-input form-control" id="adm-search-id" placeholder="<?php echo $this->l10n->gettext('search_placeholder'); ?>">
+						<span class="input-group-prepend">
+							<button class="btn btn-secondary adm-search" data-for="#adm-search-id" type="button" rel="tooltip" title="<?php echo $this->l10n->gettext('search'); ?>"><i class="fa fa-search"></i></button>
+						</span>
+                    </span>
+
+					<span class="btn-group" role="group">
+                    	<a role="button" href="<?php echo ADMIN_URL; ?>&do=users&op=add" class="btn btn-primary"><?php echo $this->l10n->gettext('add'); ?></a>
+                    </span>
+				</p>
+			</div>
 		</div>
-		
+
+		<?php if (!empty($data['PAGINATION'])) {?>
 		<div class="block-line"></div>
+
+		<div class="left-act"><?php echo $data['PAGINATION']; ?></div>
+		<?php } ?>
 		
 		<div class="table-responsive">
 			<table class="table table-striped">
@@ -16,7 +46,7 @@
 						<th><a href="#" class="sort-trigger" data-field="group" data-order="desc"><?php echo $this->l10n->gettext('group'); ?></a></th>
 						<th><a href="#" class="sort-trigger" data-field="email" data-order="desc"><?php echo $this->l10n->gettext('email'); ?></a></th>
 						<th><a href="#" class="sort-trigger" data-field="ip" data-order="desc"><?php echo $this->l10n->gettext('ip'); ?></a></th>
-						<th class="action"><?php echo $this->lng_m['action']; ?> <input type="checkbox" class="check-all" data-for="check-input"></th>
+						<th class="action"><?php echo $this->l10n->gettext('action'); ?> <input type="checkbox" class="check-all" data-for="check-input"></th>
 					</tr>
 				</thead>
 				
@@ -25,28 +55,5 @@
 				</tbody>
 			</table>
 		</div>
-	</div>
-	
-	<div class="form-block actions">
-		<div class="left-act"><?php echo $data['PAGINATION']; ?></div>
-		
-		<div class="right-act">
-			<div class="row">
-				<div class="input-group">
-					<input type="text" class="adm-search-input form-control" id="adm-search-id" placeholder="<?php echo $this->l10n->gettext('search'); ?>">
-					<div class="input-group-btn">
-						<div class="btn-group">
-							<button class="btn btn-secondary adm-search" data-for="#adm-search-id" type="button" rel="tooltip" title="<?php echo $this->l10n->gettext('search'); ?>"><i class="fa fa-search"></i></button>
-							<a class="btn btn-secondary" href="<?php echo ADMIN_URL; ?>&do=users&op=add"><i class="fa fa-plus"></i></a>
-							<a class="btn btn-secondary edit" data-for="check-input" data-link="<?php echo ADMIN_URL; ?>&do=users&op=edit&id=" href="#"><i class="fa fa-pencil"></i></a>
-							<button class="btn btn-secondary remove" data-for="check-input" data-text="<?php echo $this->lng_m['user_accept']; ?>?" type="submit" name="delete"><i class="fa fa-times"></i></button>
-							<button class="btn btn-secondary remove" data-for="check-input" data-text="<?php echo $this->lng_m['user_accept2']; ?>?" type="submit" name="ban"><i class="fa fa-ban"></i></button>
-							<button class="btn btn-secondary remove" data-for="check-input" data-text="<?php echo $this->lng_m['user_accept3']; ?>?" type="submit" name="unban"><i class="fa fa-check"></i></button>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		
 	</div>
 </form>

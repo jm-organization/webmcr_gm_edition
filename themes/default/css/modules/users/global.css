@@ -22,12 +22,16 @@
 	width: 50%;
 	display: inline-block;
 	vertical-align: top;
+	text-align: center;
 }
 
 .mod-users-full > .mod-content .skin-block {
 	text-align: center;
-	box-shadow: 0px 0px 10px 0px rgba(150,150,150,0.75);
+	/*box-shadow: 0px 0px 10px 0px rgba(150,150,150,0.75);*/
+	display: inline-block;
+	padding: 0 7px;
 }
+
 
 .mod-users-full > .mod-content .skin-block > .skin-left,
 .mod-users-full > .mod-content .skin-block > .skin-right {

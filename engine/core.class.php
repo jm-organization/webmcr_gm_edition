@@ -167,9 +167,7 @@ class core{
 
 		exit;
 	}
-	public function colorize($str, $color){
-		$format = '<span style="color: {COLOR};">{STRING}</span>';
-
+	public function colorize($str, $color, $format = '<span style="color: {COLOR};">{STRING}</span>'){
 		return str_replace(array('{COLOR}', '{STRING}'), array($color, $str), $format);
 	}
 	/**

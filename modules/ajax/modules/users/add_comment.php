@@ -83,7 +83,7 @@ class submodule
 		$safedata = $this->db->safesql(json_encode($newdata));
 
 		if (!$this->db->query(
-			"INSERT INTO `mod_users_comments` (uid, `from`, text_html, text_bb, `data`)
+			"INSERT INTO `mcr_users_comments` (uid, `from`, text_html, text_bb, `data`)
 			VALUES ('$uid', '{$this->user->id}', '$safe_text_html', '$text_bb', '$safedata')"
 		)) {
 			$this->core->js_notify($this->l10n->gettext('error_sql_critical'));
@@ -106,7 +106,7 @@ class submodule
 		$com_data = [
 			"ID" => $id,
 			"TEXT" => $text_html,
-			"DATE_CREATE" => date('d.m.Y '.$this->l10n['in'].' H:i'),
+			"DATE_CREATE" => date('d.m.Y '.$this->l10n->gettext('in').' H:i'),
 			"LOGIN" => $this->user->login_v2,
 			'ADMIN' => $admin,
 		];

@@ -66,3 +66,9 @@ composer.lock
 uploads/tmp/*
 /cache/
 
+/themes/default/bootstrap/scss/
+/themes/default/bootstrap/js/tests/
+/themes/default/bootstrap/js/bootstrap.bundle.js
+/themes/default/bootstrap/js/dist/
+/themes/default/bootstrap/js/src/
+/themes/default/bootstrap/

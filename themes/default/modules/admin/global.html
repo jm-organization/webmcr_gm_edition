@@ -58,7 +58,7 @@
   <nav class="navbar fixed-bottom navbar-light bg-faded">
    <div class="container">
     <div id="navbar-footer">
-     <div class="block-left"><?php echo $this->l10n->gettext('copyright', $data['CFG']['s_name']); ?></div>
+     <div class="block-left"><?php echo sprintf($this->l10n->gettext('copyright'), $data['CFG']['s_name']); ?></div>
      <div class="block-right"><?php echo FEEDBACK; ?> | <?php echo VERSION; ?></div>
     </div>
    </div>

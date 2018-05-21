@@ -26,6 +26,7 @@ WHERE id=1;
 #line
 INSERT INTO `mcr_l10n_phrases` (`language_id`, `phrase_key`, `phrase_value`) VALUES
 (1, 'access_by_admin', 'Доступ %s ограничен администрацией'),
+(1, 'avatar', 'Аватар'),
 (1, 'action', 'Действие'),
 (1, 'add-economy_error', 'Произошла ошибка добавления поля экономики'),
 (1, 'add_comment', 'Добавление комментария'),
@@ -123,6 +124,7 @@ INSERT INTO `mcr_l10n_phrases` (`language_id`, `phrase_key`, `phrase_value`) VAL
 (1, 'edit', 'Редактировать'),
 (1, 'insert', 'Вставить'),
 (1, 'no', 'Нет'),
+(1, 'ib', 'в'),
 (1, 'restore', 'Восстановить'),
 (1, 'save', 'Сохранить'),
 (1, 'search', 'Поиск'),
