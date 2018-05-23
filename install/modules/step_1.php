@@ -17,38 +17,29 @@ class module{
 		if(!isset($_SESSION['start'])){ $this->install->notify('', '', 'install/'); }
 		if(isset($_SESSION['step_1'])){ $this->install->notify('', '', 'install/?do=step_2'); }
 
-		$_SESSION['f_host'] = (isset($_POST['host'])) ? $this->install->HSC($_POST['host']) : $this->cfg['db']['host'];
-
-		$_SESSION['f_port'] = (isset($_POST['port'])) ? intval($_POST['port']) : $this->cfg['db']['port'];
-
-		$_SESSION['f_base'] = (isset($_POST['base'])) ? $this->install->HSC($_POST['base']) : $this->cfg['db']['base'];
-
-		$_SESSION['f_user'] = (isset($_POST['user'])) ? $this->install->HSC($_POST['user']) : $this->cfg['db']['user'];
-
-		$_SESSION['f_pass'] = (isset($_POST['pass'])) ? $this->install->HSC($_POST['pass']) : $this->cfg['db']['pass'];
-
-		$_SESSION['f_backend'] = (@$_POST['type']=='mysql') ? 'selected' : ($this->cfg['db']['backend']=='mysql') ? 'selected' : '';
+		$_SESSION['f_host'] 	= (isset($_POST['host'])) ? $this->install->HSC($_POST['host']) : $this->cfg['db']['host'];
+		$_SESSION['f_port'] 	= (isset($_POST['port'])) ? intval($_POST['port']) : $this->cfg['db']['port'];
+		$_SESSION['f_base'] 	= (isset($_POST['base'])) ? $this->install->HSC($_POST['base']) : $this->cfg['db']['base'];
+		$_SESSION['f_user'] 	= (isset($_POST['user'])) ? $this->install->HSC($_POST['user']) : $this->cfg['db']['user'];
+		$_SESSION['f_pass'] 	= (isset($_POST['pass'])) ? $this->install->HSC($_POST['pass']) : $this->cfg['db']['pass'];
+		$_SESSION['f_backend'] 	= (@$_POST['type']=='mysql') ? 'selected' : ($this->cfg['db']['backend']=='mysql') ? 'selected' : '';
 
 		if($_SERVER['REQUEST_METHOD']=='POST'){
-
 			$type = (isset($_POST['type']) && $_POST['type']=='mysql') ? 'mysql' : 'mysqli';
-
 			require_once(DIR_ROOT.'engine/db/'.$type.'.class.php');
 
 			$db = new db($_SESSION['f_host'], $_SESSION['f_user'], $_SESSION['f_pass'], $_SESSION['f_base'], $_SESSION['f_port']);
-
 			$error = $db->error();
-
 			if(!empty($error)){
 				$this->install->notify($this->lng['e_connection'].' | '.$db->error(), $this->lng['e_msg'], 'install/?do=step_1');
 			}
 
-			$this->cfg['db']['host'] = $_SESSION['f_host'];
-			$this->cfg['db']['port'] = $_SESSION['f_port'];
-			$this->cfg['db']['base'] = $_SESSION['f_base'];
-			$this->cfg['db']['user'] = $_SESSION['f_user'];
-			$this->cfg['db']['pass'] = $_SESSION['f_pass'];
-			$this->cfg['db']['backend'] = $type;
+			$this->cfg['db']['host'] 		= $_SESSION['f_host'];
+			$this->cfg['db']['port'] 		= $_SESSION['f_port'];
+			$this->cfg['db']['base'] 		= $_SESSION['f_base'];
+			$this->cfg['db']['user'] 		= $_SESSION['f_user'];
+			$this->cfg['db']['pass'] 		= $_SESSION['f_pass'];
+			$this->cfg['db']['backend'] 	= $type;
 
 			if(!$this->install->savecfg($this->cfg['db'], 'db.php', 'db')){
 				$this->core->notify($this->lng['e_msg'], $this->lng_m['e_write'], 'install/?do=step_1');
@@ -138,5 +129,3 @@ class module{
 	}
 
 }
-
-?>

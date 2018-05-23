@@ -248,7 +248,6 @@ class module
 			LIMIT $start, $end
 		");
 		if (!$query || $this->db->num_rows($query) <= 0) {
-			var_dump($this->db->num_rows($query));
 			return null;
 		}
 

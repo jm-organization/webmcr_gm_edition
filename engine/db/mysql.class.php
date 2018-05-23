@@ -13,8 +13,9 @@ class db{
 	public $count_queries_real = 0;
 
 	public function __construct($host='127.0.0.1', $user='root', $pass='', $base='base', $port=3306, $core=array()){
-
-		$this->cfg = $core->cfg;
+		if (!empty($core)) {
+			$this->cfg = $core->cfg;
+		}
 
 		$connect = $this->connect($host, $user, $pass, $base, $port);
 		
@@ -98,23 +99,29 @@ class db{
 	}
 
 	public function actlog($msg='', $uid=0){
-		if(!$this->cfg->db['log']){ return false; }
+		if (!empty($this->cfg)) {
 
-		$uid = intval($uid);
-		$msg = $this->safesql($msg);
-		$date = time();
+			if(!$this->cfg->db['log']){ return false; }
 
-		$ctables	= $this->cfg->db['tables'];
-		$logs_f		= $ctables['logs']['fields'];
+			$uid = intval($uid);
+			$msg = $this->safesql($msg);
+			$date = time();
 
-		$insert = $this->query("INSERT INTO `{$this->cfg->tabname('logs')}`
-										(`{$logs_f['uid']}`, `{$logs_f['msg']}`, `{$logs_f['date']}`)
-									VALUES
-										('$uid', '$msg', '$date')");
+			$ctables	= $this->cfg->db['tables'];
+			$logs_f		= $ctables['logs']['fields'];
 
-		if(!$insert){ return false; }
+			$insert = $this->query("INSERT INTO `{$this->cfg->tabname('logs')}`
+											(`{$logs_f['uid']}`, `{$logs_f['msg']}`, `{$logs_f['date']}`)
+										VALUES
+											('$uid', '$msg', '$date')");
 
-		return true;
+			if(!$insert){ return false; }
+
+			return true;
+
+		}
+
+		return false;
 	}
 
 	public function update_user($user){

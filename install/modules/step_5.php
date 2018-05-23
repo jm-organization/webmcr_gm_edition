@@ -39,10 +39,7 @@ class module{
 		if(!isset($_SESSION['step_4'])){ $this->install->notify('', '', 'install/?do=step_4'); }
 		if(isset($_SESSION['step_5'])){ $this->install->notify('', '', 'install/?do=finish'); }
 
-		$tables = $this->cfg['db']['tables'];
-		$ug_fields = $tables['ugroups']['fields'];
-
-		if($_SERVER['REQUEST_METHOD']=='POST'){
+		if($_SERVER['REQUEST_METHOD'] == 'POST'){
 			if(!$this->db->query("
 				INSERT INTO `mcr_menu` (`title`, `parent`, `url`, `target`, `permissions`) 
 				VALUES ('Пользователи', 0, '/?mode=users', '_self', 'mod_users_list');
@@ -68,34 +65,31 @@ class module{
 
 			$groups = array();
 
-			$query = $this->db->query("SELECT `{$ug_fields['id']}`, `{$ug_fields['perm']}` FROM `{$this->cfg['db']['tables']['ugroups']['name']}`");
-
+			$query = $this->db->query("SELECT `id`, `permissions` FROM `mcr_groups`");
 			if(!$query || $this->db->num_rows($query)<=0){ $this->install->notify($this->lng['e_msg'], $this->lng['e_msg'], '?mode=step_5'); }
 
 			while($ar = $this->db->fetch_assoc($query)){
 				$groups[] = array(
-					'id' => intval($ar[$ug_fields['id']]),
-					'permissions' => json_decode($ar[$ug_fields['perm']], true),
+					'id' => intval($ar['id']),
+					'permissions' => json_decode($ar['permissions'], true),
 				);
 			}
 
-			foreach($groups as $key => $value){
-				$gid = intval($value['id']);
+			foreach($groups as $group){
+				$gid = intval($group['id']);
 
-				$value['permissions']['mod_users_list'] = ($gid==3 || $gid==2) ? true : false;
-				$value['permissions']['mod_users_full'] = ($gid==3 || $gid==2) ? true : false;
-				$value['permissions']['mod_users_comments'] = ($gid==3 || $gid==2) ? true : false;
-				$value['permissions']['mod_users_comment_add'] = ($gid==3 || $gid==2) ? true : false;
-				$value['permissions']['mod_users_comment_del'] = ($gid==3 || $gid==2) ? true : false;
-				$value['permissions']['mod_users_comment_del_all'] = ($gid==3) ? true : false;
-				$value['permissions']['mod_adm_m_i_us'] = ($gid==3) ? true : false;
-				$value['permissions']['mod_users_adm_settings'] = ($gid==3) ? true : false;
+				$group['permissions']['mod_users_list'] = ($gid==3 || $gid==2) ? true : false;
+				$group['permissions']['mod_users_full'] = ($gid==3 || $gid==2) ? true : false;
+				$group['permissions']['mod_users_comments'] = ($gid==3 || $gid==2) ? true : false;
+				$group['permissions']['mod_users_comment_add'] = ($gid==3 || $gid==2) ? true : false;
+				$group['permissions']['mod_users_comment_del'] = ($gid==3 || $gid==2) ? true : false;
+				$group['permissions']['mod_users_comment_del_all'] = ($gid==3) ? true : false;
+				$group['permissions']['mod_adm_m_i_us'] = ($gid==3) ? true : false;
+				$group['permissions']['mod_users_adm_settings'] = ($gid==3) ? true : false;
 
-				$newperm = json_encode($value['permissions']);
+				$newperm = $this->db->safesql(json_encode($group['permissions']));
 
-				$newperm = $this->db->safesql($newperm);
-
-				$this->db->query("UPDATE `{$this->cfg['db']['tables']['ugroups']['name']}` SET `{$ug_fields['perm']}`='$newperm' WHERE id='$gid'");
+				$this->db->query("UPDATE `mcr_groups` SET `permissions`='$newperm' WHERE id='$gid'");
 			}
 
 			$this->cfg['modules']['users']['install'] = false;
@@ -115,5 +109,3 @@ class module{
 		return $this->install->sp('step_5.html', $data);
 	}
 }
-
-?>

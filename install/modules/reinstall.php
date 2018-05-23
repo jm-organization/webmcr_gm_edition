@@ -45,7 +45,6 @@ class module{
 			require_once(DIR_ROOT.'engine/db/'.$this->cfg['db']['backend'].'.class.php');
 
 			$db = new db($this->cfg['db']['host'], $this->cfg['db']['user'], $this->cfg['db']['pass'], $this->cfg['db']['base'], $this->cfg['db']['port']);
-
 			$error = $db->error();
 
 			if(empty($error)){
@@ -78,5 +77,3 @@ class module{
 	}
 
 }
-
-?>
