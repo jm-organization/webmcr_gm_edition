@@ -17,7 +17,7 @@ class submodule {
 
     private $settings;
 
-    public function __construct($core) {
+    public function __construct(core $core) {
         $this->core = $core;
         $this->db = $core->db;
         $this->l10n = $core->l10n;
@@ -163,13 +163,13 @@ class submodule {
 
     	if (is_array($value)) {
     		foreach ($value as $phrase_key => $phrase_value) {
-				$array[$phrase_key] = str_replace('"', '\"', $phrase_value);
+				$array[$phrase_key] = mb_ereg_replace('\r\n', '<br>', str_replace('"', '\"', $phrase_value));
 			}
 
 			return $array;
     	}
 
-		return str_replace('"', '\"', $value);
+		return mb_ereg_replace('\r\n', '<br>', str_replace('"', '\"', $value));
 	}
 
     protected function update_language($sql_to_get, $new_phrase, $action=false) {
@@ -231,7 +231,7 @@ class submodule {
 			}
 
 			$child_language_phrases = array_map(function($phrase) {
-				return str_replace('"', '\"', $phrase);
+				return mb_ereg_replace('\r\n', '<br>', str_replace('"', '\"', $phrase));
 			}, $child_language_phrases);
 
             $child_language_phrases = json_encode($child_language_phrases, JSON_UNESCAPED_UNICODE);
@@ -566,9 +566,9 @@ class submodule {
                     $current++;
 
                     if ($current == $total) {
-                        $phrases_in_json .= '"'.$phrase['phrase_key'].'": "'.$phrase['phrase_value'].'"'."\n\t}";
+                        $phrases_in_json .= '"'.$phrase['phrase_key'].'": "'.mb_ereg_replace('\r\n', '<br>', str_replace('"', '\"', $phrase['phrase_value'])).'"'."\n\t}";
                     } else {
-                        $phrases_in_json .= '"'.$phrase['phrase_key'].'": "'.$phrase['phrase_value'].'",'."\n\t\t";
+                        $phrases_in_json .= '"'.$phrase['phrase_key'].'": "'.mb_ereg_replace('\r\n', '<br>', str_replace('"', '\"', $phrase['phrase_value'])).'",'."\n\t\t";
                     }
                 }
 

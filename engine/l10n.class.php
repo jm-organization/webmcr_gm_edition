@@ -10,8 +10,10 @@
 
 class l10n
 {
-	public $core, $configs, $db;
-	public $locale;
+	private $core, $configs, $db;
+
+	protected $locale;
+
 	public $locales = [
 		'af-ZA',
 		'am-ET',
@@ -114,6 +116,7 @@ class l10n
 		'zh-TW',
 		'zu-ZA'
 	];
+
 	public $date_formats = [
 		'M j, Y' => '%b %d, %Y',
 		'F j, Y' => '%B %d, %Y',
@@ -123,33 +126,47 @@ class l10n
 		'n/j/y' => '%m/%d/%y',
 		'd.m.Y' => '%d.%m.%Y'
 	];
+
 	public $time_formats = [
 		'g:i A' => '%I:%M %p',
 		'H:i' => '%H:%M'
 	];
 
-	public function __construct($core)
+	public function __construct(core $core)
 	{
 		$this->core = $core;
 		$this->db = $core->db;
 		$this->configs = $core->cfg;
 
+		// Берём значение из конфига, как локаль сайта.
 		$this->locale = $this->configs->main['s_lang'];
 
 		$this->core->is_install(function() {
+			// если движок установлен,
+			// то устанвливаем локаль сайта с конфига по умолчанию.
 			$locale = $this->get_config_locale();
 			Locale::setDefault($locale);
 
+			// генерируем путь к кешу локали.
 			$locale_path = MCR_CACHE_PATH.'l10n/'.$locale;
 
+			// Если путь к кешу локали не существует.
+			// Или не существует кеша фраз локали
+			// или информации о локали
 			if (!file_exists($locale_path) || (!file_exists($locale_path.'/.info') || !file_exists($locale_path.'/.cache'))) {
+				// Проверяем на существование директории l10n
 				if (!file_exists(MCR_CACHE_PATH.'l10n')) {
 					mkdir(MCR_CACHE_PATH.'l10n');
 				}
+				// проверяем на существование папки локали
+				// в директории l10n
 				if (!file_exists($locale_path)) {
 					mkdir($locale_path);
 				}
 
+				// Если все маршруты к локалям есть,
+				// но не найден .info или .cache,
+				// то генерируем их на основании информации с базы.
 				$this->set_cache();
 			}
 		});
@@ -192,14 +209,21 @@ class l10n
 	 * @function     : get_config_locale
 	 *
 	 * @documentation: Задаёт локаль для локализации даты и прочего.
+	 *               Локаль устанавливается на основании данных системы
+	 * 				 на которой установлен интерпретатор php.
+	 *
+	 *               Если язык(локаль) не найден в системе на которой стоит интерпретатор,
+	 * 				 то по умолчанию будет установлена локаль en_EU.
 	 *
 	 * @return string
 	 */
 	public function get_locale()
 	{
 		$default_locale = Locale::getDefault();
+		// изменяем формат локали в тот, который понимает функция установки локали.
 		$dl_formated = str_replace('-', '_', $default_locale);
 
+		// Определяем навзание язіка из локали на английском.
 		$language = Locale::getDisplayLanguage($default_locale, 'en-US');
 
 		$locale = setlocale(LC_ALL, $dl_formated.'.UTF-8', $language);
@@ -234,7 +258,10 @@ class l10n
 	/**
 	 * @function     : get_date_format
 	 *
-	 * @documentation:
+	 * @documentation: Функция для получения формата даты по умолчанию.
+	 * Информация о формате берётся из настроек локали.
+	 * Настройки определяются на сайте по маршруту:
+	 * /?mode=admin&do=l10n_languages&op=edit&language=:locale_id:
 	 *
 	 * @return mixed|string
 	 */
@@ -263,7 +290,7 @@ class l10n
 	/**
 	 * @function     : gettext
 	 *
-	 * @documentation: Функция, ищащая фразу во фразах языка,
+	 * @documentation: Функция, которая ищит фразу во фразах языка,
 	 * который был указан при вызове. Если такая фраза существует,
 	 * отдаёт её содержимое. Иначе - саму фразу.
 	 *
@@ -274,55 +301,66 @@ class l10n
 	 *
 	 * @return string $value
 	 */
-	public function gettext($phrase, $var = null, $locale = null)
+	public function gettext($phrase, $locale = null)
 	{
+		// Функция может принять значение локали из которой нужно вернуть фразу.
+		// По умолчанию это локаль, которая установленна в конфигурации, если $locale - пустое.
 		$locale = (empty($locale))
 			? $this->get_config_locale()
 			: $locale;
-		$locale = (preg_match('/([a-z]{2})-([A-Z]{2})/', $locale) == 1)
-			? $locale
-			: (function($phrase) {
-				return $phrase;
-			});
+
+		// Если переданная локаль не соответсвует необходимому формату,
+		// то возвращаем непереведеную фразу.
+		if (!preg_match('/([a-z]{2})-([A-Z]{2})/', $locale) == 1) {
+			return $phrase;
+		}
+
 		$locale_cache_path = MCR_CACHE_PATH.'l10n/'.$locale;
+		// Берём содержимое кеша фраз локали
 		$phrases = file_get_contents($locale_cache_path.'/.cache');
+		// Переводим из json => ассоциативный массив.
 		$unjson_phrases = json_decode($phrases, true);
 
+		// фразы численного значения в кеше хранятся в спец. обёртке.
+		// Чтобы получить значение такой фразы, оборафиваем пришедчую для успешного сравненияю
 		$closer = "_%s_";
-		$phrase = (ctype_digit($phrase))
-			? sprintf($closer, $phrase)
-			: $phrase;
+		$phrase = (ctype_digit($phrase)) ? sprintf($closer, $phrase) : $phrase;
 
+		// Перебираем все фразы. Если нашли, то возвращаем её.
 		foreach ($unjson_phrases as $key => $value) {
 			if ($phrase == $key) {
 				return str_replace('`', '"', $value);
 			}
 		}
 
+		// иначе ту, которая пришла.
 		return $phrase;
 	}
 
 	/**
 	 * @function     : set_cache
 	 *
-	 * @documentation:
+	 * @documentation: Функция установки кеша.
 	 *
 	 * @param bool $locale
 	 *
 	 */
 	public function set_cache($locale = false)
 	{
-		$locale = ($locale)
-			? $locale
-			: Locale::getDefault();
+		// Если $locale принмает значение локали,
+		// то создаём кеш для данной локали.
+		// Иначе для той, которая установлена по умолчанию
+		$locale = ($locale) ? $locale : Locale::getDefault();
 		$locale_cache_path = MCR_CACHE_PATH.'l10n/'.$locale;
 		if (!file_exists($locale_cache_path)) {
 			mkdir(MCR_CACHE_PATH.'l10n/'.$locale);
 		}
 
+		// Получаем настройки и фразы локали из базы.
 		$languages = $this->get_languages($locale, false);
 		$languages = $this->db->fetch_assoc($languages);
 
+		// Создаём соответствующий кеш.
 		file_put_contents($locale_cache_path.'/.info', $languages['settings']);
 		file_put_contents($locale_cache_path.'/.cache', $languages['phrases']);
 	}
@@ -339,9 +377,9 @@ class l10n
 	public function update_cache($locale, $route = '')
 	{
 		$pattern = '/([a-z]{2})-([A-Z]{2})/';
-		$locale = (preg_match($pattern, $locale) == 1)
-			? $locale
-			: false;
+
+		$locale = (preg_match($pattern, $locale) == 1) ? $locale : false;
+
 		$locale_cache_path = MCR_CACHE_PATH.'l10n/'.$locale;
 		if (!$locale || !file_exists($locale_cache_path)) {
 			$this->core->notify($this->gettext('error_message'), $this->gettext('error_locale_not_found'), 2, $route);
@@ -459,7 +497,7 @@ class l10n
 	 * @param string $language
 	 * @param bool   $is_all
 	 *
-	 * @return null|db $results
+	 * @return bool|resource
 	 */
 	public function get_languages($language = 'ru-RU', $is_all = true)
 	{

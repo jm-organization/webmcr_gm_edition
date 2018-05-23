@@ -15,7 +15,7 @@ require_once MCR_LIBS_PATH.'htmLawed/htmLawed.php';
 class submodule {
 	private $core, $db, $l10n, $user;
 
-    public function __construct($core) {
+    public function __construct(core $core) {
 		$this->core = $core;
 		$this->db	= $core->db;
 		$this->l10n = $core->l10n;
@@ -170,7 +170,7 @@ class submodule {
 				$result = '{';	
 					
                 while ($phrase = $this->db->fetch_assoc($query)) {
-					$result .= '"'.$phrase['phrase_key'].'":"'.str_replace('"', '\"', $phrase['phrase_value']).'",';
+					$result .= '"'.$phrase['phrase_key'].'":"'.mb_ereg_replace('\r\n', '<br>', str_replace('"', '\"', $phrase['phrase_value'])).'",';
 				}
 				
 				$result = substr($result, 0, -1).'}';

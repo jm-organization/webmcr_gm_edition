@@ -41,7 +41,7 @@ class module{
 				$result = '{';
 
 				while ($phrase = $this->db->fetch_assoc($query)) {
-					$result .= '"'.$phrase['phrase_key'].'":"'.str_replace('"', '\"', $phrase['phrase_value']).'",';
+					$result .= '"'.$phrase['phrase_key'].'":"'.mb_ereg_replace('\r\n', '<br>', str_replace('"', '\"', $phrase['phrase_value'])).'",';
 				}
 
 				$result = substr($result, 0, -1).'}';
