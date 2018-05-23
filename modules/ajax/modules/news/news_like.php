@@ -25,7 +25,14 @@ class submodule{
 		$ar = $this->get_news_votes($nid);
 		if (intval($ar['vote']) <= 0) { $this->core->js_notify($this->l10n->gettext('com_vote_disabled')); }
 
-		$votes = json_decode($ar['data'], true)['votes'];
+		$data = json_decode($ar['data'], true);
+
+		if (isset($data['votes'])) {
+			$votes = $data['votes'];
+		} else {
+			$votes = [ "likes" => 0, "dislikes" => 0 ];
+		}
+
 		$likes = intval($votes['likes']);
 		$dislikes = intval($votes['dislikes']);
 		$uid = (!$this->user->is_auth)?-1:$this->user->id;

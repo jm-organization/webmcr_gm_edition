@@ -3,27 +3,27 @@
 if(!defined("MCR")){ exit("Hacking Attempt!"); }
 
 class submodule{
-	private $core, $db, $cfg, $user, $lng;
+	private $core, $db, $cfg, $user, $l10n;
 
 	public function __construct($core){
 		$this->core		= $core;
 		$this->db		= $core->db;
 		$this->cfg		= $core->cfg;
 		$this->user		= $core->user;
-		$this->lng		= $core->load_language('news');
+		$this->l10n		= $core->l10n;
 	}
 
 	public function content(){
 
-		if($_SERVER['REQUEST_METHOD']!='POST'){ $this->core->js_notify($this->core->lng['e_hack']); }
+		if($_SERVER['REQUEST_METHOD']!='POST'){ $this->core->js_notify($this->l10n->gettext('error_hack')); }
 
-		if(!$this->core->is_access('sys_adm_news')){ $this->core->js_notify($this->core->lng['e_403']); }
+		if(!$this->core->is_access('sys_adm_news')){ $this->core->js_notify($this->l10n->gettext('error_403')); }
 
 		$id = intval(@$_POST['id']);
 
 		$query = $this->db->query("SELECT `attach` FROM `mcr_news` WHERE id='$id'");
 
-		if(!$query || $this->db->num_rows($query)<=0){ $this->core->js_notify($this->lng['news_not_found']); }
+		if(!$query || $this->db->num_rows($query)<=0){ $this->core->js_notify($this->l10n->gettext('news_not_found')); }
 
 		$ar = $this->db->fetch_assoc($query);
 
@@ -31,19 +31,17 @@ class submodule{
 
 		$update = $this->db->query("UPDATE `mcr_news` SET `attach`='$attach' WHERE id='$id'");
 
-		if(!$update){ $this->core->js_notify($this->core->lng['e_sql_critical']); }
+		if(!$update){ $this->core->js_notify($this->l10n->gettext('error_sql_critical')); }
 
 		// Последнее обновление пользователя
 		$this->db->update_user($this->user);
 
-		$msg = ($attach===1) ? $this->lng['att_attach'] : $this->lng['att_unattach'];
+		$msg = ($attach===1) ? $this->l10n->gettext('att_attach') : $this->l10n->gettext('att_unattach');
 
 		// Лог действия
-		$this->db->actlog("$msg ".$this->lng['att_news']." #$id", $this->user->id);
+		$this->db->actlog("$msg ".$this->l10n->gettext('att_news')." #$id", $this->user->id);
 
-		$this->core->js_notify($this->lng['att_success'], $this->core->lng['e_success'], true);
+		$this->core->js_notify($this->l10n->gettext('att_success'), $this->l10n->gettext('error_success'), true);
 	}
 
 }
-
-?>
