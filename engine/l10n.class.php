@@ -323,8 +323,6 @@ class l10n
 		$languages = $this->get_languages($locale, false);
 		$languages = $this->db->fetch_assoc($languages);
 
-		var_dump('test');
-
 		file_put_contents($locale_cache_path.'/.info', $languages['settings']);
 		file_put_contents($locale_cache_path.'/.cache', $languages['phrases']);
 	}
