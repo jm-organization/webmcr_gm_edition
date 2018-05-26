@@ -8,13 +8,15 @@ class db{
 	public $result = false;
 
 	private $cfg;
+	private $core = null;
 
 	public $count_queries = 0;
 	public $count_queries_real = 0;
 
 	public function __construct($host='127.0.0.1', $user='root', $pass='', $base='base', $port=3306, $core=array()){
 		if (!empty($core)) {
-			$this->cfg = $core->cfg;
+			$this->core = $core;
+			$this->cfg = $this->core->cfg;
 		}
 
 		$connect = $this->connect($host, $user, $pass, $base, $port);

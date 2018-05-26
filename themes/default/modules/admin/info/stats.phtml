@@ -1,19 +1,21 @@
 <div class="form-block">
 
 	<div class="block-header">
-		<div class="block-name"><?php echo $this->l10n->gettext('info_and_stats'); ?></div>
+		<div class="block-name">
+			<p id="title">
+				<span class="title"><?php echo $this->l10n->gettext('info_and_stats'); ?></span>
+			</p>
+		</div>
 	</div>
 
-	<div class="block-line"></div>
-
-	<div class="adm-info-stats">
+	<div class="adm-info adm-info-stats modern">
 		<form method="post"></form>
 		<ul class="nav nav-tabs" id="myTab">
-			<li class="nav-item"><a class="nav-link" href="<?php echo ADMIN_URL; ?>&do=info&op=main"><?php echo $this->l10n->gettext('info'); ?></a></li>
-			<!--<li class="nav-item"><a class="nav-link" href="<?php echo ADMIN_URL; ?>&do=info&op=extensions"><?php echo $this->l10n->gettext('info_ext'); ?></a></li>-->
+			<li class="nav-item"><a class="nav-link" href="<?php echo ADMIN_URL; ?>&do=info&op=main"><?php echo $this->l10n->gettext('system_log'); ?></a></li>
+			<li class="nav-item"><a class="nav-link" href="<?php echo ADMIN_URL; ?>&do=info&op=update_center"><?php echo $this->l10n->gettext('update_center'); ?></a></li>
 			<li class="nav-item"><a class="nav-link active" href="<?php echo ADMIN_URL; ?>&do=info&op=stats"><?php echo $this->l10n->gettext('info_stats'); ?></a></li>
 		</ul>
-		 
+
 		<div class="tab-content">
 			<ul class="thumbnails row">
 				<li class="col-md-6">
@@ -49,7 +51,7 @@
 						</div>
 					</div>
 				</li>
-					
+
 				<li class="col-md-6">
 					<div class="thumbnail">
 						<h3><?php echo $this->l10n->gettext('info_users_stats'); ?></h3>
@@ -93,5 +95,5 @@
 			</ul>
 		</div>
 	</div>
-		
+
 </div>

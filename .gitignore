@@ -64,8 +64,8 @@ composer.lock
 ### MagicMCR Template
 #uploads
 !.htaccess
-cache/*
-!cache/l10n/ru-RU/.cache
+data/cache/*
+!data/cache/l10n/ru-RU/.cache
 uploads/tmp/*
 /uploads/skins/*
 /themes/default/bootstrap/

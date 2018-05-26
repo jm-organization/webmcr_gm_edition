@@ -1,0 +1,64 @@
+<div class="form-block">
+
+    <div class="block-header">
+        <div class="block-name">
+            <p id="title">
+                <span class="title"><?php echo $this->l10n->gettext('info_and_stats'); ?></span>
+            </p>
+        </div>
+    </div>
+
+    <div class="adm-info adm-info-main modern">
+        <form method="post"></form>
+        <ul class="nav nav-tabs" id="myTab">
+            <li class="nav-item"><a class="nav-link" href="<?php echo ADMIN_URL; ?>&do=info&op=main"><?php echo $this->l10n->gettext('system_log'); ?></a></li>
+            <li class="nav-item"><a class="nav-link active" href="<?php echo ADMIN_URL; ?>&do=info&op=update_center"><?php echo $this->l10n->gettext('update_center'); ?></a></li>
+            <li class="nav-item"><a class="nav-link" href="<?php echo ADMIN_URL; ?>&do=info&op=stats"><?php echo $this->l10n->gettext('info_stats'); ?></a></li>
+        </ul>
+
+        <div class="tab-content" id="info-panel">
+            <!--<h4>Центр обновления MagicMCR</h4>
+
+            <hr>
+
+            <div class="update-state">
+                <h5>Состояние обновления</h5>
+                <p>
+                    <img src="/themes/default/img/cacke.128_big.png" alt="cms_logotype">
+                    <i class="fa fa-check-circle text-success"></i>
+                    <span>Система обновлена до последней версии</span>
+                </p>
+                <button type="button" class="btn btn-outline-secondary">Проверить наличия обновлений</button>
+            </div>
+
+            <div class="versions row mt-4">
+                <div class="col-md-6">Текущаая версия: <span id="version-current"></span></div>
+                <div class="col-md-6">
+                    Версия на сервере: <span id="version-on-server"></span><br>
+                    Стабильная версия: <span id="version-stable"></span><br>
+                    Dev-версия: <span id="version-dev"></span>
+                </div>
+            </div>-->
+
+            <ul class="thumbnails row">
+                <li class="col-md-6">
+                    <div class="thumbnail">
+                        <h3><?php echo $this->l10n->gettext('info_news'); ?></h3>
+                        <p><span id="api-engine-news"></span></p>
+                    </div>
+                </li>
+
+                <li class="col-md-6">
+                    <div class="thumbnail">
+                        <h3><?php echo $this->l10n->gettext('info_eng_ver'); ?></h3>
+                        <p><b><?php echo $this->l10n->gettext('info_eng_ver_now'); ?></b>: <span id="engine-version"><?php echo VERSION; ?></span></p>
+                        <p><b><?php echo $this->l10n->gettext('info_eng_ver_last'); ?></b>: <span id="api-engine-version"></span></p>
+                        <p><b><?php echo $this->l10n->gettext('info_eng_ver_git'); ?></b>: <span id="git-engine-version"></span></p>
+                        <p><b><?php echo $this->l10n->gettext('info_eng_ver_dev'); ?></b>: <span id="git-dev-version"></span></p>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+</div>

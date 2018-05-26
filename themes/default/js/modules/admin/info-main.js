@@ -1,3 +1,17 @@
+/*$(document).ready(function () {
+
+    $.getJSON("https://api.github.com/repos/jm-organization/webmcr_gm_edition/releases", function(json){
+
+        
+
+    });
+
+
+});*/
+
+/*
+	DEPRECATED*/
+
 function load_last_version(){
 
 	$.ajax({

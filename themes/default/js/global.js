@@ -345,6 +345,10 @@ $(function(){
 		});
 		return false;
 	});
+
+    setTimeout(function () {
+        $('#close-notify').click();
+    }, 1200);
 	
 	$("body").on("click", ".check-all", function(){
 		var element = $(this).attr("data-for");

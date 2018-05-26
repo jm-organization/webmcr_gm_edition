@@ -19,13 +19,15 @@ define('MCR_SIDE_PATH', MCR_ROOT.'blocks/');
 define('MCR_LANG_PATH', MCR_ROOT.'language/');
 define('MCR_CONF_PATH', MCR_ROOT.'configs/');
 define('MCR_UPL_PATH', MCR_ROOT.'uploads/');
-define('MCR_CACHE_PATH', MCR_ROOT.'cache/');
+define('MCR_CACHE_PATH', MCR_ROOT.'data/cache/');
 
 session_save_path(MCR_UPL_PATH.'tmp');
 if(!session_start()){ session_start(); }
 
 // Set default charset
 header('Content-Type: text/html; charset=UTF-8');
+
+
 
 // Load core
 require_once(MCR_TOOL_PATH.'core.class.php');
@@ -37,6 +39,7 @@ $core = new core();
 ini_set("display_errors", $core->cfg->main['debug']);
 $warn_type = ($core->cfg->main['debug']) ? E_ALL : 0;
 error_reporting($warn_type);
+
 
 $meta_json_data = array(
 	'secure' => MCR_SECURE_KEY,

@@ -19,6 +19,7 @@ class core{
 	public $db, $user, $cfg = false;
 	public $cfg_m, $cfg_b = array();
 	public $l10n;
+	public $log;
 	public $csrf_time = 3600;
 	public $captcha = array(
 		0 => "---",
@@ -30,6 +31,10 @@ class core{
 		require(MCR_TOOL_PATH.'filter.class.php'); // Load filter function
 		require(MCR_TOOL_PATH.'config.class.php'); // Load Configs class
 		$this->cfg = new config();
+
+		// Load log class;
+		require_once(MCR_TOOL_PATH.'log.class.php');
+		$this->log = new log($this->cfg->main['debug'], log::L_ALL);
 
 		define("INSTALLED", $this->cfg->main['install']);
 		// Load database class

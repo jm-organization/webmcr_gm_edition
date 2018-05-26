@@ -352,6 +352,8 @@ class submodule
 						('{$n['category_id']}', '{$n['title']}', '{$n['news_text']}', '{$n['vote']}', '{$n['discus']}', '{$n['attach']}', '{$n['date']}', '{$n['img']}', '{$n['user_id']}', '{$n['data']}', '{$n['hidden']}')
 				";
 				if (!$this->db->query($create_news)) {
+					$this->core->log->write(mysqli_error($this->db->obj), log::MYSQL_ERROR, __LINE__);
+
 					$this->core->notify($this->l10n->gettext('error_message'), $this->l10n->gettext('error_sql_critical'), 2, '?mode=admin&do=news&op=add');
 				}
 

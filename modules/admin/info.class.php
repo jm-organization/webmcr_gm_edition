@@ -26,35 +26,46 @@ class submodule
 		];
 		$this->core->bc = $this->core->gen_bc($bc);
 
-		$this->core->header .= $this->core->sp(MCR_THEME_MOD."admin/info/header.html");
+		$this->core->header .= $this->core->sp(MCR_THEME_MOD."admin/info/header.phtml");
 	}
 
 	private function main()
 	{
-		return $this->core->sp(MCR_THEME_MOD."admin/info/main.html");
+		$log_files = [];
+
+		if (file_exists(MCR_ROOT . '/data/logs/')) {
+			$log_files = scandir(MCR_ROOT . '/data/logs/');
+			$log_files = array_splice($log_files, 2);
+		}
+
+//		$logs = "<ul id='logs-list'><li>" . implode('</li><li>', $log_files) . "</li></ul>";
+
+		return $this->core->sp(MCR_THEME_MOD."admin/info/main.phtml", [
+			"LOGS" => $log_files
+		]);
 	}
 
 	private function users_stats()
 	{
-		$ctables = $this->cfg->db['tables'];
-
-		$ug_f = $ctables['ugroups']['fields'];
-		$us_f = $ctables['users']['fields'];
-
-		$query = $this->db->query("SELECT `g`.`{$ug_f['id']}`, `g`.`{$ug_f['title']}`, COUNT(`u`.`{$us_f['id']}`) AS `count`
-									FROM `{$this->cfg->tabname('ugroups')}` AS `g`
-									LEFT JOIN `{$this->cfg->tabname('users')}` AS `u`
-										ON `u`.`{$us_f['group']}`=`g`.`{$ug_f['id']}`
-									GROUP BY `g`.`{$ug_f['id']}`");
+		$query = $this->db->query(
+			"SELECT 
+				`g`.`id`, `g`.`title`, COUNT(`u`.`id`) AS `count`
+			FROM `mcr_groups` AS `g`
+			
+			LEFT JOIN `mcr_users` AS `u`
+				ON `u`.`gid`=`g`.`id`
+				
+			GROUP BY `g`.`id`"
+		);
 		if (!$query || $this->db->num_rows($query) <= 0) {
-			return;
+			return null;
 		}
 
 		ob_start();
 
 		while ($ar = $this->db->fetch_assoc($query)) {
 
-			switch (intval($ar[$ug_f['id']])) {
+			switch (intval($ar['id'])) {
 				case 0:
 					$class = 'error';
 					break;
@@ -75,7 +86,7 @@ class submodule
 
 			$data = [
 				"CLASS" => $class,
-				"TITLE" => $this->db->HSC($ar[$ug_f['title']]),
+				"TITLE" => $this->db->HSC($ar['title']),
 				"COUNT" => intval($ar['count'])
 			];
 
@@ -93,14 +104,14 @@ class submodule
 				(SELECT COUNT(*) FROM `mcr_news_cats`) AS `categories`,
 				(SELECT COUNT(*) FROM `mcr_users_comments`) AS `comments`,
 				(SELECT COUNT(*) FROM `mcr_statics`) AS `statics`,
-				(SELECT COUNT(*) FROM `{$this->cfg->tabname('ugroups')}`) AS `groups`,
+				(SELECT COUNT(*) FROM `mcr_groups`) AS `groups`,
 				(SELECT COUNT(*) FROM `mcr_news_views`) AS `views`,
 				(SELECT COUNT(*) FROM `mcr_news_votes`) AS `votes`,
 				(SELECT COUNT(*) FROM `mcr_permissions`) AS `permissions`
 			FROM `{$this->cfg->tabname('users')}`
 		");
 		if (!$query || $this->db->num_rows($query) <= 0) {
-			return;
+			return null;
 		}
 
 		$ar = $this->db->fetch_assoc($query);
@@ -118,17 +129,20 @@ class submodule
 			"USERS_STATS" => $this->users_stats()
 		];
 
-		return $this->core->sp(MCR_THEME_MOD."admin/info/stats.html", $data);
+		return $this->core->sp(MCR_THEME_MOD."admin/info/stats.phtml", $data);
 	}
 
 	private function extensions()
 	{
-		return $this->core->sp(MCR_THEME_MOD."admin/info/extensions.html");
+		return $this->core->sp(MCR_THEME_MOD."admin/info/extensions.phtml");
+	}
+
+	private function update_center() {
+		return $this->core->sp(MCR_THEME_MOD."admin/info/update_center.phtml");
 	}
 
 	public function content()
 	{
-
 		$op = (isset($_GET['op']))
 			? $_GET['op']
 			: 'list';
@@ -140,6 +154,9 @@ class submodule
 			case 'extensions':
 				$content = $this->extensions();
 				break;
+			case 'update_center':
+				$content = $this->update_center();
+				break;
 
 			default:
 				$content = $this->main();
@@ -149,5 +166,3 @@ class submodule
 		return $content;
 	}
 }
-
-?>

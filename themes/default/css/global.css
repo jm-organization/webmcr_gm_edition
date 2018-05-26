@@ -8,7 +8,7 @@
 	src: url("../fonts/Hattori-Hanzo.otf");
 }
 
-header.jumbotron {
+header.jumbotron:not(.default) {
 	background-image: url(/themes/default/img/header-bg.png);
 	background-position: center;
 	background-repeat: no-repeat;
@@ -129,7 +129,7 @@ img {
 	max-width: 100%;
 }
 
-.jumbotron {
+.jumbotron:not(.default) {
 	position: relative;
 	background-color: #563d7c;
 	color: #fff;

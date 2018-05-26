@@ -2,6 +2,10 @@ $(function(){
 	var search_param = mcr.getUrlParam('search');
 	var sort_param = mcr.getUrlParam('sort');
 
+    setTimeout(function () {
+        $('#close-notify').click();
+    }, 1200);
+
 	if(search_param!=''){
 		$($('.adm-search').attr('data-for')).val(search_param);
 	}
