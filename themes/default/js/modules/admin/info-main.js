@@ -1,19 +1,4 @@
-/*$(document).ready(function () {
-
-    $.getJSON("https://api.github.com/repos/jm-organization/webmcr_gm_edition/releases", function(json){
-
-        
-
-    });
-
-
-});*/
-
-/*
-	DEPRECATED*/
-
-function load_last_version(){
-
+/*function load_last_version(){
 	$.ajax({
 		url: "http://api.webmcr.com/?do=versions&limit=1",
 		dataType: "json",
@@ -32,49 +17,26 @@ function load_last_version(){
 			}
 		}
 	});
-}
-
-function load_last_news(){
-
-	$.ajax({
-		url: "http://api.webmcr.com/?do=news&limit=1",
-		beforeSend: function(){ $("#api-engine-news").html(mcr.loader); },
-		dataType: "json",
-		type: "GET",
-		async: true,
-		cache: false,
-		contentType: false,
-		processData: false,
-		error: function(data){
-			mcr.logger(data);
-		},
-		success: function(json){
-			data = json.data[0];
-			if(json.type=='success'){
-				$("#api-engine-news").html('<p><b>'+data.title+'</b></p>'+data.text+'<p><span class="label">'+data.created+'</span></p>');
-			}else{
-				$("#api-engine-news").text(json.message);
-			}
-		}
-	});
-}
+}*/
 
 function load_git_version(){
-	$.getJSON("https://api.github.com/repos/qexyorg/WebMCR/releases", function(json){
+	$.getJSON("https://api.github.com/repos/jm-organization/webmcr_gm_edition/releases", function(json){
 
 		if($.isEmptyObject(json)){ return; }
 
-		$('#git-engine-version').html('<a href="'+json[0]['html_url']+'" target="_blank">'+json[0]['tag_name']+'</a>');
+		// version-on-server
+		$('#version-on-server').html('<a href="'+json[0]['html_url']+'" target="_blank">'+json[0]['tag_name']+'</a>');
+        $('#update-info-panel').attr('data-version-on-server', json[0]['tag_name']);
 	});
 }
 
 
 function load_git_dev_version(){
-	$.getJSON("https://api.github.com/repos/qexyorg/WebMCR/tags", function(json){
+	$.getJSON("https://api.github.com/repos/jm-organization/webmcr_gm_edition/tags", function(json){
 
 		if($.isEmptyObject(json)){ return; }
 
-		$('#git-dev-version').html('<a href="'+json[0]['zipball_url']+'" target="_blank">'+json[0]['name']+'</a>');
+		$('#version-dev').html('<a href="'+json[0]['zipball_url']+'" target="_blank">'+json[0]['name']+'</a>');
 	});
 }
 
@@ -84,9 +46,30 @@ $(function(){
 
 	$("#api-engine-news, #api-engine-version, #git-engine-version, #git-dev-version").html("∞");
 
-	load_last_news();
-	load_last_version();
+	// load_last_version();
 	load_git_version();
 	load_git_dev_version();
+
+	mcr.loading(true);
+
+	setTimeout(function () {
+        // Убираем префикс для получения версии для сравнения.
+        let current_version = $('#update-info-panel').data('version').replace('webmcr_gm_edition_', '');
+        let version_on_server = $('#update-info-panel').attr('data-version-on-server').replace('webmcr_gm_edition_', '');
+
+        if (current_version !== version_on_server) {
+            $('#update-status').removeClass('fa-check-circle text-success').addClass('fa-times-circle text-danger');
+            $('#update-message').html(
+                lng.you_are_can_update + ' <small style="display:block;font-size: 65%;line-height: 6px;" id="version-current" class="text-muted">webmcr_gm_edition_'+current_version+'</small>'
+            );
+        } else {
+            $('#update-status').removeClass('fa-times-circle text-danger').addClass('fa-check-circle text-success');
+            $('#update-message').html(
+                lng.you_are_updated + ' <small style="display:block;font-size: 65%;line-height: 6px;" id="version-current" class="text-muted">webmcr_gm_edition_'+current_version+'</small>'
+            );
+        }
+
+        mcr.loading(false);
+    }, 800)
 
 });

@@ -944,6 +944,9 @@ INSERT INTO `mcr_l10n_phrases` (`language_id`, `phrase_key`, `phrase_value`) VAL
 (1, 'select_file', 'Выберите файл.'),
 (1, 'update_center', 'Центр обновлений'),
 (1, 'update_file', 'Обновить содержимое'),
+(1, 'update_state', 'Состояние обновления'),
+(1, 'you_are_updated', 'Система обновлена до последней версии'),
+(1, 'magicmcr_update_center', 'Центр обновления MagicMCR'),
 (1, 'copyryting', 'Полное или частичное копирование сайта %s запрещено');
 
 #line
