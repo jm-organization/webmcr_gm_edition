@@ -35,10 +35,8 @@ class submodule
 
 		if (file_exists(MCR_ROOT . '/data/logs/')) {
 			$log_files = scandir(MCR_ROOT . '/data/logs/');
-			$log_files = array_splice($log_files, 2);
+			$log_files = array_splice($log_files, 3);
 		}
-
-//		$logs = "<ul id='logs-list'><li>" . implode('</li><li>', $log_files) . "</li></ul>";
 
 		return $this->core->sp(MCR_THEME_MOD."admin/info/main.phtml", [
 			"LOGS" => $log_files
@@ -141,6 +139,52 @@ class submodule
 		return $this->core->sp(MCR_THEME_MOD."admin/info/update_center.phtml");
 	}
 
+	private function delete() {
+		if (file_exists(MCR_ROOT . '/data/logs/' . $_GET['file'])) {
+			unlink(MCR_ROOT . '/data/logs/' . $_GET['file']);
+
+			$this->core->notify(
+				$this->l10n->gettext('error_success'),
+				sprintf($this->l10n->gettext('elements_deleted'), 1),
+				3,
+				'?mode=admin&do=info&op=main'
+			);
+		} else {
+			$this->core->notify(
+				$this->l10n->gettext('fm_file_not_found '),
+				$this->l10n->gettext('fm_not_found_error '),
+				3,
+				'?mode=admin&do=info&op=main'
+			);
+		}
+	}
+
+	private function download() {
+		if (file_exists(MCR_ROOT . '/data/logs/' . $_GET['file'])) {
+			$file_content = file_get_contents(MCR_ROOT . '/data/logs/' . $_GET['file']);
+
+			header('Content-Description: File Transfer');
+			header('Content-Type: application/json');
+			header('Content-Disposition: attachment; filename='.$_GET['file']);
+			header('Content-Transfer-Encoding: binary');
+			header('Expires: 0');
+			header('Cache-Control: must-revalidate');
+			header('Pragma: public');
+			header('Content-Length: ' . strlen($file_content));
+
+			echo $file_content;
+
+			exit;
+		} else {
+			$this->core->notify(
+				 $this->l10n->gettext('fm_file_not_found '),
+				 $this->l10n->gettext('fm_not_found_error '),
+				3,
+				'?mode=admin&do=info&op=main'
+			);
+		}
+	}
+
 	public function content()
 	{
 		$op = (isset($_GET['op']))
@@ -156,6 +200,12 @@ class submodule
 				break;
 			case 'update_center':
 				$content = $this->update_center();
+				break;
+			case 'delete':
+				$content = ''; $this->delete();
+				break;
+			case 'download':
+				$content =''; $this->download();
 				break;
 
 			default:

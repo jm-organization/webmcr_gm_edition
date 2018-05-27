@@ -23,7 +23,7 @@
             </div>
 
             <div class="row">
-                <div class="col-md-2" style="position: relative">
+                <div class="col-md-2">
                     <ul id="logs-list">
 						<?php foreach($data['LOGS'] as $LOG) { ?>
                             <li data-file-name="<?=$LOG?>"
@@ -33,13 +33,6 @@
                             ><i class="fa fa-file-text"></i> <?=$LOG?></li>
 						<?php }?>
                     </ul>
-
-                    <div class="dropdown-menu" id="context_menu">
-                        <a class="dropdown-item" id="delete_url" href="#"><i class="fa fa-trash"></i> <?=$this->l10n->gettext('delete');?></a>
-                        <a class="dropdown-item" id="archivate_url" href="#"><i class="fa fa-download"></i> <?=$this->l10n->gettext('download');?></a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" id="download_url" href="#"><i class="fa fa-file-archive-o"></i> <?=$this->l10n->gettext('archivate');?></a>
-                    </div>
                 </div>
                 <div class="col-md-10"><pre id="log-content"></pre></div>
             </div>

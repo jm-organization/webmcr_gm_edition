@@ -2,8 +2,16 @@
     function LogViewer(container) {
         this.container = $(container);
 
-        this.context_menu = this.container.find('#context_menu');
-        this.file = null;
+        $('body').append(
+            '<div class="dropdown-menu" id="context_menu">\n' +
+            '    <a class="dropdown-item" id="delete_url" href="#"><i class="fa fa-trash"></i> '+lng.delete+'</a>\n' +
+            '    <a class="dropdown-item" id="download_url" href="#"><i class="fa fa-download"></i> '+lng.download+'</a>\n' +
+            '    <!--<div class="dropdown-divider"></div>\n' +
+            '    <a class="dropdown-item" id="archivate_url" href="#"><i class="fa fa-file-archive-o"></i> <?/*=$this->l10n->gettext(\'archivate\');*/?></a>-->\n' +
+            '</div>'
+        );
+
+        this.context_menu = $('#context_menu');
 
         $.fn.extend(this);
     }
@@ -62,9 +70,11 @@
      * @return {boolean}
      */
     LogViewer.prototype.DrawContextMenu = function (options) {
+        console.log(this.context_menu.find('a'), options);
+
         this.context_menu.find('a#delete_url').attr('href', options.delete_url);
-        this.context_menu.find('a#archivate_url').attr('href', options.archivate_url);
         this.context_menu.find('a#download_url').attr('href', options.download_url);
+        // this.context_menu.find('a#archivate_url').attr('href', options.archivate_url);
 
         this.context_menu.css(options).show();
 
@@ -89,20 +99,22 @@ $(document).ready(function () {
                 if ($(e.target).closest("#context_menu").length === 0) {
                     $log_viewer.HideContextMenu();
                 }
-            });
+            }).on('contextmenu', function() { $log_viewer.HideContextMenu(); });
+
+            $log_viewer.container.find('#logs-list').scroll(function () { $log_viewer.HideContextMenu(); });
 
             $log_viewer.container.find('#logs-list').on('contextmenu', 'li', function (e) {
                 let delete_url = $(this).data('delete') + '&file=' + $(this).data('file-name'),
-                    archivate_url = $(this).data('archivate') + '&file=' + $(this).data('file-name'),
+                    // archivate_url = $(this).data('archivate') + '&file=' + $(this).data('file-name'),
                     download_url = $(this).data('download') + '&file=' + $(this).data('file-name')
                 ;
 
                 $(this).DrawContextMenu({
-                    top: e.offsetY + 10,
-                    left: e.offsetX,
+                    top: e.pageY + 10,
+                    left: e.pageX,
 
                     delete_url: delete_url,
-                    archivate_url: archivate_url,
+                    // archivate_url: archivate_url,
                     download_url: download_url
                 });
 

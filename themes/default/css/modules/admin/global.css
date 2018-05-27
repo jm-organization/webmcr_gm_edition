@@ -526,10 +526,13 @@ td.news-action > label.custom-checkbox {
 	height: 520px;
 	background: #f2f2f2;
 	margin-bottom: 0;
+	overflow: scroll;
 }
 #log-viewer #logs-list {
 	margin-top: 0;
 	margin: 0 -20px;
+	overflow-y: auto;
+	height: 520px;
 }
 #log-viewer #logs-list li { padding-left: 20px; cursor: pointer }
 #log-viewer #logs-list li:hover { background: #e8e8ff; }
