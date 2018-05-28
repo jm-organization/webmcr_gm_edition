@@ -42,6 +42,10 @@ class db{
 
 		$this->result = @$this->obj->query($string);
 
+		if (!$this->result) {
+			$this->core->log->write(mysqli_error($this->obj) . " in query: " . $string . ".", log::MYSQL_ERROR);
+		}
+
 		return $this->result;
 	}
 

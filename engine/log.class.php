@@ -11,6 +11,10 @@
  * @Documentation:
  */
 
+if (!defined("MCR_ROOT")) {
+	define("MCR_ROOT", DIR_ROOT);
+}
+
 class log
 {
 	public $debug = false;
@@ -48,7 +52,7 @@ class log
 		$this->file_name = sprintf($this->file_name, $today);
 	}
 
-	public function write($message, $code, $line)
+	public function write($message, $code, $_file = null, $line = null)
 	{
 		if ($this->debug) {
 
@@ -62,13 +66,13 @@ class log
 			switch ($this->debug_level) {
 				case 9:
 
-					self::make_log($file, $before, $message, $code, $line);
+					$this->make_log($file, $before, $message, $code, $_file, $line);
 
 				break;
 				case 10:
 
 					if ($code == 7 || $code == 6) {
-						self::make_log($file, $before, $message, $code, $line);
+						$this->make_log($file, $before, $message, $code, $_file, $line);
 					}
 
 				break;
@@ -77,11 +81,15 @@ class log
 		}
 	}
 
-	protected static function make_log($file, $before, $message, $code, $line) {
+	protected function make_log($file, $before, $message, $code, $_file, $line) {
 		$time = date('H:m:s', time());
 		$type = '['.self::get_log_type($code).']';
 
-		$log = $before . "$time $type $message on line: $line.";
+		$log = $before . "$time $type $message";
+
+		if (!empty($_file)) { $log .= " file: $_file"; }
+
+		if (!empty($line)) { $log .= " on line: $line."; }
 
 		file_put_contents($file, $log);
 	}

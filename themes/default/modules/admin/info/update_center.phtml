@@ -28,7 +28,8 @@
                     <i class="fa fa-check-circle text-success" id="update-status"></i>
                     <span id="update-message"><?=$this->l10n->gettext('you_are_updated')?> <small style="display:block;font-size: 65%;line-height: 6px;" id="version-current" class="text-muted"><?=VERSION?></small></span>
                 </p>
-                <!--<button type="button" class="btn btn-outline-secondary" style="margin-left: 103px">Проверить наличия обновлений</button>-->
+                <button type="button" class="btn btn-outline-secondary" id="re-check" style="margin-left:103px;cursor:pointer">Проверить наличия обновлений</button>
+                <a role="button" href="/install/?do=reinstall" class="btn btn-link">Переустановить MagicMCR</a>
             </div>
 
             <div class="versions row mt-4">
@@ -46,7 +47,10 @@
                         MagicMCR является отдельным и независимым продуктом.
                         Использование исходного кода регламентируется согласно <a href="https://github.com/jm-organization/webmcr_gm_edition/blob/master/LICENSE">GNU General Public License v3.0</a>.
                         MagicMCR не является копией оригинального движка WebMCR, а лишь его под версией. Разработка MagicMCR производится исключительно в частных интересах.
-                        Разработчики, а также лица, участвующие в разработке и поддержке, не несут ответственности за проблемы возникшие с движком.
+                        Разработчики, а также лица, участвующие в разработке и поддержке, не несут ответственности за проблемы возникшие с движком.<br>
+                        <!--<br>
+                        <span>Значки, сделанные <a href="http://www.freepik.com" title="Freepik">Freepik</a> от <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a>, лицензированы <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></span>
+                        <span class="d-block text-muted text-sm">Icons made by <a href="http://www.freepik.com" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></span>-->
                     </p>
                 </div>
             </div>

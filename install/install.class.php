@@ -4,6 +4,7 @@ if(!defined('MCR')){ exit('Hacking Attempt!'); }
 
 class install{
 	public $cfg = array();
+	public $log = array();
 	public $lng = array();
 
 	public $title = '';
@@ -24,6 +25,9 @@ class install{
 
 		require_once(DIR_ROOT.'configs/main.php');
 		$this->cfg['main'] = $main;
+
+		require_once(DIR_ROOT.'engine/log.class.php');
+		$this->log = new log($this->cfg['main']['debug'], log::L_ALL);
 
 		require_once(DIR_ROOT.'configs/db.php');
 		$this->cfg['db'] = $db;
