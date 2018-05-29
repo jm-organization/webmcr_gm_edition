@@ -1,12 +1,7 @@
-<div class="form-block block-notify alert <?php echo $data['TYPE']; ?>">
-    <div class="block-header">
-        <?php echo $this->l10n->gettext('alert'); ?> 
-        <a href="#" id="close-notify">&times;</a>
-    </div>
-
-    <div class="block-line"></div>
-
-    <div class="block-content">
-        <b><?php echo $data['TITLE']; ?></b> <?php echo $data['MESSAGE']; ?>
-    </div>
+<!-- TODO: Кастомизируемый класс --> 
+<div class="ui negative <?php echo $data['TYPE']; ?> message">
+ <i class="close icon"></i>
+ 
+ <div class="header"><?php echo $data['TITLE']; ?></div>
+ <p><?php echo $data['MESSAGE']; ?></p>
 </div>

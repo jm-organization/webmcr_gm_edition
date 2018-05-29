@@ -12,77 +12,85 @@
   <?php echo $data['DEF_HEADER']; ?>
   <?php echo $data['HEADER']; ?>
  </head>
- 
+
  <body>
 
-  <nav class="navbar navbar-toggleable-md navbar-light bg-faded fixed-top">
-   <div class="container">
-    <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbar-header" aria-controls="navbar-header" aria-expanded="false" aria-label="Toggle navigation">
-     <span class="navbar-toggler-icon"></span>
-    </button>
+  <!-- Sidebar Menu -->
+  <div class="ui vertical inverted sidebar menu">
+   <?php echo $data['MENU']; ?>
+  </div>
 
-    <a class="navbar-brand mb-0 h1" href="<?php echo BASE_URL; ?>"><?php echo $data['CFG']['s_name']; ?></a>
+  <div id="header" class="ui vertical masthead segment">
+   <div class="ui container">
 
-    <div class="collapse navbar-collapse" id="navbar-header">
-     <ul class="navbar-nav mr-auto mt-2 mt-md-0">
-      <?php echo $data['MENU']; ?>
-     </ul>
-     <?php echo $data['SEARCH']; ?>
+    <div class="ui top fixed menu">
+     <a class="hidden-menu toc item">
+      <i class="sidebar icon"></i>
+     </a>
+     <a class="header item" href="<?php echo BASE_URL; ?>"><?php echo $data['CFG']['s_name']; ?></a>
+     <?php echo $data['MENU']; ?>
+     <div class="right menu">
+      <?php echo $data['SEARCH']; ?>
+     </div>
     </div>
    </div>
 
-   <div class="bg"></div>
-  </nav>
-
-  <header class="jumbotron jumbotron-fluid">
-   <div class="container">
-    <div class="row">
-     <div class="col-md-8">
-      <h1 class="display-3"><?php echo $data['CFG']['s_name']; ?></h1>
+   <div class="ui text container">
+    <img id="logotype" class="ui right floated image" src="/themes/default/img/logotype.png">
+    <div class="ui header">
+     <h1><?php echo $data['CFG']['s_name']; ?></h1>
+     <div class="ui sub header">
       <p><?php echo $data['CFG']['s_about'] ?></p>
-      <p><a class="btn btn-success btn-lg" href="index.php?mode=start" role="button"><i class="fa fa-download"></i> <?php echo $this->l10n->gettext('load_client'); ?></a></p>
-     </div>
-
-     <div class="col-md-4">
-      <img src="/themes/default/img/logotype.png">
+      <p>
+       <a class="ui huge green button" href="index.php?mode=start" role="button"><i class="icon download"></i> <?php echo $this->l10n->gettext('load_client'); ?></a>
+      </p>
      </div>
     </div>
    </div>
-  </header>
-  
+
+  </div>
+
   <?php echo $data['ADVICE']; ?>
-  
-  <div class="container">
-   <div class="row">
-    <div class="col-md-4">
-     <div id="js-notify" class="alert alert-warning">
-      <a href="#" id="close">&times;</a>
-      <div id="title"></div>
-      <div id="message"></div>
+
+  <div class="ui vertical segment" id="content">
+
+   <!-- Left side -->
+   <div class="ui stackable relaxed mobile reversed grid container">
+    <div class="five wide left floated column">
+
+     <div id="js-notify" class="ui negative message">
+      <i class="close icon"></i>
+      <div id="title" class="header"></div>
+      <p id="message"></p>
      </div>
-     
+
      <?php echo $data['L_BLOCKS']; ?>
+
     </div>
-    
-    <div class="col-md-8">
+
+    <!-- Right side -->
+    <div class="eleven wide right floated column">
      <?php echo $data['BREADCRUMBS']; ?>
-     
      <?php echo $data['CONTENT']; ?>
+    </div>
+
+   </div>
+  </div>
+
+
+  <div id="js-loader" title="<?php echo $this->l10n->gettext('loading'); ?>">
+   <img src="<?php echo STYLE_URL; ?>img/loading.gif" alt="<?php echo $this->l10n->gettext('loading'); ?>"/>
+  </div>
+
+  <div id="footer">
+   <div class="feature alternate ui stripe vertical segment">
+    <div class="ui container">
+     <h4 class="ui inverted header"><?php echo sprintf($this->l10n->gettext('copyright'), $data['CFG']['s_name']); ?></h4>
+     <p><?php echo FEEDBACK; ?> | <?php echo VERSION; ?></p>
     </div>
    </div>
   </div>
-  
-  <div id="js-loader" title="<?php echo $this->l10n->gettext('loading'); ?>"><img src="<?php echo STYLE_URL; ?>img/loading.gif" alt="<?php echo $this->l10n->gettext('loading'); ?>" /></div>
-  
-  <nav class="navbar navbar-light bg-faded">
-   <div class="container">
-    <div id="navbar-footer">
-     <div class="block-left"><?php echo sprintf($this->l10n->gettext('copyright'), $data['CFG']['s_name']); ?></div>
-     <div class="block-right" style="white-space: nowrap"><?php echo FEEDBACK; ?> | <?php echo VERSION; ?></div>
-    </div>
-   </div>
-  </nav>
-  
+
  </body>
- 
+
 </html>

@@ -292,7 +292,6 @@ var mcr = {
 
 // Функции, вызываемые при загрузке
 $(function(){
-    $('[data-toggle="tooltip"]').tooltip();
 
 	$('input[type="file"].file-inputs').bootstrapFileInput();
 
@@ -304,10 +303,6 @@ $(function(){
 
 	// Добавление элемента защиты в html код страницы
 	$('form[method="post"]').prepend('<input type="hidden" name="mcr_secure" value="'+mcr.meta_data.secure+'">');
-
-	// Включение обработчика tooltip'ов от bootstrap
-	$('body').tooltip({selector: '[rel=tooltip]'});
-	//$('[rel=tooltip]').tooltip({container: 'body'}); // If jump elements
 
 	$(window).scroll(function () {
 		var scroll = $(window).scrollTop();

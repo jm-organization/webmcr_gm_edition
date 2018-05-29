@@ -1,21 +1,13 @@
-<form class="form-inline pull-xs-right" method="get" action="<?php echo BASE_URL; ?>">
+<form class="ui form" method="get" action="<?php echo BASE_URL; ?>">
 	<input type="hidden" name="mode" value="search">
 	<input type="hidden" name="type" id="search-hidden" value="news">
-
-
-	<div class="input-group">
-		<div class="input-group-btn">
-			<button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="caret"></span></button>
-
-			<ul class="dropdown-menu" id="search-selector">
-				<?php echo $data['SEARCH_ELEMENTS']; ?>
-			</ul>
-		</div>
-
-		<input type="text" class="form-control" required name="value" placeholder="<?php echo $this->l10n->gettext('search'); ?>">
-
-		<div class="input-group-btn">
-			<button type="submit" class="btn btn-secondary"><i class="fa fa-search"></i></button>
-		</div>
-	</div>
+ 
+ <div class="ui action input">
+  <input type="text" name="value" placeholder="<?php echo $this->l10n->gettext('search'); ?>" required>
+  <select class="ui compact selection dropdown">
+   <?php echo $data['SEARCH_ELEMENTS']; ?>
+  </select>
+  <div class="ui button"><i class="icon search"></i></div>
+ </div>
+ 
 </form>
