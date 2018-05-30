@@ -1,18 +1,34 @@
-<legend><?php echo $data['TITLE']; ?></legend>
-<form method="post">
+<form class="ui form" method="post">
 	<input type="hidden" name="key" value="<?php echo $data['KEY']; ?>">
-
-	<div class="form-group">
-		<label for="input_title"><?php echo $this->l10n->gettext('set_srch_name'); ?></label>
-		<input type="text" class="form-control" name="title" value="<?php echo $data['TITLE']; ?>" id="input_title" placeholder="<?php echo $this->l10n->gettext('set_srch_name'); ?>">
-	</div>
-
-	<div class="form-group">
-		<label for="input_permissions"><?php echo $this->l10n->gettext('set_srch_lvl'); ?></label>
-		<select name="permissions" class="form-control" size="5" id="input_permissions">
-			<?php echo $data['PERMISSIONS']; ?>
-		</select>
-	</div>
-
-	<button type="submit" name="submit" class="btn btn-primary btn-block"><?php echo $this->l10n->gettext('save'); ?></button>
+ <table class="ui definition table">
+  <tbody>
+   
+   <tr>
+    <td class="center aligned disabled" colspan="2"><h4><?php echo $data['TITLE']; ?></h4></td>
+   </tr>
+   
+   <tr>
+    <td class="collapsing">
+     <label for="input_title"><?php echo $this->l10n->gettext('set_srch_name'); ?></label>
+    </td>
+    <td>
+     <input type="text" name="title" value="<?php echo $data['TITLE']; ?>" id="input_title" placeholder="<?php echo $this->l10n->gettext('set_srch_name'); ?>">
+    </td>
+   </tr>
+   
+   <tr>
+    <td class="collapsing">
+     <label for="input_permissions"><?php echo $this->l10n->gettext('set_srch_lvl'); ?></label>
+    </td>
+    <td>
+     <select name="permissions" id="input_permissions" class="ui fluid selection dropdown" >
+      <?php echo $data['PERMISSIONS']; ?>
+     </select>
+    </td>
+   </tr>
+   
+  </tbody>
+ </table>
+ 
+ <button type="submit" name="submit" class="ui huge primary fluid button"><?php echo $this->l10n->gettext('save'); ?></button>
 </form>

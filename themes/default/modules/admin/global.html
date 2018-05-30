@@ -10,60 +10,71 @@
   <?php echo $data['DEF_HEADER']; ?>
   <?php echo $data['HEADER']; ?>
  </head>
- 
+
  <body>
-  
-  <nav class="navbar navbar-toggleable-md navbar-light bg-faded">
-   <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbar-header" aria-controls="navbar-header" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-   </button>
-   <a class="navbar-brand" href="<?php echo BASE_URL; ?>"><?php echo $data['CFG']['s_name']; ?></a>
-   
-   <div class="collapse navbar-collapse" id="navbar-header">
-    <ul class="navbar-nav mr-auto mt-2 mt-md-0">
+
+  <div id="header" class="ui vertical masthead segment">
+   <div class="ui container">
+
+    <div class="ui top fixed menu">
+     <a class="hidden-menu toc item">
+      <i class="sidebar icon"></i>
+     </a>
+     <a class="header item" href="<?php echo BASE_URL; ?>"><?php echo $data['CFG']['s_name']; ?></a>
      <?php echo $data['MENU']; ?>
-    </ul>
-
-    <div class="user pull-xs-right">
-     <span><?php echo $this->user->login; ?></span>
-     <img class="img-polaroid img-thumbnail" width="35px" height="35px" src="<?php echo SKIN_URL; ?>interface/<?php echo $this->user->skin; ?>_mini.png?<?php echo mt_rand(1000,9999); ?>">
+     <div class="right menu">
+      <div class="item">
+       <?php echo $this->user->login; ?>
+      </div>
+      <?php echo $data['SEARCH']; ?>
+     </div>
     </div>
-
-    <?php echo $data['SEARCH']; ?>
-   </div>
-  </nav>
-  
-  <div class="container">
-   <div class="notifys">
-    <div id="js-notify" class="alert alert-warning">
-     <a href="#" id="close">&times;</a>
-     <div id="title"></div>
-     <div id="message"></div>
-    </div>
-       
-    <?php echo $data['L_BLOCKS']?>
    </div>
 
-   <div class="row">
-    <div class="col-md-12">
+   <div class="ui text container">
+    <img id="logotype" class="ui right floated image" src="/themes/default/img/logotype.png">
+    <div class="ui header">
+     <h1><?php echo $data['CFG']['s_name']; ?></h1>
+     <div class="ui sub header">
+      <p><?php echo $data['CFG']['s_about'] ?></p>
+      <p>
+       <a class="ui huge green button" href="index.php?mode=start" role="button"><i class="icon download"></i> <?php echo $this->l10n->gettext('load_client'); ?></a>
+      </p>
+     </div>
+    </div>
+   </div>
+
+  </div>
+
+  <div class="ui vertical segment" id="content">
+
+   <div class="ui stackable relaxed mobile reversed grid container">
+    <div class="column">
+     <div id="js-notify" class="ui negative message">
+      <i class="close icon"></i>
+      <div id="title" class="header"></div>
+      <p id="message"></p>
+     </div>
+
      <?php echo $data['BREADCRUMBS']; ?>
-     
      <?php echo $data['CONTENT']; ?>
     </div>
    </div>
   </div>
-  
-  <div id="js-loader" title="<?php echo $this->l10n->gettext('loading'); ?>"><img src="<?php echo STYLE_URL; ?>img/loading.gif" alt="<?php echo $this->l10n->gettext('loading'); ?>" /></div>
-  
-  <nav class="navbar fixed-bottom navbar-light bg-faded">
-   <div class="container">
-    <div id="navbar-footer">
-     <div class="block-left"><?php echo sprintf($this->l10n->gettext('copyright'), $data['CFG']['s_name']); ?></div>
-     <div class="block-right" style="white-space: nowrap"><?php echo FEEDBACK; ?> | <?php echo VERSION; ?></div>
+
+  <div id="js-loader" title="<?php echo $this->l10n->gettext('loading'); ?>">
+   <img src="<?php echo STYLE_URL; ?>img/loading.gif" alt="<?php echo $this->l10n->gettext('loading'); ?>"/>
+  </div>
+
+  <div id="footer">
+   <div class="feature alternate ui stripe vertical segment">
+    <div class="ui container">
+     <h4 class="ui inverted header"><?php echo sprintf($this->l10n->gettext('copyright'), $data['CFG']['s_name']); ?></h4>
+     <p><?php echo FEEDBACK; ?> | <?php echo VERSION; ?></p>
     </div>
    </div>
-  </nav>
-  
+  </div>
+
  </body>
- 
+
 </html>

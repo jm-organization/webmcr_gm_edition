@@ -1,4 +1,9 @@
-<label class="menu-icon" title="<?php echo $data['TITLE']; ?>">
-	<div class="icon-img" style="background-image: url(<?php echo UPLOAD_URL; ?>panel-icons/<?php echo $data['IMG']; ?>);"></div>
-	<div class="icon-input"><input type="radio" name="icon" value="<?php echo $data['ID']; ?>" <?php echo $data['CHECKED']; ?>></div>
-</label>
+<div class="item">
+ <img class="ui centered image" src="<?php echo UPLOAD_URL; ?>panel-icons/<?php echo $data['IMG']; ?>">
+ <div class="content">
+  <div class="ui radio checkbox">
+   <input name="icon" value="<?php echo $data['ID']; ?>" <?php echo $data['CHECKED']; ?> type="radio">
+   <label><?php echo $data['TITLE']; ?></label>
+  </div>
+ </div>
+</div>

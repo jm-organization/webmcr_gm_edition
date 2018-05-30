@@ -1,99 +1,96 @@
-<div class="form-block">
-
-	<div class="block-header">
-		<div class="block-name">
-			<p id="title">
-				<span class="title"><?php echo $this->l10n->gettext('info_and_stats'); ?></span>
-			</p>
-		</div>
-	</div>
-
-	<div class="adm-info adm-info-stats modern">
+<div class="ui segments">
+ <div class="ui top attached tabular menu">
+  <a class="item" href="<?php echo ADMIN_URL; ?>&do=info&op=main">
+   <?php echo $this->l10n->gettext('system_log'); ?>
+  </a>
+  <a class="item" href="<?php echo ADMIN_URL; ?>&do=info&op=update_center">
+   <?php echo $this->l10n->gettext('update_center'); ?>
+  </a>
+  <a class="active item" href="<?php echo ADMIN_URL; ?>&do=info&op=stats">
+   <?php echo $this->l10n->gettext('info_stats'); ?>
+  </a>
+ </div>
+ 
+	<div class="ui segment">
 		<form method="post"></form>
-		<ul class="nav nav-tabs" id="myTab">
-			<li class="nav-item"><a class="nav-link" href="<?php echo ADMIN_URL; ?>&do=info&op=main"><?php echo $this->l10n->gettext('system_log'); ?></a></li>
-			<li class="nav-item"><a class="nav-link" href="<?php echo ADMIN_URL; ?>&do=info&op=update_center"><?php echo $this->l10n->gettext('update_center'); ?></a></li>
-			<li class="nav-item"><a class="nav-link active" href="<?php echo ADMIN_URL; ?>&do=info&op=stats"><?php echo $this->l10n->gettext('info_stats'); ?></a></li>
-		</ul>
+  
+  
+  
+  <table class="ui selectable celled table">
+   <thead>
+    <tr>
+     <th colspan="2"><h3><?php echo $this->l10n->gettext('info_news_stats'); ?></h3></th>
+    </tr>
+   </thead>
+   <tbody>
+    <tr>
+     <td><?php echo $this->l10n->gettext('info_count_news'); ?></td>
+     <td class="text-right"><?php echo $data['COUNT_NEWS']; ?></td>
+    </tr>
+    
+    <tr>
+     <td><?php echo $this->l10n->gettext('info_count_views'); ?></td>
+     <td class="text-right"><?php echo $data['COUNT_VIEWS']; ?></td>
+    </tr>
+    
+    <tr>
+     <td><?php echo $this->l10n->gettext('info_count_votes'); ?></td>
+     <td class="text-right"><?php echo $data['COUNT_VOTES']; ?></td>
+    </tr>
+    
+    <tr>
+     <td><?php echo $this->l10n->gettext('info_count_cats'); ?></td>
+     <td class="text-right"><?php echo $data['COUNT_CATEGORIES']; ?></td>
+    </tr>
+    
+    <tr>
+     <td><?php echo $this->l10n->gettext('info_count_coms'); ?></td>
+     <td class="text-right"><?php echo $data['COUNT_COMMENTS']; ?></td>
+    </tr>
+   </tbody>
+  </table>
+  
+  <table class="ui selectable celled table">
+   <thead>
+    <tr>
+     <th colspan="2"><h3><?php echo $this->l10n->gettext('info_users_stats'); ?></h3></th>
+    </tr>
+   </thead>
+   <tbody>
+    <?php echo $data['USERS_STATS']; ?>
 
-		<div class="tab-content">
-			<ul class="thumbnails row">
-				<li class="col-md-6">
-					<div class="thumbnail">
-						<h3><?php echo $this->l10n->gettext('info_news_stats'); ?></h3>
-						<div class="table-responsive">
-							<table class="table table-hover">
-								<tr>
-									<td><?php echo $this->l10n->gettext('info_count_news'); ?></td>
-									<td class="text-right"><?php echo $data['COUNT_NEWS']; ?></td>
-								</tr>
-
-								<tr>
-									<td><?php echo $this->l10n->gettext('info_count_views'); ?></td>
-									<td class="text-right"><?php echo $data['COUNT_VIEWS']; ?></td>
-								</tr>
-
-								<tr>
-									<td><?php echo $this->l10n->gettext('info_count_votes'); ?></td>
-									<td class="text-right"><?php echo $data['COUNT_VOTES']; ?></td>
-								</tr>
-
-								<tr>
-									<td><?php echo $this->l10n->gettext('info_count_cats'); ?></td>
-									<td class="text-right"><?php echo $data['COUNT_CATEGORIES']; ?></td>
-								</tr>
-
-								<tr>
-									<td><?php echo $this->l10n->gettext('info_count_coms'); ?></td>
-									<td class="text-right"><?php echo $data['COUNT_COMMENTS']; ?></td>
-								</tr>
-							</table>
-						</div>
-					</div>
-				</li>
-
-				<li class="col-md-6">
-					<div class="thumbnail">
-						<h3><?php echo $this->l10n->gettext('info_users_stats'); ?></h3>
-						<div class="table-responsive">
-							<table class="table table-hover users_stats">
-								<?php echo $data['USERS_STATS']; ?>
-								<tfoot>
-									<tr>
-										<td><b><?php echo $this->l10n->gettext('info_count_users'); ?></b></td>
-										<td class="text-right"><?php echo $data['COUNT_USERS']; ?></td>
-									</tr>
-
-										<tr>
-										<td><b><?php echo $this->l10n->gettext('info_count_groups'); ?></b></td>
-										<td class="text-right"><?php echo $data['COUNT_GROUPS']; ?></td>
-									</tr>
-								</tfoot>
-							</table>
-						</div>
-					</div>
-				</li>
-
-				<li class="col-md-12">
-					<div class="thumbnail">
-						<h3><?php echo $this->l10n->gettext('info_other'); ?></h3>
-						<div class="table-responsive">
-							<table class="table table-hover">
-								<tr>
-									<td><?php echo $this->l10n->gettext('info_count_statics'); ?></td>
-									<td class="text-right"><?php echo $data['COUNT_STATICS']; ?></td>
-								</tr>
-
-								<tr>
-									<td><?php echo $this->l10n->gettext('info_count_perms'); ?></td>
-									<td class="text-right"><?php echo $data['COUNT_PERMISSIONS']; ?></td>
-								</tr>
-							</table>
-						</div>
-					</div>
-				</li>
-			</ul>
-		</div>
-	</div>
-
+    <tr>
+     <td><b><?php echo $this->l10n->gettext('info_count_users'); ?></b></td>
+     <td class="text-right"><?php echo $data['COUNT_USERS']; ?></td>
+    </tr>
+    
+    <tr>
+     <td><b><?php echo $this->l10n->gettext('info_count_groups'); ?></b></td>
+     <td class="text-right"><?php echo $data['COUNT_GROUPS']; ?></td>
+    </tr>
+   </tbody>
+  </table>
+  
+  <table class="ui selectable celled table">
+   <thead>
+    <tr>
+     <th colspan="2"><h3><?php echo $this->l10n->gettext('info_other'); ?></h3></th>
+    </tr>
+   </thead>
+   <tbody>
+    
+    <tr>
+     <td><?php echo $this->l10n->gettext('info_count_statics'); ?></td>
+     <td class="text-right"><?php echo $data['COUNT_STATICS']; ?></td>
+    </tr>
+    
+    <tr>
+     <td><?php echo $this->l10n->gettext('info_count_perms'); ?></td>
+     <td class="text-right"><?php echo $data['COUNT_PERMISSIONS']; ?></td>
+    </tr>
+    
+   </tbody>
+  </table>
+ </div>
+ 
 </div>

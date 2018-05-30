@@ -16,15 +16,15 @@ $(function(){
 	}
 
 	$('body').on('click', '.adm-search', function(){
-
+  
 		var elem = $(this).attr('data-for');
-
+  
 		var val = $(elem).val();
-
+  
 		if($.trim(val)==''){ mcr.changeUrlParam({search: false}); return false; }
-
+  
 		mcr.changeUrlParam({search: val, pid: false});
-
+  
 		return false;
 	});
 
@@ -36,15 +36,25 @@ $(function(){
 	});
 
 	$('body').on('click', '.sort-trigger', function(){
-
+  
 		var field = $(this).attr('data-field');
 		var order = ($(this).attr('data-order')=='asc') ? 'desc' : 'asc';
-
+  
 		mcr.changeUrlParam({sort: order+'+'+field});
-
+  
 		return false;
 	});
 	
+	$('.menu .item').tab();
+	$('.ui.dropdown').dropdown();
+ 
+	$('#input_close_time').datetimepicker({
+		lang:'ru',
+		timepicker:true,
+		value:'',
+		format:'d.m.Y H:i:s'
+	});
+ 
 	// Javascript to enable link to tab
 	var url = document.location.toString();
 	if (url.match('#')) {

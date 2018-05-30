@@ -1,13 +1,15 @@
-<form class="ui form" method="get" action="<?php echo BASE_URL; ?>">
-	<input type="hidden" name="mode" value="search">
-	<input type="hidden" name="type" id="search-hidden" value="news">
- 
- <div class="ui action input">
-  <input type="text" name="value" placeholder="<?php echo $this->l10n->gettext('search'); ?>" required>
-  <select class="ui compact selection dropdown">
-   <?php echo $data['SEARCH_ELEMENTS']; ?>
-  </select>
-  <div class="ui button"><i class="icon search"></i></div>
- </div>
- 
-</form>
+<div class="item">
+ <form class="ui form" method="get" action="<?php echo BASE_URL; ?>">
+  <input type="hidden" name="mode" value="search">
+  <input type="hidden" name="type" id="search-hidden" value="news">
+  
+  <div class="ui action input">
+   <input type="text" name="value" placeholder="<?php echo $this->l10n->gettext('search'); ?>" required>
+   <select class="ui compact selection dropdown">
+    <?php echo $data['SEARCH_ELEMENTS']; ?>
+   </select>
+   <div class="ui button"><i class="icon search"></i></div>
+  </div>
+  
+ </form>
+</div>

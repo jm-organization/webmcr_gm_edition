@@ -1,5 +1,12 @@
 body {
+ display: flex;
+ min-height: 100vh;
+ flex-direction: column;
  background-color: #F0F0F0 !important;
+}
+
+#content {
+ flex: 1;
 }
 
 .masthead .logo.item img {
@@ -27,10 +34,6 @@ body {
 
 #header .ui.text.container .ui.header {
 	color: #FFFFFF;
-}
-
-#content {
- 
 }
 
 #footer {
@@ -891,7 +894,7 @@ table.table td.action input[type="checkbox"] {
 	display: none;
 }
 
-/* The slider */
+/* The slider 
 .slider {
 	position: absolute;
 	cursor: pointer;
@@ -915,6 +918,7 @@ table.table td.action input[type="checkbox"] {
 	-webkit-transition: .4s;
 	transition: .4s;
 }
+*/
 
 input:checked + .slider {
 	background-color: #2196F3;

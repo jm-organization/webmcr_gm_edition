@@ -1,56 +1,53 @@
-<div class="form-block">
-
-    <div class="block-header">
-        <div class="block-name">
-            <p id="title">
-                <span class="title"><?php echo $this->l10n->gettext('info_and_stats'); ?></span>
-            </p>
-        </div>
+<div class="ui segments">
+ <div class="ui top attached tabular menu">
+  <a class="item" href="<?php echo ADMIN_URL; ?>&do=info&op=main">
+   <?php echo $this->l10n->gettext('system_log'); ?>
+  </a>
+  <a class="active item" href="<?php echo ADMIN_URL; ?>&do=info&op=update_center">
+   <?php echo $this->l10n->gettext('update_center'); ?>
+  </a>
+  <a class="item" href="<?php echo ADMIN_URL; ?>&do=info&op=stats">
+   <?php echo $this->l10n->gettext('info_stats'); ?>
+  </a>
+ </div>
+ 
+	<div class="ui segment">
+  <form method="post"></form>
+  
+  <div class="tab-content" id="update-info-panel" data-version="<?=VERSION?>" data-version-on-server="">
+   
+   <div class="ui header update-state">
+    <h4><?=$this->l10n->gettext('update_state')?></h4>
+    <img src="/themes/default/img/cacke.128_big.png" alt="cms_logotype">
+    <div class="content">
+     <?=$this->l10n->gettext('you_are_updated')?>  <i class="icon sync text-success" id="update-status"></i>
+     <div class="ui sub header" id="update-message">
+      <small id="version-current"><?=VERSION?></small>
+     </div>
     </div>
-
-    <div class="adm-info adm-info-main modern">
-        <form method="post"></form>
-        <ul class="nav nav-tabs" id="myTab">
-            <li class="nav-item"><a class="nav-link" href="<?php echo ADMIN_URL; ?>&do=info&op=main"><?php echo $this->l10n->gettext('system_log'); ?></a></li>
-            <li class="nav-item"><a class="nav-link active" href="<?php echo ADMIN_URL; ?>&do=info&op=update_center"><?php echo $this->l10n->gettext('update_center'); ?></a></li>
-            <li class="nav-item"><a class="nav-link" href="<?php echo ADMIN_URL; ?>&do=info&op=stats"><?php echo $this->l10n->gettext('info_stats'); ?></a></li>
-        </ul>
-
-        <div class="tab-content" id="update-info-panel" data-version="<?=VERSION?>" data-version-on-server="">
-            <h4><?=$this->l10n->gettext('magicmcr_update_center')?></h4>
-
-            <hr>
-
-            <div class="update-state">
-                <h5><?=$this->l10n->gettext('update_state')?></h5>
-                <p class="mt-3">
-                    <img src="/themes/default/img/cacke.128_big.png" alt="cms_logotype">
-                    <i class="fa fa-check-circle text-success" id="update-status"></i>
-                    <span id="update-message"><?=$this->l10n->gettext('you_are_updated')?> <small style="display:block;font-size: 65%;line-height: 6px;" id="version-current" class="text-muted"><?=VERSION?></small></span>
-                </p>
-                <!--<button type="button" class="btn btn-outline-secondary" style="margin-left: 103px">Проверить наличия обновлений</button>-->
-            </div>
-
-            <div class="versions row mt-4">
-                <div class="col-md-12 pr-0" style="margin-left: 103px">
-                    <?=$this->l10n->gettext('info_eng_ver_git')?>: <span id="version-on-server"></span><br>
-                    <!--<?=$this->l10n->gettext('info_eng_ver_last')?>: <span id="version-stable"></span><br>-->
-                    <?=$this->l10n->gettext('info_eng_ver_dev')?>: <span id="version-dev"></span>
-                </div>
-            </div>
-
-            <div class="row mt-4">
-                <div class="col-md-12">
-                    <h5>About</h5>
-                    <p class="mb-0">
-                        MagicMCR является отдельным и независимым продуктом.
-                        Использование исходного кода регламентируется согласно <a href="https://github.com/jm-organization/webmcr_gm_edition/blob/master/LICENSE">GNU General Public License v3.0</a>.
-                        MagicMCR не является копией оригинального движка WebMCR, а лишь его под версией. Разработка MagicMCR производится исключительно в частных интересах.
-                        Разработчики, а также лица, участвующие в разработке и поддержке, не несут ответственности за проблемы возникшие с движком.
-                    </p>
-                </div>
-            </div>
-        </div>
+    <!--<button type="button" class="ui secondary button" style="margin-left: 103px">Проверить наличие обновлений</button>-->
+   </div>
+   
+   <div class="versions row mt-4">
+    <div class="col-md-12 pr-0">
+     <?=$this->l10n->gettext('info_eng_ver_git')?>: <span id="version-on-server"></span><br>
+     <!--<?=$this->l10n->gettext('info_eng_ver_last')?>: <span id="version-stable"></span><br>-->
+     <?=$this->l10n->gettext('info_eng_ver_dev')?>: <span id="version-dev"></span>
     </div>
-
+   </div>
+   
+   <div class="row mt-4">
+    <div class="col-md-12">
+     <h5>About</h5>
+     <p class="mb-0">
+      MagicMCR является отдельным и независимым продуктом.
+      Использование исходного кода регламентируется согласно <a href="https://github.com/jm-organization/webmcr_gm_edition/blob/master/LICENSE">GNU General Public License v3.0</a>.
+      MagicMCR не является копией оригинального движка WebMCR, а лишь его под версией. Разработка MagicMCR производится исключительно в частных интересах.
+      Разработчики, а также лица, участвующие в разработке и поддержке, не несут ответственности за проблемы возникшие с движком.
+     </p>
+    </div>
+   </div>
+  </div>
+ </div>
+ 
 </div>
