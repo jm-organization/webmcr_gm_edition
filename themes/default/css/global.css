@@ -1,12 +1,12 @@
 body {
- display: flex;
- min-height: 100vh;
- flex-direction: column;
- background-color: #F0F0F0 !important;
+	display: flex;
+	min-height: 100vh;
+	flex-direction: column;
+	background-color: #F0F0F0 !important;
 }
 
 #content {
- flex: 1;
+	flex: 1;
 }
 
 .masthead .logo.item img {
@@ -38,8 +38,8 @@ body {
 
 #footer {
 	background-color: #1b1c1d;
- border-top: solid 10px #383839;
- color: #555;
+	border-top: solid 10px #383839;
+	color: #555;
 }
 
 #advice {
@@ -71,16 +71,19 @@ body {
 	.top.fixed.menu .item,
 	.top.fixed.menu .menu {
 		display: none;
- }
+	}
+
 	.top.fixed.menu .toc.item {
 		display: flex !important;
- }
+	}
+
 	.masthead {
 		min-height: 350px;
- }
- #logotype {
+	}
+
+	#logotype {
 		display: none;
- }
+	}
 }
 
 /*******************************
@@ -88,17 +91,17 @@ body {
 *******************************/
 
 #example.index .pusher > .page {
- 
+
 }
 
 /*--------------
 	Following
 ---------------*/
 
-@media only screen and (max-width : 400px) {
- #example.index .masthead.segment h1  {
-  font-size: 1.75em !important;
- }
+@media only screen and (max-width: 400px) {
+	#example.index .masthead.segment h1 {
+		font-size: 1.75em !important;
+	}
 }
 
 /* Debug + */
@@ -312,20 +315,20 @@ body {
 @media (max-width: 600px) {
 	.file-manager > .lastfiles > .file-line > .line-oldname {
 		display: none;
- }
- 
+	}
+
 	.file-manager > .lastfiles > .file-line > .line-info,
 	.file-manager > .lastfiles > .file-line > .line-act {
 		width: 10%;
- }
- 
+	}
+
 	.file-manager > .lastfiles > .file-line > .line-uniq {
 		width: 45%;
- }
- 
+	}
+
 	.file-manager > .lastfiles > .file-line > .line-size {
 		width: 20%;
- }
+	}
 }
 
 .form-block.block-notify .block-content .alert,
@@ -427,100 +430,100 @@ body {
 	.uploader-forms .skin-uploader,
 	.uploader-forms .cloak-uploader {
 		width: 44%;
- }
+	}
 }
 
 @media (max-width: 1200px) {
 	.uploader-forms .skin-uploader,
 	.uploader-forms .cloak-uploader {
 		width: 40%;
- }
- 
+	}
+
 	.bb-panel > ul {
 		display: block;
 		padding: 3px;
 		margin-bottom: 3px;
- }
- 
+	}
+
 	.bb-panel > ul > li {
 		display: inline-block;
- }
- 
+	}
+
 }
 
 @media (max-width: 1000px) {
 	body > .container {
 		padding-bottom: 100px;
- }
- 
+	}
+
 	#js-loader {
 		bottom: 110px;
- }
+	}
 }
 
 @media (min-width: 768px) and (max-width: 979px) {
 	.skin-block {
 		margin: 0px;
- }
- 
+	}
+
 	.uploader-forms {
 		display: inline-block;
 		margin: 0px;
 		width: 60%;
- }
- 
+	}
+
 	.uploader-forms .skin-uploader,
 	.uploader-forms .cloak-uploader {
 		margin: 0px;
 		width: 48%;
- }
- 
+	}
+
 	/* bootstrap toolbar fix for mobile platforms */
 	.btn-toolbar .btn-group {
 		white-space: normal;
- }
- 
+	}
+
 	.btn-toolbar .btn-group .btn {
 		border-radius: 0px;
- }
- 
+	}
+
 	.btn-toolbar .btn-group .btn:first-child {
 		margin-left: -1px;
- }
+	}
 }
 
 @media (max-width: 979px) {
- 
+
 	.mcr-debug {
 		top: 51px;
 		left: -400px;
 		font-size: 12px;
- }
- 
+	}
+
 	.mcr-debug .action {
 		left: 400px;
 		bottom: 50%;
- }
- 
+	}
+
 }
 
 @media (max-width: 767px) {
 	body > .container {
 		padding-bottom: 80px;
- }
- 
+	}
+
 	#js-loader {
 		bottom: 97px;
- }
- 
+	}
+
 	body > .navbar-fixed-top .form-control {
 		width: 140px;
- }
- 
+	}
+
 	body > .navbar-fixed-top .navbar-form > .btn[type="submit"] {
 		display: block;
 		width: 100%;
- }
+	}
 }
 
 @media (max-width: 543px) {
@@ -529,8 +532,8 @@ body {
 		display: block;
 		width: 100%;
 		text-align: left;
- }
- 
+	}
+
 	body > .navbar-fixed-top .nav-item,
 	body > .navbar-fixed-top .nav-link,
 	body > .navbar-fixed-top .navbar-brand,
@@ -539,58 +542,58 @@ body {
 		width: 100%;
 		float: none;
 		margin: 0px !important;
- }
- 
+	}
+
 	body > .navbar-fixed-top .pull-xs-right .btn,
 	body > .navbar-fixed-top .pull-xs-right .btn-group {
 		width: 100%;
- }
- 
+	}
+
 	body > .navbar-fixed-top .form-control {
 		margin: 10px 0px;
 		width: 100%;
- }
- 
+	}
+
 	.dropdown-submenu > .dropdown-menu {
 		top: 100%;
 		left: 0px;
- }
+	}
 }
 
 @media (max-width: 479px) {
- 
+
 	.mcr-debug {
 		display: block;
 		left: -100%;
 		width: 100%;
 		max-width: 100%;
 		font-size: 12px;
- }
- 
+	}
+
 	.mcr-debug .action {
 		right: -17px;
 		bottom: 50%;
 		left: auto;
- }
- 
+	}
+
 	.mcr-debug.open .action {
 		right: 0px;
 		background-color: #fff;
 		color: #ccc;
- }
- 
+	}
+
 	body > .container {
 		padding-bottom: 130px;
- }
- 
+	}
+
 	.navbar > .container {
 		width: 100%;
- }
- 
+	}
+
 	#js-loader {
 		bottom: 157px;
- }
- 
+	}
+
 }
 
 .spl-body {

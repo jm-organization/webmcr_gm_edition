@@ -33,8 +33,10 @@
 			<label for="selectGender"><?php echo $this->l10n->gettext('gender'); ?></label>
 			<select name="gender" class="form-control" id="selectGender">
 				<option value="0"><?php echo $this->l10n->gettext('gender_n'); ?></option>
-				<option value="1" <?php echo $data['GENDER']; ?>><?php echo $this->l10n->gettext('gender_m'); ?></option>
-				<option value="2" <?php echo $data['GENDER']; ?>><?php echo $this->l10n->gettext('gender_w'); ?></option>
+				<option value="1"
+				<?php echo $data['GENDER']; ?>><?php echo $this->l10n->gettext('gender_m'); ?></option>
+				<option value="2"
+				<?php echo $data['GENDER']; ?>><?php echo $this->l10n->gettext('gender_w'); ?></option>
 			</select>
 		</div>
 
@@ -50,5 +52,5 @@
 
 		<button type="submit" class="btn btn-block btn-primary" name="submit"><?php echo $data['BUTTON']; ?></button>
 	</form>
-		
+
 </div>

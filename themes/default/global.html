@@ -1,94 +1,94 @@
 <!DOCTYPE HTML>
 <html>
- <head>
-  <title><?php echo $data['CFG']['s_name']; ?> — <?php echo $data['TITLE']; ?></title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta charset="utf-8">
-  <meta name="description" content="<?php echo $data['CFG']['s_about'] ?>">
-  <meta name="keywords" content="<?php echo $data['CFG']['s_keywords'] ?>">
-  <meta name="author" content="NC22 &amp; Qexy.org / completed Magicfar4 aka Magicmen">
-  <meta name='data' content='<?php echo META_JSON_DATA; ?>'>
-  <base href="<?php echo BASE_URL ?>">
-  <?php echo $data['DEF_HEADER']; ?>
-  <?php echo $data['HEADER']; ?>
- </head>
- 
- <body>
-  
-  <!-- Sidebar Menu -->
-  <div class="ui vertical inverted sidebar menu">
-   <?php echo $data['MENU']; ?>
-  </div>
-  
-  <div id="header" class="ui vertical masthead segment">
-   <div class="ui container">
-    
-    <div class="ui top fixed menu">
-     <a class="hidden-menu toc item">
-      <i class="sidebar icon"></i>
-     </a>
-     <a class="header item" href="<?php echo BASE_URL; ?>"><?php echo $data['CFG']['s_name']; ?></a>
-     <?php echo $data['MENU']; ?>
-     <div class="right menu">
-      <?php echo $data['SEARCH']; ?>
-     </div>
-    </div>
-   </div>
-   
-   <div class="ui text container">
-    <img id="logotype" class="ui right floated image" src="/themes/default/img/logotype.png">
-    <div class="ui header">
-     <h1><?php echo $data['CFG']['s_name']; ?></h1>
-     <div class="ui sub header">
-      <p><?php echo $data['CFG']['s_about'] ?></p>
-      <p>
-       <a class="ui huge green button" href="index.php?mode=start" role="button"><i class="icon download"></i> <?php echo $this->l10n->gettext('load_client'); ?></a>
-      </p>
-     </div>
-    </div>
-   </div>
-   
-  </div>
+	<head>
+		<title><?php echo $data['CFG']['s_name']; ?> — <?php echo $data['TITLE']; ?></title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta charset="utf-8">
+		<meta name="description" content="<?php echo $data['CFG']['s_about'] ?>">
+		<meta name="keywords" content="<?php echo $data['CFG']['s_keywords'] ?>">
+		<meta name="author" content="NC22 &amp; Qexy.org / completed Magicfar4 aka Magicmen">
+		<meta name='data' content='<?php echo META_JSON_DATA; ?>'>
+		<base href="<?php echo BASE_URL ?>">
+		<?php echo $data['DEF_HEADER']; ?>
+		<?php echo $data['HEADER']; ?>
+	</head>
 
-  <div class="ui vertical segment" id="content">
-   <?php echo $data['ADVICE']; ?>
-   <!-- Left side -->
-   <div class="ui stackable relaxed mobile reversed grid container">
-    <div class="five wide left floated column">
-     
-     <div id="js-notify" class="ui negative message">
-      <i class="close icon"></i>
-      <div id="title" class="header"></div>
-      <p id="message"></p>
-     </div>
-     
-     <?php echo $data['L_BLOCKS']; ?>
-     
-    </div>
-    
-    <!-- Right side -->
-    <div class="eleven wide right floated column">
-     <?php echo $data['BREADCRUMBS']; ?>
-     <?php echo $data['CONTENT']; ?>
-    </div>
-    
-   </div>
-  </div>
-  
-  
-  <div id="js-loader" title="<?php echo $this->l10n->gettext('loading'); ?>">
-   <img src="<?php echo STYLE_URL; ?>img/loading.gif" alt="<?php echo $this->l10n->gettext('loading'); ?>"/>
-  </div>
-  
-  <div id="footer">
-   <div class="feature alternate ui stripe vertical segment">
-    <div class="ui container">
-     <h4 class="ui inverted header"><?php echo sprintf($this->l10n->gettext('copyright'), $data['CFG']['s_name']); ?></h4>
-     <p><?php echo FEEDBACK; ?> | <?php echo VERSION; ?></p>
-    </div>
-   </div>
-  </div>
-  
- </body>
- 
+	<body>
+
+		<!-- Sidebar Menu -->
+		<div class="ui vertical inverted sidebar menu">
+			<?php echo $data['MENU']; ?>
+		</div>
+
+		<div id="header" class="ui vertical masthead segment">
+			<div class="ui container">
+
+				<div class="ui top fixed menu">
+					<a class="hidden-menu toc item">
+						<i class="sidebar icon"></i>
+					</a>
+					<a class="header item" href="<?php echo BASE_URL; ?>"><?php echo $data['CFG']['s_name']; ?></a>
+					<?php echo $data['MENU']; ?>
+					<div class="right menu">
+						<?php echo $data['SEARCH']; ?>
+					</div>
+				</div>
+			</div>
+
+			<div class="ui text container">
+				<img id="logotype" class="ui right floated image" src="/themes/default/img/logotype.png">
+				<div class="ui header">
+					<h1><?php echo $data['CFG']['s_name']; ?></h1>
+					<div class="ui sub header">
+						<p><?php echo $data['CFG']['s_about'] ?></p>
+						<p>
+							<a class="ui huge green button" href="index.php?mode=start" role="button"><i class="icon download"></i> <?php echo $this->l10n->gettext('load_client'); ?></a>
+						</p>
+					</div>
+				</div>
+			</div>
+
+		</div>
+
+		<div class="ui vertical segment" id="content">
+			<?php echo $data['ADVICE']; ?>
+			<!-- Left side -->
+			<div class="ui stackable relaxed mobile reversed grid container">
+				<div class="five wide left floated column">
+
+					<div id="js-notify" class="ui negative message">
+						<i class="close icon"></i>
+						<div id="title" class="header"></div>
+						<p id="message"></p>
+					</div>
+
+					<?php echo $data['L_BLOCKS']; ?>
+
+				</div>
+
+				<!-- Right side -->
+				<div class="eleven wide right floated column">
+					<?php echo $data['BREADCRUMBS']; ?>
+					<?php echo $data['CONTENT']; ?>
+				</div>
+
+			</div>
+		</div>
+
+
+		<div id="js-loader" title="<?php echo $this->l10n->gettext('loading'); ?>">
+			<img src="<?php echo STYLE_URL; ?>img/loading.gif" alt="<?php echo $this->l10n->gettext('loading'); ?>"/>
+		</div>
+
+		<div id="footer">
+			<div class="feature alternate ui stripe vertical segment">
+				<div class="ui container">
+					<h4 class="ui inverted header"><?php echo sprintf($this->l10n->gettext('copyright'), $data['CFG']['s_name']); ?></h4>
+					<p><?php echo FEEDBACK; ?> | <?php echo VERSION; ?></p>
+				</div>
+			</div>
+		</div>
+
+	</body>
+
 </html>

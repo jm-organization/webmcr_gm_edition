@@ -1,226 +1,228 @@
 <div class="ui segments">
- <div class="ui top attached tabular menu">
-  <a class="item" href="<?php echo ADMIN_URL; ?>&do=settings&op=main"><?php echo $this->l10n->gettext('set_main'); ?></a>
-  <a class="active item" href="<?php echo ADMIN_URL; ?>&do=settings&op=pagin"><?php echo $this->l10n->gettext('set_pagin'); ?></a>
-  <a class="item" href="<?php echo ADMIN_URL; ?>&do=settings&op=mail"><?php echo $this->l10n->gettext('set_mail'); ?></a>
-  <a class="item" href="<?php echo ADMIN_URL; ?>&do=settings&op=search"><?php echo $this->l10n->gettext('set_search'); ?></a>
-  <a class="item" href="<?php echo ADMIN_URL; ?>&do=settings&op=functions"><?php echo $this->l10n->gettext('set_func'); ?></a>
-  <a class="item" href="<?php echo ADMIN_URL; ?>&do=settings&op=base"><?php echo $this->l10n->gettext('set_base'); ?></a>
- </div>
- 
+	<div class="ui top attached tabular menu">
+		<a class="item" href="<?php echo ADMIN_URL; ?>&do=settings&op=main"><?php echo $this->l10n->gettext('set_main'); ?></a>
+		<a class="active item" href="<?php echo ADMIN_URL; ?>&do=settings&op=pagin"><?php echo $this->l10n->gettext('set_pagin'); ?></a>
+		<a class="item" href="<?php echo ADMIN_URL; ?>&do=settings&op=mail"><?php echo $this->l10n->gettext('set_mail'); ?></a>
+		<a class="item" href="<?php echo ADMIN_URL; ?>&do=settings&op=search"><?php echo $this->l10n->gettext('set_search'); ?></a>
+		<a class="item" href="<?php echo ADMIN_URL; ?>&do=settings&op=functions"><?php echo $this->l10n->gettext('set_func'); ?></a>
+		<a class="item" href="<?php echo ADMIN_URL; ?>&do=settings&op=base"><?php echo $this->l10n->gettext('set_base'); ?></a>
+	</div>
+
 	<div class="ui segment">
 		<form method="post"></form>
-  
+
 		<div class="tab-content">
 			<form class="ui form" method="post">
-    
-    <table class="ui definition table">
-     <tbody>
-     
-      <tr>
-       <td class="center aligned disabled" colspan="2"><h4><?php echo $this->l10n->gettext('set_pagin_user_sect'); ?></h4></td>
-      </tr>
-      
-      <tr>
-       <td class="collapsing">
-        <label for="input_arrows"><?php echo $this->l10n->gettext('set_pagin_arrows'); ?></label>
-       </td>
-       <td>
-        <input type="number" min="1" name="arrows" id="input_arrows" value="<?php echo $data['CFG']['arrows']; ?>" placeholder="<?php echo $this->l10n->gettext('set_pagin_arrows_ph'); ?>">
-       </td>
-      </tr>
-      
-      <tr>
-       <td class="collapsing">
-        <label for="input_news"><?php echo $this->l10n->gettext('set_pagin_news'); ?></label>
-       </td>
-       <td>
-        <input type="number" min="1" name="news" value="<?php echo $data['CFG']['news']; ?>" id="input_news" placeholder="<?php echo $this->l10n->gettext('set_pagin_news_ph'); ?>">
-       </td>
-      </tr>
-      
-      <tr>
-       <td class="collapsing">
-        <label for="input_comments"><?php echo $this->l10n->gettext('set_pagin_comments'); ?></label>
-       </td>
-       <td>
-        <input type="number" min="1" name="comments" value="<?php echo $data['CFG']['comments']; ?>" id="input_comments" placeholder="<?php echo $this->l10n->gettext('set_pagin_comments_ph'); ?>">
-       </td>
-      </tr>
-      
-      <tr>
-       <td class="collapsing">
-        <label for="input_search_news"><?php echo $this->l10n->gettext('set_pagin_search_n'); ?></label>
-       </td>
-       <td>
-        <input type="number" min="1" name="search_news" value="<?php echo $data['CFG']['search_news']; ?>" id="input_search_news" placeholder="<?php echo $this->l10n->gettext('set_pagin_search_n_ph'); ?>">
-       </td>
-      </tr>
-      
-      <tr>
-       <td class="collapsing">
-        <label for="input_search_comments"><?php echo $this->l10n->gettext('set_pagin_search_c'); ?></label>
-       </td>
-       <td>
-        <input type="number" min="1" name="search_comments" value="<?php echo $data['CFG']['search_comments']; ?>" id="input_search_comments" placeholder="<?php echo $this->l10n->gettext('set_pagin_search_c_ph'); ?>">
-       </td>
-      </tr>
-      
-      <tr>
-       <td class="center aligned disabled" colspan="2"><h4><?php echo $this->l10n->gettext('set_pagin_cp_sect'); ?></h4></td>
-      </tr>
-      
-      <tr>
-       <td class="collapsing">
-        <label for="input_search_comments"><?php echo $this->l10n->gettext('set_pagin_search_c'); ?></label>
-       </td>
-       <td>
-        <input type="number" min="1" name="search_comments" value="<?php echo $data['CFG']['search_comments']; ?>" id="input_search_comments" placeholder="<?php echo $this->l10n->gettext('set_pagin_search_c_ph'); ?>">
-       </td>
-      </tr>
-      
-      <tr>
-       <td class="collapsing">
-        <label for="input_adm_news"><?php echo $this->l10n->gettext('set_pagin_cp_news'); ?></label>
-       </td>
-       <td>
-        <input type="number" min="1" name="adm_news" id="input_adm_news" value="<?php echo $data['CFG']['adm_news']; ?>" placeholder="<?php echo $this->l10n->gettext('set_pagin_cp_news_ph'); ?>">
-       </td>
-      </tr>
-      
-      <tr>
-       <td class="collapsing">
-        <label for="input_adm_comments"><?php echo $this->l10n->gettext('set_pagin_cp_coms'); ?></label>
-       </td>
-       <td>
-        <input type="number" min="1" name="adm_comments" id="input_adm_comments" value="<?php echo $data['CFG']['adm_comments']; ?>" placeholder="<?php echo $this->l10n->gettext('set_pagin_cp_coms_ph'); ?>">
-       </td>
-      </tr>
-      
-      <tr>
-       <td class="collapsing">
-        <label for="input_adm_news_cats"><?php echo $this->l10n->gettext('set_pagin_cp_cats'); ?></label>
-       </td>
-       <td>
-        <input type="number" min="1" name="adm_news_cats" id="input_adm_news_cats" value="<?php echo $data['CFG']['adm_news_cats']; ?>" placeholder="<?php echo $this->l10n->gettext('set_pagin_cp_cats_ph'); ?>">
-       </td>
-      </tr>
-      
-      <tr>
-       <td class="collapsing">
-        <label for="input_adm_news_views"><?php echo $this->l10n->gettext('set_pagin_cp_views'); ?></label>
-       </td>
-       <td>
-        <input type="number" min="1" name="adm_news_views" id="input_adm_news_views" value="<?php echo $data['CFG']['adm_news_views']; ?>" placeholder="<?php echo $this->l10n->gettext('set_pagin_cp_views_ph'); ?>">
-       </td>
-      </tr>
-      
-      <tr>
-       <td class="collapsing">
-        <label for="input_adm_news_votes"><?php echo $this->l10n->gettext('set_pagin_cp_votes'); ?></label>
-       </td>
-       <td>
-        <input type="number" min="1" name="adm_news_votes" id="input_adm_news_votes" value="<?php echo $data['CFG']['adm_news_votes']; ?>" placeholder="<?php echo $this->l10n->gettext('set_pagin_cp_votes_ph'); ?>">
-       </td>
-      </tr>
-      
-      <tr>
-       <td class="collapsing">
-        <label for="input_adm_menu"><?php echo $this->l10n->gettext('set_pagin_cp_menu'); ?></label>
-       </td>
-       <td>
-        <input type="number" min="1" name="adm_menu" id="input_adm_menu" value="<?php echo $data['CFG']['adm_menu']; ?>" placeholder="<?php echo $this->l10n->gettext('set_pagin_cp_menu_ph'); ?>">
-       </td>
-      </tr>
-      
-      <tr>
-       <td class="collapsing">
-        <label for="input_adm_menu_adm"><?php echo $this->l10n->gettext('set_pagin_cp_menu_cp'); ?></label>
-       </td>
-       <td>
-        <input type="number" min="1" name="adm_menu_adm" id="input_adm_menu_adm" value="<?php echo $data['CFG']['adm_menu_adm']; ?>" placeholder="<?php echo $this->l10n->gettext('set_pagin_cp_menu_cp_ph'); ?>">
-       </td>
-      </tr>
-      
-      <tr>
-       <td class="collapsing">
-        <label for="input_adm_menu_groups"><?php echo $this->l10n->gettext('set_pagin_cp_mgroups'); ?></label>
-       </td>
-       <td>
-        <input type="number" min="1" name="adm_menu_groups" id="input_adm_menu_groups" value="<?php echo $data['CFG']['adm_menu_groups']; ?>" placeholder="<?php echo $this->l10n->gettext('set_pagin_cp_mgroups_ph'); ?>">
-       </td>
-      </tr>
-      
-      <tr>
-       <td class="collapsing">
-        <label for="input_adm_menu_icons"><?php echo $this->l10n->gettext('set_pagin_cp_icons'); ?></label>
-       </td>
-       <td>
-        <input type="number" min="1" name="adm_menu_icons" id="input_adm_menu_icons" value="<?php echo $data['CFG']['adm_menu_icons']; ?>" placeholder="<?php echo $this->l10n->gettext('set_pagin_cp_icons_ph'); ?>">
-       </td>
-      </tr>
-      
-      <tr>
-       <td class="collapsing">
-        <label for="input_adm_monitoring"><?php echo $this->l10n->gettext('set_pagin_cp_mon'); ?></label>
-       </td>
-       <td>
-        <input type="number" min="1" name="adm_monitoring" id="input_adm_monitoring" value="<?php echo $data['CFG']['adm_monitoring']; ?>" placeholder="<?php echo $this->l10n->gettext('set_pagin_cp_mon_ph'); ?>">
-       </td>
-      </tr>
-      
-      <tr>
-       <td class="collapsing">
-        <label for="input_adm_users"><?php echo $this->l10n->gettext('set_pagin_cp_users'); ?></label>
-       </td>
-       <td>
-        <input type="number" min="1" name="adm_users" id="input_adm_users" value="<?php echo $data['CFG']['adm_users']; ?>" placeholder="<?php echo $this->l10n->gettext('set_pagin_cp_users_ph'); ?>">
-       </td>
-      </tr>
-      
-      <tr>
-       <td class="collapsing">
-        <label for="input_adm_groups"><?php echo $this->l10n->gettext('set_pagin_cp_groups'); ?></label>
-       </td>
-       <td>
-        <input type="number" min="1" name="adm_groups" id="input_adm_groups" value="<?php echo $data['CFG']['adm_groups']; ?>" placeholder="<?php echo $this->l10n->gettext('set_pagin_cp_groups_ph'); ?>">
-       </td>
-      </tr>
-      
-      <tr>
-       <td class="collapsing">
-        <label for="input_adm_permissions"><?php echo $this->l10n->gettext('set_pagin_cp_prems'); ?></label>
-       </td>
-       <td>
-        <input type="number" min="1" name="adm_permissions" id="input_adm_permissions" value="<?php echo $data['CFG']['adm_permissions']; ?>" placeholder="<?php echo $this->l10n->gettext('set_pagin_cp_prems_ph'); ?>">
-       </td>
-      </tr>
-      
-      <tr>
-       <td class="collapsing">
-        <label for="input_adm_statics"><?php echo $this->l10n->gettext('set_pagin_cp_stc'); ?></label>
-       </td>
-       <td>
-        <input type="number" min="1" name="adm_statics" id="input_adm_statics" value="<?php echo $data['CFG']['adm_statics']; ?>" placeholder="<?php echo $this->l10n->gettext('set_pagin_cp_stc_ph'); ?>">
-       </td>
-      </tr>
-      
-      <tr>
-       <td class="collapsing">
-        <label for="input_adm_logs"><?php echo $this->l10n->gettext('set_pagin_cp_logs'); ?></label>
-       </td>
-       <td>
-        <input type="number" min="1" name="adm_logs" id="input_adm_logs" value="<?php echo $data['CFG']['adm_logs']; ?>" placeholder="<?php echo $this->l10n->gettext('set_pagin_cp_logs_ph'); ?>">
-       </td>
-      </tr>
 
-     </tbody>
-    </table>
-    
-    <button type="submit" name="submit" class="ui huge primary fluid button"><?php echo $this->l10n->gettext('save'); ?></button>
-    
-   </form>
-  </div>
- </div>
- 
+				<table class="ui definition table">
+					<tbody>
+
+						<tr>
+							<td class="center aligned disabled" colspan="2">
+								<h4><?php echo $this->l10n->gettext('set_pagin_user_sect'); ?></h4></td>
+						</tr>
+
+						<tr>
+							<td class="collapsing">
+								<label for="input_arrows"><?php echo $this->l10n->gettext('set_pagin_arrows'); ?></label>
+							</td>
+							<td>
+								<input type="number" min="1" name="arrows" id="input_arrows" value="<?php echo $data['CFG']['arrows']; ?>" placeholder="<?php echo $this->l10n->gettext('set_pagin_arrows_ph'); ?>">
+							</td>
+						</tr>
+
+						<tr>
+							<td class="collapsing">
+								<label for="input_news"><?php echo $this->l10n->gettext('set_pagin_news'); ?></label>
+							</td>
+							<td>
+								<input type="number" min="1" name="news" value="<?php echo $data['CFG']['news']; ?>" id="input_news" placeholder="<?php echo $this->l10n->gettext('set_pagin_news_ph'); ?>">
+							</td>
+						</tr>
+
+						<tr>
+							<td class="collapsing">
+								<label for="input_comments"><?php echo $this->l10n->gettext('set_pagin_comments'); ?></label>
+							</td>
+							<td>
+								<input type="number" min="1" name="comments" value="<?php echo $data['CFG']['comments']; ?>" id="input_comments" placeholder="<?php echo $this->l10n->gettext('set_pagin_comments_ph'); ?>">
+							</td>
+						</tr>
+
+						<tr>
+							<td class="collapsing">
+								<label for="input_search_news"><?php echo $this->l10n->gettext('set_pagin_search_n'); ?></label>
+							</td>
+							<td>
+								<input type="number" min="1" name="search_news" value="<?php echo $data['CFG']['search_news']; ?>" id="input_search_news" placeholder="<?php echo $this->l10n->gettext('set_pagin_search_n_ph'); ?>">
+							</td>
+						</tr>
+
+						<tr>
+							<td class="collapsing">
+								<label for="input_search_comments"><?php echo $this->l10n->gettext('set_pagin_search_c'); ?></label>
+							</td>
+							<td>
+								<input type="number" min="1" name="search_comments" value="<?php echo $data['CFG']['search_comments']; ?>" id="input_search_comments" placeholder="<?php echo $this->l10n->gettext('set_pagin_search_c_ph'); ?>">
+							</td>
+						</tr>
+
+						<tr>
+							<td class="center aligned disabled" colspan="2"><h4><?php echo $this->l10n->gettext('set_pagin_cp_sect'); ?></h4>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="collapsing">
+								<label for="input_search_comments"><?php echo $this->l10n->gettext('set_pagin_search_c'); ?></label>
+							</td>
+							<td>
+								<input type="number" min="1" name="search_comments" value="<?php echo $data['CFG']['search_comments']; ?>" id="input_search_comments" placeholder="<?php echo $this->l10n->gettext('set_pagin_search_c_ph'); ?>">
+							</td>
+						</tr>
+
+						<tr>
+							<td class="collapsing">
+								<label for="input_adm_news"><?php echo $this->l10n->gettext('set_pagin_cp_news'); ?></label>
+							</td>
+							<td>
+								<input type="number" min="1" name="adm_news" id="input_adm_news" value="<?php echo $data['CFG']['adm_news']; ?>" placeholder="<?php echo $this->l10n->gettext('set_pagin_cp_news_ph'); ?>">
+							</td>
+						</tr>
+
+						<tr>
+							<td class="collapsing">
+								<label for="input_adm_comments"><?php echo $this->l10n->gettext('set_pagin_cp_coms'); ?></label>
+							</td>
+							<td>
+								<input type="number" min="1" name="adm_comments" id="input_adm_comments" value="<?php echo $data['CFG']['adm_comments']; ?>" placeholder="<?php echo $this->l10n->gettext('set_pagin_cp_coms_ph'); ?>">
+							</td>
+						</tr>
+
+						<tr>
+							<td class="collapsing">
+								<label for="input_adm_news_cats"><?php echo $this->l10n->gettext('set_pagin_cp_cats'); ?></label>
+							</td>
+							<td>
+								<input type="number" min="1" name="adm_news_cats" id="input_adm_news_cats" value="<?php echo $data['CFG']['adm_news_cats']; ?>" placeholder="<?php echo $this->l10n->gettext('set_pagin_cp_cats_ph'); ?>">
+							</td>
+						</tr>
+
+						<tr>
+							<td class="collapsing">
+								<label for="input_adm_news_views"><?php echo $this->l10n->gettext('set_pagin_cp_views'); ?></label>
+							</td>
+							<td>
+								<input type="number" min="1" name="adm_news_views" id="input_adm_news_views" value="<?php echo $data['CFG']['adm_news_views']; ?>" placeholder="<?php echo $this->l10n->gettext('set_pagin_cp_views_ph'); ?>">
+							</td>
+						</tr>
+
+						<tr>
+							<td class="collapsing">
+								<label for="input_adm_news_votes"><?php echo $this->l10n->gettext('set_pagin_cp_votes'); ?></label>
+							</td>
+							<td>
+								<input type="number" min="1" name="adm_news_votes" id="input_adm_news_votes" value="<?php echo $data['CFG']['adm_news_votes']; ?>" placeholder="<?php echo $this->l10n->gettext('set_pagin_cp_votes_ph'); ?>">
+							</td>
+						</tr>
+
+						<tr>
+							<td class="collapsing">
+								<label for="input_adm_menu"><?php echo $this->l10n->gettext('set_pagin_cp_menu'); ?></label>
+							</td>
+							<td>
+								<input type="number" min="1" name="adm_menu" id="input_adm_menu" value="<?php echo $data['CFG']['adm_menu']; ?>" placeholder="<?php echo $this->l10n->gettext('set_pagin_cp_menu_ph'); ?>">
+							</td>
+						</tr>
+
+						<tr>
+							<td class="collapsing">
+								<label for="input_adm_menu_adm"><?php echo $this->l10n->gettext('set_pagin_cp_menu_cp'); ?></label>
+							</td>
+							<td>
+								<input type="number" min="1" name="adm_menu_adm" id="input_adm_menu_adm" value="<?php echo $data['CFG']['adm_menu_adm']; ?>" placeholder="<?php echo $this->l10n->gettext('set_pagin_cp_menu_cp_ph'); ?>">
+							</td>
+						</tr>
+
+						<tr>
+							<td class="collapsing">
+								<label for="input_adm_menu_groups"><?php echo $this->l10n->gettext('set_pagin_cp_mgroups'); ?></label>
+							</td>
+							<td>
+								<input type="number" min="1" name="adm_menu_groups" id="input_adm_menu_groups" value="<?php echo $data['CFG']['adm_menu_groups']; ?>" placeholder="<?php echo $this->l10n->gettext('set_pagin_cp_mgroups_ph'); ?>">
+							</td>
+						</tr>
+
+						<tr>
+							<td class="collapsing">
+								<label for="input_adm_menu_icons"><?php echo $this->l10n->gettext('set_pagin_cp_icons'); ?></label>
+							</td>
+							<td>
+								<input type="number" min="1" name="adm_menu_icons" id="input_adm_menu_icons" value="<?php echo $data['CFG']['adm_menu_icons']; ?>" placeholder="<?php echo $this->l10n->gettext('set_pagin_cp_icons_ph'); ?>">
+							</td>
+						</tr>
+
+						<tr>
+							<td class="collapsing">
+								<label for="input_adm_monitoring"><?php echo $this->l10n->gettext('set_pagin_cp_mon'); ?></label>
+							</td>
+							<td>
+								<input type="number" min="1" name="adm_monitoring" id="input_adm_monitoring" value="<?php echo $data['CFG']['adm_monitoring']; ?>" placeholder="<?php echo $this->l10n->gettext('set_pagin_cp_mon_ph'); ?>">
+							</td>
+						</tr>
+
+						<tr>
+							<td class="collapsing">
+								<label for="input_adm_users"><?php echo $this->l10n->gettext('set_pagin_cp_users'); ?></label>
+							</td>
+							<td>
+								<input type="number" min="1" name="adm_users" id="input_adm_users" value="<?php echo $data['CFG']['adm_users']; ?>" placeholder="<?php echo $this->l10n->gettext('set_pagin_cp_users_ph'); ?>">
+							</td>
+						</tr>
+
+						<tr>
+							<td class="collapsing">
+								<label for="input_adm_groups"><?php echo $this->l10n->gettext('set_pagin_cp_groups'); ?></label>
+							</td>
+							<td>
+								<input type="number" min="1" name="adm_groups" id="input_adm_groups" value="<?php echo $data['CFG']['adm_groups']; ?>" placeholder="<?php echo $this->l10n->gettext('set_pagin_cp_groups_ph'); ?>">
+							</td>
+						</tr>
+
+						<tr>
+							<td class="collapsing">
+								<label for="input_adm_permissions"><?php echo $this->l10n->gettext('set_pagin_cp_prems'); ?></label>
+							</td>
+							<td>
+								<input type="number" min="1" name="adm_permissions" id="input_adm_permissions" value="<?php echo $data['CFG']['adm_permissions']; ?>" placeholder="<?php echo $this->l10n->gettext('set_pagin_cp_prems_ph'); ?>">
+							</td>
+						</tr>
+
+						<tr>
+							<td class="collapsing">
+								<label for="input_adm_statics"><?php echo $this->l10n->gettext('set_pagin_cp_stc'); ?></label>
+							</td>
+							<td>
+								<input type="number" min="1" name="adm_statics" id="input_adm_statics" value="<?php echo $data['CFG']['adm_statics']; ?>" placeholder="<?php echo $this->l10n->gettext('set_pagin_cp_stc_ph'); ?>">
+							</td>
+						</tr>
+
+						<tr>
+							<td class="collapsing">
+								<label for="input_adm_logs"><?php echo $this->l10n->gettext('set_pagin_cp_logs'); ?></label>
+							</td>
+							<td>
+								<input type="number" min="1" name="adm_logs" id="input_adm_logs" value="<?php echo $data['CFG']['adm_logs']; ?>" placeholder="<?php echo $this->l10n->gettext('set_pagin_cp_logs_ph'); ?>">
+							</td>
+						</tr>
+
+					</tbody>
+				</table>
+
+				<button type="submit" name="submit" class="ui huge primary fluid button"><?php echo $this->l10n->gettext('save'); ?></button>
+
+			</form>
+		</div>
+	</div>
+
 </div>

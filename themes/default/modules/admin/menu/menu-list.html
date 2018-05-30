@@ -1,6 +1,6 @@
 <form method="post" class="panel-menu" action="<?php echo ADMIN_URL; ?>&do=menu&op=delete">
 	<div class="form-block">
-		
+
 		<div class="block-header">
 			<div class="block-name">
 				<p id="title">
@@ -31,18 +31,23 @@
 
 		<div class="left-act"><?php echo $data['PAGINATION']; ?></div>
 		<?php } ?>
-		
+
 		<div class="table-responsive">
 			<table class="table table-striped">
 				<thead>
 					<tr>
 						<th><a href="#" class="sort-trigger" data-field="id" data-order="desc">#</a></th>
-						<th><a href="#" class="sort-trigger" data-field="title" data-order="desc"><?php echo $this->l10n->gettext('menu_field_name'); ?></a></th>
-						<th><a href="#" class="sort-trigger" data-field="parent" data-order="desc"><?php echo $this->l10n->gettext('menu_field_parent'); ?></a></th>
-						<th class="action"><?php echo $this->l10n->gettext('action'); ?> <input type="checkbox" class="check-all" data-for="check-input"></th>
+						<th>
+							<a href="#" class="sort-trigger" data-field="title" data-order="desc"><?php echo $this->l10n->gettext('menu_field_name'); ?></a>
+						</th>
+						<th>
+							<a href="#" class="sort-trigger" data-field="parent" data-order="desc"><?php echo $this->l10n->gettext('menu_field_parent'); ?></a>
+						</th>
+						<th class="action"><?php echo $this->l10n->gettext('action'); ?>
+							<input type="checkbox" class="check-all" data-for="check-input"></th>
 					</tr>
 				</thead>
-				
+
 				<tbody>
 					<?php echo $data['MENU']; ?>
 				</tbody>

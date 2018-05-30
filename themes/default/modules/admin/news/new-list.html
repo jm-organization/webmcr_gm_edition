@@ -13,21 +13,22 @@
 				</p>
 			</div>
 		</div>
-		
+
 		<div class="block-line"></div>
-		
+
 		<table class="magic-datatables table table-hover" id="news_list">
 			<thead>
-			<tr>
-				<th class="news-id">#</th>
-				<th class="news-title"><?php echo $this->l10n->gettext('news_field_name'); ?></th>
-				<th class="news-category" ><?php echo $this->l10n->gettext('news_field_cat'); ?></th>
-				<th class="news-action sorting_disabled"><?php echo $this->l10n->gettext('action'); ?> <input type="checkbox" class="check-all" data-for="check-input"></th>
-			</tr>
+				<tr>
+					<th class="news-id">#</th>
+					<th class="news-title"><?php echo $this->l10n->gettext('news_field_name'); ?></th>
+					<th class="news-category"><?php echo $this->l10n->gettext('news_field_cat'); ?></th>
+					<th class="news-action sorting_disabled"><?php echo $this->l10n->gettext('action'); ?>
+						<input type="checkbox" class="check-all" data-for="check-input"></th>
+				</tr>
 			</thead>
 
 			<tbody>
-			<?php echo $data['NEWS']; ?>
+				<?php echo $data['NEWS']; ?>
 			</tbody>
 		</table>
 	</div>

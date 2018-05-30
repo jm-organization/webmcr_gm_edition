@@ -1,65 +1,136 @@
 <div class="bb-panel" id="<?php echo $data['PANEL_ID']; ?>">
 
 	<ul class="bb-right">
-		<li><a href="#" rel="tooltip" class="bb-clear" title="<?php echo $this->l10n->gettext('bb_c_remove'); ?>"><i class="fa fa-trash"></i></a></li>
+		<li>
+			<a href="#" rel="tooltip" class="bb-clear" title="<?php echo $this->l10n->gettext('bb_c_remove'); ?>"><i class="fa fa-trash"></i></a>
+		</li>
 	</ul><!--
 
-	--><ul>
-		<li><a href="#" rel="tooltip" class="bb" title="<?php echo $this->l10n->gettext('bb_c_strong'); ?>" data-left="[b]" data-right="[/b]"><i class="fa fa-bold"></i></a></li><!--
+	-->
+	<ul>
+		<li>
+			<a href="#" rel="tooltip" class="bb" title="<?php echo $this->l10n->gettext('bb_c_strong'); ?>" data-left="[b]" data-right="[/b]"><i class="fa fa-bold"></i></a>
+		</li><!--
 
-		--><li><a href="#" rel="tooltip" class="bb" title="<?php echo $this->l10n->gettext('bb_c_italic'); ?>" data-left="[i]" data-right="[/i]"><i class="fa fa-italic"></i></a></li><!--
+		-->
+		<li>
+			<a href="#" rel="tooltip" class="bb" title="<?php echo $this->l10n->gettext('bb_c_italic'); ?>" data-left="[i]" data-right="[/i]"><i class="fa fa-italic"></i></a>
+		</li><!--
 
-		--><li><a href="#" rel="tooltip" class="bb" title="<?php echo $this->l10n->gettext('bb_c_strike'); ?>" data-left="[s]" data-right="[/s]"><i class="fa fa-strikethrough"></i></a></li><!--
+		-->
+		<li>
+			<a href="#" rel="tooltip" class="bb" title="<?php echo $this->l10n->gettext('bb_c_strike'); ?>" data-left="[s]" data-right="[/s]"><i class="fa fa-strikethrough"></i></a>
+		</li><!--
 
-		--><li><a href="#" rel="tooltip" class="bb" title="<?php echo $this->l10n->gettext('bb_c_underl'); ?>" data-left="[u]" data-right="[/u]"><u class="fa fa-underline"></u></a></li>
+		-->
+		<li>
+			<a href="#" rel="tooltip" class="bb" title="<?php echo $this->l10n->gettext('bb_c_underl'); ?>" data-left="[u]" data-right="[/u]"><u class="fa fa-underline"></u></a>
+		</li>
 	</ul><!--
 
-	--><ul>
-		<li><a href="#" rel="tooltip" class="bb" title="<?php echo $this->l10n->gettext('bb_c_left'); ?>" data-left="[left]" data-right="[/left]"><i class="fa fa-align-left"></i></a></li><!--
+	-->
+	<ul>
+		<li>
+			<a href="#" rel="tooltip" class="bb" title="<?php echo $this->l10n->gettext('bb_c_left'); ?>" data-left="[left]" data-right="[/left]"><i class="fa fa-align-left"></i></a>
+		</li><!--
 
-		--><li><a href="#" rel="tooltip" class="bb" title="<?php echo $this->l10n->gettext('bb_c_center'); ?>" data-left="[center]" data-right="[/center]"><i class="fa fa-align-center"></i></a></li><!--
+		-->
+		<li>
+			<a href="#" rel="tooltip" class="bb" title="<?php echo $this->l10n->gettext('bb_c_center'); ?>" data-left="[center]" data-right="[/center]"><i class="fa fa-align-center"></i></a>
+		</li><!--
 
-		--><li><a href="#" rel="tooltip" class="bb" title="<?php echo $this->l10n->gettext('bb_c_right'); ?>" data-left="[right]" data-right="[/right]"><i class="fa fa-align-right"></i></a></li>
+		-->
+		<li>
+			<a href="#" rel="tooltip" class="bb" title="<?php echo $this->l10n->gettext('bb_c_right'); ?>" data-left="[right]" data-right="[/right]"><i class="fa fa-align-right"></i></a>
+		</li>
 	</ul><!--
 	
-	--><ul>
-		<li><a href="#modal-size-<?php echo $data['PANEL_ID']; ?>" rel="tooltip" data-paste="1" data-toggle="modal" class="bb bb-modal" title="<?php echo $this->l10n->gettext('bb_c_font_size'); ?>" data-left="[size=&quot;*0*&quot;]" data-center="*1*" data-right="[/size]"><i class="fa fa-text-height"></i></a></li><!--
+	-->
+	<ul>
+		<li>
+			<a href="#modal-size-<?php echo $data['PANEL_ID']; ?>" rel="tooltip" data-paste="1" data-toggle="modal" class="bb bb-modal" title="<?php echo $this->l10n->gettext('bb_c_font_size'); ?>" data-left="[size=&quot;*0*&quot;]" data-center="*1*" data-right="[/size]"><i class="fa fa-text-height"></i></a>
+		</li><!--
 
-		--><li><a href="#modal-font-<?php echo $data['PANEL_ID']; ?>" rel="tooltip" data-paste="1" data-toggle="modal" class="bb bb-modal" title="<?php echo $this->l10n->gettext('bb_c_font'); ?>" data-left="[font=&quot;*0*&quot;]" data-center="*1*" data-right="[/font]"><i class="fa fa-font"></i></a></li><!--
+		-->
+		<li>
+			<a href="#modal-font-<?php echo $data['PANEL_ID']; ?>" rel="tooltip" data-paste="1" data-toggle="modal" class="bb bb-modal" title="<?php echo $this->l10n->gettext('bb_c_font'); ?>" data-left="[font=&quot;*0*&quot;]" data-center="*1*" data-right="[/font]"><i class="fa fa-font"></i></a>
+		</li><!--
 
-		--><li><a href="#modal-color-<?php echo $data['PANEL_ID']; ?>" rel="tooltip" data-paste="1" data-toggle="modal" class="bb bb-modal" title="<?php echo $this->l10n->gettext('bb_c_color'); ?>" data-left="[color=&quot;*0*&quot;]" data-center="*1*" data-right="[/color]"><i class="fa fa-tint"></i></a></li><!--
+		-->
+		<li>
+			<a href="#modal-color-<?php echo $data['PANEL_ID']; ?>" rel="tooltip" data-paste="1" data-toggle="modal" class="bb bb-modal" title="<?php echo $this->l10n->gettext('bb_c_color'); ?>" data-left="[color=&quot;*0*&quot;]" data-center="*1*" data-right="[/color]"><i class="fa fa-tint"></i></a>
+		</li><!--
 
-		--><li><a href="#modal-bgc-<?php echo $data['PANEL_ID']; ?>" rel="tooltip" title="<?php echo $this->l10n->gettext('bb_c_bgcolor'); ?>" data-paste="1" data-toggle="modal" class="bb bb-modal" data-left="[background=&quot;*0*&quot;]" data-center="*1*" data-right="[/background]"><i class="fa fa-adjust"></i></a></li><!--
+		-->
+		<li>
+			<a href="#modal-bgc-<?php echo $data['PANEL_ID']; ?>" rel="tooltip" title="<?php echo $this->l10n->gettext('bb_c_bgcolor'); ?>" data-paste="1" data-toggle="modal" class="bb bb-modal" data-left="[background=&quot;*0*&quot;]" data-center="*1*" data-right="[/background]"><i class="fa fa-adjust"></i></a>
+		</li><!--
 
-		--><li><a href="#" rel="tooltip" class="bb"	title="<?php echo $this->l10n->gettext('bb_c_reverse'); ?>" data-left="[reverse]" data-right="[/reverse]"><i class="fa fa-repeat"></i></a></li>
+		-->
+		<li>
+			<a href="#" rel="tooltip" class="bb" title="<?php echo $this->l10n->gettext('bb_c_reverse'); ?>" data-left="[reverse]" data-right="[/reverse]"><i class="fa fa-repeat"></i></a>
+		</li>
 	</ul><!--
 
-	--><ul>
-		<li><a href="#modal-url-<?php echo $data['PANEL_ID']; ?>" rel="tooltip" data-paste="1" data-toggle="modal" class="bb bb-modal" title="<?php echo $this->l10n->gettext('bb_c_link'); ?>" data-left="[url=&quot;*0*&quot;]" data-center="*1*" data-right="[/url]"><i class="fa fa-link"></i></a></li><!--
+	-->
+	<ul>
+		<li>
+			<a href="#modal-url-<?php echo $data['PANEL_ID']; ?>" rel="tooltip" data-paste="1" data-toggle="modal" class="bb bb-modal" title="<?php echo $this->l10n->gettext('bb_c_link'); ?>" data-left="[url=&quot;*0*&quot;]" data-center="*1*" data-right="[/url]"><i class="fa fa-link"></i></a>
+		</li><!--
 
-		--><li><a href="#modal-email-<?php echo $data['PANEL_ID']; ?>" rel="tooltip" data-paste="0" data-toggle="modal" class="bb bb-modal" title="<?php echo $this->l10n->gettext('bb_c_email'); ?>" data-left="[email]" data-center="*0*" data-right="[/email]"><i class="fa fa-envelope"></i></a></li>
+		-->
+		<li>
+			<a href="#modal-email-<?php echo $data['PANEL_ID']; ?>" rel="tooltip" data-paste="0" data-toggle="modal" class="bb bb-modal" title="<?php echo $this->l10n->gettext('bb_c_email'); ?>" data-left="[email]" data-center="*0*" data-right="[/email]"><i class="fa fa-envelope"></i></a>
+		</li>
 	</ul><!--
 
-	--><ul>
-		<li><a href="#modal-list-<?php echo $data['PANEL_ID']; ?>" rel="tooltip" data-paste="1" data-toggle="modal" class="bb bb-modal" title="<?php echo $this->l10n->gettext('bb_c_list'); ?>" data-left="[list=&quot;*0*&quot;]" data-center="*1*" data-right="[/list]"><i class="fa fa-list"></i></a></li><!--
+	-->
+	<ul>
+		<li>
+			<a href="#modal-list-<?php echo $data['PANEL_ID']; ?>" rel="tooltip" data-paste="1" data-toggle="modal" class="bb bb-modal" title="<?php echo $this->l10n->gettext('bb_c_list'); ?>" data-left="[list=&quot;*0*&quot;]" data-center="*1*" data-right="[/list]"><i class="fa fa-list"></i></a>
+		</li><!--
 		
-		--><li><a href="#" rel="tooltip" class="bb" title="<?php echo $this->l10n->gettext('bb_c_line'); ?>" data-left="[line]" data-right="[/line]"><i class="fa fa-minus"></i></a></li>
+		-->
+		<li>
+			<a href="#" rel="tooltip" class="bb" title="<?php echo $this->l10n->gettext('bb_c_line'); ?>" data-left="[line]" data-right="[/line]"><i class="fa fa-minus"></i></a>
+		</li>
 	</ul><!--
 
-	--><ul>
-		<li><a href="#modal-code-<?php echo $data['PANEL_ID']; ?>" rel="tooltip" title="<?php echo $this->l10n->gettext('bb_c_code'); ?>" data-paste="1" data-toggle="modal" class="bb bb-modal" data-left="[code=&quot;*0*&quot;]" data-center="*1*" data-right="[/code]"><i class="fa fa-code"></i></a></li><!--
+	-->
+	<ul>
+		<li>
+			<a href="#modal-code-<?php echo $data['PANEL_ID']; ?>" rel="tooltip" title="<?php echo $this->l10n->gettext('bb_c_code'); ?>" data-paste="1" data-toggle="modal" class="bb bb-modal" data-left="[code=&quot;*0*&quot;]" data-center="*1*" data-right="[/code]"><i class="fa fa-code"></i></a>
+		</li><!--
 	
-		--><li><a href="#" rel="tooltip" class="bb"	title="<?php echo $this->l10n->gettext('bb_c_quote'); ?>" data-left="[quote]" data-right="[/quote]"><i class="fa fa-comment"></i></a></li><!--
+		-->
+		<li>
+			<a href="#" rel="tooltip" class="bb" title="<?php echo $this->l10n->gettext('bb_c_quote'); ?>" data-left="[quote]" data-right="[/quote]"><i class="fa fa-comment"></i></a>
+		</li><!--
 
-		--><li><a href="#modal-spoiler-<?php echo $data['PANEL_ID']; ?>" rel="tooltip" data-paste="1" data-toggle="modal" class="bb bb-modal" title="<?php echo $this->l10n->gettext('bb_c_spoiler'); ?>" data-left="[spoiler=&quot;*0*&quot;]" data-center="*1*" data-right="[/spoiler]"><i class="fa fa-eye"></i></a></li><!--
+		-->
+		<li>
+			<a href="#modal-spoiler-<?php echo $data['PANEL_ID']; ?>" rel="tooltip" data-paste="1" data-toggle="modal" class="bb bb-modal" title="<?php echo $this->l10n->gettext('bb_c_spoiler'); ?>" data-left="[spoiler=&quot;*0*&quot;]" data-center="*1*" data-right="[/spoiler]"><i class="fa fa-eye"></i></a>
+		</li><!--
 
-		--><li><a href="#" rel="tooltip" class="bb"	title="<?php echo $this->l10n->gettext('bb_c_offtop'); ?>" data-left="[offtop]" data-right="[/offtop]"><i class="fa fa-asterisk"></i></a></li><!--
+		-->
+		<li>
+			<a href="#" rel="tooltip" class="bb" title="<?php echo $this->l10n->gettext('bb_c_offtop'); ?>" data-left="[offtop]" data-right="[/offtop]"><i class="fa fa-asterisk"></i></a>
+		</li><!--
 
-		--><li><a href="#modal-img-<?php echo $data['PANEL_ID']; ?>" rel="tooltip" data-paste="0" data-toggle="modal" class="bb bb-modal" title="<?php echo $this->l10n->gettext('bb_c_img'); ?>" data-left="[img]" data-center="*0*" data-right="[/img]"><i class="fa fa-picture-o"></i></a></li><!--
+		-->
+		<li>
+			<a href="#modal-img-<?php echo $data['PANEL_ID']; ?>" rel="tooltip" data-paste="0" data-toggle="modal" class="bb bb-modal" title="<?php echo $this->l10n->gettext('bb_c_img'); ?>" data-left="[img]" data-center="*0*" data-right="[/img]"><i class="fa fa-picture-o"></i></a>
+		</li><!--
 
-		--><li><a href="#modal-video-<?php echo $data['PANEL_ID']; ?>" rel="tooltip" data-paste="1" data-toggle="modal" class="bb bb-modal" title="<?php echo $this->l10n->gettext('bb_c_video'); ?>" data-left="[video=&quot;*0*&quot;]" data-center="*1*" data-right="[/video]"><i class="fa fa-film"></i></a></li><!--
+		-->
+		<li>
+			<a href="#modal-video-<?php echo $data['PANEL_ID']; ?>" rel="tooltip" data-paste="1" data-toggle="modal" class="bb bb-modal" title="<?php echo $this->l10n->gettext('bb_c_video'); ?>" data-left="[video=&quot;*0*&quot;]" data-center="*1*" data-right="[/video]"><i class="fa fa-film"></i></a>
+		</li><!--
 
-		--><li><a href="#" rel="tooltip" class="spl-btn closed" data-for="spl-<?php echo $data['PANEL_ID']; ?>" title="<?php echo $this->l10n->gettext('bb_c_smiles'); ?>"><i class="fa fa-smile-o"></i></a></li>
+		-->
+		<li>
+			<a href="#" rel="tooltip" class="spl-btn closed" data-for="spl-<?php echo $data['PANEL_ID']; ?>" title="<?php echo $this->l10n->gettext('bb_c_smiles'); ?>"><i class="fa fa-smile-o"></i></a>
+		</li>
 	</ul>
 
 	<div class="spl-body bb-smiles closed" id="spl-<?php echo $data['PANEL_ID']; ?>">
@@ -82,7 +153,7 @@
 					<div class="form-group">
 						<input class="form-control bb-input" type="text" placeholder="<?php echo $this->l10n->gettext('bb_ph_text'); ?>">
 					</div>
-					
+
 					<input type="hidden" class="data-code" data-left="[url=&quot;*0*&quot;]" data-center="*1*" data-right="[/url]">
 				</div>
 
@@ -106,7 +177,7 @@
 					<div class="form-group">
 						<input class="form-control bb-input" type="text" placeholder="<?php echo $this->l10n->gettext('bb_ph_email'); ?>">
 					</div>
-					
+
 					<input type="hidden" class="data-code" data-left="[email]" data-center="*0*" data-right="[/email]">
 				</div>
 
@@ -142,7 +213,7 @@
 					<div class="form-group">
 						<input class="form-control bb-input" type="text" placeholder="<?php echo $this->l10n->gettext('bb_ph_text'); ?>">
 					</div>
-					
+
 					<input type="hidden" class="data-code" data-left="[size=&quot;*0*&quot;]" data-center="*1*" data-right="[/size]">
 				</div>
 
@@ -181,7 +252,7 @@
 					<div class="form-group">
 						<input class="form-control bb-input" type="text" placeholder="<?php echo $this->l10n->gettext('bb_ph_text'); ?>">
 					</div>
-					
+
 					<input type="hidden" class="data-code" data-left="[font=&quot;*0*&quot;]" data-center="*1*" data-right="[/font]">
 				</div>
 
@@ -209,7 +280,7 @@
 					<div class="form-group">
 						<input class="form-control bb-input" type="text" placeholder="<?php echo $this->l10n->gettext('bb_ph_text'); ?>">
 					</div>
-					
+
 					<input type="hidden" class="data-code" data-left="[color=&quot;*0*&quot;]" data-center="*1*" data-right="[/color]">
 				</div>
 
@@ -233,11 +304,11 @@
 					<div class="form-group">
 						<input class="form-control bb-input cpp" type="text" value="#000" placeholder="#ffffff | #fff">
 					</div>
-					
+
 					<div class="form-group">
 						<input class="form-control bb-input" type="text" placeholder="<?php echo $this->l10n->gettext('bb_ph_text'); ?>">
 					</div>
-					
+
 					<input type="hidden" class="data-code" data-left="[background=&quot;*0*&quot;]" data-center="*1*" data-right="[/background]">
 				</div>
 
@@ -264,11 +335,11 @@
 							<option value="numbers"><?php echo $this->l10n->gettext('bb_list_num'); ?></option>
 						</select>
 					</div>
-					
+
 					<div class="form-group">
 						<textarea class="form-control bb-input" placeholder="<?php echo $this->l10n->gettext('bb_ph_text'); ?>" rows="4"></textarea>
 					</div>
-					
+
 					<input type="hidden" class="data-code" data-left="[list=&quot;*0*&quot;]" data-center="*1*" data-right="[/list]">
 				</div>
 
@@ -297,11 +368,11 @@
 							<option value="javascript">Javascript</option>
 						</select>
 					</div>
-					
+
 					<div class="form-group">
 						<textarea class="form-control bb-input" placeholder="<?php echo $this->l10n->gettext('bb_ph_text'); ?>" rows="4"></textarea>
 					</div>
-					
+
 					<input type="hidden" class="data-code" data-left="[code=&quot;*0*&quot;]" data-center="*1*" data-right="[/code]">
 				</div>
 
@@ -325,11 +396,11 @@
 					<div class="form-group">
 						<input class="form-control bb-input" type="text" value="<?php echo $this->l10n->gettext('bb_spoiler'); ?>" placeholder="<?php echo $this->l10n->gettext('bb_ph_spoiler'); ?>">
 					</div>
-					
+
 					<div class="form-group">
 						<textarea class="form-control bb-input" placeholder="<?php echo $this->l10n->gettext('bb_ph_text'); ?>" rows="4"></textarea>
 					</div>
-					
+
 					<input type="hidden" class="data-code" data-left="[spoiler=&quot;*0*&quot;]" data-center="*1*" data-right="[/spoiler]">
 				</div>
 
@@ -353,7 +424,7 @@
 					<div class="form-group">
 						<input class="form-control bb-input" type="text" placeholder="<?php echo $this->l10n->gettext('bb_ph_img'); ?>">
 					</div>
-					
+
 					<input type="hidden" class="data-code" data-left="[img]" data-center="*0*" data-right="[/img]">
 				</div>
 
@@ -384,11 +455,11 @@
 							<option value="twitch"><?php echo $this->l10n->gettext('bb_v_twitch'); ?></option>
 						</select>
 					</div>
-					
+
 					<div class="form-group">
 						<input class="form-control bb-input" type="text" placeholder="<?php echo $this->l10n->gettext('bb_ph_video'); ?>">
 					</div>
-					
+
 					<input type="hidden" class="data-code" data-left="[video=&quot;*0*&quot;]" data-center="*1*" data-right="[/video]">
 				</div>
 

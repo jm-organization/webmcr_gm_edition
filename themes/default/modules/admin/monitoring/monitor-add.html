@@ -1,83 +1,83 @@
 <div class="ui segments">
- 
- <div class="ui segment">
-  <?php echo $data['PAGE']; ?>
- </div>
- 
- <div class="ui segment">
-  <form class="ui form" method="post">
-   <table class="ui definition table">
-    <tbody>
-     
-     <tr>
-      <td class="collapsing">
-       <label for="inputTitle"><?php echo $this->l10n->gettext('mon_field_name'); ?></label>
-      </td>
-      <td>
-       <input type="text" name="title" value="<?php echo $data['TITLE']; ?>" id="inputTitle" placeholder="<?php echo $this->l10n->gettext('mon_field_name'); ?>">
-      </td>
-     </tr>
-     
-     <tr>
-      <td class="collapsing">
-       <label for="inputText"><?php echo $this->l10n->gettext('mon_field_desc'); ?></label>
-      </td>
-      <td>
-       <textarea id="inputText" placeholder="<?php echo $this->l10n->gettext('mon_field_desc'); ?>" name="text" maxlength="255" rows="5"><?php echo $data['TEXT']; ?></textarea>
-      </td>
-     </tr>
-     
-     <tr>
-      <td class="collapsing">
-       <label for="inputTitle"><?php echo $this->l10n->gettext('mon_field_ip'); ?></label>
-      </td>
-      <td>
-       <input type="text" name="ip" value="<?php echo $data['IP']; ?>" id="inputTitle" placeholder="<?php echo $this->l10n->gettext('mon_field_ip'); ?>>">
-      </td>
-     </tr>
-     
-     <tr>
-      <td class="collapsing">
-       <label for="inputTitle"><?php echo $this->l10n->gettext('mon_field_port'); ?></label>
-      </td>
-      <td>
-       <input type="number" name="port" value="<?php echo $data['PORT']; ?>" id="inputTitle" placeholder="<?php echo $this->l10n->gettext('mon_field_port'); ?>">
-      </td>
-     </tr>
-     
-     <tr>
-      <td class="collapsing">
-       <label for="inputType"><?php echo $this->l10n->gettext('mon_field_type'); ?></label>
-      </td>
-      <td>
-       <select class="ui selection fluid dropdown" id="inputType" name="type">
-        <?php echo $data['TYPES']; ?>
-       </select>
-      </td>
-     </tr>
-     
-     <tr>
-      <td class="collapsing">
-       <label for="inputCache"><?php echo $this->l10n->gettext('mon_field_cache'); ?></label>
-      </td>
-      <td>
-       <input type="number" name="cache" value="<?php echo $data['CACHE']; ?>" id="inputCache" placeholder="<?php echo $this->l10n->gettext('mon_field_cache'); ?>">
-      </td>
-     </tr>
-     
-     <tr>
-      <td class="collapsing">
-       <label for="inputError"><?php echo $this->l10n->gettext('mon_field_error'); ?></label>
-      </td>
-      <td>
-       <input type="text" value="<?php echo $data['ERROR']; ?>" id="inputError" disabled placeholder="<?php echo $this->l10n->gettext('mon_field_error'); ?>">
-      </td>
-     </tr>
 
-    </tbody>
-   </table>
-   <button type="submit" class="ui fluid primary button" name="submit"><?php echo $data['BUTTON']; ?></button>
-   
-  </form>
- </div>
+	<div class="ui segment">
+		<?php echo $data['PAGE']; ?>
+	</div>
+
+	<div class="ui segment">
+		<form class="ui form" method="post">
+			<table class="ui definition table">
+				<tbody>
+
+					<tr>
+						<td class="collapsing">
+							<label for="inputTitle"><?php echo $this->l10n->gettext('mon_field_name'); ?></label>
+						</td>
+						<td>
+							<input type="text" name="title" value="<?php echo $data['TITLE']; ?>" id="inputTitle" placeholder="<?php echo $this->l10n->gettext('mon_field_name'); ?>">
+						</td>
+					</tr>
+
+					<tr>
+						<td class="collapsing">
+							<label for="inputText"><?php echo $this->l10n->gettext('mon_field_desc'); ?></label>
+						</td>
+						<td>
+							<textarea id="inputText" placeholder="<?php echo $this->l10n->gettext('mon_field_desc'); ?>" name="text" maxlength="255" rows="5"><?php echo $data['TEXT']; ?></textarea>
+						</td>
+					</tr>
+
+					<tr>
+						<td class="collapsing">
+							<label for="inputTitle"><?php echo $this->l10n->gettext('mon_field_ip'); ?></label>
+						</td>
+						<td>
+							<input type="text" name="ip" value="<?php echo $data['IP']; ?>" id="inputTitle" placeholder="<?php echo $this->l10n->gettext('mon_field_ip'); ?>>">
+						</td>
+					</tr>
+
+					<tr>
+						<td class="collapsing">
+							<label for="inputTitle"><?php echo $this->l10n->gettext('mon_field_port'); ?></label>
+						</td>
+						<td>
+							<input type="number" name="port" value="<?php echo $data['PORT']; ?>" id="inputTitle" placeholder="<?php echo $this->l10n->gettext('mon_field_port'); ?>">
+						</td>
+					</tr>
+
+					<tr>
+						<td class="collapsing">
+							<label for="inputType"><?php echo $this->l10n->gettext('mon_field_type'); ?></label>
+						</td>
+						<td>
+							<select class="ui selection fluid dropdown" id="inputType" name="type">
+								<?php echo $data['TYPES']; ?>
+							</select>
+						</td>
+					</tr>
+
+					<tr>
+						<td class="collapsing">
+							<label for="inputCache"><?php echo $this->l10n->gettext('mon_field_cache'); ?></label>
+						</td>
+						<td>
+							<input type="number" name="cache" value="<?php echo $data['CACHE']; ?>" id="inputCache" placeholder="<?php echo $this->l10n->gettext('mon_field_cache'); ?>">
+						</td>
+					</tr>
+
+					<tr>
+						<td class="collapsing">
+							<label for="inputError"><?php echo $this->l10n->gettext('mon_field_error'); ?></label>
+						</td>
+						<td>
+							<input type="text" value="<?php echo $data['ERROR']; ?>" id="inputError" disabled placeholder="<?php echo $this->l10n->gettext('mon_field_error'); ?>">
+						</td>
+					</tr>
+
+				</tbody>
+			</table>
+			<button type="submit" class="ui fluid primary button" name="submit"><?php echo $data['BUTTON']; ?></button>
+
+		</form>
+	</div>
 </div>

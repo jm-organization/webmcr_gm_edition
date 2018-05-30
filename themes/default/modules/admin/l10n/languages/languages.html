@@ -1,31 +1,31 @@
 <div class="ui segments">
- 
- <div class="ui segment">
-  <?php echo $this->l10n->gettext('languages'); ?>
- </div>
- <div class="ui segment">
-  <form class="ui form" method="post" action="<?php echo ADMIN_URL; ?>&do=l10n_languages&op=delete">
-   
-   <table class="ui selectable celled table" id="languages">
-    <thead>
-     <tr>
-      <th class="l10n-languages"><?php echo $this->l10n->gettext('languages_list'); ?></th>
-      <th class="l10n-action"><?php echo $this->l10n->gettext('action'); ?></th>
-     </tr>
-    </thead>
-    <tbody>
-     <?php echo $data['LANGUAGES_LIST']?>
-    </tbody>
-   </table>
-   
-   <div id="actions" class="ui fluid buttons" role="group">
-    <a class="ui primary button" role="button" href="<?php echo ADMIN_URL.'&do=l10n_languages&op=add'; ?>">
-     <?php echo $this->l10n->gettext('language_add'); ?>
-    </a>
-    <button type="submit" class="ui negative button"><i class="icon trash" aria-hidden="true"></i></button>
-   </div>
-   
-  </form>
- </div>
+
+	<div class="ui segment">
+		<?php echo $this->l10n->gettext('languages'); ?>
+	</div>
+	<div class="ui segment">
+		<form class="ui form" method="post" action="<?php echo ADMIN_URL; ?>&do=l10n_languages&op=delete">
+
+			<table class="ui selectable celled table" id="languages">
+				<thead>
+					<tr>
+						<th class="l10n-languages"><?php echo $this->l10n->gettext('languages_list'); ?></th>
+						<th class="l10n-action"><?php echo $this->l10n->gettext('action'); ?></th>
+					</tr>
+				</thead>
+				<tbody>
+					<?php echo $data['LANGUAGES_LIST']?>
+				</tbody>
+			</table>
+
+			<div id="actions" class="ui fluid buttons" role="group">
+				<a class="ui primary button" role="button" href="<?php echo ADMIN_URL.'&do=l10n_languages&op=add'; ?>">
+					<?php echo $this->l10n->gettext('language_add'); ?>
+				</a>
+				<button type="submit" class="ui negative button"><i class="icon trash" aria-hidden="true"></i></button>
+			</div>
+
+		</form>
+	</div>
 </div>
 
