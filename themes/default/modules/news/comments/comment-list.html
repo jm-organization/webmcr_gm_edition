@@ -1,17 +1,19 @@
-<div class="form-block comment-list">
-
-	<div class="block-header">
-		<div class="block-name"><?php echo $this->l10n->gettext('comments'); ?> (<span id="comment-count"><?php echo $data['COUNT']; ?></span>)
+<div class="ui segments comment-list">
+	
+	<div class="ui segment">
+		<?php echo $this->l10n->gettext('comments'); ?> (<span id="comment-count"><?php echo $data['COUNT']; ?></span>)
+	</div>
+	
+	<div class="ui segment">
+		<div class="comment-list-content">
+			<div class="ui comments">
+				<?php echo $data['COMMENTS']; ?>
+			</div>
 		</div>
 	</div>
-
-	<div class="block-line"></div>
-
-	<div class="comment-list-content">
-		<?php echo $data['COMMENTS']; ?>
-	</div>
-
+	
 	<?php echo $data['PAGINATION']; ?>
-
-	<?php echo $data['COMMENTS_FORM']; ?>
+	
 </div>
+
+<?php echo $data['COMMENTS_FORM']; ?>

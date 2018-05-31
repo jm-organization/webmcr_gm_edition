@@ -1,35 +1,41 @@
-<div class="form-block new-id attached">
-
-	<div class="block-header">
-
-		<div class="block-name">
-			<i rel="tooltip" title="<?php echo $this->l10n->gettext('attached'); ?>" class="fa fa-tag"></i><a href="<?php echo BASE_URL; ?>?mode=news&amp;id=<?php echo $data['ID']; ?>"><?php echo $data['TITLE']; ?></a>
-		</div><!--
-		-->
-		<div class="block-right">
-			<?php echo $data['ADMIN']; ?>
-			<?php echo $data['LIKES']; ?>
+<div class="item new-id attached">
+	<div class="image">
+		<img src="<?php echo $data['IMG']; ?>">
+	</div>
+	<div class="content">
+		<a class="header">
+			<i rel="tooltip" title="<?php echo $this->l10n->gettext('attached'); ?>" class="fa fa-tag"></i>
+			<a href="<?php echo BASE_URL; ?>?mode=news&amp;id=<?php echo $data['ID']; ?>"><?php echo $data['TITLE']; ?>
+				<?php echo $data['TITLE']; ?>
+				<!-- <?php echo $data['ADMIN']; ?>
+				<?php echo $data['LIKES']; ?> -->
+			</a>
 		</div>
 	</div>
-
-	<div class="block-line"></div>
-
-	<div class="new-id-content">
+	<div class="meta">
+		<span class="date">
+			<?php echo $data['DATE']; ?>
+		</span>
+		<span class="category">
+			<a href="<?php echo BASE_URL; ?>?mode=news&amp;cid=<?php echo $data['CID']; ?>" rel="tooltip" title="<?php echo $this->l10n->gettext('category'); ?>">
+				<?php echo $data['CATEGORY']; ?>
+			</a>
+		</span>
+	</div>
+	<div class="description">
 		<?php echo $data['TEXT']; ?>
 	</div>
-
-	<div class="block-line"></div>
-
-	<div class="block-footer">
-		<?php echo $data['DATE']; ?>
-		<div class="category">
-			<a href="<?php echo BASE_URL; ?>?mode=news&amp;cid=<?php echo $data['CID']; ?>" rel="tooltip" title="<?php echo $this->l10n->gettext('category'); ?>"><?php echo $data['CATEGORY']; ?></a>
+	<div class="extra">
+		<div class="ui label views">
+			<i class="eye icon"></i><?php echo $data['VIEWS']; ?>
 		</div>
-		<div class="readmore">
-			<a href="<?php echo BASE_URL; ?>?mode=news&amp;id=<?php echo $data['ID']; ?>"><?php echo $this->l10n->gettext('readmore'); ?></a>
+		<div class="ui label">
+			<?php echo $data['COMMENTS']; ?>
 		</div>
-		<?php echo $data['COMMENTS']; ?>
-		<div class="views" rel="tooltip" title="<?php echo $this->l10n->gettext('views'); ?>">
-			<i class="fa fa-eye"></i><?php echo $data['VIEWS']; ?></div>
+		
+		<a class="ui right floated primary button" href="<?php echo BASE_URL; ?>?mode=news&amp;id=<?php echo $data['ID']; ?>">
+			Подробнее <!-- TODO: Добавить фразу -->
+			<i class="right chevron icon"></i>
+		</a>
 	</div>
 </div>

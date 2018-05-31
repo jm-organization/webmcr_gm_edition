@@ -1,18 +1,21 @@
-<div class="form-block comment-id" id="<?php echo $data['ID']; ?>">
-
-	<div class="comment-id-content">
-		<?php echo $data['TEXT']; ?>
+<div class="comment" class="comment-id" id="<?php echo $data['ID']; ?>">
+	<div class="content">
+		<a class="author"><?php echo $data['LOGIN']; ?></a>
+		<div class="metadata">
+			<div class="date" data-tooltip="<?php echo $this->l10n->gettext('date_create'); ?>">
+				<?php echo date("d.m.Y", $data['DATA']['time_create']); ?>
+			</div>
+			<div class="date" data-tooltip="<?php echo $this->l10n->gettext('time_create'); ?>">
+				<?php echo date("H:i:s", $data['DATA']['time_create']); ?>
+			</div>
+		</div>
+		<div class="text">
+			<?php echo $data['TEXT']; ?>
+		</div>
+		<div class="actions">
+			<?php echo $data['ACTION_DELETE']; ?>
+			<?php echo $data['ACTION_EDIT']; ?>
+			<?php echo $data['ACTION_QUOTE']; ?>
+		</div>
 	</div>
-
-	<div class="block-line"></div>
-
-	<div class="block-footer">
-		<div class="date" rel="tooltip" title="<?php echo $this->l10n->gettext('date_create'); ?>"><?php echo date("d.m.Y", $data['DATA']['time_create']); ?></div>
-		<div class="time" rel="tooltip" title="<?php echo $this->l10n->gettext('time_create'); ?>"><?php echo date("H:i:s", $data['DATA']['time_create']); ?></div>
-		<div class="login"><?php echo $data['LOGIN']; ?></div>
-		<?php echo $data['ACTION_DELETE']; ?>
-		<?php echo $data['ACTION_EDIT']; ?>
-		<?php echo $data['ACTION_QUOTE']; ?>
-	</div>
-
 </div>

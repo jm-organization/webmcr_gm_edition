@@ -1,16 +1,15 @@
-<div class="btn-group">
-
-	<a class="btn btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" href="#"><span class="caret"></span></a>
-
-	<ul class="dropdown-menu pull-right">
-		<li class="dropdown-item">
-			<a href="#" class="news-attach" data-id="<?php echo $data['ID']; ?>"><?php echo $data['ATTACH']; ?></a></li>
-		<li class="dropdown-item">
-			<a href="<?php echo ADMIN_URL; ?>&do=news&op=edit&id=<?php echo $data['ID']; ?>"><?php echo $this->l10n->gettext('edit'); ?></a>
-		</li>
-		<li class="dropdown-item">
-			<a href="#" class="news-delete" data-id="<?php echo $data['ID']; ?>"><?php echo $this->l10n->gettext('delete'); ?></a>
-		</li>
-
-	</ul>
+<div class="ui right floated mini buttons">
+	
+	<a class="ui primary button news-attach" href="#" data-id="<?php echo $data['ID']; ?>" data-tooltip="<?php echo $data['ATTACH']; ?>">
+		<i class="thumbtack fitted icon"></i>
+	</a>
+	
+	<a class="ui primary button news-edit" href="<?php echo ADMIN_URL; ?>&do=news&op=edit&id=<?php echo $data['ID']; ?>" data-tooltip="<?php echo $this->l10n->gettext('edit'); ?>">
+		<i class="pencil fitted icon"></i>
+	</a>
+	
+	<a class="ui negative button news-delete" href="#" data-id="<?php echo $data['ID']; ?>" data-tooltip="<?php echo $this->l10n->gettext('delete'); ?>">
+		<i class="trash fitted icon"></i>
+	</a>
+	
 </div>

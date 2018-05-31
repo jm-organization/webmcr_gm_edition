@@ -11,22 +11,26 @@
 		<div class="meta">
    <span class="date">
     <?php echo $data['DATE']; ?>
-   </span>
+			</span>
 			<span class="category">
     <a href="<?php echo BASE_URL; ?>?mode=news&amp;cid=<?php echo $data['CID']; ?>" rel="tooltip" title="<?php echo $this->l10n->gettext('category'); ?>">
      <?php echo $data['CATEGORY']; ?>
-    </a>
-   </span>
+				</a>
+			</span>
 		</div>
 		<div class="description">
 			<?php echo $data['TEXT']; ?>
 		</div>
 		<div class="extra">
-			<div class="ui label views"><i class="globe icon"></i> <i class="fa fa-eye"></i><?php echo $data['VIEWS']; ?></div>
-			<div class="ui label"><?php echo $data['COMMENTS']; ?></div>
-
-			<a class="ui right floated primary button">
-				Buy tickets
+			<div class="ui label views">
+				<i class="eye icon"></i><?php echo $data['VIEWS']; ?>
+			</div>
+			<div class="ui label">
+				<?php echo $data['COMMENTS']; ?>
+			</div>
+			
+			<a class="ui right floated primary button" href="<?php echo BASE_URL; ?>?mode=news&amp;id=<?php echo $data['ID']; ?>">
+				Подробнее <!-- TODO: Добавить фразу -->
 				<i class="right chevron icon"></i>
 			</a>
 		</div>
