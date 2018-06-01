@@ -1,20 +1,15 @@
-<div class="form-block mod-users-list">
-
-	<div class="mod-users-content">
-		<div class="spl-body row" id="users-search">
-			<div class="input-group col-md-12">
-
-				<input class="form-control input-block-level search-user ac_users" type="text" placeholder="<?php echo $this->l10n->gettext('search_placeholder'); ?>">
-				<div class="input-group-btn">
-					<button class="btn btn-primary search-user-btn" type="button"><i class="fa fa-search"></i></button>
-				</div>
-
+<div class="ui segments mod-users-list">
+	
+	<div class="ui segment mod-users-content">
+		<div class="ui search" id="users-search">
+			<div class="ui left icon fluid action input">
+				<i class="search icon"></i>
+				<input class="search-user ac_users" type="text" placeholder="<?php echo $this->l10n->gettext('search_placeholder'); ?>">
+				<button class="ui basic button" type="button"><i class="icon fitted search"></i></button>
 			</div>
 		</div>
-
-		<div class="block-line"></div>
-
-		<table class="table table-hover table-striped table-condensed">
+		
+		<table class="ui striped selectable table">
 			<thead>
 				<tr>
 					<th><?php echo $this->l10n->gettext('avatar'); ?></th>
@@ -24,13 +19,13 @@
 					<th><?php echo $this->l10n->gettext('gender'); ?></th>
 				</tr>
 			</thead>
-
+			
 			<tbody>
 				<?php echo $data['USERS']; ?>
 			</tbody>
 		</table>
-
+		
 		<?php echo $data['PAGINATION']; ?>
 	</div>
-
+	
 </div>

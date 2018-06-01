@@ -1,5 +1,5 @@
 <div class="ui segments profile">
-
+	
 	<div class="ui top attached tabular menu">
 		<a class="active item" href="#" data-tab="tab1"><?php echo $this->l10n->gettext('f_info'); ?></a>
 		<a class="item" href="#" data-tab="tab2"><?php echo $this->l10n->gettext('f_skin'); ?></a>
@@ -7,8 +7,6 @@
 	</div>
 	
 	<div class="ui segment">
-		
-		
 		
 		<div class="ui tab active" data-tab="tab1">
 			<div class="profile-info">
@@ -32,29 +30,41 @@
 		</div>
 		
 		<div class="ui tab" data-tab="tab2">
-			<div class="profile-info">
+			
+			<div class="ui center aligned equal width grid">
 				<div class="row">
-					<div class="col-md-4">
-						<div class="skin-block">
-							<div class="profile-skin" style="background-image: url('<?php echo SKIN_URL; ?>interface/<?php echo $this->user->skin; ?>.png?<?php echo mt_rand(1000,9999); ?>');"></div>
+					
+					<div class="column">
+						
+						<div class="profile-info">
+							<div class="row">
+								<div class="col-md-4">
+									<div class="skin-block">
+										<div class="profile-skin" style="background-image: url('<?php echo SKIN_URL; ?>interface/<?php echo $this->user->skin; ?>.png?<?php echo mt_rand(1000,9999); ?>');"></div>
+									</div>
+								</div>
+							</div>
 						</div>
+						
 					</div>
 					
-					<div class="col-md-4">
+					<div class="column">
 						<form class="skin-uploader" enctype="multipart/form-data" method="POST">
 							<input type="file" name="skin" class="file-inputs" title="<?php echo $this->l10n->gettext('drop_skin_here'); ?>">
 							<button class="ui negative button" name="del-skin" value="1"><?php echo $this->l10n->gettext('delete_skin'); ?></button>
 						</form>
 					</div>
 					
-					<div class="col-md-4">
+					<div class="column">
 						<form class="cloak-uploader" enctype="multipart/form-data" method="POST">
 							<input type="file" name="cloak" class="file-inputs" title="<?php echo $this->l10n->gettext('drop_cloak_here'); ?>">
 							<button class="ui negative button" name="del-cloak" value="1"><?php echo $this->l10n->gettext('delete_cloak'); ?></button>
 						</form>
 					</div>
 				</div>
+				
 			</div>
+			
 		</div>
 		
 		<div class="ui tab" data-tab="tab3">
