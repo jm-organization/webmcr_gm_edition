@@ -4,6 +4,9 @@ $(function(){
 		$(this).submit();
 	});
 	
-	$('.menu .item').tab();
+	$('.menu .item').tab({
+		history: true,
+		historyType: 'hash'
+	});
 	
 });
