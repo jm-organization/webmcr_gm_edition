@@ -1,0 +1,12 @@
+<li class="nav-item<?=$data['ACTIVE']?>">
+	<i class="fa fa-<?=$data['ICON']?>"></i>
+	<span data-toggle="collapse" data-target="#tab-<?=$data['ICON']?>" aria-expanded="<?=empty($data['ACTIVE']) ?'false': 'true'?>" aria-controls="tab-<?=$data['ICON']?>"><?=$data['TITLE']?> <span class="fa fa-caret-down caret"></span></span>
+
+	<ul class="collapse<?=empty($data['ACTIVE']) ?'': ' show'?> child-nav-list" id="tab-<?=$data['ICON']?>" data-parent="#admin-menu">
+		<?php foreach($data["SUB_MENU"] as $href) { ?>
+			<li<?=(isset($_GET['do']) && stristr($href['url'], $_GET['do']) !== false) ? ' class="active"' : ''?>>
+				<a href="<?= $href['url'] ?>" target="<?=$href['target']?>"><?=$href['title']?></a>
+			</li>
+		<?php } ?>
+	</ul>
+</li>

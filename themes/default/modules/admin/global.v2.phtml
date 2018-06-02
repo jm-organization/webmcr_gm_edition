@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="<?= explode('-', $this->l10n->get_config_locale())[0] ?>">
+<head>
+	<meta charset="UTF-8">
+	<title><?php echo $data['CFG']['s_name']; ?> — <?php echo $data['TITLE']; ?></title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta charset="utf-8">
+	<meta name="author" content="NC22 &amp; Qexy.org / completed Magicfar4 aka Magicmen">
+	<meta name='data' content='<?php echo META_JSON_DATA; ?>'>
+	<base href="<?php echo BASE_URL ?>">
+	<?php echo $data['DEF_HEADER']; ?>
+	<?php echo $data['HEADER']; ?>
+</head>
+<body>
+
+    <header style="display:flow-root">
+        <ul class="global-menu">
+            <li class="nav-item"><a href="/" class="nav-link"><?=$this->l10n->gettext('home')?></a></li>
+            <li class="nav-item divider"></li>
+            <li class="nav-item">
+                <a href="/?mode=admin&do=info&op=update_center" class="nav-link icons" title="Обновлений нет">
+                    <span class="fa fa-refresh nav-icon"></span>
+<!--                    <span class="badge ml-1">0</span>-->
+                </a>
+            </li>
+
+            <li class="nav-item pull-right">
+                <img width="20px" height="20px" src="<?=SKIN_URL?>interface/<?=$this->user->skin?>_mini.png?<?=mt_rand(1000,9999)?>">
+                <a href="<?=BASE_URL.'?mode=profile'?>" class="nav-link"><?=$this->user->login?></a>
+            </li>
+        </ul>
+    </header>
+
+	<section style="width:100%;height:calc(100% - 24px);" class="admin-wrapper">
+
+		<aside>
+            <div class="menu-header">
+                <a href="/?mode=admin"><?=$this->l10n->gettext('module_admin-panel')?></a>
+                <div class="sidebar-toggler fa fa-bars" onclick="$('html').toggleClass('sidebar-hide');"></div>
+            </div>
+
+            <ul class="nav-list" id="admin-menu">
+				<?php echo $data["ADMIN_MENU"]; ?>
+            </ul>
+        </aside>
+
+		<div class="admin-container form-block">
+            <div class="breadcrumbs-container">
+				<?php echo $data['BREADCRUMBS']; ?>
+            </div>
+			<?php echo $data['CONTENT']; ?>
+		</div>
+
+	</section>
+
+</body>
+</html>

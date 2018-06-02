@@ -1,0 +1,20 @@
+<div class="col-md-12">
+    <div class="card">
+
+        <div class="admin-menu-groups card-block">
+            <h4 class="mb-4"><?=$this->l10n->gettext('modules')?> <a href="/?mode=admin&do=modules" class="fa fa-link"></a></h4>
+
+            <div class="spl-body owl-carousel owl-theme" id="modules_carusel">
+				<?php foreach ($data as $datum) { ?>
+                    <div class="item">
+                        <a href="<?php echo $datum['url']; ?>" title="<?php echo $datum['text']; ?>" target="<?php echo $datum['target']; ?>">
+                            <div class="i-icon" style="background: url(<?php echo UPLOAD_URL; ?>panel-icons/<?php echo $datum['img'] ?>);"></div>
+							<?php echo $datum['title']; ?>
+                        </a>
+                    </div>
+				<?php } ?>
+            </div>
+        </div>
+
+    </div>
+</div>

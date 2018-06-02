@@ -3,14 +3,15 @@
 if(!defined("MCR")){ exit("Hacking Attempt!"); }
 
 class menu{
-	private $core, $db, $user, $cfg;
+	private $core, $db, $user, $cfg, $l10n;
 
-	public function __construct($core){
+	public function __construct(core $core){
 		$this->core		= $core;
 		$this->db		= $core->db;
 		$this->user		= $core->user;
 		$this->cfg		= $core->cfg;
 		//$this->lng	= $core->lng;
+		$this->l10n		= $core->l10n;
 	}
 
 	private function generate_sub_menu($tree){
@@ -142,10 +143,65 @@ class menu{
 		return $this->generate_menu($array);
 	}
 
+	public function admin_menu()
+	{
+		$sub_menus = $this->admin_sub_menus();
+
+		$query = $this->db->query(
+			"SELECT id, `page_ids`, `icon`, title, `text`, `access`
+			FROM `mcr_menu_adm_groups`
+			ORDER BY `priority` ASC"
+		);
+
+		if ($query && $this->db->num_rows($query) > 0) {
+			ob_start();
+
+			$counter = 0;
+			while ($ar = $this->db->fetch_assoc($query)) {
+				$counter++;
+				$id = intval($ar['id']);
+				$page_ids = array_flip(explode('|', $ar['page_ids']));
+
+				if (!$this->core->is_access($ar['access'])) continue;
+
+				$data = [
+					"ID" => $id,
+					"TITLE" => $this->db->HSC($ar['title']),
+					"ACTIVE" => isset($_GET['do']) && array_key_exists($_GET['do'], $page_ids) ? ' active open' : null,
+					"ICON" => trim(str_replace('fa-', '', $ar['icon'])),
+					"SUB_MENU" => $sub_menus[$id]
+				];
+
+				echo $this->core->sp(MCR_THEME_MOD."admin/sidebar.phtml", $data);
+			}
+
+			//echo $this->core->sp(MCR_THEME_MOD."admin/panel_menu/menu-groups/group-id.html", $data);
+
+			return ob_get_clean();
+		}
+
+		return "<center>{$this->l10n->gettext('empty_panel_menu_group')}</center>";
+	}
+
 	public function _list(){
 
 		return $this->menu_array();
 	}
-}
 
-?>
+	private function admin_sub_menus()
+	{
+		$results = [];
+
+		$query = $this->db->query(
+			"SELECT `title`, `text`, `url`, `target`, `gid` FROM `mcr_menu_adm`"
+		);
+
+		if ($query && $this->db->num_rows($query) > 0) {
+			while ($ar = $this->db->fetch_assoc($query)) {
+				$results[$ar['gid']][] = $ar;
+			}
+		}
+
+		return $results;
+	}
+}

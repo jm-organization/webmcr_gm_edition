@@ -560,7 +560,7 @@ INSERT INTO `mcr_l10n_phrases` (`language_id`, `phrase_key`, `phrase_value`) VAL
 (1, 'mod_off1', 'Выключены'),
 (1, 'mod_on', 'Включен'),
 (1, 'mod_on1', 'Включены'),
-(1, 'module_admin-panel', 'Панель управления'),
+(1, 'module_admin-panel', 'Админ-панель'),
 (1, 'module_ajax', 'Ajax'),
 (1, 'module_auth', 'Авторизация'),
 (1, 'module_close-site', 'Технические работы'),
@@ -1073,6 +1073,8 @@ INSERT INTO `mcr_menu_adm` (`id`, `gid`, `title`, `text`, `url`, `target`, `acce
 #line
 CREATE TABLE IF NOT EXISTS `mcr_menu_adm_groups` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
+  `page_ids` varchar(64) DEFAULT NULL,
+  `icon` varchar(64) DEFAULT 'circle',
   `title` varchar(32) NOT NULL DEFAULT '',
   `text` varchar(255) CHARACTER SET utf8 COLLATE utf8_estonian_ci NOT NULL DEFAULT '',
   `access` varchar(64) CHARACTER SET latin1 NOT NULL DEFAULT '',
@@ -1080,13 +1082,13 @@ CREATE TABLE IF NOT EXISTS `mcr_menu_adm_groups` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 #line
-INSERT INTO `mcr_menu_adm_groups` (`title`, `text`, `access`, `priority`) VALUES
-('Разное', 'Описание раздела разное', 'sys_adm_m_g_main', 1),
-('Локализация (l10n)', 'Управление фразами и языками, выводом информации в зависимости от выбранной локали', 'sys_adm_l10n', 2),
-('Управление новостями', 'Всё, что связано с модулем новостей', 'sys_adm_m_g_news', 3),
-('Управление пользователями', 'Управление пользователями', 'sys_adm_m_g_users', 4),
-('Управление меню', 'Управление группами и пунктами меню сайта и панели управления', 'sys_adm_m_g_menu', 5),
-('Настройки', 'Настройки сайта и движка', 'sys_adm_m_g_settings', 10);
+INSERT INTO `mcr_menu_adm_groups` (`page_ids`, `icon`, `title`, `text`, `access`, `priority`) VALUES
+('info|monitoring|modules|logs|blocks', 'shield', 'Разное', 'Описание раздела разное', 'sys_adm_m_g_main', 1),
+('l10n_phrases|l10n_languages', 'language', 'Локализация (l10n)', 'Управление фразами и языками, выводом информации в зависимости от выбранной локали', 'sys_adm_l10n', 2),
+('news|news_cats|comments|news_views|news_votes|statics', 'newspaper-o', 'Новости', 'Всё, что связано с модулем новостей', 'sys_adm_m_g_news', 3),
+('users|groups|permissions', 'users', 'Управление пользователями', 'Пользователи', 'sys_adm_m_g_users', 4),
+('menu|menu_adm|menu_groups|menu_icons', 'sliders', 'Меню', 'Управление группами и пунктами меню сайта и панели управления', 'sys_adm_m_g_menu', 5),
+('settings', 'cogs', 'Настройки', 'Настройки сайта и движка', 'sys_adm_m_g_settings', 10);
 #line
 CREATE TABLE IF NOT EXISTS `mcr_menu_adm_icons` (
   `id` int(10) NOT NULL AUTO_INCREMENT,

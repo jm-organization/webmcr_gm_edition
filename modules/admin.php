@@ -31,7 +31,7 @@ class module{
 
 		$do = isset($_GET['do'])
 			?$_GET['do']
-			:'panel_menu';
+			:'dashboard';
 
 		if (!preg_match("/^[\w\.\-]+$/i", $do)) {
 			$this->core->notify(

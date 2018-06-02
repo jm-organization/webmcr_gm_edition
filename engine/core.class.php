@@ -14,7 +14,7 @@ if(!defined("MCR")){ exit("Hacking Attempt!"); }
 
 class core{
 	// Set default scope and values
-	public $bc, $title, $header, $r_block, $l_block, $menu;
+	public $bc, $title, $header, $r_block, $l_block, $menu, $admin_menu;
 	public $def_header	= '';
 	public $db, $user, $cfg = false;
 	public $cfg_m, $cfg_b = array();

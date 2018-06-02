@@ -133,7 +133,8 @@ class l10n
 	/**
 	 * @function     : get_locale_info
 	 *
-	 * @documentation:
+	 * @documentation: Возвращает инормацию о текущем,
+	 * выбранном языке в виде объекта.
 	 *
 	 * @param $key
 	 *
