@@ -1,0 +1,12 @@
+<div class="card bg-light">
+	<div class="card-header">
+        <?=$this->l10n->gettext('users')?>
+        <small class="text-muted"><?=$this->l10n->gettext('info_count_users')?>: <?=$data['count']?></small>
+    </div>
+	<div class="card-body card-block">
+		<div class="card-text">
+			<div id="user-group-statistic" data-data='<?=json_encode($data['groups'], JSON_UNESCAPED_UNICODE)?>' style="width:200px;height:250px;display:inline-block;"></div>
+			<div id="user-date-reg-statistic" data-data='<?=json_encode($data['date-regs'], JSON_UNESCAPED_UNICODE)?>' style="width:410px;height:250px;display:inline-block;float:right;"></div>
+		</div>
+	</div>
+</div>

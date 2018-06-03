@@ -194,7 +194,7 @@ class submodule
 						`salt`, `tmp`, `ip_last`, `time_create`, `gender`
 					) VALUES (
 						'$gid', '$login', '$email', '$password', UNHEX(REPLACE(UUID(), '-', '')), 
-						'$salt', '$tmp', '$ip', $time, '$gender'
+						'$salt', '$tmp', '$ip', NOW(), '$gender'
 					)"
 				)) {
 					// Говорим юзверю, что такой логин, мыло или ююайди уже занят

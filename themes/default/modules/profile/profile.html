@@ -22,8 +22,8 @@
 					<div class="info-line"><b><?php echo $this->l10n->gettext('login'); ?>:</b> <span><?php echo $this->user->login; ?></span></div>
 					<div class="info-line"><b><?php echo $this->l10n->gettext('email'); ?>:</b> <span><?php echo $this->user->email; ?></span></div>
 					<div class="info-line"><b><?php echo $this->l10n->gettext('group'); ?>:</b> <span><?php echo $this->user->group; ?></span></div>
-					<div class="info-line"><b><?php echo $this->l10n->gettext('date_registration'); ?>:</b> <span><?php echo $this->user->time_create; ?></span></div>
-					<div class="info-line"><b><?php echo $this->l10n->gettext('last_activity'); ?>:</b> <span><?php echo $this->user->time_last; ?></span></div>
+					<div class="info-line"><b><?php echo $this->l10n->gettext('date_registration'); ?>:</b> <span><?php echo $this->l10n->parse_date(strtotime($this->user->time_create)); ?></span></div>
+					<div class="info-line"><b><?php echo $this->l10n->gettext('last_activity'); ?>:</b> <span><?php echo $this->l10n->parse_date(strtotime($this->user->time_last)); ?></span></div>
 					<div class="info-line"><b><?php echo $this->l10n->gettext('f_gender'); ?>:</b> <span><?php echo $this->user->gender; ?></span></div>
 					<div class="info-line"><b><?php echo $this->l10n->gettext('f_gmoney'); ?>:</b> <span><?php echo $this->user->money; ?> майн.</span></div>
 					<div class="info-line"><b><?php echo $this->l10n->gettext('f_rmoney'); ?>:</b> <span><?php echo $this->user->realmoney; ?> руб.</span></div>

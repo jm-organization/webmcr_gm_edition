@@ -308,11 +308,10 @@ class submodule
 
 			$money = floatval(@$_POST['money']);
 			$realmoney = floatval(@$_POST['realmoney']);
-			$time = time();
 
 			if (!$this->db->query(
 				"INSERT INTO `mcr_users` (`gid`, `login`, `email`, `password`, `uuid`, `salt`, `ip_last`, `time_create`, `gender`)
-				VALUES ('$gid', '$login', '$email', '$password', UNHEX(REPLACE(UUID(), '-', '')), '$salt', '{$this->user->ip}', '$time', '$gender')"
+				VALUES ('$gid', '$login', '$email', '$password', UNHEX(REPLACE(UUID(), '-', '')), '$salt', '{$this->user->ip}', NOW(), '$gender')"
 			)) {
 				$this->core->notify($this->l10n->gettext('error_message'), $this->l10n->gettext('error_sql_critical'), 2, '?mode=admin&do=users');
 			}
@@ -422,8 +421,6 @@ class submodule
 			$money = floatval(@$_POST['money']);
 			$realmoney = floatval(@$_POST['realmoney']);
 
-			$time = time();
-
 			if (!$this->db->query(
 				"UPDATE `mcr_users`
 				SET 
@@ -433,7 +430,7 @@ class submodule
 					`password`=$password, 
 					`uuid`=UNHEX(REPLACE(UUID(), '-', '')), 
 					`salt`=$salt, 
-					`time_last`='$time',
+					`time_last`=NOW(),
 					`gender`='$gender'					
 				WHERE `id`='$id'"
 			)) {
@@ -492,7 +489,7 @@ class submodule
 		$select = intval($select);
 
 		$query = $this->db->query(
-			"SELECT `'id`, `'title`
+			"SELECT `id`, `title`
 			FROM `mcr_groups`
 			ORDER BY `title` ASC"
 		);

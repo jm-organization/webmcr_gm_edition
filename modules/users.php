@@ -77,7 +77,7 @@ class module
 			$group = $this->db->HSC($ar['group']);
 
 			$delimeter = $this->l10n->gettext('in');
-			$date_reg = date('d.m.Y '.$delimeter.' H:i', intval(@$ar['time_create']));
+			$date_reg = $this->l10n->parse_date(strtotime(@$ar['time_create']));
 
 			$gender = (intval($ar['gender']) == 1) ? $this->l10n->gettext('gender_w') : $this->l10n->gettext('gender_m');
 
@@ -190,8 +190,8 @@ class module
 		$color = $this->db->HSC('gcolor');
 		$group = $this->db->HSC('group');
 
-		$date_reg = date('d.m.Y '.$this->l10n->gettext('in').' H:i', intval(@$ar['time_create']));
-		$date_last = date('d.m.Y '.$this->l10n->gettext('in').' H:i', intval(@$ar['time_last']));
+		$date_reg = $this->l10n->parse_date(strtotime($this->user->time_create));
+		$date_last = $this->l10n->parse_date(strtotime($this->user->time_last));
 
 		$is_skin = (intval($ar['is_skin']) == 1) ? true : false;
 		$is_cloak = (intval($ar['is_cloak']) == 1) ? true : false;

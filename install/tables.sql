@@ -20,10 +20,6 @@ CREATE TABLE IF NOT EXISTS `mcr_l10n_languages` (
 INSERT INTO `mcr_l10n_languages` (`parent_language`, `language`, `settings`, `phrases`) VALUES
   (NULL, 'ru-RU', '{"title":"Русский","locale":"ru-RU","text_direction":"ltr","date_format":"F j, Y","time_format":"H:i"}', 'null');
 #line
-UPDATE `mcr_l10n_languages`
-SET `parent_language`=1
-WHERE id=1;
-#line
 INSERT INTO `mcr_l10n_phrases` (`language_id`, `phrase_key`, `phrase_value`) VALUES
 (1, 'access_by_admin', 'Доступ %s ограничен администрацией'),
 (1, 'avatar', 'Аватар'),
@@ -124,7 +120,7 @@ INSERT INTO `mcr_l10n_phrases` (`language_id`, `phrase_key`, `phrase_value`) VAL
 (1, 'edit', 'Редактировать'),
 (1, 'insert', 'Вставить'),
 (1, 'no', 'Нет'),
-(1, 'ib', 'в'),
+(1, 'in', 'в'),
 (1, 'restore', 'Восстановить'),
 (1, 'save', 'Сохранить'),
 (1, 'search', 'Поиск'),
@@ -868,6 +864,9 @@ INSERT INTO `mcr_l10n_phrases` (`language_id`, `phrase_key`, `phrase_value`) VAL
 (1, 'stc_field_uniq', 'Идентификатор'),
 (1, 'stc_not_selected', 'Не выбрано ни одного пункта'),
 (1, 'stc_perm_not_exist', 'ОТСУТСТВУЕТ'),
+(1, 'system_errors', 'Системные ошибки'),
+(1, 'system_warnings', 'Опасные события системы'),
+(1, 'system_noties', 'Системные оповещения'),
 (1, 'stc_preview', 'Предварительный просмотр'),
 (1, 'success_news-delete', 'Новость успешно удалена'),
 (1, 'success_save', 'Патч был успешно примерен'),
@@ -1086,7 +1085,7 @@ INSERT INTO `mcr_menu_adm_groups` (`page_ids`, `icon`, `title`, `text`, `access`
 ('info|monitoring|modules|logs|blocks', 'shield', 'Разное', 'Описание раздела разное', 'sys_adm_m_g_main', 1),
 ('l10n_phrases|l10n_languages', 'language', 'Локализация (l10n)', 'Управление фразами и языками, выводом информации в зависимости от выбранной локали', 'sys_adm_l10n', 2),
 ('news|news_cats|comments|news_views|news_votes|statics', 'newspaper-o', 'Новости', 'Всё, что связано с модулем новостей', 'sys_adm_m_g_news', 3),
-('users|groups|permissions', 'users', 'Управление пользователями', 'Пользователи', 'sys_adm_m_g_users', 4),
+('users|groups|permissions', 'users', 'Пользователи', 'Управление пользователями', 'sys_adm_m_g_users', 4),
 ('menu|menu_adm|menu_groups|menu_icons', 'sliders', 'Меню', 'Управление группами и пунктами меню сайта и панели управления', 'sys_adm_m_g_menu', 5),
 ('settings', 'cogs', 'Настройки', 'Настройки сайта и движка', 'sys_adm_m_g_settings', 10);
 #line
@@ -1391,8 +1390,8 @@ CREATE TABLE IF NOT EXISTS `~us~` (
   `~us_is_skin~` tinyint(1) NOT NULL DEFAULT '0',
   `~us_is_cloak~` tinyint(1) NOT NULL DEFAULT '0',
   `~us_ip_last~` varchar(64) CHARACTER SET latin1 NOT NULL DEFAULT '127.0.0.1',
-  `~us_date_reg~` int(10) UNSIGNED NOT NULL DEFAULT '0',
-  `~us_date_last~` int(10) UNSIGNED NOT NULL DEFAULT '0',
+  `~us_date_reg~` timestamp(6) DEFAULT CURRENT_TIMESTAMP(6),
+  `~us_date_last~` timestamp(6) DEFAULT CURRENT_TIMESTAMP(6),
   `~us_gender~` enum('male','no_set','female') NOT NULL DEFAULT 'no_set',
   `~us_ban_server~` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`~us_id~`),

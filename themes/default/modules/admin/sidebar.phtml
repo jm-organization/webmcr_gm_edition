@@ -3,8 +3,20 @@
 	<span data-toggle="collapse" data-target="#tab-<?=$data['ICON']?>" aria-expanded="<?=empty($data['ACTIVE']) ?'false': 'true'?>" aria-controls="tab-<?=$data['ICON']?>"><?=$data['TITLE']?> <span class="fa fa-caret-down caret"></span></span>
 
 	<ul class="collapse<?=empty($data['ACTIVE']) ?'': ' show'?> child-nav-list" id="tab-<?=$data['ICON']?>" data-parent="#admin-menu">
-		<?php foreach($data["SUB_MENU"] as $href) { ?>
-			<li<?=(isset($_GET['do']) && stristr($href['url'], $_GET['do']) !== false) ? ' class="active"' : ''?>>
+		<?php foreach($data["SUB_MENU"] as $href) {
+			$active = '';
+
+		    if (isset($_GET['do'])) {
+				$do_in_mode = $_GET['do'];
+				$url_part = explode('do=', $href['url'])[1];
+
+				if (preg_match("/^$do_in_mode$/", $url_part) === 1) {
+					$active = ' class="active"';
+				}
+            }
+
+		    ?>
+			<li<?=$active?>>
 				<a href="<?= $href['url'] ?>" target="<?=$href['target']?>"><?=$href['title']?></a>
 			</li>
 		<?php } ?>

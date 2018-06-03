@@ -61,15 +61,7 @@ $data_global = array(
     "ADVICE" => $core->advice(),
     "MENU" => $core->menu->_list(),
     "BREADCRUMBS" => $core->bc,
-    "SEARCH" => $core->search(),
-	"DEBUG" => $core->sp(MCR_THEME_PATH."debug.html", [
-		"PLT" => number_format(microtime(true)-DEBUG_PLT,3),
-		"QUERIES" => $core->db->count_queries,
-		"MEMORY_USAGE" => intval(memory_get_usage()/1024),
-		"MEMORY_PEAK" => intval(memory_get_peak_usage()/1024),
-		"BASE_ERROR" => $core->db->error(),
-		"PHP_ERROR" => error_get_last()
-	])
+    "SEARCH" => $core->search()
 );
 
 $view = '';
@@ -83,3 +75,16 @@ if ($mode == 'admin') {
 
 // Write global template
 echo $view;
+
+if($core->cfg->main['debug'] && @$core->user->permissions->sys_debug && $mode != 'admin'){
+	$data_debug = array(
+		"PLT" => number_format(microtime(true)-DEBUG_PLT,3),
+		"QUERIES" => $core->db->count_queries,
+		"MEMORY_USAGE" => intval(memory_get_usage()/1024),
+		"MEMORY_PEAK" => intval(memory_get_peak_usage()/1024),
+		"BASE_ERROR" => $core->db->error(),
+		"PHP_ERROR" => error_get_last()
+	);
+
+	echo $core->sp(MCR_THEME_PATH."debug.html", $data_debug);
+}
