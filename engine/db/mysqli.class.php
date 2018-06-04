@@ -42,6 +42,10 @@ class db{
 
 		$this->result = @$this->obj->query($string);
 
+		if (!$this->result) {
+			$this->core->log->write(mysqli_error($this->obj) . " in query: " . $string . ".", log::MYSQL_ERROR);
+		}
+
 		return $this->result;
 	}
 
@@ -126,10 +130,9 @@ class db{
 
 		$ctables	= $this->cfg->db['tables'];
 		$us_f		= $ctables['users']['fields'];
-		$date		= time();
 
 		$update = $this->query("UPDATE `{$this->cfg->tabname('users')}`
-								SET `{$us_f['ip_last']}`='{$user->ip}', `{$us_f['date_last']}`=$date
+								SET `{$us_f['ip_last']}`='{$user->ip}', `{$us_f['date_last']}`=NOW()
 								WHERE `{$us_f['id']}`='{$user->id}'");
 
 		if(!$update){ return false; }

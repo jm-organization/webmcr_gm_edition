@@ -11,6 +11,10 @@
  * @Documentation:
  */
 
+if (!defined("MCR_ROOT")) {
+	define("MCR_ROOT", DIR_ROOT);
+}
+
 class log
 {
 	public $debug = false;
@@ -23,15 +27,15 @@ class log
 	public $debug_level = self::L_ALL;
 
 	// MySQL log-codes 1..5
-	const MYSQL_ERROR = 1;
-	const MYSQL_QUERY = 2;
-	const MYSQL_DELETE = 3;
-	const MYSQL_INSERT = 4;
-	const MYSQL_UPDATE = 5;
+	const MYSQL_ERROR = 111;
+	const MYSQL_QUERY = 112;
+	const MYSQL_DELETE = 113;
+	const MYSQL_INSERT = 114;
+	const MYSQL_UPDATE = 115;
 
 	// Other log-codes 6..8
-	const FATAL_ERROR = 6;
-	const WARNING = 7;
+	const FATAL_ERROR = 1;
+	const WARNING = 2;
 	const NOTICE = 8;
 
 	private $log_path = MCR_ROOT . '/data/logs/';
@@ -48,7 +52,7 @@ class log
 		$this->file_name = sprintf($this->file_name, $today);
 	}
 
-	public function write($message, $code, $line)
+	public function write($message, $code, $_file = null, $line = null)
 	{
 		if ($this->debug) {
 
@@ -62,13 +66,13 @@ class log
 			switch ($this->debug_level) {
 				case 9:
 
-					self::make_log($file, $before, $message, $code, $line);
+					$this->make_log($file, $before, $message, $code, $_file, $line);
 
 				break;
 				case 10:
 
 					if ($code == 7 || $code == 6) {
-						self::make_log($file, $before, $message, $code, $line);
+						$this->make_log($file, $before, $message, $code, $_file, $line);
 					}
 
 				break;
@@ -77,11 +81,15 @@ class log
 		}
 	}
 
-	protected static function make_log($file, $before, $message, $code, $line) {
+	protected function make_log($file, $before, $message, $code, $_file, $line) {
 		$time = date('H:m:s', time());
 		$type = '['.self::get_log_type($code).']';
 
-		$log = $before . "$time $type $message on line: $line.";
+		$log = $before . "$time $type $message";
+
+		if (!empty($_file)) { $log .= " file: $_file"; }
+
+		if (!empty($line)) { $log .= " on line: $line."; }
 
 		file_put_contents($file, $log);
 	}
@@ -89,17 +97,49 @@ class log
 	private function get_log_type($code)
 	{
 		$types = [
-			1 => 'MYSQL_ERROR',
-			2 => 'MYSQL_QUERY',
-			3 => 'MYSQL_DELETE',
-			4 => 'MYSQL_INSERT',
-			5 => 'MYSQL_UPDATE',
-			6 => 'FATAL_ERROR',
-			7 => 'WARNING',
+			111 => 'MYSQL_ERROR',
+			112 => 'MYSQL_QUERY',
+			113 => 'MYSQL_DELETE',
+			114 => 'MYSQL_INSERT',
+			115 => 'MYSQL_UPDATE',
+
+			1 => 'FATAL_ERROR',
+			2 => 'WARNING',
 			8 => 'NOTICE',
 		];
 
 		return $types[$code];
+	}
+
+	public function get_logs_num($log_type)
+	{
+		$file = $this->log_path . $this->file_name;
+		$count = 0;
+
+		if (file_exists($file)) {
+			$file_strs = file($file);
+
+			foreach ($file_strs as $str) {
+				switch ($log_type) {
+					case 'error':
+						$pattern = "/^(#log: )?[0-9]{2}\:[0-9]{2}\:[0-9]{2} \[(MYSQL_ERROR|FATAL_ERROR)\] /";
+					break;
+					case 'warning':
+						$pattern = "/^(#log: )?[0-9]{2}\:[0-9]{2}\:[0-9]{2} \[(WARNING)\] /";
+					break;
+					case 'notice':
+						$pattern = "/^(#log: )?[0-9]{2}\:[0-9]{2}\:[0-9]{2} \[(MYSQL_QUERY|MYSQL_DELETE|MYSQL_INSERT|MYSQL_UPDATE|NOTICE)\] /";
+					break;
+				}
+
+				if (preg_match($pattern, $str)) {
+					$count++;
+				}
+			}
+		}
+
+		return $count;
+
 	}
 
 }

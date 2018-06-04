@@ -61,5 +61,15 @@ $(function () {
 		value: '',
 		format: 'd.m.Y H:i:s'
 	});
+	// Change hash for page-reload
+	$('.panel-menu-tabs a').on('shown.bs.tab', function (e) {
+		window.location.hash = e.target.hash;
+	});
+
+    $('.child-nav-list').on('show.bs.collapse', function () {
+        $(this).parent().addClass('open');
+    }).on('hide.bs.collapse', function () {
+        $(this).parent().removeClass('open');
+    });
 	
 });

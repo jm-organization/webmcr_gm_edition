@@ -27,8 +27,6 @@ if(!session_start()){ session_start(); }
 // Set default charset
 header('Content-Type: text/html; charset=UTF-8');
 
-
-
 // Load core
 require_once(MCR_TOOL_PATH.'core.class.php');
 
@@ -38,8 +36,19 @@ $core = new core();
 // Debug
 ini_set("display_errors", $core->cfg->main['debug']);
 $warn_type = ($core->cfg->main['debug']) ? E_ALL : 0;
-error_reporting($warn_type);
+error_reporting(0);
 
+register_shutdown_function(function() use ($core) {
+
+	$error = error_get_last();
+
+	if (!empty($error)) {
+		$core->log->write($error['message'], $error['type'], $error['file'], $error['line']);
+	}
+
+	return null;
+
+});
 
 $meta_json_data = array(
 	'secure' => MCR_SECURE_KEY,

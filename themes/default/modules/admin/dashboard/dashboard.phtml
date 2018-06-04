@@ -1,0 +1,58 @@
+<div class="form-block">
+
+	<div class="row mb-4">
+
+		<div class="col-md-12">
+			<div class="card bg-dark text-white" style="height:268px">
+				<img class="card-img" src="/themes/default/img/admin-header-bg.png" alt="Card image" style="height:266px">
+				<div class="card-img-overlay" style="background:#00000070;border-radius:.25rem;">
+					<h5 class="card-title">О MagicMCR</h5>
+					<h6 class="card-subtitle mb-2 text-muted">Спасибо за установку MagicMCR</h6>
+					<p class="card-text w-75">
+						MagicMCR является отдельным и независимым продуктом.
+						Использование исходного кода регламентируется, согласно <a href="https://github.com/jm-organization/webmcr_gm_edition/blob/master/LICENSE" class="card-link custom">GNU General Public License v3.0</a>.
+						MagicMCR не является копией оригинального движка WebMCR, а лишь его подверсией. Разработка MagicMCR производится исключительно в частных интересах.
+						Разработчики, а также лица, участвующие в разработке и поддержке, не несут ответственности за проблемы, возникшие с движком.<br>
+					</p>
+
+					<hr>
+
+					<h5 class="card-title">Состояние системы</h5>
+					<p class="card-text p-4" style="background:#ffffff1a;border-radius:4px;">
+						<span class="row">
+							<span class="col-md-3 text-danger"><?=$this->l10n->gettext('system_errors')?>: <span class="badge badge-danger ml-4"><?=$this->log->get_logs_num('error')?></span></span>
+							<span class="col-md-3 text-warning"><?=$this->l10n->gettext('system_warnings')?>: <span class="badge badge-warning ml-4"><?=$this->log->get_logs_num('warning')?></span></span>
+							<span class="col-md-3 text-info"><?=$this->l10n->gettext('system_noties')?>: <span class="badge badge-info ml-4"><?=$this->log->get_logs_num('notice')?></span></span>
+							<span class="col-md-3"></span>
+						</span>
+					</p>
+				</div>
+			</div>
+		</div>
+
+	</div>
+
+	<div class="row">
+
+		<div class="col-md-7">
+			<div class="row">
+				<div class="col-md-12">
+					<?=$data['MODULES']?>
+				</div>
+
+				<div class="col-md-12"></div>
+			</div>
+		</div>
+
+		<div class="col-md-5">
+			<div class="row">
+				<div class="col-md-12">
+					<!-- useres-statistic -->
+					<?=$data['USERS']?>
+				</div>
+			</div>
+		</div>
+
+	</div>
+
+</div>

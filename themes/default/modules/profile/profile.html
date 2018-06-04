@@ -17,9 +17,9 @@
 				<div class="info-line"><b><?php echo $this->l10n->gettext('group'); ?>:</b>
 				<span><?php echo $this->user->group; ?></span></div>
 				<div class="info-line"><b><?php echo $this->l10n->gettext('date_registration'); ?>:</b>
-				<span><?php echo $this->user->time_create; ?></span></div>
+				<span><?php echo $this->l10n->parse_date(strtotime($this->user->time_create)); ?></span></div>
 				<div class="info-line"><b><?php echo $this->l10n->gettext('last_activity'); ?>:</b>
-				<span><?php echo $this->user->time_last; ?></span></div>
+				<span><?php echo $this->l10n->parse_date(strtotime($this->user->time_last)); ?></span></div>
 				<div class="info-line"><b><?php echo $this->l10n->gettext('f_gender'); ?>:</b>
 				<span><?php echo $this->user->gender; ?></span></div>
 				<div class="info-line"><b><?php echo $this->l10n->gettext('f_gmoney'); ?>:</b>
@@ -61,34 +61,35 @@
 							<button class="ui negative button" name="del-cloak" value="1"><?php echo $this->l10n->gettext('delete_cloak'); ?></button>
 						</form>
 					</div>
+						</div>
+						
+					</div>
+					
+				</div>
+				
+				<div class="ui tab" data-tab="tab3">
+					<form class="ui form" method="post">
+						
+						<div class="field">
+							<label for="inputOldpass"><?php echo $this->l10n->gettext('f_oldpass'); ?></label>
+							<input type="password" class="form-control" name="oldpass" id="inputOldpass" placeholder="<?php echo $this->l10n->gettext('f_oldpass'); ?>">
+						</div>
+						
+						<div class="field">
+							<label for="inputNewpass"><?php echo $this->l10n->gettext('password'); ?></label>
+							<input type="password" class="form-control" name="newpass" id="inputNewpass" placeholder="<?php echo $this->l10n->gettext('password'); ?>">
+						</div>
+						
+						<div class="field">
+							<label for="inputRepass"><?php echo $this->l10n->gettext('repass'); ?></label>
+							<input type="password" class="form-control" name="repass" id="inputRepass" placeholder="<?php echo $this->l10n->gettext('repass'); ?>">
+						</div>
+						
+						<button type="submit" name="settings" class="ui primary fluid huge button"><?php echo $this->l10n->gettext('save'); ?></button>
+					</form>
 				</div>
 				
 			</div>
 			
 		</div>
 		
-		<div class="ui tab" data-tab="tab3">
-			<form class="ui form" method="post">
-				
-				<div class="field">
-					<label for="inputOldpass"><?php echo $this->l10n->gettext('f_oldpass'); ?></label>
-					<input type="password" class="form-control" name="oldpass" id="inputOldpass" placeholder="<?php echo $this->l10n->gettext('f_oldpass'); ?>">
-				</div>
-				
-				<div class="field">
-					<label for="inputNewpass"><?php echo $this->l10n->gettext('password'); ?></label>
-					<input type="password" class="form-control" name="newpass" id="inputNewpass" placeholder="<?php echo $this->l10n->gettext('password'); ?>">
-				</div>
-				
-				<div class="field">
-					<label for="inputRepass"><?php echo $this->l10n->gettext('repass'); ?></label>
-					<input type="password" class="form-control" name="repass" id="inputRepass" placeholder="<?php echo $this->l10n->gettext('repass'); ?>">
-				</div>
-				
-				<button type="submit" name="settings" class="ui primary fluid huge button"><?php echo $this->l10n->gettext('save'); ?></button>
-			</form>
-		</div>
-		
-	</div>
-	
-</div>

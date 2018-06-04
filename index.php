@@ -67,24 +67,24 @@ $data_global = array(
 $view = '';
 
 if ($mode == 'admin') {
-	$view = $core->sp(MCR_THEME_PATH."/modules/admin/global.html", $data_global);
+	$data_global["ADMIN_MENU"] = $core->menu->admin_menu();
+	$view = $core->sp(MCR_THEME_PATH."/modules/admin/global.v2.phtml", $data_global);
 } else {
-	$view = $core->sp(MCR_THEME_PATH."global.html", $data_global);
+	$view = $core->sp(MCR_THEME_PATH."global.phtml", $data_global);
 }
 
 // Write global template
 echo $view;
 
-if(!$core->cfg->main['debug'] || !@$core->user->permissions->sys_debug){ exit; }
+if($core->cfg->main['debug'] && @$core->user->permissions->sys_debug && $mode != 'admin'){
+	$data_debug = array(
+		"PLT" => number_format(microtime(true)-DEBUG_PLT,3),
+		"QUERIES" => $core->db->count_queries,
+		"MEMORY_USAGE" => intval(memory_get_usage()/1024),
+		"MEMORY_PEAK" => intval(memory_get_peak_usage()/1024),
+		"BASE_ERROR" => $core->db->error(),
+		"PHP_ERROR" => error_get_last()
+	);
 
-$data_debug = array(
-	"PLT" => number_format(microtime(true)-DEBUG_PLT,3),
-	"QUERIES" => $core->db->count_queries,
-	"MEMORY_USAGE" => intval(memory_get_usage()/1024),
-	"MEMORY_PEAK" => intval(memory_get_peak_usage()/1024),
-	"BASE_ERROR" => $core->db->error(),
-	"PHP_ERROR" => error_get_last()
-);
-
-echo $core->sp(MCR_THEME_PATH."debug.html", $data_debug);
-?>
+	echo $core->sp(MCR_THEME_PATH."debug.html", $data_debug);
+}

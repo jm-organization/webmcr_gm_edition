@@ -4,6 +4,8 @@ if (!defined("MCR")) {
 	exit("Hacking Attempt!");
 }
 
+require_once MCR_LIBS_PATH.'htmLawed/htmLawed.php';
+
 class submodule
 {
 	private $core, $db, $cfg, $user, $l10n;
@@ -191,7 +193,7 @@ class submodule
 			$permissions = $this->db->safesql(@$_POST['permissions']);
 
 			// Обработка описания +
-			$text = trim(@$_POST['text']);
+			$text = htmLawed(trim(@$_POST['text']));
 
 			if (empty($text)) {
 				$this->core->notify($this->l10n->gettext('error_message'), $this->l10n->gettext('stc_e_text_empty'), 2, '?mode=admin&do=statics&op=add');
@@ -307,7 +309,7 @@ class submodule
 			$permissions = $this->db->safesql(@$_POST['permissions']);
 
 			// Обработка описания +
-			$text = trim(@$_POST['text']);
+			$text = htmLawed(trim(@$_POST['text']));
 
 			if (empty($text)) {
 				$this->core->notify($this->l10n->gettext('error_message'), $this->l10n->gettext('stc_e_text_empty'), 2, '?mode=admin&do=statics&op=add');

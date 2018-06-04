@@ -42,34 +42,42 @@ function load_git_dev_version(){
 
 $(function(){
 
-	if(!navigator.onLine){ notify(lng.error, lng_im.e_connection, 1); return; }
+	if ($(document).has('#update-info-panel')) {
+        if(!navigator.onLine){ notify(lng.error, lng_im.e_connection, 1); return; }
 
-	$("#api-engine-news, #api-engine-version, #git-engine-version, #git-dev-version").html("∞");
+        $("#api-engine-news, #api-engine-version, #git-engine-version, #git-dev-version").html("∞");
 
-	// load_last_version();
-	load_git_version();
-	load_git_dev_version();
+        // load_last_version();
+        load_git_version();
+        load_git_dev_version();
 
-	mcr.loading(true);
+        check_on_new_version();
+        
+        $('#re-check').on('click', check_on_new_version);
+	}
 
-	setTimeout(function () {
-        // Убираем префикс для получения версии для сравнения.
-        let current_version = $('#update-info-panel').data('version').replace('webmcr_gm_edition_', '');
-        let version_on_server = $('#update-info-panel').attr('data-version-on-server').replace('webmcr_gm_edition_', '');
+	function check_on_new_version() {
+        mcr.loading(true);
 
-        if (current_version !== version_on_server) {
-            $('#update-status').removeClass('fa-check-circle text-success').addClass('fa-times-circle text-danger');
-            $('#update-message').html(
-                lng.you_are_can_update + ' <small style="display:block;font-size: 65%;line-height: 6px;" id="version-current" class="text-muted">webmcr_gm_edition_'+current_version+'</small>'
-            );
-        } else {
-            $('#update-status').removeClass('fa-times-circle text-danger').addClass('fa-check-circle text-success');
-            $('#update-message').html(
-                lng.you_are_updated + ' <small style="display:block;font-size: 65%;line-height: 6px;" id="version-current" class="text-muted">webmcr_gm_edition_'+current_version+'</small>'
-            );
-        }
+        setTimeout(function () {
+            // Убираем префикс для получения версии для сравнения.
+            let current_version = $('#update-info-panel').data('version').replace('webmcr_gm_edition_', '');
+            let version_on_server = $('#update-info-panel').attr('data-version-on-server').replace('webmcr_gm_edition_', '');
 
-        mcr.loading(false);
-    }, 800)
+            if (current_version !== version_on_server) {
+                $('#update-status').removeClass('fa-check-circle text-success').addClass('fa-times-circle text-danger');
+                $('#update-message').html(
+                    lng.you_are_can_update + ' <small style="display:block;font-size: 65%;line-height: 6px;" id="version-current" class="text-muted">webmcr_gm_edition_'+current_version+'</small>'
+                );
+            } else {
+                $('#update-status').removeClass('fa-times-circle text-danger').addClass('fa-check-circle text-success');
+                $('#update-message').html(
+                    lng.you_are_updated + ' <small style="display:block;font-size: 65%;line-height: 6px;" id="version-current" class="text-muted">webmcr_gm_edition_'+current_version+'</small>'
+                );
+            }
+
+            mcr.loading(false);
+        }, 800);
+    }
 
 });

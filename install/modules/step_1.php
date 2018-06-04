@@ -28,7 +28,7 @@ class module{
 			$type = (isset($_POST['type']) && $_POST['type']=='mysql') ? 'mysql' : 'mysqli';
 			require_once(DIR_ROOT.'engine/db/'.$type.'.class.php');
 
-			$db = new db($_SESSION['f_host'], $_SESSION['f_user'], $_SESSION['f_pass'], $_SESSION['f_base'], $_SESSION['f_port']);
+			$db = new db($_SESSION['f_host'], $_SESSION['f_user'], $_SESSION['f_pass'], $_SESSION['f_base'], $_SESSION['f_port'], $this->install);
 			$error = $db->error();
 			if(!empty($error)){
 				$this->install->notify($this->lng['e_connection'].' | '.$db->error(), $this->lng['e_msg'], 'install/?do=step_1');
@@ -54,7 +54,7 @@ class module{
 			$logs_f	= $ctables['logs']['fields'];
 			$us_f = $ctables['users']['fields'];
 
-			@$db->query("SET GLOBAL sql_mode='NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION'");
+			@$db->query("SET GLOBAL sql_mode='STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION'");
 
 			$string = "";
 

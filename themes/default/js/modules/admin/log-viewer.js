@@ -94,6 +94,7 @@ $(document).ready(function () {
         (function () {
 
             let $log_viewer = new LogViewer('#log-viewer');
+            console.log($log_viewer);
 
             $("body").click(function (e) {
                 if ($(e.target).closest("#context_menu").length === 0) {

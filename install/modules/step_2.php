@@ -75,7 +75,7 @@ class module{
 
 			require_once(DIR_ROOT.'engine/db/'.$this->cfg['db']['backend'].'.class.php');
 
-			$db = new db($this->cfg['db']['host'], $this->cfg['db']['user'], $this->cfg['db']['pass'], $this->cfg['db']['base'], $this->cfg['db']['port']);
+			$db = new db($this->cfg['db']['host'], $this->cfg['db']['user'], $this->cfg['db']['pass'], $this->cfg['db']['base'], $this->cfg['db']['port'], $this->install);
 
 			$error = $db->error();
 
@@ -95,13 +95,11 @@ class module{
 			$ic_f		= $ctables['iconomy']['fields'];
 			$us_f		= $ctables['users']['fields'];
 
-			$date		= time();
-
 			$query = $db->query("
 				INSERT INTO `{$ctables['users']['name']}`
 					(`{$us_f['group']}`, `{$us_f['login']}`, `{$us_f['email']}`, `{$us_f['pass']}`, `{$us_f['uuid']}`, `{$us_f['salt']}`, `{$us_f['ip_last']}`, `{$us_f['date_reg']}`)
 				VALUES
-					('3', '$login', '$email', '$password', UNHEX(REPLACE(UUID(), '-', '')), '$salt', '$ip', $date)
+					('3', '$login', '$email', '$password', UNHEX(REPLACE(UUID(), '-', '')), '$salt', '$ip', NOW())
 			");
 
 			if(!$query){ $this->install->notify($this->lng['e_add_admin'], $this->lng['e_msg'], 'install/?do=step_2'); }

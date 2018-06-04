@@ -31,11 +31,19 @@ class submodule
 
 	private function main()
 	{
+		$this->core->header .= $this->core->sp(MCR_THEME_MOD."admin/info/header-log-viewer.phtml");
+
 		$log_files = [];
 
 		if (file_exists(MCR_ROOT . '/data/logs/')) {
 			$log_files = scandir(MCR_ROOT . '/data/logs/');
-			$log_files = array_splice($log_files, 3);
+
+			$log_files = array_flip($log_files);
+			unset($log_files['.']);
+			unset($log_files['..']);
+			unset($log_files['.gitignore']);
+			unset($log_files['.htaccess']);
+			$log_files = array_flip($log_files);
 		}
 
 		return $this->core->sp(MCR_THEME_MOD."admin/info/main.phtml", [
@@ -136,6 +144,8 @@ class submodule
 	}
 
 	private function update_center() {
+		$this->core->header .= $this->core->sp(MCR_THEME_MOD."admin/info/header-update-center.phtml");
+
 		return $this->core->sp(MCR_THEME_MOD."admin/info/update_center.phtml");
 	}
 

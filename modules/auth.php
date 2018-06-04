@@ -61,14 +61,13 @@ class module{
 
 		$new_ip = $this->user->ip;
 		$password = $this->db->safesql($password);
-		$date = time();
 
 		if (!$this->db->query("
 			UPDATE `mcr_users`
 			SET 
 				`tmp`='$new_tmp', 
 				`ip_last`='$new_ip', 
-				`time_last`=$date
+				`time_last`=NOW()
 			WHERE `id`='$uid'
 			LIMIT 1
 		")) { $this->core->notify(

@@ -1,6 +1,6 @@
 <!DOCTYPE HTML>
 <html>
-	<head>
+	<head lang="<?= explode('-', $this->l10n->get_config_locale())[0] ?>">
 		<title><?php echo $data['CFG']['s_name']; ?> — <?php echo $data['TITLE']; ?></title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<meta charset="utf-8">
@@ -13,7 +13,7 @@
 		<?php echo $data['HEADER']; ?>
 	</head>
 
-	<body>
+	<body style="direction:<?= $this->l10n->get_locale_info('text_direction') ?>;">
 
 		<!-- Sidebar Menu -->
 		<div class="ui vertical inverted sidebar menu">
