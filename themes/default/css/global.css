@@ -170,12 +170,7 @@ body {
 
 #js-notify {
 	display: none;
-	margin: 0px;
-	margin-bottom: 20px;
-	padding: 20px;
-	word-wrap: break-word;
-	border-radius: 0px;
-	border: 0px;
+	overflow: hidden;
 }
 
 #js-notify > #close {

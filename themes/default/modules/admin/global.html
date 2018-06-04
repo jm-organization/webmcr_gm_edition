@@ -10,12 +10,12 @@
 		<?php echo $data['DEF_HEADER']; ?>
 		<?php echo $data['HEADER']; ?>
 	</head>
-
+	
 	<body>
-
+		
 		<div id="header" class="ui vertical masthead segment">
 			<div class="ui container">
-
+				
 				<div class="ui top fixed menu">
 					<a class="hidden-menu toc item">
 						<i class="sidebar icon"></i>
@@ -30,7 +30,7 @@
 					</div>
 				</div>
 			</div>
-
+			
 			<div class="ui text container">
 				<img id="logotype" class="ui right floated image" src="/themes/default/img/logotype.png">
 				<div class="ui header">
@@ -43,29 +43,29 @@
 					</div>
 				</div>
 			</div>
-
+			
 		</div>
-
+		
 		<div class="ui vertical segment" id="content">
-
+			
 			<div class="ui stackable relaxed mobile reversed grid container">
 				<div class="column">
-					<div id="js-notify" class="ui negative message">
+					<div id="js-notify" class="ui message">
 						<i class="close icon"></i>
 						<div id="title" class="header"></div>
 						<p id="message"></p>
 					</div>
-
+					<?php echo $data['L_BLOCKS']?>
 					<?php echo $data['BREADCRUMBS']; ?>
 					<?php echo $data['CONTENT']; ?>
 				</div>
 			</div>
 		</div>
-
+		
 		<div id="js-loader" title="<?php echo $this->l10n->gettext('loading'); ?>">
 			<img src="<?php echo STYLE_URL; ?>img/loading.gif" alt="<?php echo $this->l10n->gettext('loading'); ?>"/>
 		</div>
-
+		
 		<div id="footer">
 			<div class="feature alternate ui stripe vertical segment">
 				<div class="ui container">
@@ -74,7 +74,7 @@
 				</div>
 			</div>
 		</div>
-
+		
 	</body>
-
+	
 </html>

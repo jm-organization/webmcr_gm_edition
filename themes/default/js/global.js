@@ -39,21 +39,21 @@ var mcr = {
 
 		switch (type) {
 			case 2:
-				type = 'alert-danger';
+				type = 'error';
 				break;
 			case 3:
-				type = 'alert-success';
+				type = 'success';
 				break;
 			case 4:
-				type = 'alert-info';
+				type = 'info';
 				break;
 
 			default:
-				type = 'alert-warning';
+				type = 'warning';
 				break;
 		}
 
-		$('#js-notify').removeClass('alert-danger alert-warning alert-success alert-info').addClass(type);
+		$('#js-notify').removeClass('error warning success info').addClass(type);
 
 		$('#js-notify > #title').html(title);
 		$('#js-notify > #message').html(message);
