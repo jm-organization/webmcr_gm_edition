@@ -13,7 +13,7 @@
 	<?php echo $data['HEADER']; ?>
 </head>
 
-<body style="direction:<?= $this->l10n->get_locale_info('text_direction') ?>;">
+<body style="direction:<?= $this->l10n->get_locale_info('text_direction') ?>;" class="global">
 
 	<nav class="navbar navbar-toggleable-md navbar-light bg-faded fixed-top">
 		<div class="container">
@@ -77,8 +77,7 @@
 		</div>
 	</div>
 
-	<div id="js-loader" title="<?php echo $this->l10n->gettext('loading'); ?>"><img
-				src="<?php echo STYLE_URL; ?>img/loading.gif" alt="<?php echo $this->l10n->gettext('loading'); ?>"/></div>
+	<div id="js-loader" title="<?php echo $this->l10n->gettext('loading'); ?>"><img src="<?php echo STYLE_URL; ?>img/ajaxload.info_FFFFFF_facebook.gif" alt="<?php echo $this->l10n->gettext('loading'); ?>"/></div>
 
 	<nav class="navbar navbar-light bg-faded">
 		<div class="container">

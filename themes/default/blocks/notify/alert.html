@@ -1,4 +1,4 @@
-<div class="form-block block-notify alert <?php echo $data['TYPE']; ?>">
+<div class="block-notify alert <?php echo $data['TYPE']; ?>">
     <div class="block-header">
         <?php echo $this->l10n->gettext('alert'); ?> 
         <a href="#" id="close-notify">&times;</a>
@@ -10,3 +10,14 @@
         <b><?php echo $data['TITLE']; ?></b> <?php echo $data['MESSAGE']; ?>
     </div>
 </div>
+
+<!--
+<div class="alert <?php echo $data['TYPE']; ?>" role="alert">
+    <h4 class="alert-heading">
+        <?php echo $data['TITLE']; ?>
+        <button type="button" class="close" id="close-notify" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </h4>
+    <p><?php echo $data['MESSAGE']; ?></p>
+</div>-->

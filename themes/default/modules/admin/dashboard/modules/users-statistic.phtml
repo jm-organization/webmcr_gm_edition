@@ -4,9 +4,18 @@
         <small class="text-muted"><?=$this->l10n->gettext('info_count_users')?>: <?=$data['count']?></small>
     </div>
 	<div class="card-body card-block">
-		<div class="card-text">
-			<div id="user-group-statistic" data-data='<?=json_encode($data['groups'], JSON_UNESCAPED_UNICODE)?>' style="width:200px;height:250px;display:inline-block;"></div>
-			<div id="user-date-reg-statistic" data-data='<?=json_encode($data['date-regs'], JSON_UNESCAPED_UNICODE)?>' style="width:410px;height:250px;display:inline-block;float:right;"></div>
+		<div class="card-text" style="height:350px">
+
+			<div class="chart-container"
+                 data-data='<?=json_encode($data['groups'], JSON_UNESCAPED_UNICODE)?>'
+                 style="position:relative;margin:auto;width:200px;height:100%;display:inline-block;"
+            ><canvas id="user-group-statistic"></canvas></div>
+
+			<div class="chart-container"
+                 data-data='<?=json_encode($data['date-regs'], JSON_UNESCAPED_UNICODE)?>'
+                 style="position:relative;margin:auto;width:calc(100% - 200px);height:100%;display:inline-block;float:right;"
+            ><canvas id="user-date-reg-statistic"></canvas></div>
+
 		</div>
 	</div>
 </div>

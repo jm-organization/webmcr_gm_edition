@@ -94,7 +94,7 @@ class log
 		file_put_contents($file, $log);
 	}
 
-	private function get_log_type($code)
+	public function get_log_type($code)
 	{
 		$types = [
 			111 => 'MYSQL_ERROR',

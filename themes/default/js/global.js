@@ -287,64 +287,7 @@ var mcr = {
             };
             
             $(selector).DataTable(db_settings);
-        },
-
-    buildLineGraph: function(data) {
-        let lines_nums = []; for (let i in data._data) { lines_nums.push(data._data[i][data._title]); }
-
-        new Morris.Line({
-            // ID of the element in which to draw the chart.
-            element: data._title+'-statistic',
-            // Chart data records -- each entry in this array corresponds to a point on
-            // the chart.
-            data: data._data,
-            // The name of the data record attribute that contains x-values.
-            xkey: 'date',
-            // A list of names of data record attributes that contain y-values.
-            ykeys: [data._title],
-            ymin: 1,
-            numLines:  Math.max(...lines_nums),
-            // Labels for the ykeys -- will be displayed when you hover over the
-            // chart.
-            labels: [lng[data._title+'_on_day']],
-            hideHover: 'auto',
-            dateFormat: function (x) {
-                let date = new Date(x);
-
-                let IndexToMonth = [ lng.jan, lng.feb, lng.mar, lng.apr, lng.may, lng.jun, lng.jul, lng.aug, lng.sep, lng.oct, lng.nov, lng.dec ];
-
-                let day = date.getDate();
-                let month = IndexToMonth[ date.getMonth() ];
-                let year = date.getFullYear();
-
-                return day + ' ' + month + ', ' + year;
-            },
-            resize: true
-        });
-
-        mcr.loading(false);
-    },
-
-    buildDountGraph: function(data) {
-        let lines_nums = []; for (let i in data._data) { lines_nums.push(data._data[i][data._title]); }
-
-        let colors = [];
-        if (data._title === 'user-group') {
-            colors = JSON.parse(data._message).colors;
         }
-
-        new Morris.Donut({
-            // ID of the element in which to draw the chart.
-            element: data._title+'-statistic',
-            // Chart data records -- each entry in this array corresponds to a point on
-            // the chart.
-            data: data._data,
-            colors: colors,
-            resize: true
-        });
-
-        mcr.loading(false);
-    }
 };
 
 // Функции, вызываемые при загрузке

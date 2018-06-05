@@ -44,6 +44,11 @@ register_shutdown_function(function() use ($core) {
 
 	if (!empty($error)) {
 		$core->log->write($error['message'], $error['type'], $error['file'], $error['line']);
+
+		// TODO: Сделать обработчик критических ошибок с выводом на экран!!!
+		if ($error['type'] == log::FATAL_ERROR) {
+			echo 'fatal error';
+		}
 	}
 
 	return null;

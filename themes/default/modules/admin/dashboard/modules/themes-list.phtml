@@ -1,0 +1,27 @@
+<div class="card">
+
+    <div class="card-header">
+		<?=$this->l10n->gettext('themes')?>
+    </div>
+
+	<div class="admin-themes-menu card-block">
+		<div class="owl-carousel owl-theme" id="themes_carusel">
+			<?php foreach ($data as $datum) { ?>
+				<div class="item">
+					<img class="i-icon" src="<?=$datum['img']?>">
+					<div class="theme-about">
+						<h3 class="theme-name"><?php echo $datum['ThemeName']; ?></h3>
+						<p class="theme-description"><?php echo $datum['About']; ?></p>
+					</div>
+					<?php if($datum['active']) { ?>
+						<span class="theme-active fa fa-check-square-o"></span>
+					<?php } ?>
+					<div class="item-footer" style="text-align:left;">
+						<span class="version">v<?=$datum['Version'];?></span>
+					</div>
+				</div>
+			<?php } ?>
+		</div>
+	</div>
+
+</div>
