@@ -1,19 +1,25 @@
 <!DOCTYPE html>
 <html lang="<?= explode('-', $this->l10n->get_config_locale())[0] ?>">
 <head>
-	<meta charset="UTF-8">
+    <meta charset="utf-8">
 	<title><?php echo $data['CFG']['s_name']; ?> — <?php echo $data['TITLE']; ?></title>
+
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta charset="utf-8">
+
 	<meta name="author" content="NC22 &amp; Qexy.org / completed Magicfar4 aka Magicmen">
 	<meta name='data' content='<?php echo META_JSON_DATA; ?>'>
+
 	<base href="<?php echo BASE_URL ?>">
+
 	<?php echo $data['DEF_HEADER']; ?>
+
 	<?php echo $data['HEADER']; ?>
 </head>
 <body>
 
-	<section style="width:100%;height:100%;padding-top:24px" class="admin-wrapper">
+    <div id="js-loader" title="<?php echo $this->l10n->gettext('loading'); ?>"><img src="<?php echo STYLE_URL; ?>img/ajaxload.info_FFFFFF_facebook.gif" alt="<?php echo $this->l10n->gettext('loading'); ?>"/></div>
+
+	<section style="width:100%;height:100%;padding-top:24px;background:black" class="admin-wrapper">
 
 		<aside>
             <div class="menu-header">
@@ -49,17 +55,19 @@
 	</section>
 
     <header style="display:flow-root;position:fixed;top:0;width:100%;">
+        <div class="brand"><?=$this->cfg->main['s_name']?></div>
+
         <ul class="global-menu">
             <li class="nav-item"><a href="/" class="nav-link"><?=$this->l10n->gettext('home')?></a></li>
 
-            <li class="nav-item divider"></li>
+            <!--<li class="nav-item divider"></li>
 
             <li class="nav-item">
                 <a href="/?mode=admin&do=info&op=update_center" class="nav-link icons" title="Обновлений нет" style="padding-right:1em">
                     <span class="fa fa-refresh nav-icon"></span>
                     <span class="badge ml-1">0</span>
                 </a>
-            </li>
+            </li>-->
 
             <?php $data['DEBUG'] = [
                 "PLT" => number_format(microtime(true)-DEBUG_PLT,3),
@@ -93,7 +101,7 @@
 
                     if (!empty(error_get_last())) {
                         $error = error_get_last();
-                        $type = log::get_log_type($error['type']);
+                        $type = $this->log->get_log_type($error['type']);
                         $error = "[{$type}] {$error['message']} in file: {$error['file']} on line: {$error['line']}";
 
                         ?>
@@ -120,7 +128,13 @@
         </ul>
     </header>
 
-    <div id="js-loader" title="<?php echo $this->l10n->gettext('loading'); ?>"><img src="<?php echo STYLE_URL; ?>img/ajaxload.info_FFFFFF_facebook.gif" alt="<?php echo $this->l10n->gettext('loading'); ?>"/></div>
+    <script src="<?=STYLE_URL?>galery/js/lightgallery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-mousewheel/3.1.13/jquery.mousewheel.min.js"></script>
+
+    <script src="<?=STYLE_URL?>galery/js/lg-thumbnail.min.js"></script>
+    <script src="<?=STYLE_URL?>galery/js/lg-fullscreen.min.js"></script>
+    <script src="<?=STYLE_URL?>galery/js/lg-pager.min.js"></script>
+    <script src="<?=STYLE_URL?>galery/js/lg-zoom.min.js"></script>
 
 </body>
 </html>

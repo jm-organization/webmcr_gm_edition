@@ -498,6 +498,7 @@ INSERT INTO `mcr_l10n_phrases` (`language_id`, `phrase_key`, `phrase_value`) VAL
 (1, 'menu_target_self', 'В текущей вкладке'),
 (1, 'menu_top_lvl', 'Верхний уровень'),
 (1, 'menugrp', 'Группы меню ПУ'),
+(1, 'more', 'Подробнее'),
 (1, 'message', 'Сообщение'),
 (1, 'method_in_class_not_found', 'Метод %s в классе %s не найден'),
 (1, 'method_not_found', 'Метод %s не найден'),
@@ -946,6 +947,17 @@ INSERT INTO `mcr_l10n_phrases` (`language_id`, `phrase_key`, `phrase_value`) VAL
 (1, 'update_state', 'Состояние обновления'),
 (1, 'you_are_updated', 'Система обновлена до последней версии'),
 (1, 'magicmcr_update_center', 'Центр обновления MagicMCR'),
+(1, 'themes', 'MagicMCR темы'),
+(1, 'about_theme', 'О теме'),
+(1, 'magicmer_theme_version', 'Версия темы'),
+(1, 'magicmer_theme_mcr_supported_version', 'Поддерживаемая версия MagicMCR'),
+(1, 'magicmer_theme_version_info', 'Информация о версии'),
+(1, 'magicmer_theme_date_create', 'Дата создания'),
+(1, 'magicmer_theme_date_last_release', 'Дата последнего релиза'),
+(1, 'magicmer_theme_up_url', 'Ссылка для обновления'),
+(1, 'magicmer_theme_author', 'Автор(ы)'),
+(1, 'magicmer_theme_author_url', 'Ссылка на автора(ов)'),
+(1, 'themes_screenshots', 'Скриншоты темы'),
 (1, 'copyryting', 'Полное или частичное копирование сайта %s запрещено');
 
 #line

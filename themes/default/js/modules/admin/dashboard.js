@@ -62,6 +62,9 @@ $(document).ready(function(){
 
 
     })(this);
+
+
+    $('#get_more_theme_info').on('click', onOpenThemeInfoModal);
 });
 
 function ChatBuild(container, charttype, properties) {
@@ -71,5 +74,62 @@ function ChatBuild(container, charttype, properties) {
     $.extend(chart_properties, properties);
 
     return new Chart(container, chart_properties);
+
+}
+
+function onOpenThemeInfoModal() {
+
+    var $modal = $('#themesModal');
+
+    var theme_cod = $(this).data('theme-cod');
+
+    $.getJSON("index.php?mode=ajax&do=themes&theme="+theme_cod, function(theme){
+
+        //console.log(json);
+        var authors = theme.Author.split('; ');
+
+        $modal.find('.theme-name').text(theme.ThemeName);
+
+        $modal.find('.modal-header').css({
+            'background-image': 'url(/themes/'+theme.ThemeCode+'/'+theme.Screenshots[1]+')'
+        });
+
+        $modal.find('.about-theme').html(theme.MoreAbout);
+
+        $modal.find('.theme-version span').text(theme.Version);
+        $modal.find('.theme-supported-magicmcr-version span').text(theme.SupportedMagicMCRVersion);
+        $modal.find('.theme-version-info').attr('data-content', theme.VInfo);
+        $modal.find('.theme-date-created span').text(theme.DateCreate);
+        $modal.find('.theme-date-of-last-release span').text(theme.DateOfRelease);
+
+        $modal.find('.theme-update-url span').text(theme.UpdateURL);
+
+        $modal.find('.theme-author span').html('<span class="badge badge-info mr-2">'+authors.join('</span><span class="badge badge-info mr-2">')+'</span>');
+        $modal.find('.theme-author-url span').html(theme.AuthorUrl);
+
+        var gallary = '';
+
+        for (var image in theme.Screenshots) {
+            gallary +=
+                '<a class="fa fa-search" href="/themes/'+theme.ThemeCode+'/'+theme.Screenshots[image]+'">' +
+                '    <img src="/themes/'+theme.ThemeCode+'/'+theme.Screenshots[image]+'" >' +
+                '</a>'
+            ;
+        }
+
+        //console.log(gallary);
+
+        $modal.find('#screenshots').html('<div id="lightgallery"></div>');
+        $modal.find('#lightgallery').html(gallary).justifiedGallery({
+            border: 6
+        }).on('jg.complete', function() {
+            $(this).lightGallery({
+                thumbnail:true,
+                animateThumb: false,
+                showThumbByDefault: false
+            });
+        });
+
+    });
 
 }

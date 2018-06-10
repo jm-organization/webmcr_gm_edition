@@ -61,7 +61,7 @@ class submodule
 	{
 		$results = [ 'xKeys' => [], 'yKeys' => [], 'colors' => [] ];
 
-		$query = $this->db->query("SELECT  `g`.`id`, `g`.`title` FROM `mcr_groups` AS `g` LEFT JOIN `mcr_users` AS `u` ON `u`.`gid`=`g`.`id` GROUP BY `g`.`id`");
+		$query = $this->db->query("SELECT `u`.`id`, `g`.`title` FROM `mcr_groups` AS `g` LEFT JOIN `mcr_users` AS `u` ON `u`.`gid`=`g`.`id`");
 
 		if ($query && $this->db->num_rows($query) > 0) {
 			$groups = [];
@@ -150,7 +150,7 @@ class submodule
 			if(!file_exists(MCR_ROOT.'themes/'.$value.'/theme.php')) continue;
 
 			require(MCR_ROOT.'themes/'.$value.'/theme.php');
-			$theme['img'] = '/themes/'.$value.'/about-bg.png';
+			$theme['img_path'] = '/themes/'.$value.'/';
 			$theme['active'] = $this->cfg->main['s_theme'] == $value;
 
 			$results[] = $theme;

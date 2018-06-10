@@ -21,6 +21,8 @@ define('MCR_CONF_PATH', MCR_ROOT.'configs/');
 define('MCR_UPL_PATH', MCR_ROOT.'uploads/');
 define('MCR_CACHE_PATH', MCR_ROOT.'data/cache/');
 
+error_reporting(0);
+
 session_save_path(MCR_UPL_PATH.'tmp');
 if(!session_start()){ session_start(); }
 
@@ -35,25 +37,7 @@ $core = new core();
 
 // Debug
 ini_set("display_errors", $core->cfg->main['debug']);
-$warn_type = ($core->cfg->main['debug']) ? E_ALL : 0;
-error_reporting(0);
-
-register_shutdown_function(function() use ($core) {
-
-	$error = error_get_last();
-
-	if (!empty($error)) {
-		$core->log->write($error['message'], $error['type'], $error['file'], $error['line']);
-
-		// TODO: Сделать обработчик критических ошибок с выводом на экран!!!
-		if ($error['type'] == log::FATAL_ERROR) {
-			echo 'fatal error';
-		}
-	}
-
-	return null;
-
-});
+//$warn_type = ($core->cfg->main['debug']) ? E_ALL : 0;
 
 $meta_json_data = array(
 	'secure' => MCR_SECURE_KEY,

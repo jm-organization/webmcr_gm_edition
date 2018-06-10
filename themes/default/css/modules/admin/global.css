@@ -134,6 +134,7 @@
 |******************************************|
 \*----------------------------------------*/
 
+.lg-backdrop { z-index: 1050!important; }
 
 /*			  New admin style			  */
 .card-link.custom { color: white; }
@@ -145,6 +146,15 @@
 header {
 	background: #000;
 }
+
+header .brand {
+	width: 200px;
+	display: inline;
+	color: #e9e9e9;
+	padding-left: 15px;
+	font-weight: bold;
+}
+
 header .global-menu {
 	width: calc(100% - 200px);
 	float: right;
@@ -176,6 +186,10 @@ header .global-menu li.divider {
 	margin: 4px 0;
 }
 
+.sidebar-hide header .brand {
+	display: none;
+}
+
 .sidebar-hide header .global-menu {
 	width: calc(100% - 42px);
 }
@@ -200,6 +214,9 @@ header .global-menu li.divider {
 	text-align: center;
 	padding: 10.5px 15px;
 	cursor: pointer;
+	position: absolute;
+	top: 0;
+	right: 0px;
 }
 .admin-wrapper > aside .sidebar-toggler:hover,
 .admin-wrapper > aside .sidebar-toggler:active {
@@ -379,6 +396,80 @@ header .global-menu li.divider {
 	background: #f7f7f9;
 	border: 1px solid #d8d8da;
 	padding: 6px 12px;
+}
+
+.themes-modal .modal-header {
+	background-size: cover;
+	height: 180px;
+	background-position-y: 0%;
+	position: relative;
+	border-top-left-radius: .3rem;
+	border-top-right-radius: .3rem;
+}
+.themes-modal .modal-header:after {
+	content: '';
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	background-image: linear-gradient(to bottom, transparent 144px, #585858 256px, #f7f7f9 144px);
+	top: 0;
+	left: 0;
+	z-index:0;
+	border-top-left-radius: .3rem;
+	border-top-right-radius: .3rem;
+}
+
+.modal-with-nav {
+	display: block;
+}
+.modal-with-nav .modal-title,
+.modal-with-nav .modal-header-tabs,
+.modal-with-nav .close {
+	z-index: 1;
+	position: relative;
+}
+.modal-with-nav .modal-header-tabs {
+	margin-bottom: -1.4rem;
+	border-bottom: 0;
+	margin-top: 86px;
+}
+
+#themesModal #screenshots a:before {
+	position: absolute;
+	z-index: 10;
+	color: white;
+	width: 100%;
+	height: 100%;
+	text-align: center;
+	padding: 48px 110px;
+	font-size: 25px;
+	opacity: 0;
+}
+
+#themesModal #screenshots a:after {
+	content: '';
+	background-color: rgba(0, 0, 0, 0.1);
+	bottom: 0;
+	left: 0;
+	position: absolute;
+	right: 0;
+	top: 0;
+	-webkit-transition: background-color 0.15s ease 0s;
+	-o-transition: background-color 0.15s ease 0s;
+	transition: background-color 0.15s ease 0s;
+}
+
+#themesModal #screenshots a:hover:before {
+	opacity: 0.8;
+}
+
+#themesModal #screenshots a:hover:after {
+	background-color: rgba(0, 0, 0, 0.5);
+}
+
+#themesModal #screenshots a:hover > img {
+	-webkit-transform: scale3d(1.1, 1.1, 1.1);
+	transform: scale3d(1.1, 1.1, 1.1);
 }
 
 
