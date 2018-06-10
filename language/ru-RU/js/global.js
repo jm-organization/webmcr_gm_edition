@@ -32,6 +32,8 @@ var lng = {
 
 	registered_users: 'Зарегистрированые пользователи',
 
+    theme_without_description: 'Тема без описания',
+
 	jan: 'Январь',
 	feb: 'Февраль',
 	mar: 'Март',

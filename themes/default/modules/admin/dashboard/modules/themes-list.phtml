@@ -21,8 +21,7 @@
 
 					<div class="item-footer" style="text-align:left;">
 						<span class="version"><?=$datum['Version'];?></span>
-                        <span class="btn btn-sm btn-link more pull-right"
-                              id="get_more_theme_info"
+                        <span class="btn btn-sm btn-link more pull-right get_more_theme_info"
                               role="button"
 
                               data-theme-cod="<?=$datum['ThemeCode'];?>"
@@ -71,14 +70,14 @@
                             </div>
                             <div class="col-md-4" style="background: #f7f7f9;margin: -15px 0;border-left: 1px solid #ddd;padding: 15px;">
 								<p class="theme-version">
-                                    <i class="fa fa-info-circle theme-version-info"
+                                    <i class="fa fa-info-circle theme-version-info mr-2"
                                        title="<?=$this->l10n->gettext('magicmer_theme_version_info')?>"
                                        data-container="body"
                                        data-toggle="popover"
                                        data-placement="bottom"
                                        data-content=""
                                        style="cursor:pointer;"
-                                    ></i>&nbsp;
+                                    ></i>
                                     <b><?=$this->l10n->gettext('magicmer_theme_version')?>:</b> <span></span>
                                 </p>
 								<p class="theme-supported-magicmcr-version"><b><?=$this->l10n->gettext('magicmer_theme_mcr_supported_version')?>:</b> <span></span></p>
@@ -100,7 +99,7 @@
                 </div>
 
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-sm btn-primary"><?=$this->l10n->gettext('patch_install')?></button>
+                    <button type="button" class="btn btn-sm btn-primary" id="theme_install"><?=$this->l10n->gettext('patch_install')?></button>
                 </div>
 
             </div>

@@ -41,13 +41,35 @@ class submodule
 
 	public function content()
 	{
-		$theme_cod_name = $_GET['theme'];
-		$theme = [];
+		if (isset($_GET['op'])) {
+			switch ($_GET['op']) {
+				case 'gettheme':
+					$theme_cod_name = $_GET['theme'];
+					$theme = [];
 
-		if (file_exists(MCR_ROOT . 'themes/' . $theme_cod_name)) {
-			$theme = $this->get_theme($theme_cod_name);
+					if (file_exists(MCR_ROOT . 'themes/' . $theme_cod_name)) {
+						$theme = $this->get_theme($theme_cod_name);
+					}
+
+					echo json_encode($theme, JSON_UNESCAPED_UNICODE); exit;
+					break;
+
+				case 'settheme':
+					$theme_cod_name = $_GET['theme'];
+
+					$this->core->cfg->main['s_theme'] = $theme_cod_name;
+
+					if(!$this->core->cfg->savecfg($this->core->cfg->main)){
+						$this->core->js_notify($this->l10n->gettext('set_e_cfg_save'), $this->l10n->gettext('error_message'), 2, null);
+					}
+
+					$this->core->js_notify(null, $this->l10n->gettext('error_success'), 2, null);
+					break;
+
+				default: break;
+			}
+		} else {
+			$this->core->js_notify($this->l10n->gettext('error_hack'));
 		}
-
-		echo json_encode($theme, JSON_UNESCAPED_UNICODE); exit;
 	}
 }

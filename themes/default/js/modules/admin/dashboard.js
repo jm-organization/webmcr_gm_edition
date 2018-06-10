@@ -64,7 +64,21 @@ $(document).ready(function(){
     })(this);
 
 
-    $('#get_more_theme_info').on('click', onOpenThemeInfoModal);
+    $('.get_more_theme_info').on('click', onOpenThemeInfoModal);
+    
+    $('#theme_install').on('click', function () {
+        var theme = $(this).data('theme-cod');
+
+        $.ajax({
+            url: "index.php?mode=ajax&do=themes&op=settheme&theme="+theme,
+            type: 'GET',
+            complete: function (data) {
+                mcr.loading(true);
+
+                window.location.reload();
+            }
+        });
+    });
 });
 
 function ChatBuild(container, charttype, properties) {
@@ -83,26 +97,45 @@ function onOpenThemeInfoModal() {
 
     var theme_cod = $(this).data('theme-cod');
 
-    $.getJSON("index.php?mode=ajax&do=themes&theme="+theme_cod, function(theme){
+    $.getJSON("index.php?mode=ajax&do=themes&op=gettheme&theme="+theme_cod, function(theme){
 
-        //console.log(json);
         var authors = theme.Author.split('; ');
 
-        $modal.find('.theme-name').text(theme.ThemeName);
+        $modal.find('.theme-name').text(theme.ThemeCode);
+        if (theme.ThemeName !== '') {
+            $modal.find('.theme-name').text(theme.ThemeName);
+        }
 
         $modal.find('.modal-header').css({
             'background-image': 'url(/themes/'+theme.ThemeCode+'/'+theme.Screenshots[1]+')'
         });
 
-        $modal.find('.about-theme').html(theme.MoreAbout);
+        $modal.find('.about-theme').html('<span class="text-center text-muted">'+lng.theme_without_description+'</span>');
+        if (theme.MoreAbout !== '') {
+            $modal.find('.about-theme').html(theme.MoreAbout);
+        }
 
         $modal.find('.theme-version span').text(theme.Version);
         $modal.find('.theme-supported-magicmcr-version span').text(theme.SupportedMagicMCRVersion);
+
         $modal.find('.theme-version-info').attr('data-content', theme.VInfo);
+        if (theme.VInfo === '') {
+            $modal.find('.theme-version-info').remove();
+        }
+
         $modal.find('.theme-date-created span').text(theme.DateCreate);
+        if (theme.DateCreate === '') {
+            $modal.find('.theme-date-created').hide();
+        }
         $modal.find('.theme-date-of-last-release span').text(theme.DateOfRelease);
+        if (theme.DateOfRelease === '') {
+            $modal.find('.theme-date-of-last-release').hide();
+        }
 
         $modal.find('.theme-update-url span').text(theme.UpdateURL);
+        if (theme.UpdateURL === '') {
+            $modal.find('.theme-update-url').hide();
+        }
 
         $modal.find('.theme-author span').html('<span class="badge badge-info mr-2">'+authors.join('</span><span class="badge badge-info mr-2">')+'</span>');
         $modal.find('.theme-author-url span').html(theme.AuthorUrl);
@@ -129,6 +162,8 @@ function onOpenThemeInfoModal() {
                 showThumbByDefault: false
             });
         });
+
+        $modal.find('#theme_install').attr('data-theme-cod', theme_cod);
 
     });
 

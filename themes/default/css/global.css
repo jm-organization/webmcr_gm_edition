@@ -235,6 +235,7 @@ body > .container > .row > .col-md-8 {
 	width: 85px;
 	height: 30px;
 	text-align: center;
+	z-index: 20000;
 }
 
 .global #js-loader { top: 49px; }

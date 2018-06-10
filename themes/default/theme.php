@@ -6,7 +6,7 @@ $theme = array(
 	"ThemeName" => "Magestic theme",
 	"ThemeCode" => "default",
 
-	"UpdateURL" => "--",
+	"UpdateURL" => "",
 	
 	"Author" => "Magicfar4 aka Magicmen; Ghostly Rainbow; NC22; KillerProst; Toster_tpl",
 	"AuthorUrl" => "<a href='http://www.jm-org.net' target='_blank'>http://www.jm-org.net</a>",
@@ -30,7 +30,7 @@ $theme = array(
 	"VInfo" => "Максимальная версия MagicMCR - v.18.5-alpha",
 	
 	"DateCreate" => "09/01/2017",
-	"DateOfRelease" => "--"
+	"DateOfRelease" => ""
 );
 
 ?>
