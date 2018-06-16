@@ -97,20 +97,59 @@ class submodule
 		$query = $this->db->query("SELECT `u`.`id`, `u`.`time_create` FROM `mcr_users` AS `u` WHERE `u`.`time_create` >= '$three_mouth_back' AND `u`.`time_create` <= NOW()");
 
 		if ($query && $this->db->num_rows($query) > 0) {
-			$users = $grouped_users = [];
+			// Извлекаем всех пользователей в один общий масив.
+			// На основании этого мосива создаём два масиво - один, который совпадает с тем,
+			// что хранится в БД, другой - на основании которого будет построен будущий график.
+			$users_ = $users = $query->fetch_all(MYSQLI_ASSOC);
 
-			//  Извлекаем всех пользователей в один общий масив.
-			while ($ar = $this->db->fetch_assoc($query)) { $users[] = $ar; }
+			// Перебираем наш псевдо масив чтобы заполнить пропуски в днях
+			foreach ($users_ as $user) {
+				$start = new DateTime($user['time_create']);
+				$next = next($users_);
+
+				// Если есть следующий день
+				if ($next) {
+					// берём его дату
+					$end = new DateTime($next['time_create']);
+
+					// вычисляем разницу между соседними днями
+					$diff = $start->diff($end);
+
+					// если эта разница больше одного дня, дополянем масив,
+					// который используется для построения графика недостоющими датами.
+					if ($diff->days > 1) {
+						for ($d = 0; $d < $diff->days - 1; $d++) {
+							array_push($users, [
+								'id' => null,
+								'time_create' => $start->modify("+1 day")->format('Y-m-d H:i:s.u'),
+							]);
+						}
+					}
+				}
+			}
 
 			$grouped_users = array_group_by($users, function($user) {
 				return $this->l10n->localize(strtotime($user['time_create']), 'unixtime', '%d/%m/%y');
 			});
 
+			// сортируем по дате
+			ksort($grouped_users);
+
 			$grouped_users = array_map(function($users) {
-				return count($users);
+				$counted = [];
+
+				// если за день не было пользователей (id => null), не учитываем их при подсчёте
+				foreach ($users as $user) {
+					if (!empty($user['id'])) {
+						$counted[] = $user['id'];
+					}
+				}
+				// в итоге получаем пустой масив в тот день, когда не было регистраций
+
+				return count($counted);
 			}, $grouped_users);
 
-			//var_dump($grouped_users);
+			// разделяем масив на ключи и значения для графика
 			$results['xKeys'] = array_keys($grouped_users);
 			$results['yKeys'] = array_values($grouped_users);
 		}
