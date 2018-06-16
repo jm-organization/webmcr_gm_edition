@@ -361,7 +361,7 @@ class submodule
 
 		$query = $this->db->query("SELECT 
 				`m`.id, `m`.gid, `m`.title,
-				`m`.`url`, `m`.`target`, 
+				`m`.`url`, `m`.`target`, `m`.`fixed`, 
 				
 				`g`.title AS `group`
 			FROM `mcr_menu_adm` AS `m`
@@ -379,21 +379,22 @@ class submodule
 			return $this->core->sp(MCR_THEME_MOD."admin/menu_adm/menu-none.html");
 		}
 
-		$menus = [];
+		$pages = [];
 		while ($ar = $this->db->fetch_assoc($query)) {
-			$menus[] = [
+			$pages[] = [
 				"ID" => intval($ar['id']),
 				"GID" => intval($ar['gid']),
 				"TITLE" => $this->db->HSC($ar['title']),
 				"URL" => $this->db->HSC($ar['url']),
 				"TARGET" => $this->db->HSC($ar['target']),
 				"GROUP" => $this->db->HSC($ar['group']),
+				"FIXED" => $ar['fixed'] ? 'checked' : '',
 			];
 		}
 
 		//$menus = array_group_by($menus, 'GROUP');
 
-		return $menus;
+		return $pages;
 	}
 
 	private function add_page_id_to_group($group_id, $page_id)

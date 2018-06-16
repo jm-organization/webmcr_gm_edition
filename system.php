@@ -8,7 +8,7 @@ ini_set("post_max_size", "50M");
 
 // System constants
 define('PROGNAME', 'MagicMCR'. MCR);
-define('VERSION', 'webmcr_gm_edition_v1.18.5-beta');
+define('VERSION', 'webmcr_gm_edition_v1.18.6-beta');
 define('FEEDBACK', PROGNAME.' powered by <a href="http://webmcr.com" target="_blank">WebMCR</a> &copy; 2017-'.date("Y").' <a href="http://www.jm-org.net/about/#Magicmen">Magicmen</a>');
 define('MCR_ROOT', dirname(__FILE__).'/');
 define('MCR_MODE_PATH', MCR_ROOT.'modules/');
