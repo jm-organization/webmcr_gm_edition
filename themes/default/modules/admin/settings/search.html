@@ -1,21 +1,18 @@
-<div class="ui segments">
-	<div class="ui top attached tabular menu">
-		<a class="item" href="<?php echo ADMIN_URL; ?>&do=settings&op=main"><?php echo $this->l10n->gettext('set_main'); ?></a>
-		<a class="item" href="<?php echo ADMIN_URL; ?>&do=settings&op=pagin"><?php echo $this->l10n->gettext('set_pagin'); ?></a>
-		<a class="item" href="<?php echo ADMIN_URL; ?>&do=settings&op=mail"><?php echo $this->l10n->gettext('set_mail'); ?></a>
-		<a class="active item" href="<?php echo ADMIN_URL; ?>&do=settings&op=search"><?php echo $this->l10n->gettext('set_search'); ?></a>
-		<a class="item" href="<?php echo ADMIN_URL; ?>&do=settings&op=functions"><?php echo $this->l10n->gettext('set_func'); ?></a>
-		<a class="item" href="<?php echo ADMIN_URL; ?>&do=settings&op=base"><?php echo $this->l10n->gettext('set_base'); ?></a>
+<div class="ui top attached tabular menu">
+	<a class="item" href="<?php echo ADMIN_URL; ?>&do=settings&op=main"><?php echo $this->l10n->gettext('set_main'); ?></a>
+	<a class="item" href="<?php echo ADMIN_URL; ?>&do=settings&op=pagin"><?php echo $this->l10n->gettext('set_pagin'); ?></a>
+	<a class="item" href="<?php echo ADMIN_URL; ?>&do=settings&op=mail"><?php echo $this->l10n->gettext('set_mail'); ?></a>
+	<a class="active item" href="<?php echo ADMIN_URL; ?>&do=settings&op=search"><?php echo $this->l10n->gettext('set_search'); ?></a>
+	<a class="item" href="<?php echo ADMIN_URL; ?>&do=settings&op=functions"><?php echo $this->l10n->gettext('set_func'); ?></a>
+	<a class="item" href="<?php echo ADMIN_URL; ?>&do=settings&op=base"><?php echo $this->l10n->gettext('set_base'); ?></a>
+</div>
+
+<div class="ui bottom attached segment">
+	<form method="post"></form>
+	
+	<div class="tab-content">
+		
+		<?php echo $data['ITEMS']; ?>
+		
 	</div>
-
-	<div class="ui segment">
-		<form method="post"></form>
-
-		<div class="tab-content">
-
-			<?php echo $data['ITEMS']; ?>
-
-		</div>
-	</div>
-
 </div>
