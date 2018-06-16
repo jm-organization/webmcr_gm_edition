@@ -8,7 +8,7 @@ ini_set("post_max_size", "50M");
 
 // System constants
 define('PROGNAME', 'MagicMCR'. MCR);
-define('VERSION', 'webmcr_gm_edition_beta_1.13');
+define('VERSION', 'webmcr_gm_edition_v1.18.6-beta');
 define('FEEDBACK', PROGNAME.' powered by <a href="http://webmcr.com" target="_blank">WebMCR</a> &copy; 2017-'.date("Y").' <a href="http://www.jm-org.net/about/#Magicmen">Magicmen</a>');
 define('MCR_ROOT', dirname(__FILE__).'/');
 define('MCR_MODE_PATH', MCR_ROOT.'modules/');
@@ -21,6 +21,8 @@ define('MCR_CONF_PATH', MCR_ROOT.'configs/');
 define('MCR_UPL_PATH', MCR_ROOT.'uploads/');
 define('MCR_CACHE_PATH', MCR_ROOT.'data/cache/');
 
+error_reporting(0);
+
 session_save_path(MCR_UPL_PATH.'tmp');
 if(!session_start()){ session_start(); }
 
@@ -29,26 +31,12 @@ header('Content-Type: text/html; charset=UTF-8');
 
 // Load core
 require_once(MCR_TOOL_PATH.'core.class.php');
-
 // Create new core object
 $core = new core();
 
 // Debug
 ini_set("display_errors", $core->cfg->main['debug']);
-$warn_type = ($core->cfg->main['debug']) ? E_ALL : 0;
-error_reporting(0);
-
-register_shutdown_function(function() use ($core) {
-
-	$error = error_get_last();
-
-	if (!empty($error)) {
-		$core->log->write($error['message'], $error['type'], $error['file'], $error['line']);
-	}
-
-	return null;
-
-});
+//$warn_type = ($core->cfg->main['debug']) ? E_ALL : 0;
 
 $meta_json_data = array(
 	'secure' => MCR_SECURE_KEY,

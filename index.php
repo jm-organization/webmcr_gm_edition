@@ -2,9 +2,10 @@
 define("DEBUG_PLT", microtime(true));
 define('MCR', '');
 
+if(file_exists('./init-krumo.php')) require_once("./init-krumo.php");
 require_once("./system.php");
 
-$core->def_header = $core->sp(MCR_THEME_PATH."header.html");
+$core->def_header = $core->sp(MCR_THEME_PATH."header.phtml");
 
 $mode = (isset($_GET['mode']))?$_GET['mode']:$core->cfg->main['s_dpage'];
 

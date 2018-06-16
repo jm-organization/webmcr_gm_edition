@@ -27,7 +27,7 @@ class submodule
 			$this->core->js_notify($this->l10n->gettext('error_method'));
 		}
 
-		$login = $this->db->safesql(urldecode(@$_POST['query']));
+		$login = $this->db->safesql(@$_POST['query']);
 		$query = $this->db->query("SELECT `login` FROM `mcr_users` WHERE `login` LIKE '%$login%' ");
 
 		if (!$query || $this->db->num_rows($query) <= 0) {

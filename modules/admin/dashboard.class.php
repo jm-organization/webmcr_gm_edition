@@ -27,7 +27,7 @@ class submodule
 		$this->core->header .= $this->core->sp(MCR_THEME_PATH."modules/admin/dashboard/header.phtml");
 	}
 
-	public function modules()
+	private function modules()
 	{
 		// Получаем список модулей с базы
 		$query = $this->db->query(
@@ -41,6 +41,8 @@ class submodule
 			
 			LEFT JOIN `mcr_menu_adm_icons` AS `i`
 				ON `i`.id=`m`.icon
+			
+			WHERE `m`.`fixed`='1'
 				
 			ORDER BY `priority` ASC"
 		);
@@ -57,81 +59,99 @@ class submodule
 		return null;
 	}
 
-	public function user_groups()
+	private function user_groups()
 	{
-		$query = $this->db->query(
-			"SELECT 
-				`g`.`id`, `g`.`title`, COUNT(`u`.`id`) AS `count`
-			FROM `mcr_groups` AS `g`
-			
-			LEFT JOIN `mcr_users` AS `u`
-				ON `u`.`gid`=`g`.`id`
-				
-			GROUP BY `g`.`id`"
-		);
-		$results = [];
+		$results = [ 'xKeys' => [], 'yKeys' => [], 'colors' => [] ];
+
+		$query = $this->db->query("SELECT `u`.`id`, `g`.`title` FROM `mcr_groups` AS `g` LEFT JOIN `mcr_users` AS `u` ON `u`.`gid`=`g`.`id`");
 
 		if ($query && $this->db->num_rows($query) > 0) {
-			while ($ar = $this->db->fetch_assoc($query)) {
-				switch (intval($ar['id'])) {
-					case 0:
-						$color = '#dc3545';
-						break;
-					case 1:
-						$color = '#ffc107';
-						break;
-					case 2:
-						$color = '#28a745';
-						break;
-					case 3:
-						$color = '#17a2b8';
-						break;
+			$groups = [];
+			while ($ar = $this->db->fetch_assoc($query)) { $groups[] = $ar; }
 
-					default:
-						$color = '#6c757d';
-						break;
-				}
+			$grouped_groups = array_group_by($groups, 'title');
 
-				$data = [
-					"COLOR" => $color,
-					"TITLE" => $this->db->HSC($ar['title']),
-					"COUNT" => intval($ar['count'])
-				];
+			$grouped_groups = array_map(function($users) {
+				return count($users);
+			}, $grouped_groups);
 
-				$results[] = $data;
-			}
+			//var_dump($grouped_groups);
+			$results['xKeys'] = array_keys($grouped_groups);
+			$results['yKeys'] = array_values($grouped_groups);
+			$results['colors'] = ['#dc3545','#ffc107','#28a745','#17a2b8','#6c757d'];
 		}
 
 		return $results;
 	}
 
-	public function users_on_datereg()
+	private function users_on_datereg()
 	{
-		$results = [];
+		$results = [ 'xKeys' => [], 'yKeys' => [] ];
 
 		$now = new DateTime();
 		$three_mouth_back = $now->modify('-3 months')->format('Y-m-d H:i:s.u');
 
 		/**/
-
-		$query = $this->db->query(
-			"SELECT
-			  COUNT(`u`.`id`) as `count`,
-			  DATE_FORMAT(`u`.`time_create`, '%d %m %Y'), `u`.`time_create` as `date`
-			FROM `mcr_users` AS `u`
-			
-			WHERE `u`.`time_create` >= '$three_mouth_back' AND `u`.`time_create` <= NOW()
-			
-			GROUP BY DATE_FORMAT(`u`.`time_create`, '%d %m %Y')"
-		);
+		// Выбираем зарегистрированных пользователей за период: "последние три месяца".
+		// TODO: сделать настройку периодов (?)
+		$query = $this->db->query("SELECT `u`.`id`, `u`.`time_create` FROM `mcr_users` AS `u` WHERE `u`.`time_create` >= '$three_mouth_back' AND `u`.`time_create` <= NOW()");
 
 		if ($query && $this->db->num_rows($query) > 0) {
-			while ($ar = $this->db->fetch_assoc($query)) {
-				$results[] = [
-					'user-date-reg' => $ar['count'],
-					'date' => $ar['date']
-				];
+			// Извлекаем всех пользователей в один общий масив.
+			// На основании этого мосива создаём два масиво - один, который совпадает с тем,
+			// что хранится в БД, другой - на основании которого будет построен будущий график.
+			$users_ = $users = $query->fetch_all(MYSQLI_ASSOC);
+
+			// Перебираем наш псевдо масив чтобы заполнить пропуски в днях
+			foreach ($users_ as $user) {
+				$start = new DateTime($user['time_create']);
+				$next = next($users_);
+
+				// Если есть следующий день
+				if ($next) {
+					// берём его дату
+					$end = new DateTime($next['time_create']);
+
+					// вычисляем разницу между соседними днями
+					$diff = $start->diff($end);
+
+					// если эта разница больше одного дня, дополянем масив,
+					// который используется для построения графика недостоющими датами.
+					if ($diff->days > 1) {
+						for ($d = 0; $d < $diff->days - 1; $d++) {
+							array_push($users, [
+								'id' => null,
+								'time_create' => $start->modify("+1 day")->format('Y-m-d H:i:s.u'),
+							]);
+						}
+					}
+				}
 			}
+
+			$grouped_users = array_group_by($users, function($user) {
+				return $this->l10n->localize(strtotime($user['time_create']), 'unixtime', '%d/%m/%y');
+			});
+
+			// сортируем по дате
+			ksort($grouped_users);
+
+			$grouped_users = array_map(function($users) {
+				$counted = [];
+
+				// если за день не было пользователей (id => null), не учитываем их при подсчёте
+				foreach ($users as $user) {
+					if (!empty($user['id'])) {
+						$counted[] = $user['id'];
+					}
+				}
+				// в итоге получаем пустой масив в тот день, когда не было регистраций
+
+				return count($counted);
+			}, $grouped_users);
+
+			// разделяем масив на ключи и значения для графика
+			$results['xKeys'] = array_keys($grouped_users);
+			$results['yKeys'] = array_values($grouped_users);
 		}
 
 //		var_dump($results);
@@ -139,7 +159,7 @@ class submodule
 		return $results;
 	}
 
-	public function users_count()
+	private function users_count()
 	{
 		$query = $this->db->query("SELECT COUNT(`id`) as `count` FROM `mcr_users`");
 
@@ -150,7 +170,7 @@ class submodule
 		return 0;
 	}
 
-	public function users()
+	private function users()
 	{
 		$results = [];
 
@@ -161,12 +181,33 @@ class submodule
 		return $this->core->sp(MCR_THEME_MOD."admin/dashboard/modules/users-statistic.phtml", $results);
 	}
 
+	private function themes($select='')
+	{
+		$scan = scandir(MCR_ROOT.'themes/');
+		$results = [];
+
+		foreach ($scan as $key => $value) {
+			if($value=='.' || $value=='..' || !is_dir(MCR_ROOT.'themes/'.$value)) continue;
+			if(!file_exists(MCR_ROOT.'themes/'.$value.'/theme.php')) continue;
+
+			require(MCR_ROOT.'themes/'.$value.'/theme.php');
+			$theme['img_path'] = '/themes/'.$value.'/';
+			$theme['active'] = $this->cfg->main['s_theme'] == $value;
+
+			$results[] = $theme;
+		}
+
+		return $this->core->sp(MCR_THEME_MOD."admin/dashboard/modules/themes-list.phtml", $results);
+	}
+
 	public function content()
 	{
 		$content = [];
 
 		# Добавление админ-блоков в админ-панель
 		$content['MODULES'] = $this->modules();
+		$content['THEMES'] = $this->themes();
+
 		$content['USERS'] = $this->users();
 
 		return $this->core->sp(MCR_THEME_MOD."admin/dashboard/dashboard.phtml", $content);

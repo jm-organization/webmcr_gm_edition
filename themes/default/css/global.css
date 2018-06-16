@@ -156,17 +156,19 @@ body {
 
 #js-loader {
 	position: fixed;
-	bottom: 60px;
-	right: 10px;
+	top: 24px;
+	right: 0;
 	display: none;
 	background-color: rgba(0, 0, 0, 0.7);
-	padding: 10px;
-	border-radius: 6px 6px 0px 6px;
+	border-bottom-left-radius: 10px;
+	float: right;
+	width: 85px;
+	height: 30px;
+	text-align: center;
+	z-index: 20000;
 }
 
-#js-loader > img {
-	display: block;
-}
+.global #js-loader { top: 49px; }
 
 #js-notify {
 	display: none;

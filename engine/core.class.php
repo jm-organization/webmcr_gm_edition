@@ -36,6 +36,23 @@ class core{
 		require_once(MCR_TOOL_PATH.'log.class.php');
 		$this->log = new log($this->cfg->main['debug'], log::L_ALL);
 
+		register_shutdown_function(function() {
+
+			$error = error_get_last();
+
+			if (!empty($error)) {
+				$this->log->write($error['message'], $error['type'], $error['file'], $error['line']);
+
+				// TODO: Сделать обработчик критических ошибок с выводом на экран!!!
+				if ($error['type'] == log::FATAL_ERROR) {
+					echo 'fatal error';
+				}
+			}
+
+			return null;
+
+		});
+
 		define("INSTALLED", $this->cfg->main['install']);
 		// Load database class
 		require(MCR_TOOL_PATH.'db/'.$this->cfg->db['backend'].'.class.php');

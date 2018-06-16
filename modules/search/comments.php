@@ -85,7 +85,7 @@ class submodule
 		}
 
 		$value = (isset($_GET['value'])) ? $_GET['value'] : '';
-		$value = trim(urldecode($value));
+		$value = trim($value);
 
 		if (empty($value)) {
 			$this->core->notify($this->l10n->gettext('error_404'), $this->l10n->gettext('empty_query'), 2, "?mode=403");

@@ -94,7 +94,7 @@ class log
 		file_put_contents($file, $log);
 	}
 
-	private function get_log_type($code)
+	public function get_log_type($code)
 	{
 		$types = [
 			111 => 'MYSQL_ERROR',
@@ -106,9 +106,18 @@ class log
 			1 => 'FATAL_ERROR',
 			2 => 'WARNING',
 			8 => 'NOTICE',
+
+			64 => 'COMPILE_ERROR',
+			128 => 'COMPILE_WARNING'
 		];
 
-		return $types[$code];
+		$type = "UNDEFINED_ERROR #$code";
+
+		if (array_key_exists($code, $types)) {
+			$type = $types[$code];
+		}
+
+		return $type;
 	}
 
 	public function get_logs_num($log_type)

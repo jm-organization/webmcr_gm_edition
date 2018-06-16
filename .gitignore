@@ -42,25 +42,6 @@ vcs.xml
 /engine/libs/htmLawed/htmLawed_TESTCASE.txt
 /engine/libs/htmLawed/htmLawed_README.txt
 
-### NetBeans template
-/nbproject/private/
-/build/
-/nbbuild/
-/dist/
-/nbdist/
-.nb-gradle/
-/nbproject/project.properties
-/nbproject/project.xml
-
-### Composer template
-composer.phar
-#vendor/
-composer.lock
-
-# Commit your application's lock file https://getcomposer.org/doc/01-basic-usage.md#commit-your-composer-lock-file-to-version-control
-# You may choose to ignore a library lock file http://getcomposer.org/doc/02-libraries.md#lock-file
-# composer.lock
-
 ### MagicMCR Template
 #uploads
 !.htaccess
@@ -68,7 +49,6 @@ data/cache/*
 !data/cache/l10n/ru-RU/.cache
 uploads/tmp/*
 /uploads/skins/*
-/themes/default/bootstrap/
 !/uploads/tmp/.htaccess
 !/uploads/skins/.htaccess
 !/uploads/skins/interface/.htaccess
@@ -81,3 +61,8 @@ uploads/tmp/*
 !/uploads/skins/default.png
 !/uploads/skins/default_female.png
 /configs/
+/init-krumo.php
+/engine/libs/class.jbdump.php
+/data/logs/
+!/data/logs/.gitignore
+!/data/logs/.htaccess

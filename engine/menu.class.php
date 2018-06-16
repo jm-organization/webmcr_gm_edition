@@ -164,6 +164,8 @@ class menu{
 
 				if (!$this->core->is_access($ar['access'])) continue;
 
+				ksort($sub_menus[$id]);
+
 				$data = [
 					"ID" => $id,
 					"TITLE" => $this->db->HSC($ar['title']),
@@ -193,12 +195,16 @@ class menu{
 		$results = [];
 
 		$query = $this->db->query(
-			"SELECT `title`, `text`, `url`, `target`, `gid` FROM `mcr_menu_adm`"
+			"SELECT `title`, `text`, `url`, `target`, `gid`, `priority` FROM `mcr_menu_adm`"
 		);
 
 		if ($query && $this->db->num_rows($query) > 0) {
 			while ($ar = $this->db->fetch_assoc($query)) {
-				$results[$ar['gid']][] = $ar;
+				$id = intval($ar['priority']);
+
+				if (isset($results[$ar['gid']][$id])) { $id++; }
+
+				$results[$ar['gid']][$id] = $ar;
 			}
 		}
 

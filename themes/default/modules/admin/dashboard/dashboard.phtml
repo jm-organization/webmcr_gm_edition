@@ -36,11 +36,23 @@
 
 		<div class="col-md-7">
 			<div class="row">
-				<div class="col-md-12">
-					<?=$data['MODULES']?>
-				</div>
+				<?php
 
-				<div class="col-md-12"></div>
+                if (!empty($data['MODULES'])) {
+                    ?>
+
+                    <div class="col-md-12 mb-4">
+						<?=$data['MODULES']?>
+                    </div>
+
+                    <?php
+                }
+
+                ?>
+
+				<div class="col-md-12">
+					<?=$data['THEMES']?>
+                </div>
 			</div>
 		</div>
 
