@@ -1,18 +1,23 @@
 .sort-trigger[data-order="asc"]:after,
 .sort-trigger[data-order="desc"]:after {
-	content: "";
 	display: inline-block;
 	vertical-align: middle;
 	width: 15px;
 	height: 15px;
-	line-height: 15px;
 	margin-left: 5px;
-	background-image: url('../../../img/glyphicons-halflings.png');
-	background-position: -313px -119px;
+	font: normal normal normal 14px/1 FontAwesome;
+	font-size: inherit;
+	text-rendering: auto;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	/*float: right;*/
 }
 
+.sort-trigger[data-order="asc"]:after {
+	content: "\f0de";
+}
 .sort-trigger[data-order="desc"]:after {
-	background-position: -288px -120px;
+	content: "\f0dd";
 }
 
 .tab-content {
@@ -50,9 +55,68 @@
 	text-align: right;
 }
 
-.menu-adm-change .menu-icon { text-align: center; vertical-align: top; margin-bottom: 5px; }
+.menu-icons-select {
+	position: absolute;
+	top: 42px;
+	z-index: 1;
+	background: white;
+	padding: 15px;
+	border: 1px solid #d9d9d9;
+	border-radius: 3px;
+	width: 394px;
+	box-shadow: 0 4px 20px #bfbfbf;
+}
+.menu-icons-select::before,
+.menu-icons-select::after {
+	content: '';
+	position: absolute;
+	left: 7px;
+	top: -16px;
+	border: 8px solid transparent;
+	border-bottom: 8px solid white;
+	z-index: 10;
+}
+.menu-icons-select::after {
+	border: 9px solid transparent;
+	border-bottom: 9px solid #d9d9d9;
+	z-index: 1;
+	top: -18px;
+	left: 6px;
+}
+.menu-icons-select:not(.open) {
+	display: none;
+}
 
-.menu-adm-change .menu-icon > .icon-img { display: block; width: 64px; height: 64px; background-repeat: no-repeat; background-position: top left; }
+.menu-adm-change .row {
+	margin-bottom: 15px;
+}
+.menu-adm-change .menu-icon {
+	text-align: center;
+	vertical-align: top;
+}
+.menu-adm-change .menu-icon:not(:nth-child(8n)) {
+	margin-right: 15px;
+}
+
+.menu-adm-change .menu-icon > .icon-img {
+	display: block;
+	width: 32px;
+	height: 32px;
+	background-repeat: no-repeat;
+	background-position: top left;
+	background-size: cover;
+	opacity: 0.5;
+}
+.menu-adm-change .menu-icon > .icon-img:hover {
+	opacity: 0.8;
+}
+.menu-adm-change .menu-icon > .icon-input { display: none; }
+.menu-adm-change .menu-icon > .icon-input:checked + .icon-img {
+	opacity: 1;
+	-webkit-filter: drop-shadow(4px -1px 1px #c2c2c2);
+	filter: drop-shadow(4px -1px 1px #c2c2c2);
+}
+
 
 .panel-menu-icons .element-icon { width: 32px; height: 32px; }
 
@@ -555,34 +619,34 @@ header .global-menu li.divider {
     margin-left: -4px;
     outline: none;
 }
-.block-name p#actions {
+.block-name #actions {
     display: inline-table;
     width: auto;
     min-height: 48px;
     margin: 0 0 9px 0;
     float: right;
 }
-.block-name p#actions > span[role="group"] { margin-left: 9px; }
-.block-name p#actions > span[role="group"] > a,
-.block-name p#actions > span[role="group"] > button {
+.block-name #actions > span[role="group"] { margin-left: 9px; }
+.block-name #actions > span[role="group"] > a,
+.block-name #actions > span[role="group"] > button {
     margin: 5px 0
 }
-.block-name p#actions > span[role="group"] > button {
+.block-name #actions > span[role="group"] > button {
     line-height: 18px;
     font-size: 18px;
     padding: 7px 9px 6px 14px;
     text-align: center;
 }
-.block-name p#actions > span[role="group"] > button:hover {
+.block-name #actions > span[role="group"] > button:hover {
     color: white!important;
 }
 
-.block-name p#actions > span[role="group"] > input:not(:last-child) {
+.block-name #actions > span[role="group"] > input:not(:last-child) {
 	border-top-right-radius: 0;
 	border-bottom-right-radius: 0;
 }
 
-.block-name p#actions > span[role="group"] > .input-group-prepend:not(:first-child) button {
+.block-name #actions > span[role="group"] > .input-group-prepend:not(:first-child) button {
 	border-left: 0;
 	border-top-left-radius: 0;
 	border-bottom-left-radius: 0;

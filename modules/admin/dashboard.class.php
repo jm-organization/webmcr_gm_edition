@@ -41,6 +41,8 @@ class submodule
 			
 			LEFT JOIN `mcr_menu_adm_icons` AS `i`
 				ON `i`.id=`m`.icon
+			
+			WHERE `m`.`fixed`='1'
 				
 			ORDER BY `priority` ASC"
 		);

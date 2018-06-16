@@ -35,7 +35,7 @@ class module
 		}
 
 		if (!empty($search)) {
-			$searchstr = $this->db->safesql(urldecode($search));
+			$searchstr = $this->db->safesql($search);
 			if (!preg_match("/[а-яА-ЯёЁ]+/iu", $searchstr)) {
 				$where .= (!empty($gid)) ? " AND " : " WHERE ";
 				$where .= "`u`.`login` LIKE '%$searchstr%'";
@@ -119,10 +119,9 @@ class module
 		}
 
 		if (!empty($search)) {
-			$srch = urldecode($search);
-			if (!preg_match("/[а-яА-ЯёЁ]+/iu", $srch)) {
-				$page .= '&search='.$this->db->HSC($srch);
-				$searchstr = $this->db->safesql($srch);
+			if (!preg_match("/[а-яА-ЯёЁ]+/iu", $search)) {
+				$page .= '&search='.$this->db->HSC($search);
+				$searchstr = $this->db->safesql($search);
 				$sql .= (!empty($gid)) ? " AND " : " WHERE ";
 				$sql .= "`login` LIKE '%$searchstr%'";
 			}

@@ -1,9 +1,9 @@
 $(document).ready(function(){
     // Start carusel for modules
     $("#modules_carusel").owlCarousel({
-        center: true,
+        center: false,
         items:10,
-        loop:true,
+        loop:false,
         margin:10,
         nav:true
     });

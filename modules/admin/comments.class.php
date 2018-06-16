@@ -59,7 +59,7 @@ class submodule
 		}
 
 		if (isset($_GET['search']) && !empty($_GET['search'])) {
-			$search = $this->db->safesql(urldecode($_GET['search']));
+			$search = $this->db->safesql($_GET['search']);
 			$where = "WHERE `c`.text_html LIKE '%$search%'";
 		}
 
@@ -121,9 +121,9 @@ class submodule
 		$page = "?mode=admin&do=comments";
 
 		if (isset($_GET['search']) && !empty($_GET['search'])) {
-			$search = $this->db->safesql(urldecode($_GET['search']));
+			$search = $this->db->safesql($_GET['search']);
 			$sql = "SELECT COUNT(*) FROM `mcr_news_comments` WHERE text_html LIKE '%$search%'";
-			$search = $this->db->HSC(urldecode($_GET['search']));
+			$search = $this->db->HSC($_GET['search']);
 			$page = "?mode=admin&do=comments&search=$search";
 		}
 

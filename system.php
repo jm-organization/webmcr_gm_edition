@@ -8,7 +8,7 @@ ini_set("post_max_size", "50M");
 
 // System constants
 define('PROGNAME', 'MagicMCR'. MCR);
-define('VERSION', 'webmcr_gm_edition_beta_1.13');
+define('VERSION', 'webmcr_gm_edition_v1.18.5-beta');
 define('FEEDBACK', PROGNAME.' powered by <a href="http://webmcr.com" target="_blank">WebMCR</a> &copy; 2017-'.date("Y").' <a href="http://www.jm-org.net/about/#Magicmen">Magicmen</a>');
 define('MCR_ROOT', dirname(__FILE__).'/');
 define('MCR_MODE_PATH', MCR_ROOT.'modules/');
@@ -31,7 +31,6 @@ header('Content-Type: text/html; charset=UTF-8');
 
 // Load core
 require_once(MCR_TOOL_PATH.'core.class.php');
-
 // Create new core object
 $core = new core();
 

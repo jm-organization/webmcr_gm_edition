@@ -1,0 +1,80 @@
+<form method="post" class="panel-menu-adm" action="<?php echo ADMIN_URL; ?>&do=menu_adm&op=delete">
+	<div class="form-block">
+		
+		<div class="card">
+            <h5 class="card-header"><?php echo $this->l10n->gettext('manucp'); ?></h5>
+            <div class="card-body card-block">
+
+                <h5 class="card-title block-name">
+                    Список доступных меню
+
+                    <span id="actions" class="pull-right">
+                        <span class="btn-group" role="group">
+                            <input type="text" class="adm-search-input form-control" id="adm-search-id" placeholder="<?php echo $this->l10n->gettext('search_placeholder'); ?>">
+                            <span class="input-group-prepend">
+                                <button class="btn btn-secondary adm-search" data-for="#adm-search-id" type="button" rel="tooltip" title="<?php echo $this->l10n->gettext('search'); ?>"><i class="fa fa-search"></i></button>
+                            </span>
+                        </span>
+
+                        <span class="btn-group" role="group">
+                            <a role="button" href="<?php echo ADMIN_URL; ?>&do=menu_adm&op=add" class="btn btn-primary"><?php echo $this->l10n->gettext('add'); ?></a>
+                            <button class="btn btn-secondary remove" data-for="check-input" data-text="<?php echo $this->l10n->gettext('menu_accept'); ?>" type="submit" name="delete"><i class="fa fa-times"></i></button>
+                        </span>
+                    </span>
+                </h5>
+
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th><a href="#" class="sort-trigger" data-field="title" data-order="desc"><?php echo $this->l10n->gettext('mcp_field_name'); ?></a></th>
+                            <th><a href="#" class="sort-trigger" data-field="group" data-order="desc"><?php echo $this->l10n->gettext('group'); ?></a></th>
+                            <th class="action"><?php echo $this->l10n->gettext('action'); ?> <input type="checkbox" class="check-all" data-for="check-input"></th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+						<?php foreach ($data['MENU'] as $menu) { ?>
+                            <tr>
+                                <td style="width: 20%;"><a href="<?php echo $menu['URL']; ?>" target="<?php echo $menu['TARGET']; ?>"><?php echo $menu['TITLE']; ?></a></td>
+                                <td><?php echo $menu['GROUP']; ?></td>
+                                <td class="action">
+                                    <a class="btn btn-outline-warning btn-sm fa fa-pencil" href="<?php echo ADMIN_URL; ?>&do=menu_adm&op=edit&id=<?=$menu['ID'];?>"></a>
+
+                                    <input type="checkbox"  name="id[]" class="check-input align-middle" value="<?php echo $menu['ID']; ?>">
+                                </td>
+                            </tr>
+                        <?php } ?>
+                        </tbody>
+                    </table>
+                </div>
+
+				<?php if (!empty($data['PAGINATION'])) {?>
+                    <div class="left-act"><?php echo $data['PAGINATION']; ?></div>
+				<?php } ?>
+            </div>
+        </div>
+
+        <!-- Admin links. Закладки. -->
+		<!--
+		<div class="card mt-4">
+            <h5 class="card-header">Закладки</h5>
+            <div class="card-body card-block">
+
+                <h5 class="card-title block-name">
+                    Быстрые ссылки на необходимые ресурсы.
+                </h5>
+                <h6 class="card-subtitle mb-2 text-muted">Всегда под рукой.</h6>
+
+                //
+            </div>
+
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">Cras justo odio</li>
+                <li class="list-group-item">Dapibus ac facilisis in</li>
+                <li class="list-group-item">Vestibulum at eros</li>
+            </ul>
+        </div>-->
+
+	</div>
+</form>

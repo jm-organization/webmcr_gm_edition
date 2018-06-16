@@ -40,7 +40,7 @@ class submodule
 		$sortby = "DESC";
 
 		if (isset($_GET['search']) && !empty($_GET['search'])) {
-			$search = $this->db->safesql(urldecode($_GET['search']));
+			$search = $this->db->safesql($_GET['search']);
 			$where = "WHERE title LIKE '%$search%'";
 		}
 
@@ -92,9 +92,9 @@ class submodule
 		$page = "?mode=admin&do=news_cats";
 
 		if (isset($_GET['search']) && !empty($_GET['search'])) {
-			$search = $this->db->safesql(urldecode($_GET['search']));
+			$search = $this->db->safesql($_GET['search']);
 			$sql = "SELECT COUNT(*) FROM `mcr_news_cats` WHERE title LIKE '%$search%'";
-			$search = $this->db->HSC(urldecode($_GET['search']));
+			$search = $this->db->HSC($_GET['search']);
 			$page .= "&search=$search";
 		}
 

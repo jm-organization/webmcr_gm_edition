@@ -57,8 +57,8 @@ class module{
 			$icon_id = $this->db->insert_id();
 
 			if(!$this->db->query("
-				INSERT INTO `mcr_menu_adm` (`gid`, `title`, `text`, `url`, `target`, `access`, `priority`, `icon`)
-				VALUES (5, 'Модуль пользователей', 'Управление модулем пользователей', '/?mode=admin&do=us', '_self', 'mod_adm_m_i_us', 4, '$icon_id');
+				INSERT INTO `mcr_menu_adm` (`page_id`, `gid`, `title`, `text`, `url`, `target`, `access`, `priority`, `icon`)
+				VALUES ('us', 5, 'Модуль пользователей', 'Управление модулем пользователей', '/?mode=admin&do=us', '_self', 'mod_adm_m_i_us', 4, '$icon_id');
 			")){
 				$this->install->notify($this->lng['e_msg'], $this->lng['e_add_menu_adm'], '?mode=step_5');
 			}

@@ -40,7 +40,7 @@ class submodule
 		$sortby = "DESC";
 
 		if (isset($_GET['search']) && !empty($_GET['search'])) {
-			$search = $this->db->safesql(urldecode($_GET['search']));
+			$search = $this->db->safesql($_GET['search']);
 			if (preg_match("/[а-яА-ЯёЁ]+/iu", $search)) {
 				$search = "";
 			}
@@ -117,13 +117,13 @@ class submodule
 		$page = "?mode=admin&do=users";
 
 		if (isset($_GET['search']) && !empty($_GET['search'])) {
-			$search = $this->db->safesql(urldecode($_GET['search']));
+			$search = $this->db->safesql($_GET['search']);
 			if (preg_match("/[а-яА-ЯёЁ]+/iu", $search)) {
 				$search = "";
 			}
 			$table = (preg_match("/\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}/i", $search)) ? 'ip_last' : 'login';
 			$sql = "SELECT COUNT(*) FROM `mcr_users` WHERE `$table` LIKE '%$search%'";
-			$search = $this->db->HSC(urldecode($_GET['search']));
+			$search = $this->db->HSC($_GET['search']);
 			$page = "?mode=admin&do=users&search=$search";
 		}
 
