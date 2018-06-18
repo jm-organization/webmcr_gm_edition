@@ -46,7 +46,7 @@ class module{
 			"COMMENTS" => ($this->cfg['modules']['users']['enable_comments']) ? 'selected' : '',
 		);
 
-		return $this->install->sp('step_4.html', $data);
+		return $this->install->sp('step_4.phtml', $data);
 	}
 }
 

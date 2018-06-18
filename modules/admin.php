@@ -18,7 +18,7 @@ class module{
 
 		$this->core->bc = $this->core->gen_bc($bc);
 
-		$this->core->header .= $this->core->sp(MCR_THEME_PATH."modules/admin/header.html");
+		$this->core->header .= $this->core->sp(MCR_THEME_PATH."modules/admin/header.phtml");
 	}
 
 	public function content(){

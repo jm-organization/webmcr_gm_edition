@@ -26,7 +26,7 @@ class submodule
 		];
 		$this->core->bc = $this->core->gen_bc($bc);
 
-		$this->core->header .= $this->core->sp(MCR_THEME_MOD."admin/permissions/header.html");
+		$this->core->header .= $this->core->sp(MCR_THEME_MOD."admin/permissions/header.phtml");
 	}
 
 	private function permissions_array()
@@ -72,7 +72,7 @@ class submodule
 		);
 
 		if (!$query || $this->db->num_rows($query) <= 0) {
-			return $this->core->sp(MCR_THEME_MOD."admin/permissions/perm-none.html");
+			return $this->core->sp(MCR_THEME_MOD."admin/permissions/perm-none.phtml");
 		}
 
 		ob_start();
@@ -86,11 +86,11 @@ class submodule
 				"TITLE" => $this->db->HSC($ar['title']),
 				"TEXT" => $this->db->HSC($ar['description']),
 				"VALUE" => $this->db->HSC($ar['value']),
-				"SYSTEM" => (intval($ar['system']) === 1) ? $this->core->sp(MCR_THEME_MOD."admin/permissions/perm-system.html") : '',
+				"SYSTEM" => (intval($ar['system']) === 1) ? $this->core->sp(MCR_THEME_MOD."admin/permissions/perm-system.phtml") : '',
 				"DATA" => $data
 			];
 
-			echo $this->core->sp(MCR_THEME_MOD."admin/permissions/perm-id.html", $page_data);
+			echo $this->core->sp(MCR_THEME_MOD."admin/permissions/perm-id.phtml", $page_data);
 		}
 
 		return ob_get_clean();
@@ -125,7 +125,7 @@ class submodule
 			"PERMISSIONS" => $this->permissions_array()
 		];
 
-		return $this->core->sp(MCR_THEME_MOD."admin/permissions/perm-list.html", $data);
+		return $this->core->sp(MCR_THEME_MOD."admin/permissions/perm-list.phtml", $data);
 	}
 
 	private function delete()
@@ -317,7 +317,7 @@ class submodule
 			"BUTTON" => $this->l10n->gettext('save')
 		];
 
-		return $this->core->sp(MCR_THEME_MOD."admin/permissions/perm-add.html", $data);
+		return $this->core->sp(MCR_THEME_MOD."admin/permissions/perm-add.phtml", $data);
 	}
 
 	private function edit()
@@ -411,7 +411,7 @@ class submodule
 			"BUTTON" => $this->l10n->gettext('save')
 		];
 
-		return $this->core->sp(MCR_THEME_MOD."admin/permissions/perm-add.html", $data);
+		return $this->core->sp(MCR_THEME_MOD."admin/permissions/perm-add.phtml", $data);
 	}
 
 	private function filter_type($type = 'boolean', $default = 'false')
@@ -447,22 +447,22 @@ class submodule
 		switch ($type) {
 			case 'integer':
 				$data['VALUE'] = intval($value);
-				$input = $this->core->sp(MCR_THEME_MOD."admin/permissions/perm-id-integer.html", $data);
+				$input = $this->core->sp(MCR_THEME_MOD."admin/permissions/perm-id-integer.phtml", $data);
 				break;
 
 			case 'float':
 				$data['VALUE'] = floatval($value);
-				$input = $this->core->sp(MCR_THEME_MOD."admin/permissions/perm-id-float.html", $data);
+				$input = $this->core->sp(MCR_THEME_MOD."admin/permissions/perm-id-float.phtml", $data);
 				break;
 
 			case 'string':
 				$data['VALUE'] = $this->db->HSC($value);
-				$input = $this->core->sp(MCR_THEME_MOD."admin/permissions/perm-id-string.html", $data);
+				$input = $this->core->sp(MCR_THEME_MOD."admin/permissions/perm-id-string.phtml", $data);
 				break;
 
 			default:
 				$data['VALUE'] = ($value == 'true') ? 'selected' : '';
-				$input = $this->core->sp(MCR_THEME_MOD."admin/permissions/perm-id-boolean.html", $data);
+				$input = $this->core->sp(MCR_THEME_MOD."admin/permissions/perm-id-boolean.phtml", $data);
 				break;
 		}
 

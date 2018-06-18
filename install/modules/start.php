@@ -111,7 +111,7 @@ class module{
 			"FOLDER_SMILES" => (is_writable(DIR_ROOT.'uploads/smiles') && is_readable(DIR_ROOT.'uploads/smiles')) ? '<b class="green">'.$this->lng['yes'].'</b>' : '<b class="red">'.$this->lng['no'].'</b>',
 		);
 
-		return $this->install->sp('start.html', $data);
+		return $this->install->sp('start.phtml', $data);
 	}
 
 }

@@ -230,7 +230,7 @@ class module
 			$this->core->notify($this->l10n->gettext('error_403'), $this->l10n->gettext('access_by_admin'), 1, "?mode=403");
 		}
 
-		$this->core->header = $this->core->sp(MCR_THEME_MOD."profile/header.html");
+		$this->core->header = $this->core->sp(MCR_THEME_MOD."profile/header.phtml");
 
 		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
@@ -280,6 +280,6 @@ class module
 			}
 		}
 
-		return $this->core->sp(MCR_THEME_MOD."profile/profile.html");
+		return $this->core->sp(MCR_THEME_MOD."profile/profile.phtml");
 	}
 }

@@ -15,7 +15,7 @@ $data = array(
 	'NOTIFY' => $install->get_notify(),
 );
 
-echo $install->sp('global.html', $data);
+echo $install->sp('global.phtml', $data);
 
 
 ?>

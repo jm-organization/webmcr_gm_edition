@@ -13,8 +13,8 @@ class block_profile{
 	public function content(){
 		$authfile = (!$this->user->is_auth) ? "unauth" : "auth";
 
-		$this->core->header .= $this->core->sp(MCR_THEME_PATH."blocks/profile/header.html");
+		$this->core->header .= $this->core->sp(MCR_THEME_PATH."blocks/profile/header.phtml");
 
-		return $this->core->sp(MCR_THEME_PATH."blocks/profile/$authfile.html");
+		return $this->core->sp(MCR_THEME_PATH."blocks/profile/$authfile.phtml");
 	}
 }

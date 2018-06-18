@@ -376,7 +376,7 @@ class submodule
 			LIMIT $start, $end");
 
 		if (!$query || $this->db->num_rows($query) <= 0) {
-			return $this->core->sp(MCR_THEME_MOD."admin/menu_adm/menu-none.html");
+			return $this->core->sp(MCR_THEME_MOD."admin/menu_adm/menu-none.phtml");
 		}
 
 		$pages = [];

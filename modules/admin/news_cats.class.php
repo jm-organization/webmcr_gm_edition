@@ -27,7 +27,7 @@ class submodule
 
 		$this->core->bc = $this->core->gen_bc($bc);
 
-		$this->core->header .= $this->core->sp(MCR_THEME_MOD."admin/news_cats/header.html");
+		$this->core->header .= $this->core->sp(MCR_THEME_MOD."admin/news_cats/header.phtml");
 	}
 
 	private function cats_array()
@@ -67,7 +67,7 @@ class submodule
 		);
 
 		if (!$query || $this->db->num_rows($query) <= 0) {
-			return $this->core->sp(MCR_THEME_MOD."admin/news_cats/cat-none.html");
+			return $this->core->sp(MCR_THEME_MOD."admin/news_cats/cat-none.phtml");
 		}
 
 		ob_start();
@@ -80,7 +80,7 @@ class submodule
 				"DATA" => json_decode($ar['data'])
 			];
 
-			echo $this->core->sp(MCR_THEME_MOD."admin/news_cats/cat-id.html", $page_data);
+			echo $this->core->sp(MCR_THEME_MOD."admin/news_cats/cat-id.phtml", $page_data);
 		}
 
 		return ob_get_clean();
@@ -112,7 +112,7 @@ class submodule
 				"CATEGORIES" => $this->cats_array()
 			];
 
-			return $this->core->sp(MCR_THEME_MOD."admin/news_cats/cat-list.html", $data);
+			return $this->core->sp(MCR_THEME_MOD."admin/news_cats/cat-list.phtml", $data);
 		}
 
 		exit("SQL Error");
@@ -203,7 +203,7 @@ class submodule
 			"BUTTON" => $this->l10n->gettext('save')
 		];
 
-		return $this->core->sp(MCR_THEME_MOD."admin/news_cats/cat-add.html", $data);
+		return $this->core->sp(MCR_THEME_MOD."admin/news_cats/cat-add.phtml", $data);
 	}
 
 	private function edit()
@@ -270,7 +270,7 @@ class submodule
 			"BUTTON" => $this->l10n->gettext('save')
 		];
 
-		return $this->core->sp(MCR_THEME_MOD."admin/news_cats/cat-add.html", $data);
+		return $this->core->sp(MCR_THEME_MOD."admin/news_cats/cat-add.phtml", $data);
 	}
 
 	public function content()

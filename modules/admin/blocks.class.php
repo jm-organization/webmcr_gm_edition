@@ -27,7 +27,7 @@ class submodule
 
 		$this->core->bc = $this->core->gen_bc($bc);
 
-		$this->core->header .= $this->core->sp(MCR_THEME_MOD."admin/blocks/header.html");
+		$this->core->header .= $this->core->sp(MCR_THEME_MOD."admin/blocks/header.phtml");
 	}
 
 	private function block_array()
@@ -35,7 +35,7 @@ class submodule
 		$list = $this->filter_folder(scandir(MCR_CONF_PATH.'blocks'));
 
 		if (!is_array($list) || count($list) <= 0) {
-			return $this->core->sp(MCR_THEME_MOD."admin/blocks/block-none.html");
+			return $this->core->sp(MCR_THEME_MOD."admin/blocks/block-none.phtml");
 		}
 
 		ob_start();
@@ -54,7 +54,7 @@ class submodule
 				"VERSION" => $this->db->HSC(@$cfg['VERSION']),
 			];
 
-			echo $this->core->sp(MCR_THEME_MOD."admin/blocks/block-id.html", $page_data);
+			echo $this->core->sp(MCR_THEME_MOD."admin/blocks/block-id.phtml", $page_data);
 		}
 
 		return ob_get_clean();
@@ -93,7 +93,7 @@ class submodule
 			"BLOCKS" => $this->block_array()
 		];
 
-		return $this->core->sp(MCR_THEME_MOD."admin/blocks/block-list.html", $data);
+		return $this->core->sp(MCR_THEME_MOD."admin/blocks/block-list.phtml", $data);
 	}
 
 	private function check_update($cfg)
@@ -190,7 +190,7 @@ class submodule
 			"BUTTON" => $this->l10n->gettext('block_edit_btn')
 		];
 
-		return $this->core->sp(MCR_THEME_MOD."admin/blocks/block-add.html", $data);
+		return $this->core->sp(MCR_THEME_MOD."admin/blocks/block-add.phtml", $data);
 	}
 
 	public function content()

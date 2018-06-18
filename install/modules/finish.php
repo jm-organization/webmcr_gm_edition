@@ -60,7 +60,7 @@ class module{
 
 		$data = array();
 
-		return $this->install->sp('finish.html', $data);
+		return $this->install->sp('finish.phtml', $data);
 	}
 
 }

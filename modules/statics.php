@@ -78,6 +78,6 @@ class module
 
 		];
 
-		return $this->core->sp(MCR_THEME_MOD."statics/static-id.html", $page_data);
+		return $this->core->sp(MCR_THEME_MOD."statics/static-id.phtml", $page_data);
 	}
 }

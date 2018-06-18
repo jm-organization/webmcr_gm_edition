@@ -42,7 +42,7 @@ switch ($mode) {
 
 	case '403':
 		$core->title = $core->l10n->gettext('error_403');
-		$content = $core->sp(MCR_THEME_PATH."default_sp/403.html");
+		$content = $core->sp(MCR_THEME_PATH."default_sp/403.phtml");
 	break;
 
 	default:
@@ -87,5 +87,5 @@ if($core->cfg->main['debug'] && @$core->user->permissions->sys_debug && $mode !=
 		"PHP_ERROR" => error_get_last()
 	);
 
-	echo $core->sp(MCR_THEME_PATH."debug.html", $data_debug);
+	echo $core->sp(MCR_THEME_PATH."debug.phtml", $data_debug);
 }

@@ -27,7 +27,7 @@ class submodule
 
 		$this->core->bc = $this->core->gen_bc($bc);
 
-		$this->core->header .= $this->core->sp(MCR_THEME_MOD."admin/logs/header.html");
+		$this->core->header .= $this->core->sp(MCR_THEME_MOD."admin/logs/header.phtml");
 	}
 
 	private function logs_array()
@@ -87,7 +87,7 @@ class submodule
 		);
 
 		if (!$query || $this->db->num_rows($query) <= 0) {
-			return $this->core->sp(MCR_THEME_MOD."admin/logs/log-none.html");
+			return $this->core->sp(MCR_THEME_MOD."admin/logs/log-none.phtml");
 		}
 
 		ob_start();
@@ -106,7 +106,7 @@ class submodule
 				"LOGIN" => $this->core->colorize($login, $color),
 			];
 
-			echo $this->core->sp(MCR_THEME_MOD."admin/logs/log-id.html", $page_data);
+			echo $this->core->sp(MCR_THEME_MOD."admin/logs/log-id.phtml", $page_data);
 		}
 
 		return ob_get_clean();
@@ -131,7 +131,7 @@ class submodule
 		$query = $this->db->query($sql);
 		$ar = @$this->db->fetch_array($query);
 
-		return $this->core->sp(MCR_THEME_MOD."admin/logs/log-list.html", [
+		return $this->core->sp(MCR_THEME_MOD."admin/logs/log-list.phtml", [
 			"PAGINATION" => $this->core->pagination($this->cfg->pagin['adm_logs'], $page.'&pid=', $ar[0]),
 			"LOGS" => $this->logs_array()
 		]);

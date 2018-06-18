@@ -27,7 +27,7 @@ class submodule
 
 		$this->core->bc = $this->core->gen_bc($bc);
 
-		$this->core->header .= $this->core->sp(MCR_THEME_MOD."admin/menu/header.html");
+		$this->core->header .= $this->core->sp(MCR_THEME_MOD."admin/menu/header.phtml");
 	}
 
 	private function menu_array()
@@ -81,7 +81,7 @@ class submodule
 		);
 
 		if (!$query || $this->db->num_rows($query) <= 0) {
-			return $this->core->sp(MCR_THEME_MOD."admin/menu/menu-none.html");
+			return $this->core->sp(MCR_THEME_MOD."admin/menu/menu-none.phtml");
 		}
 
 		ob_start();
@@ -100,7 +100,7 @@ class submodule
 				"PARENT" => $parent
 			];
 
-			echo $this->core->sp(MCR_THEME_MOD."admin/menu/menu-id.html", $page_data);
+			echo $this->core->sp(MCR_THEME_MOD."admin/menu/menu-id.phtml", $page_data);
 		}
 
 		return ob_get_clean();
@@ -132,7 +132,7 @@ class submodule
 				"MENU" => $this->menu_array()
 			];
 
-			return $this->core->sp(MCR_THEME_MOD."admin/menu/menu-list.html", $data);
+			return $this->core->sp(MCR_THEME_MOD."admin/menu/menu-list.phtml", $data);
 		}
 
 		exit("SQL Error");
@@ -227,7 +227,7 @@ class submodule
 			"BUTTON" => $this->l10n->gettext('save')
 		];
 
-		return $this->core->sp(MCR_THEME_MOD."admin/menu/menu-add.html", $data);
+		return $this->core->sp(MCR_THEME_MOD."admin/menu/menu-add.phtml", $data);
 	}
 
 	private function edit()
@@ -307,7 +307,7 @@ class submodule
 			"BUTTON" => $this->l10n->gettext('save')
 		];
 
-		return $this->core->sp(MCR_THEME_MOD."admin/menu/menu-add.html", $data);
+		return $this->core->sp(MCR_THEME_MOD."admin/menu/menu-add.phtml", $data);
 	}
 
 	private function parents($select = 0, $not = false)

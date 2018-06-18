@@ -39,6 +39,6 @@ class module
 
 		$data['CONTENT'] = $submodule->results();
 
-		return $this->core->sp(MCR_THEME_MOD."search/main.html", $data);
+		return $this->core->sp(MCR_THEME_MOD."search/main.phtml", $data);
 	}
 }

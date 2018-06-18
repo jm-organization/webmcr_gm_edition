@@ -65,7 +65,7 @@ class module
 			LIMIT $start, $end
 		");
 		if (!$query || $this->db->num_rows($query) <= 0) {
-			return $this->core->sp(MCR_THEME_MOD."users/user-none.html").$this->db->error();
+			return $this->core->sp(MCR_THEME_MOD."users/user-none.phtml").$this->db->error();
 		}
 
 		ob_start();
@@ -97,7 +97,7 @@ class module
 				'GENDER' => $gender,
 			];
 
-			echo $this->core->sp(MCR_THEME_MOD."users/user-id.html", $data);
+			echo $this->core->sp(MCR_THEME_MOD."users/user-id.phtml", $data);
 		}
 
 		return ob_get_clean();
@@ -137,7 +137,7 @@ class module
 				"USERS" => $this->user_array($search, $gid)
 			];
 
-			return $this->core->sp(MCR_THEME_MOD."users/user-list.html", $data);
+			return $this->core->sp(MCR_THEME_MOD."users/user-list.phtml", $data);
 		}
 
 		exit("SQL Error");
@@ -216,7 +216,7 @@ class module
 			'COMMENTS' => $this->comment_list($ar['id']),
 		];
 
-		return $this->core->sp(MCR_THEME_MOD."users/user-full.html", $data);
+		return $this->core->sp(MCR_THEME_MOD."users/user-full.phtml", $data);
 	}
 
 	private function comment_array($uid)
@@ -258,7 +258,7 @@ class module
 			$admin = '';
 
 			if ($this->core->is_access('mod_users_comment_del') || $this->core->is_access('mod_users_comment_del_all')) {
-				$admin = $this->core->sp(MCR_THEME_MOD."users/comments/comment-admin.html");
+				$admin = $this->core->sp(MCR_THEME_MOD."users/comments/comment-admin.phtml");
 			}
 
 			$data = [
@@ -270,9 +270,9 @@ class module
 			];
 
 			if ($this->user->id == intval($ar['from'])) {
-				echo $this->core->sp(MCR_THEME_MOD."users/comments/comment-id-self.html", $data);
+				echo $this->core->sp(MCR_THEME_MOD."users/comments/comment-id-self.phtml", $data);
 			} else {
-				echo $this->core->sp(MCR_THEME_MOD."users/comments/comment-id.html", $data);
+				echo $this->core->sp(MCR_THEME_MOD."users/comments/comment-id.phtml", $data);
 			}
 		}
 
@@ -289,7 +289,7 @@ class module
 
 		$data['BB_PANEL'] = $bb->bb_panel('bb-comments');
 
-		return $this->core->sp(MCR_THEME_MOD."users/comments/comment-form.html", $data);
+		return $this->core->sp(MCR_THEME_MOD."users/comments/comment-form.phtml", $data);
 	}
 
 	private function comment_list($uid)
@@ -313,7 +313,7 @@ class module
 				"COMMENT_FORM" => $this->comment_form(),
 			];
 
-			return $this->core->sp(MCR_THEME_MOD."users/comments/comment-list.html", $data);
+			return $this->core->sp(MCR_THEME_MOD."users/comments/comment-list.phtml", $data);
 		}
 
 		exit("SQL Error");
@@ -329,7 +329,7 @@ class module
 			$this->core->notify($this->l10n->gettext('error_attention'), $this->l10n->gettext('need_install'), 4, 'install_us/');
 		}
 
-		$this->core->header .= $this->core->sp(MCR_THEME_MOD."users/header.html");
+		$this->core->header .= $this->core->sp(MCR_THEME_MOD."users/header.phtml");
 
 		if (isset($_GET['uid'])) {
 			return $this->user_full();

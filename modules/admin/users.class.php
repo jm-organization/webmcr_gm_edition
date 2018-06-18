@@ -27,7 +27,7 @@ class submodule
 
 		$this->core->bc = $this->core->gen_bc($bc);
 
-		$this->core->header .= $this->core->sp(MCR_THEME_MOD."admin/users/header.html");
+		$this->core->header .= $this->core->sp(MCR_THEME_MOD."admin/users/header.phtml");
 	}
 
 	private function user_array()
@@ -87,7 +87,7 @@ class submodule
 			LIMIT $start, $end"
 		);
 		if (!$query || $this->db->num_rows($query) <= 0) {
-			return $this->core->sp(MCR_THEME_MOD."admin/users/user-none.html");
+			return $this->core->sp(MCR_THEME_MOD."admin/users/user-none.phtml");
 		}
 
 		ob_start();
@@ -105,7 +105,7 @@ class submodule
 				"IP_LAST" => $this->db->HSC($ar['ip_last']),
 			];
 
-			echo $this->core->sp(MCR_THEME_MOD."admin/users/user-id.html", $page_data);
+			echo $this->core->sp(MCR_THEME_MOD."admin/users/user-id.phtml", $page_data);
 		}
 
 		return ob_get_clean();
@@ -140,7 +140,7 @@ class submodule
 			"USERS" => $this->user_array()
 		];
 
-		return $this->core->sp(MCR_THEME_MOD."admin/users/user-list.html", $data);
+		return $this->core->sp(MCR_THEME_MOD."admin/users/user-list.phtml", $data);
 	}
 
 	private function ban($list, $ban = 1)
@@ -349,7 +349,7 @@ class submodule
 			'BUTTON' => $this->l10n->gettext('add')
 		];
 
-		return $this->core->sp(MCR_THEME_MOD."admin/users/user-add.html", $data);
+		return $this->core->sp(MCR_THEME_MOD."admin/users/user-add.phtml", $data);
 	}
 
 	private function edit()
@@ -481,7 +481,7 @@ class submodule
 			"BUTTON" => $this->l10n->gettext('save')
 		];
 
-		return $this->core->sp(MCR_THEME_MOD."admin/users/user-add.html", $data);
+		return $this->core->sp(MCR_THEME_MOD."admin/users/user-add.phtml", $data);
 	}
 
 	private function groups($select = 1)

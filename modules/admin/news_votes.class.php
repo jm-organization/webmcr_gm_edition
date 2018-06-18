@@ -21,7 +21,7 @@ class submodule{
 
 		$this->core->bc = $this->core->gen_bc($bc);
 
-		$this->core->header .= $this->core->sp(MCR_THEME_MOD."admin/news_votes/header.html");
+		$this->core->header .= $this->core->sp(MCR_THEME_MOD."admin/news_votes/header.phtml");
 	}
 
 	private function votes_array(){
@@ -68,7 +68,7 @@ class submodule{
 			LIMIT $start, $end"
 		);
 
-		if(!$query || $this->db->num_rows($query)<=0){ return $this->core->sp(MCR_THEME_MOD."admin/news_votes/vote-none.html"); }
+		if(!$query || $this->db->num_rows($query)<=0){ return $this->core->sp(MCR_THEME_MOD."admin/news_votes/vote-none.phtml"); }
 
 		ob_start();
 
@@ -98,7 +98,7 @@ class submodule{
 				"VALUE" => $value
 			);
 		
-			echo $this->core->sp(MCR_THEME_MOD."admin/news_votes/vote-id.html", $page_data);
+			echo $this->core->sp(MCR_THEME_MOD."admin/news_votes/vote-id.phtml", $page_data);
 		}
 
 		return ob_get_clean();
@@ -121,7 +121,7 @@ class submodule{
 			"VOTES" => $this->votes_array()
 		);
 
-		return $this->core->sp(MCR_THEME_MOD."admin/news_votes/vote-list.html", $data);
+		return $this->core->sp(MCR_THEME_MOD."admin/news_votes/vote-list.phtml", $data);
 	}
 
 	private function delete(){

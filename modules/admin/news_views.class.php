@@ -22,7 +22,7 @@ class submodule{
 		);
 		$this->core->bc = $this->core->gen_bc($bc);
 
-		$this->core->header .= $this->core->sp(MCR_THEME_MOD."admin/news_views/header.html");
+		$this->core->header .= $this->core->sp(MCR_THEME_MOD."admin/news_views/header.phtml");
 	}
 
 	private function views_array(){
@@ -68,7 +68,7 @@ class submodule{
 			LIMIT $start, $end"
 		);
 
-		if(!$query || $this->db->num_rows($query)<=0){ return $this->core->sp(MCR_THEME_MOD."admin/news_views/view-none.html"); }
+		if(!$query || $this->db->num_rows($query)<=0){ return $this->core->sp(MCR_THEME_MOD."admin/news_views/view-none.phtml"); }
 
 		ob_start();
 
@@ -95,7 +95,7 @@ class submodule{
 				"STATUS_CLASS" => $status_class
 			);
 		
-			echo $this->core->sp(MCR_THEME_MOD."admin/news_views/view-id.html", $page_data);
+			echo $this->core->sp(MCR_THEME_MOD."admin/news_views/view-id.phtml", $page_data);
 		}
 
 		return ob_get_clean();
@@ -118,7 +118,7 @@ class submodule{
 			"VIEWS" => $this->views_array()
 		);
 
-		return $this->core->sp(MCR_THEME_MOD."admin/news_views/view-list.html", $data);
+		return $this->core->sp(MCR_THEME_MOD."admin/news_views/view-list.phtml", $data);
 	}
 
 	private function delete(){

@@ -31,7 +31,7 @@ class submodule {
         );
         $this->core->bc = $this->core->gen_bc($bc);
 
-        $this->core->header .= $this->core->sp(MCR_THEME_MOD."admin/l10n/phrases/header.html");
+        $this->core->header .= $this->core->sp(MCR_THEME_MOD."admin/l10n/phrases/header.phtml");
     }
 
     protected function phrases_list($rows, $master = true) {
@@ -48,7 +48,7 @@ class submodule {
                     "LANGUAGE" => 0
                 );
 
-                echo $this->core->sp(MCR_THEME_MOD."admin/l10n/phrases/phrase.html", $data);
+                echo $this->core->sp(MCR_THEME_MOD."admin/l10n/phrases/phrase.phtml", $data);
             } 
         } else {
             while ($language = $this->db->fetch_assoc($rows)) {
@@ -67,7 +67,7 @@ class submodule {
                         "LANGUAGE" => $language['id']
                     );
 
-                    echo $this->core->sp(MCR_THEME_MOD."admin/l10n/phrases/phrase.html", $data);
+                    echo $this->core->sp(MCR_THEME_MOD."admin/l10n/phrases/phrase.phtml", $data);
                 }
             }
         }
@@ -113,7 +113,7 @@ class submodule {
             "PHRASES_LIST" => $phrases_list
 		);
 
-		return $this->core->sp(MCR_THEME_MOD."admin/l10n/phrases/phrases.html", $data);
+		return $this->core->sp(MCR_THEME_MOD."admin/l10n/phrases/phrases.phtml", $data);
 	}
     
     protected function languages($select_language = -1) {
@@ -131,7 +131,7 @@ class submodule {
                 "SELECT" => ($select_language == $language['id'])?'selected':'',
             );
 
-            echo $this->core->sp(MCR_THEME_MOD."admin/l10n/phrases/languages.html", $data);
+            echo $this->core->sp(MCR_THEME_MOD."admin/l10n/phrases/languages.phtml", $data);
         }
 
         return ob_get_clean();
@@ -329,7 +329,7 @@ class submodule {
             'PHRASE_VALUE' => '',
         );
 
-        return $this->core->sp(MCR_THEME_MOD."admin/l10n/phrases/form-phrases.html", $data);
+        return $this->core->sp(MCR_THEME_MOD."admin/l10n/phrases/form-phrases.phtml", $data);
 	}
 
 	protected function edit() {
@@ -459,7 +459,7 @@ class submodule {
             'PHRASE_VALUE' => stripcslashes($phrases[$phrase]),
         );
 
-        return $this->core->sp(MCR_THEME_MOD."admin/l10n/phrases/form-phrases.html", $data);
+        return $this->core->sp(MCR_THEME_MOD."admin/l10n/phrases/form-phrases.phtml", $data);
 
 	}
 

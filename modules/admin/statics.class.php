@@ -28,7 +28,7 @@ class submodule
 		];
 		$this->core->bc = $this->core->gen_bc($bc);
 
-		$this->core->header .= $this->core->sp(MCR_THEME_MOD."admin/statics/header.html");
+		$this->core->header .= $this->core->sp(MCR_THEME_MOD."admin/statics/header.phtml");
 	}
 
 	private function static_array()
@@ -77,7 +77,7 @@ class submodule
 			LIMIT $start, $end"
 		);
 		if (!$query || $this->db->num_rows($query) <= 0) {
-			return $this->core->sp(MCR_THEME_MOD."admin/statics/static-none.html");
+			return $this->core->sp(MCR_THEME_MOD."admin/statics/static-none.phtml");
 		}
 
 		ob_start();
@@ -94,7 +94,7 @@ class submodule
 				"PERMISSIONS" => $perm
 			];
 
-			echo $this->core->sp(MCR_THEME_MOD."admin/statics/static-id.html", $page_data);
+			echo $this->core->sp(MCR_THEME_MOD."admin/statics/static-id.phtml", $page_data);
 		}
 
 		return ob_get_clean();
@@ -126,7 +126,7 @@ class submodule
 			"STATICS" => $this->static_array()
 		];
 
-		return $this->core->sp(MCR_THEME_MOD."admin/statics/static-list.html", $data);
+		return $this->core->sp(MCR_THEME_MOD."admin/statics/static-list.phtml", $data);
 	}
 
 	private function delete()
@@ -252,7 +252,7 @@ class submodule
 			"PREVIEW" => $preview,
 		];
 
-		return $this->core->sp(MCR_THEME_MOD."admin/statics/static-add.html", $data);
+		return $this->core->sp(MCR_THEME_MOD."admin/statics/static-add.phtml", $data);
 	}
 
 	private function get_preview($title = '', $text = '')
@@ -262,7 +262,7 @@ class submodule
 			"TEXT" => $text
 		];
 
-		return $this->core->sp(MCR_THEME_MOD."admin/statics/static-preview.html", $data);
+		return $this->core->sp(MCR_THEME_MOD."admin/statics/static-preview.phtml", $data);
 	}
 
 	private function edit()
@@ -371,7 +371,7 @@ class submodule
 			"PREVIEW" => $preview,
 		];
 
-		return $this->core->sp(MCR_THEME_MOD."admin/statics/static-add.html", $data);
+		return $this->core->sp(MCR_THEME_MOD."admin/statics/static-add.phtml", $data);
 	}
 
 	public function content()

@@ -32,7 +32,7 @@ class module{
 			'FOR_TIME' => $for_time,
 		);
 
-		echo $this->core->sp(MCR_THEME_MOD."close/main.html", $data);
+		echo $this->core->sp(MCR_THEME_MOD."close/main.phtml", $data);
 
 		exit;
 	}

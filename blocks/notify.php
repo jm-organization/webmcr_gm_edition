@@ -11,7 +11,7 @@ class block_notify{
 	}
 
 	public function content(){
-		$this->core->header .= $this->core->sp(MCR_THEME_PATH."blocks/notify/header.html");
+		$this->core->header .= $this->core->sp(MCR_THEME_PATH."blocks/notify/header.phtml");
 
 		if(!isset($_SESSION['mcr_notify'])){ return ''; }
 
@@ -21,7 +21,7 @@ class block_notify{
 			"MESSAGE" => $this->db->HSC(@$_SESSION['notify_msg'])
 		);
 
-		$result = $this->core->sp(MCR_THEME_PATH."blocks/notify/alert.html", $new_data);
+		$result = $this->core->sp(MCR_THEME_PATH."blocks/notify/alert.phtml", $new_data);
 	
 		unset($_SESSION['mcr_notify']);
 		unset($_SESSION['notify_type']);

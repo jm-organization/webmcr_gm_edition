@@ -26,7 +26,7 @@ class submodule
 		];
 		$this->core->bc = $this->core->gen_bc($bc);
 
-		$this->core->header .= $this->core->sp(MCR_THEME_MOD."admin/groups/header.html");
+		$this->core->header .= $this->core->sp(MCR_THEME_MOD."admin/groups/header.phtml");
 	}
 
 	private function group_array()
@@ -72,7 +72,7 @@ class submodule
 		);
 
 		if (!$query || $this->db->num_rows($query) <= 0) {
-			return $this->core->sp(MCR_THEME_MOD."admin/groups/group-none.html");
+			return $this->core->sp(MCR_THEME_MOD."admin/groups/group-none.phtml");
 		}
 
 		ob_start();
@@ -86,7 +86,7 @@ class submodule
 				"TEXT" => $this->db->HSC($ar['description']),
 			];
 
-			echo $this->core->sp(MCR_THEME_MOD."admin/groups/group-id.html", $page_data);
+			echo $this->core->sp(MCR_THEME_MOD."admin/groups/group-id.phtml", $page_data);
 		}
 
 		return ob_get_clean();
@@ -118,7 +118,7 @@ class submodule
 				"GROUPS" => $this->group_array()
 			];
 
-			return $this->core->sp(MCR_THEME_MOD."admin/groups/group-list.html", $data);
+			return $this->core->sp(MCR_THEME_MOD."admin/groups/group-list.phtml", $data);
 		}
 
 		exit("SQL Error");
@@ -168,24 +168,24 @@ class submodule
 		switch ($type) {
 			case 'integer':
 				$data['VALUE'] = intval($value);
-				$input = $this->core->sp(MCR_THEME_MOD."admin/groups/perm-id-integer.html", $data);
+				$input = $this->core->sp(MCR_THEME_MOD."admin/groups/perm-id-integer.phtml", $data);
 				break;
 
 			case 'float':
 				$data['VALUE'] = floatval($value);
-				$input = $this->core->sp(MCR_THEME_MOD."admin/groups/perm-id-float.html", $data);
+				$input = $this->core->sp(MCR_THEME_MOD."admin/groups/perm-id-float.phtml", $data);
 				break;
 
 			case 'string':
 				$data['VALUE'] = $this->db->HSC($value);
-				$input = $this->core->sp(MCR_THEME_MOD."admin/groups/perm-id-string.html", $data);
+				$input = $this->core->sp(MCR_THEME_MOD."admin/groups/perm-id-string.phtml", $data);
 				break;
 
 			default:
 				$data['VALUE'] = ($value == 'true')
 					? 'selected'
 					: '';
-				$input = $this->core->sp(MCR_THEME_MOD."admin/groups/perm-id-boolean.html", $data);
+				$input = $this->core->sp(MCR_THEME_MOD."admin/groups/perm-id-boolean.phtml", $data);
 				break;
 		}
 
@@ -214,7 +214,7 @@ class submodule
 
 			$data['DEFAULT'] = @$this->get_default_value($ar['value'], $value, $ar['type']);
 
-			echo $this->core->sp(MCR_THEME_MOD."admin/groups/perm-id.html", $data);
+			echo $this->core->sp(MCR_THEME_MOD."admin/groups/perm-id.phtml", $data);
 		}
 
 		return ob_get_clean();
@@ -292,7 +292,7 @@ class submodule
 			"BUTTON" => $this->l10n->gettext('save')
 		];
 
-		return $this->core->sp(MCR_THEME_MOD."admin/groups/group-add.html", $data);
+		return $this->core->sp(MCR_THEME_MOD."admin/groups/group-add.phtml", $data);
 	}
 
 	private function edit()
@@ -360,7 +360,7 @@ class submodule
 			"BUTTON" => $this->l10n->gettext('save')
 		];
 
-		return $this->core->sp(MCR_THEME_MOD."admin/groups/group-add.html", $data);
+		return $this->core->sp(MCR_THEME_MOD."admin/groups/group-add.phtml", $data);
 	}
 
 	public function content()

@@ -98,7 +98,7 @@ class install{
 		unset($_SESSION['notify_title']);
 		unset($_SESSION['notify_text']);
 
-		return $this->sp('notify.html', $data);
+		return $this->sp('notify.phtml', $data);
 	}
 
 	public function savecfg($cfg=array(), $file='main.php', $var='main'){

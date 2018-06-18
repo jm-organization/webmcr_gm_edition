@@ -106,6 +106,6 @@ class module{
 
 		$data = array();
 
-		return $this->install->sp('step_5.html', $data);
+		return $this->install->sp('step_5.phtml', $data);
 	}
 }

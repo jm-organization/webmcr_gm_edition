@@ -72,7 +72,7 @@ class submodule
 				"TEXT" => $text
 			];
 
-			echo $this->core->sp(MCR_THEME_MOD."search/comments/comment-id.html", $data);
+			echo $this->core->sp(MCR_THEME_MOD."search/comments/comment-id.phtml", $data);
 		}
 
 		return ob_get_clean();
@@ -110,6 +110,6 @@ class submodule
 			"QUERY_COUNT" => intval($ar[0])
 		];
 
-		return $this->core->sp(MCR_THEME_MOD."search/results.html", $data);
+		return $this->core->sp(MCR_THEME_MOD."search/results.phtml", $data);
 	}
 }

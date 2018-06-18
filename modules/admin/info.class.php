@@ -96,7 +96,7 @@ class submodule
 				"COUNT" => intval($ar['count'])
 			];
 
-			echo $this->core->sp(MCR_THEME_MOD."admin/info/group-id.html", $data);
+			echo $this->core->sp(MCR_THEME_MOD."admin/info/group-id.phtml", $data);
 		}
 
 		return ob_get_clean();

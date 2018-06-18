@@ -82,7 +82,7 @@ class module{
 
 		$data = array();
 
-		return $this->install->sp('step_3.html', $data);
+		return $this->install->sp('step_3.phtml', $data);
 	}
 
 }

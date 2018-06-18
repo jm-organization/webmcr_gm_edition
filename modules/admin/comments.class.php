@@ -26,7 +26,7 @@ class submodule
 		];
 		$this->core->bc = $this->core->gen_bc($bc);
 
-		$this->core->header .= $this->core->sp(MCR_THEME_MOD."admin/comments/header.html");
+		$this->core->header .= $this->core->sp(MCR_THEME_MOD."admin/comments/header.phtml");
 	}
 
 	private function comment_array()
@@ -91,7 +91,7 @@ class submodule
 		);
 
 		if (!$query || $this->db->num_rows($query) <= 0) {
-			return $this->core->sp(MCR_THEME_MOD."admin/comments/com-none.html");
+			return $this->core->sp(MCR_THEME_MOD."admin/comments/com-none.phtml");
 		}
 
 		ob_start();
@@ -109,7 +109,7 @@ class submodule
 				"LOGIN" => $this->core->colorize($login, $this->db->HSC($ar['gcolor'])),
 			];
 
-			echo $this->core->sp(MCR_THEME_MOD."admin/comments/com-id.html", $page_data);
+			echo $this->core->sp(MCR_THEME_MOD."admin/comments/com-id.phtml", $page_data);
 		}
 
 		return ob_get_clean();
@@ -141,7 +141,7 @@ class submodule
 				"COMMENTS" => $this->comment_array()
 			];
 
-			return $this->core->sp(MCR_THEME_MOD."admin/comments/com-list.html", $data);
+			return $this->core->sp(MCR_THEME_MOD."admin/comments/com-list.phtml", $data);
 		}
 
 		exit("SQL Error");
@@ -192,7 +192,7 @@ class submodule
 				"SELECTED" => 'selected disabled'
 			];
 
-			return $this->core->sp(MCR_THEME_MOD."admin/comments/nid-list-id.html", $data);
+			return $this->core->sp(MCR_THEME_MOD."admin/comments/nid-list-id.phtml", $data);
 		}
 
 		ob_start();
@@ -206,7 +206,7 @@ class submodule
 					: ''
 			];
 
-			echo $this->core->sp(MCR_THEME_MOD."admin/comments/nid-list-id.html", $data);
+			echo $this->core->sp(MCR_THEME_MOD."admin/comments/nid-list-id.phtml", $data);
 		}
 
 		return ob_get_clean();
@@ -285,7 +285,7 @@ class submodule
 			"BUTTON" => $this->l10n->gettext('save')
 		];
 
-		return $this->core->sp(MCR_THEME_MOD."admin/comments/com-add.html", $data);
+		return $this->core->sp(MCR_THEME_MOD."admin/comments/com-add.phtml", $data);
 	}
 
 	private function edit()
@@ -371,7 +371,7 @@ class submodule
 			"BUTTON" => $this->l10n->gettext('save')
 		];
 
-		return $this->core->sp(MCR_THEME_MOD."admin/comments/com-add.html", $data);
+		return $this->core->sp(MCR_THEME_MOD."admin/comments/com-add.phtml", $data);
 	}
 
 	public function content()

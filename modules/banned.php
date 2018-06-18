@@ -30,7 +30,7 @@ class module{
 			'EXPIRE' => ($this->user->is_banned<=0) ? $this->l10n['ban_forever'] : $this->l10n['ban_expired'].' '.$expire,
 		);
 
-		echo $this->core->sp(MCR_THEME_MOD."banned/main.html", $data);
+		echo $this->core->sp(MCR_THEME_MOD."banned/main.phtml", $data);
 
 		exit;*/
 	}

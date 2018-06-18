@@ -29,7 +29,7 @@ class submodule {
 		);
 		$this->core->bc = $this->core->gen_bc($bc);
 
-		$this->core->header .= $this->core->sp(MCR_THEME_MOD."admin/l10n/languages/header.html");
+		$this->core->header .= $this->core->sp(MCR_THEME_MOD."admin/l10n/languages/header.phtml");
 	}
     
     protected function parent_languages_list($lng='') {
@@ -87,7 +87,7 @@ class submodule {
                 'SELECT' => ($key == $df)?'checked':'',
             );
             
-            echo $this->core->sp(MCR_THEME_MOD."admin/l10n/languages/datetime_format.html", $date);
+            echo $this->core->sp(MCR_THEME_MOD."admin/l10n/languages/datetime_format.phtml", $date);
         }
 
 		return ob_get_clean();
@@ -111,7 +111,7 @@ class submodule {
                 'SELECT' => ($key == $tf)?'checked':'',
             );
             
-            echo $this->core->sp(MCR_THEME_MOD."admin/l10n/languages/datetime_format.html", $date);
+            echo $this->core->sp(MCR_THEME_MOD."admin/l10n/languages/datetime_format.phtml", $date);
         }
 
 		return ob_get_clean();
@@ -129,7 +129,7 @@ class submodule {
 				"LOCALE" => $language['language']
 			);
 
-			echo $this->core->sp(MCR_THEME_MOD."admin/l10n/languages/language.html", $data);
+			echo $this->core->sp(MCR_THEME_MOD."admin/l10n/languages/language.phtml", $data);
 		}
 
 		return ob_get_clean();
@@ -143,7 +143,7 @@ class submodule {
 			"LANGUAGES_LIST" => $languages_list,
 		);
 
-		return $this->core->sp(MCR_THEME_MOD."admin/l10n/languages/languages.html", $data);
+		return $this->core->sp(MCR_THEME_MOD."admin/l10n/languages/languages.phtml", $data);
 	}
     
     protected function show_phrases() {
@@ -274,7 +274,7 @@ class submodule {
             'TEXT_DIRECTION' => ''
         );
         
-        return $this->core->sp(MCR_THEME_MOD."admin/l10n/languages/form-languages.html", $data);
+        return $this->core->sp(MCR_THEME_MOD."admin/l10n/languages/form-languages.phtml", $data);
 	}
 
 	protected function edit() {
@@ -391,7 +391,7 @@ class submodule {
             'TEXT_DIRECTION' => $text_direction
         );
         
-        return $this->core->sp(MCR_THEME_MOD."admin/l10n/languages/form-languages.html", $data);
+        return $this->core->sp(MCR_THEME_MOD."admin/l10n/languages/form-languages.phtml", $data);
 	}
 
 	protected function delete() {

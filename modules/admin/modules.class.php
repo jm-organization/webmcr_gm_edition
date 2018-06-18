@@ -27,7 +27,7 @@ class submodule
 
 		$this->core->bc = $this->core->gen_bc($bc);
 
-		$this->core->header .= $this->core->sp(MCR_THEME_MOD."admin/modules/header.html");
+		$this->core->header .= $this->core->sp(MCR_THEME_MOD."admin/modules/header.phtml");
 	}
 
 	private function module_array()
@@ -36,7 +36,7 @@ class submodule
 		$list = $this->filter_folder(scandir(MCR_MODE_PATH));
 
 		if (!is_array($list) || count($list) <= 0) {
-			return $this->core->sp(MCR_THEME_MOD."admin/modules/module-none.html");
+			return $this->core->sp(MCR_THEME_MOD."admin/modules/module-none.phtml");
 		}
 
 		ob_start();
@@ -53,7 +53,7 @@ class submodule
 				"VERSION" => $this->db->HSC(@$cfg['MOD_VERSION']),
 			];
 
-			echo $this->core->sp(MCR_THEME_MOD."admin/modules/module-id.html", $page_data);
+			echo $this->core->sp(MCR_THEME_MOD."admin/modules/module-id.phtml", $page_data);
 		}
 
 		return ob_get_clean();
@@ -94,7 +94,7 @@ class submodule
 			"MODULES" => $this->module_array()
 		];
 
-		return $this->core->sp(MCR_THEME_MOD."admin/modules/module-list.html", $data);
+		return $this->core->sp(MCR_THEME_MOD."admin/modules/module-list.phtml", $data);
 	}
 
 	private function check_update($cfg)
@@ -181,7 +181,7 @@ class submodule
 			"BUTTON" => $this->l10n->gettext('mod_edit_btn')
 		];
 
-		return $this->core->sp(MCR_THEME_MOD."admin/modules/module-add.html", $data);
+		return $this->core->sp(MCR_THEME_MOD."admin/modules/module-add.phtml", $data);
 	}
 
 	public function content()

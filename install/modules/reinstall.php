@@ -73,7 +73,7 @@ class module{
 
 		}
 
-		return $this->install->sp('reinstall.html');
+		return $this->install->sp('reinstall.phtml');
 	}
 
 }

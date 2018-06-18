@@ -37,7 +37,7 @@ class module
 				: intval($data['dislikes'])
 		];
 
-		return $this->core->sp(MCR_THEME_MOD."news/new-like.html", $data);
+		return $this->core->sp(MCR_THEME_MOD."news/new-like.phtml", $data);
 	}
 
 	private function get_admin($id, $attach)
@@ -53,7 +53,7 @@ class module
 				: $this->l10n->gettext('attach')
 		];
 
-		return $this->core->sp(MCR_THEME_MOD."news/new-admin.html", $data);
+		return $this->core->sp(MCR_THEME_MOD."news/new-admin.phtml", $data);
 	}
 
 	private function news_array($cid = false)
@@ -89,7 +89,7 @@ class module
 		ob_start();
 
 		if (!$query || $this->db->num_rows($query) <= 0) {
-			echo $this->core->sp(MCR_THEME_MOD."news/new-none.html");
+			echo $this->core->sp(MCR_THEME_MOD."news/new-none.phtml");
 
 			return ob_get_clean();
 		}
@@ -132,7 +132,7 @@ class module
 				? '-attached'
 				: '';
 
-			echo $this->core->sp(MCR_THEME_MOD."news/new-id".$attached.".html", $new_data);
+			echo $this->core->sp(MCR_THEME_MOD."news/new-id".$attached.".phtml", $new_data);
 		}
 
 		if ($cid !== false) {
@@ -176,13 +176,13 @@ class module
 			"NEWS" => $this->news_array($cid)
 		];
 
-		return $this->core->sp(MCR_THEME_MOD."news/new-list.html", $data);
+		return $this->core->sp(MCR_THEME_MOD."news/new-list.phtml", $data);
 	}
 
 	private function comments_array($nid = 1)
 	{
 		if (!$this->core->is_access('sys_comment_list')) {
-			return $this->core->sp(MCR_THEME_MOD."news/comments/comment-access.html");
+			return $this->core->sp(MCR_THEME_MOD."news/comments/comment-access.phtml");
 		}
 
 		$start = $this->core->pagination($this->cfg->pagin['comments'], 0, 0); // Set start pagination
@@ -213,7 +213,7 @@ class module
 			
 			LIMIT $start, $end");
 		if (!$query || $this->db->num_rows($query) <= 0) {
-			return $this->core->sp(MCR_THEME_MOD."news/comments/comment-none.html");
+			return $this->core->sp(MCR_THEME_MOD."news/comments/comment-none.phtml");
 		}
 
 		ob_start();
@@ -228,13 +228,13 @@ class module
 			];
 
 			if ($this->core->is_access('sys_comment_del') || $this->core->is_access('sys_comment_del_all')) {
-				$act_del = $this->core->sp(MCR_THEME_MOD."news/comments/comment-act-del.html", $data);
+				$act_del = $this->core->sp(MCR_THEME_MOD."news/comments/comment-act-del.phtml", $data);
 			}
 			if ($this->core->is_access('sys_comment_edt') || $this->core->is_access('sys_comment_edt_all')) {
-				$act_edt = $this->core->sp(MCR_THEME_MOD."news/comments/comment-act-edt.html", $data);
+				$act_edt = $this->core->sp(MCR_THEME_MOD."news/comments/comment-act-edt.phtml", $data);
 			}
 			if ($this->user->is_auth) {
-				$act_get = $this->core->sp(MCR_THEME_MOD."news/comments/comment-act-get.html", $data);
+				$act_get = $this->core->sp(MCR_THEME_MOD."news/comments/comment-act-get.phtml", $data);
 			}
 
 			$login = (is_null($ar[$us_f['login']]))
@@ -254,7 +254,7 @@ class module
 				"ACTION_QUOTE" => $act_get
 			];
 
-			echo $this->core->sp(MCR_THEME_MOD."news/comments/comment-id.html", $com_data);
+			echo $this->core->sp(MCR_THEME_MOD."news/comments/comment-id.phtml", $com_data);
 		}
 
 		return ob_get_clean();
@@ -270,7 +270,7 @@ class module
 
 		$data['BB_PANEL'] = $bb->bb_panel('bb-comments');
 
-		return $this->core->sp(MCR_THEME_MOD."news/comments/comment-form.html", $data);
+		return $this->core->sp(MCR_THEME_MOD."news/comments/comment-form.phtml", $data);
 	}
 
 	private function comments_list($nid = 1)
@@ -292,7 +292,7 @@ class module
 			"COMMENTS_FORM" => $this->get_comment_form()
 		];
 
-		return $this->core->sp(MCR_THEME_MOD."news/comments/comment-list.html", $data);
+		return $this->core->sp(MCR_THEME_MOD."news/comments/comment-list.phtml", $data);
 	}
 
 	private function update_views($nid)
@@ -380,7 +380,7 @@ class module
 
 		$comments = (intval($ar['discus']) == 1)
 			? $this->comments_list($id)
-			: $this->core->sp(MCR_THEME_MOD."news/comments/comment-closed.html");
+			: $this->core->sp(MCR_THEME_MOD."news/comments/comment-closed.phtml");
 
 		$format = $this->l10n->get_date_format().' '.$this->l10n->gettext('in').' '.$this->l10n->get_time_format();
 		$data = json_decode($ar['data'], true);
@@ -412,28 +412,28 @@ class module
 
 		$this->core->bc = $this->core->gen_bc($bc);
 
-		return $this->core->sp(MCR_THEME_MOD."news/new-full.html", $new_data);
+		return $this->core->sp(MCR_THEME_MOD."news/new-full.phtml", $new_data);
 	}
 
 	public function content()
 	{
 
 		if (isset($_GET['id'])) {
-			$this->core->header .= $this->core->sp(MCR_THEME_MOD."news/header-full.html");
+			$this->core->header .= $this->core->sp(MCR_THEME_MOD."news/header-full.phtml");
 
 			$content = $this->news_full();
 		} elseif (isset($_GET['cid'])) {
-			$this->core->header .= $this->core->sp(MCR_THEME_MOD."news/header-list.html");
+			$this->core->header .= $this->core->sp(MCR_THEME_MOD."news/header-list.phtml");
 
 			$content = $this->news_list($_GET['cid']);
 		} else {
-			$this->core->header .= $this->core->sp(MCR_THEME_MOD."news/header-list.html");
+			$this->core->header .= $this->core->sp(MCR_THEME_MOD."news/header-list.phtml");
 
 			$content = $this->news_list();
 		}
 
 		if ($this->core->is_access('sys_adm_news')) {
-			$this->core->header .= $this->core->sp(MCR_THEME_MOD."news/header-admin.html");
+			$this->core->header .= $this->core->sp(MCR_THEME_MOD."news/header-admin.phtml");
 		}
 
 		return $content;

@@ -54,7 +54,7 @@ class block_monitor
 					: $this->l10n->gettext('offline'),
 			];
 
-			echo $this->core->sp(MCR_THEME_PATH."blocks/monitor/monitor-id.html", $data);
+			echo $this->core->sp(MCR_THEME_PATH."blocks/monitor/monitor-id.phtml", $data);
 		}
 
 		return ob_get_clean();
@@ -66,13 +66,13 @@ class block_monitor
 			return null;
 		}
 
-		$this->core->header .= $this->core->sp(MCR_THEME_PATH."blocks/monitor/header.html");
+		$this->core->header .= $this->core->sp(MCR_THEME_PATH."blocks/monitor/header.phtml");
 
 		$data = [
 			'CONTENT' => $this->server_array(),
 		];
 
-		return $this->core->sp(MCR_THEME_PATH."blocks/monitor/main.html", $data);
+		return $this->core->sp(MCR_THEME_PATH."blocks/monitor/main.phtml", $data);
 	}
 }
 

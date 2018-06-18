@@ -239,7 +239,7 @@ class core{
 				"URL" => BASE_URL.$page.'1',
 				"VALUE" => "<<"
 			);
-			$page_first = $this->sp($path."page-id.html", $fp_data);
+			$page_first = $this->sp($path."page-id.phtml", $fp_data);
 			// First page +
 
 			// Prev pages +
@@ -250,7 +250,7 @@ class core{
 					"URL" => BASE_URL.$page.($pid-$pp),
 					"VALUE" => $pid-$pp
 				);
-				$page_prev .= $this->sp($path."page-id.html", $pp_data);
+				$page_prev .= $this->sp($path."page-id.phtml", $pp_data);
 			}
 			// Prev pages -
 
@@ -259,7 +259,7 @@ class core{
 				"URL" => BASE_URL.$page.$pid,
 				"VALUE" => $pid
 			);
-			$page_this = $this->sp($path."page-id-this.html", $tp_data);
+			$page_this = $this->sp($path."page-id-this.phtml", $tp_data);
 			// Selected page -
 
 			// Next pages +
@@ -270,7 +270,7 @@ class core{
 					"URL" => BASE_URL.$page.($pid+$np),
 					"VALUE" => $pid+$np
 				);
-				$page_next .= $this->sp($path."page-id.html", $np_data);
+				$page_next .= $this->sp($path."page-id.phtml", $np_data);
 			}
 			// Next pages -
 
@@ -279,7 +279,7 @@ class core{
 				"URL" => BASE_URL.$page.$max,
 				"VALUE" => ">>"
 			);
-			$page_last = $this->sp($path."page-id.html", $lp_data);
+			$page_last = $this->sp($path."page-id.phtml", $lp_data);
 			// Last page -
 
 
@@ -291,7 +291,7 @@ class core{
 				"PAGE_LAST" => $page_last
 			);
 
-			return $this->sp($path."object.html", $data);
+			return $this->sp($path."object.phtml", $data);
 		}
 
 		return null;
@@ -379,11 +379,11 @@ class core{
 				:' — '.$title;
 
 			if ($count==$i) {
-				echo $this->sp(MCR_THEME_PATH."breadcrumbs/id-active.html", array("TITLE" => $title));
+				echo $this->sp(MCR_THEME_PATH."breadcrumbs/id-active.phtml", array("TITLE" => $title));
 			} else {
 				$data['TITLE'] = $title;
 				$data['URL'] = $url;
-				echo $this->sp(MCR_THEME_PATH."breadcrumbs/id-inactive.html", $data);
+				echo $this->sp(MCR_THEME_PATH."breadcrumbs/id-inactive.phtml", $data);
 			}
 
 			$i++;
@@ -404,7 +404,7 @@ class core{
 
 		if (!$this->cfg->func['breadcrumbs']) return false;
 
-		return $this->sp(MCR_THEME_PATH."breadcrumbs/list.html", $data);
+		return $this->sp(MCR_THEME_PATH."breadcrumbs/list.phtml", $data);
 	}
 
 	public function check_cfg($cfg){
@@ -456,15 +456,15 @@ class core{
 	public function load_mode($mode){
 		if(!preg_match("/^\w+$/i", $mode) || !file_exists(MCR_MODE_PATH.$mode.".php")){
 			$this->title = $this->l10n->gettext('error_mode_found');
-			return $this->sp(MCR_THEME_PATH."default_sp/404.html");
+			return $this->sp(MCR_THEME_PATH."default_sp/404.phtml");
 		}
 
 		if(!file_exists(MCR_CONF_PATH.'modules/'.$mode.'.php')){
-			return $this->sp(MCR_THEME_PATH."default_sp/mod_disable.html");
+			return $this->sp(MCR_THEME_PATH."default_sp/mod_disable.phtml");
 		}
 		require_once(MCR_CONF_PATH.'modules/'.$mode.'.php');
 		if(!isset($cfg) || !$this->check_cfg($cfg) || !$cfg['MOD_ENABLE']){
-			return $this->sp(MCR_THEME_PATH."default_sp/mod_disable.html");
+			return $this->sp(MCR_THEME_PATH."default_sp/mod_disable.phtml");
 		}
 		include_once(MCR_MODE_PATH.$mode.".php");
 		if(!class_exists("module")){ return sprintf($this->l10n->gettext('error_mode_found'), 'module'); }
@@ -516,7 +516,7 @@ class core{
 		require(MCR_LANG_PATH.$this->cfg->main['s_lang'].'/'.$mode.'.php');
 		global $cfg;
 
-		if ($cfg['MOD_ENABLE']) return $this->sp(MCR_THEME_PATH."default_sp/mod_disable.html");
+		if ($cfg['MOD_ENABLE']) return $this->sp(MCR_THEME_PATH."default_sp/mod_disable.phtml");
 
 		$this->cfg_m = $cfg;
 		$module = new module($this);
@@ -623,7 +623,7 @@ class core{
 		$data = file(MCR_THEME_PATH."default_sp/advice.txt");
 		$size = count($data);
 		$sp_data["ADVICE"] = ($size<=0) ? $this->lng['e_advice_found'] : $data[rand(0, $size-1)];
-		return $this->sp(MCR_THEME_PATH."default_sp/advice.html", $sp_data);
+		return $this->sp(MCR_THEME_PATH."default_sp/advice.phtml", $sp_data);
 	}
 
 	/**
@@ -756,10 +756,10 @@ class core{
 
 	public function captcha(){
 		switch($this->cfg->main['captcha']){
-			case 1: $content = $this->sp(MCR_THEME_PATH."captcha/recaptcha.html"); break;
+			case 1: $content = $this->sp(MCR_THEME_PATH."captcha/recaptcha.phtml"); break;
 			case 2: require(MCR_TOOL_PATH.'libs/keycaptcha.php'); $kc = new KeyCAPTCHA_CLASS('', $this);
 				$data["CONTENT"] = $kc->render_js();
-				$content = $this->sp(MCR_THEME_PATH."captcha/keycaptcha.html", $data);
+				$content = $this->sp(MCR_THEME_PATH."captcha/keycaptcha.phtml", $data);
 				break;
 			default: return null; break;
 		}
@@ -795,7 +795,7 @@ class core{
 				"TITLE" => $value['title'],
 				"ACTIVE" => ($key==$active) ? 'active' : ''
 			);
-			echo $this->sp(MCR_THEME_MOD."search/elem-id.html", $data);
+			echo $this->sp(MCR_THEME_MOD."search/elem-id.phtml", $data);
 		}
 		return ob_get_clean();
 	}
@@ -805,7 +805,7 @@ class core{
 		$type = (isset($_GET['type'])) ? $_GET['type'] : 'news';
 		$data['SEARCH_ELEMENTS'] = $this->search_array($type);
 		if(empty($data['SEARCH_ELEMENTS'])){ return null; }
-		return $this->sp(MCR_THEME_MOD."search/form.html", $data);
+		return $this->sp(MCR_THEME_MOD."search/form.phtml", $data);
 	}
 
 	public function perm_list($selected=''){
@@ -831,6 +831,6 @@ class core{
 
 	public function file_manager(){
 		if(!$this->is_access('sys_adm_manager')){ return null; }
-		return $this->sp(MCR_THEME_PATH."default_sp/file_manager.html");
+		return $this->sp(MCR_THEME_PATH."default_sp/file_manager.phtml");
 	}
 }

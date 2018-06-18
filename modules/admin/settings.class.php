@@ -20,7 +20,7 @@ class submodule{
 		);
 		$this->core->bc = $this->core->gen_bc($bc);
 
-		$this->core->header .= $this->core->sp(MCR_THEME_MOD."admin/settings/header.html");
+		$this->core->header .= $this->core->sp(MCR_THEME_MOD."admin/settings/header.phtml");
 	}
 
 	private function themes($select=''){
@@ -164,7 +164,7 @@ class submodule{
 			"CAPTHA"		=> $this->captcha($cfg['captcha']),
 		);
 
-		return $this->core->sp(MCR_THEME_MOD."admin/settings/main.html", $data);
+		return $this->core->sp(MCR_THEME_MOD."admin/settings/main.phtml", $data);
 	}
 
 	private function to_int_keys($array=array()){
@@ -214,7 +214,7 @@ class submodule{
 			"CFG" => $cfg
 		);
 
-		return $this->core->sp(MCR_THEME_MOD."admin/settings/pagin.html", $data);
+		return $this->core->sp(MCR_THEME_MOD."admin/settings/pagin.phtml", $data);
 	}
 
 	private function _mail(){
@@ -258,7 +258,7 @@ class submodule{
 			"CFG"			=> $cfg,
 		);
 
-		return $this->core->sp(MCR_THEME_MOD."admin/settings/mail.html", $data);
+		return $this->core->sp(MCR_THEME_MOD."admin/settings/mail.phtml", $data);
 	}
 
 	private function search_items($cfg){
@@ -273,7 +273,7 @@ class submodule{
 				"PERMISSIONS" => $this->core->perm_list($value['permissions']),
 			);
 
-			echo $this->core->sp(MCR_THEME_MOD."admin/settings/search-id.html", $data);
+			echo $this->core->sp(MCR_THEME_MOD."admin/settings/search-id.phtml", $data);
 		}
 
 		return ob_get_clean();
@@ -311,7 +311,7 @@ class submodule{
 			"ITEMS"			=> $this->search_items($cfg),
 		);
 
-		return $this->core->sp(MCR_THEME_MOD."admin/settings/search.html", $data);
+		return $this->core->sp(MCR_THEME_MOD."admin/settings/search.phtml", $data);
 	}
 
 	private function functions(){
@@ -349,7 +349,7 @@ class submodule{
 			'CLOSE_TIME' => (intval($cfg['close_time'])<=0) ? '' : date("d.m.Y H:i:s", $cfg['close_time']),
 		);
 
-		return $this->core->sp(MCR_THEME_MOD."admin/settings/functions.html", $data);
+		return $this->core->sp(MCR_THEME_MOD."admin/settings/functions.phtml", $data);
 	}
 
 	private function base(){
@@ -392,7 +392,7 @@ class submodule{
 			"PORT" => intval($db['port']),
 		);
 
-		return $this->core->sp(MCR_THEME_MOD."admin/settings/base.html", $data);
+		return $this->core->sp(MCR_THEME_MOD."admin/settings/base.phtml", $data);
 	}
 
 	public function content(){

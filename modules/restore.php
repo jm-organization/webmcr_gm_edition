@@ -66,7 +66,7 @@ class module{
 				"SITEURL" => $this->cfg->main['s_root_full'].BASE_URL
 			);
 
-			$message = $this->core->sp(MCR_THEME_PATH."modules/restore/body.mail.html", $data);
+			$message = $this->core->sp(MCR_THEME_PATH."modules/restore/body.mail.phtml", $data);
 
 			if(!$this->core->send_mail($email, $this->lng['email_title'], $message)){ $this->core->notify($this->core->lng['e_msg'], $this->core->lng['e_critical'], 1, "?mode=restore"); }
 
@@ -76,7 +76,7 @@ class module{
 			$this->core->notify('', $this->lng['e_success'], 3);
 		}
 
-		return $this->core->sp(MCR_THEME_PATH."modules/restore/main.html");
+		return $this->core->sp(MCR_THEME_PATH."modules/restore/main.phtml");
 	}
 
 	private function accept(){
@@ -128,7 +128,7 @@ class module{
 			$this->core->notify($this->core->lng['e_success'], $this->lng['e_success2'], 3);
 		}
 
-		return $this->core->sp(MCR_THEME_PATH."modules/restore/newpass.html");
+		return $this->core->sp(MCR_THEME_PATH."modules/restore/newpass.phtml");
 	}
 
 	public function content(){

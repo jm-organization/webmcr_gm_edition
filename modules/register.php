@@ -30,7 +30,7 @@ class module
 			$this->core->notify($this->l10n->gettext('error_message'), $this->l10n->gettext('auth_already'), 2, '?mode=403');
 		}
 
-		return $this->core->sp(MCR_THEME_PATH."modules/register/main.html");
+		return $this->core->sp(MCR_THEME_PATH."modules/register/main.phtml");
 	}
 
 	private function accept()
@@ -78,7 +78,7 @@ class module
 	public function content()
 	{
 
-		$this->core->header = $this->core->sp(MCR_THEME_MOD."register/header.html");
+		$this->core->header = $this->core->sp(MCR_THEME_MOD."register/header.phtml");
 
 		$op = (isset($_GET['op']))
 			? $_GET['op']

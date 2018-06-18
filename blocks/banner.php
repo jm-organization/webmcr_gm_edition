@@ -13,8 +13,8 @@ class block_banner{
 
 		if(!$this->core->is_access(@$this->core->cfg_b['PERMISSIONS'])){ return null; }
 
-		$this->core->header .= $this->core->sp(MCR_THEME_PATH."blocks/banner/header.html");
+		$this->core->header .= $this->core->sp(MCR_THEME_PATH."blocks/banner/header.phtml");
 
-		return $this->core->sp(MCR_THEME_PATH."blocks/banner/main.html");
+		return $this->core->sp(MCR_THEME_PATH."blocks/banner/main.phtml");
 	}
 }

@@ -27,7 +27,7 @@ class submodule
 
 		$this->core->bc = $this->core->gen_bc($bc);
 
-		$this->core->header .= $this->core->sp(MCR_THEME_MOD."admin/monitoring/header.html");
+		$this->core->header .= $this->core->sp(MCR_THEME_MOD."admin/monitoring/header.phtml");
 	}
 
 	private function monitor_array()
@@ -73,7 +73,7 @@ class submodule
 		);
 
 		if (!$query || $this->db->num_rows($query) <= 0) {
-			return $this->core->sp(MCR_THEME_MOD."admin/monitoring/monitor-none.html");
+			return $this->core->sp(MCR_THEME_MOD."admin/monitoring/monitor-none.phtml");
 		}
 
 		ob_start();
@@ -87,7 +87,7 @@ class submodule
 				"PORT" => intval($ar['port'])
 			];
 
-			echo $this->core->sp(MCR_THEME_MOD."admin/monitoring/monitor-id.html", $page_data);
+			echo $this->core->sp(MCR_THEME_MOD."admin/monitoring/monitor-id.phtml", $page_data);
 		}
 
 		return ob_get_clean();
@@ -119,7 +119,7 @@ class submodule
 				"SERVERS" => $this->monitor_array()
 			];
 
-			return $this->core->sp(MCR_THEME_MOD."admin/monitoring/monitor-list.html", $data);
+			return $this->core->sp(MCR_THEME_MOD."admin/monitoring/monitor-list.phtml", $data);
 		}
 
 		exit("SQL Error");
@@ -213,7 +213,7 @@ class submodule
 			"BUTTON" => $this->l10n->gettext('save')
 		];
 
-		return $this->core->sp(MCR_THEME_MOD."admin/monitoring/monitor-add.html", $data);
+		return $this->core->sp(MCR_THEME_MOD."admin/monitoring/monitor-add.phtml", $data);
 	}
 
 	private function edit()
@@ -286,7 +286,7 @@ class submodule
 			"BUTTON" => $this->l10n->gettext('save')
 		];
 
-		return $this->core->sp(MCR_THEME_MOD."admin/monitoring/monitor-add.html", $data);
+		return $this->core->sp(MCR_THEME_MOD."admin/monitoring/monitor-add.phtml", $data);
 	}
 
 	private function types($selected = '')

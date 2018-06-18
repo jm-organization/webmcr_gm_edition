@@ -29,11 +29,11 @@ class menu{
 			);
 
 			if(!empty($ar['sons'])){
-				echo $this->core->sp(MCR_THEME_PATH."menu/menu-id-sub-parented.html", $data);
+				echo $this->core->sp(MCR_THEME_PATH."menu/menu-id-sub-parented.phtml", $data);
 				continue;
 			}
 
-			echo $this->core->sp(MCR_THEME_PATH."menu/menu-id-sub.html", $data);
+			echo $this->core->sp(MCR_THEME_PATH."menu/menu-id-sub.phtml", $data);
 		}
 
 		return ob_get_clean();
@@ -78,11 +78,11 @@ class menu{
 			);
 
 			if(!empty($ar['sons'])){
-				echo $this->core->sp(MCR_THEME_PATH."menu/menu-id-parented.html", $data);
+				echo $this->core->sp(MCR_THEME_PATH."menu/menu-id-parented.phtml", $data);
 				continue;
 			}
 			
-			echo $this->core->sp(MCR_THEME_PATH."menu/menu-id.html", $data);
+			echo $this->core->sp(MCR_THEME_PATH."menu/menu-id.phtml", $data);
 			
 		}
 
@@ -177,7 +177,7 @@ class menu{
 				echo $this->core->sp(MCR_THEME_MOD."admin/sidebar.phtml", $data);
 			}
 
-			//echo $this->core->sp(MCR_THEME_MOD."admin/panel_menu/menu-groups/group-id.html", $data);
+			//echo $this->core->sp(MCR_THEME_MOD."admin/panel_menu/menu-groups/group-id.phtml", $data);
 
 			return ob_get_clean();
 		}

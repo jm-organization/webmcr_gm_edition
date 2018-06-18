@@ -27,7 +27,7 @@ class submodule
 
 		$this->core->bc = $this->core->gen_bc($bc);
 
-		$this->core->header .= $this->core->sp(MCR_THEME_MOD."admin/menu_groups/header.html");
+		$this->core->header .= $this->core->sp(MCR_THEME_MOD."admin/menu_groups/header.phtml");
 	}
 
 	private function group_array()
@@ -78,7 +78,7 @@ class submodule
 		);
 
 		if (!$query || $this->db->num_rows($query) <= 0) {
-			return $this->core->sp(MCR_THEME_MOD."admin/menu_groups/group-none.html");
+			return $this->core->sp(MCR_THEME_MOD."admin/menu_groups/group-none.phtml");
 		}
 
 		ob_start();
@@ -93,7 +93,7 @@ class submodule
 				"PID" => intval($ar['pid']),
 			];
 
-			echo $this->core->sp(MCR_THEME_MOD."admin/menu_groups/group-id.html", $page_data);
+			echo $this->core->sp(MCR_THEME_MOD."admin/menu_groups/group-id.phtml", $page_data);
 		}
 
 		return ob_get_clean();
@@ -126,7 +126,7 @@ class submodule
 				"GROUPS" => $this->group_array()
 			];
 
-			return $this->core->sp(MCR_THEME_MOD."admin/menu_groups/group-list.html", $data);
+			return $this->core->sp(MCR_THEME_MOD."admin/menu_groups/group-list.phtml", $data);
 		}
 
 		exit("SQL Error");
@@ -216,7 +216,7 @@ class submodule
 			"BUTTON" => $this->l10n->gettext('save')
 		];
 
-		return $this->core->sp(MCR_THEME_MOD."admin/menu_groups/group-add.html", $data);
+		return $this->core->sp(MCR_THEME_MOD."admin/menu_groups/group-add.phtml", $data);
 	}
 
 	private function edit()
@@ -281,7 +281,7 @@ class submodule
 			"BUTTON" => $this->l10n->gettext('save')
 		];
 
-		return $this->core->sp(MCR_THEME_MOD."admin/menu_groups/group-add.html", $data);
+		return $this->core->sp(MCR_THEME_MOD."admin/menu_groups/group-add.phtml", $data);
 	}
 
 	public function content()

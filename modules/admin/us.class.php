@@ -59,6 +59,6 @@ class submodule
 			"USE_COMMENTS" => ($cfg['enable_comments']) ? 'selected' : '',
 		];
 
-		return $this->core->sp(MCR_THEME_MOD."admin/us/main.html", $data);
+		return $this->core->sp(MCR_THEME_MOD."admin/us/main.phtml", $data);
 	}
 }

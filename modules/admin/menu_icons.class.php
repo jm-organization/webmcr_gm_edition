@@ -26,7 +26,7 @@ class submodule
 		];
 		$this->core->bc = $this->core->gen_bc($bc);
 
-		$this->core->header .= $this->core->sp(MCR_THEME_MOD."admin/menu_icons/header.html");
+		$this->core->header .= $this->core->sp(MCR_THEME_MOD."admin/menu_icons/header.phtml");
 	}
 
 	private function icon_array()
@@ -68,7 +68,7 @@ class submodule
 		);
 
 		if (!$query || $this->db->num_rows($query) <= 0) {
-			return $this->core->sp(MCR_THEME_MOD."admin/menu_icons/icon-none.html");
+			return $this->core->sp(MCR_THEME_MOD."admin/menu_icons/icon-none.phtml");
 		}
 
 		ob_start();
@@ -81,7 +81,7 @@ class submodule
 				"IMG" => $this->db->HSC($ar['img']),
 			];
 
-			echo $this->core->sp(MCR_THEME_MOD."admin/menu_icons/icon-id.html", $page_data);
+			echo $this->core->sp(MCR_THEME_MOD."admin/menu_icons/icon-id.phtml", $page_data);
 		}
 
 		return ob_get_clean();
@@ -114,7 +114,7 @@ class submodule
 				"ICONS" => $this->icon_array()
 			];
 
-			return $this->core->sp(MCR_THEME_MOD."admin/menu_icons/icon-list.html", $data);
+			return $this->core->sp(MCR_THEME_MOD."admin/menu_icons/icon-list.phtml", $data);
 		}
 
 		exit("SQL Error");
@@ -196,7 +196,7 @@ class submodule
 			"BUTTON" => $this->l10n->gettext('save')
 		];
 
-		return $this->core->sp(MCR_THEME_MOD."admin/menu_icons/icon-add.html", $data);
+		return $this->core->sp(MCR_THEME_MOD."admin/menu_icons/icon-add.phtml", $data);
 	}
 
 	private function edit()
@@ -256,7 +256,7 @@ class submodule
 			"BUTTON" => $this->l10n->gettext('save')
 		];
 
-		return $this->core->sp(MCR_THEME_MOD."admin/menu_icons/icon-add.html", $data);
+		return $this->core->sp(MCR_THEME_MOD."admin/menu_icons/icon-add.phtml", $data);
 	}
 
 	public function content()

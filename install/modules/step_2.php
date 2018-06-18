@@ -121,7 +121,7 @@ class module{
 			'METHODS' => $this->encrypt_methods($method),
 		);
 
-		return $this->install->sp('step_2.html', $data);
+		return $this->install->sp('step_2.phtml', $data);
 	}
 
 }

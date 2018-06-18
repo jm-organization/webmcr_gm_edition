@@ -38,7 +38,7 @@ class submodule
 		];
 		$this->core->bc = $this->core->gen_bc($bc);
 
-		$this->core->header .= $this->core->sp(MCR_THEME_MOD."admin/news/header.html");
+		$this->core->header .= $this->core->sp(MCR_THEME_MOD."admin/news/header.phtml");
 	}
 
 	private function categories($selected = 1)
@@ -53,7 +53,7 @@ class submodule
 				"SELECTED" => 'selected disabled',
 			];
 
-			return $this->core->sp(MCR_THEME_MOD."admin/news/select-options.html", $data);
+			return $this->core->sp(MCR_THEME_MOD."admin/news/select-options.phtml", $data);
 		}
 
 		ob_start();
@@ -65,7 +65,7 @@ class submodule
 				"SELECTED" => ($selected == intval($ar['id'])) ? 'selected' : '',
 			];
 
-			echo $this->core->sp(MCR_THEME_MOD."admin/news/select-options.html", $data);
+			echo $this->core->sp(MCR_THEME_MOD."admin/news/select-options.phtml", $data);
 		}
 
 		return ob_get_clean();
@@ -84,7 +84,7 @@ class submodule
 				"SELECTED" => 'selected disabled',
 			];
 
-			return $this->core->sp(MCR_THEME_MOD."admin/news/select-options.html", $data);
+			return $this->core->sp(MCR_THEME_MOD."admin/news/select-options.phtml", $data);
 		}
 
 		ob_start();
@@ -96,7 +96,7 @@ class submodule
 				"SELECTED" => ($id_user_group == intval($ar['id'])) ? 'selected' : '',
 			];
 
-			echo $this->core->sp(MCR_THEME_MOD."admin/news/select-options.html", $data);
+			echo $this->core->sp(MCR_THEME_MOD."admin/news/select-options.phtml", $data);
 		}
 
 		return ob_get_clean();
@@ -112,10 +112,10 @@ class submodule
 			"CID" => intval($cid),
 			"LIKES" => (!$vote)
 				? ''
-				: $this->core->sp(MCR_THEME_MOD."admin/news/new-preview-likes.html"),
+				: $this->core->sp(MCR_THEME_MOD."admin/news/new-preview-likes.phtml"),
 		];
 
-		return $this->core->sp(MCR_THEME_MOD."admin/news/new-preview.html", $data);
+		return $this->core->sp(MCR_THEME_MOD."admin/news/new-preview.phtml", $data);
 	}
 
 	private function is_fill_title($title)
@@ -254,7 +254,7 @@ class submodule
 				"USER_AVATARS" => $avatars,
 			];
 
-			echo $this->core->sp(MCR_THEME_MOD."admin/news/new-id.html", $page_data);
+			echo $this->core->sp(MCR_THEME_MOD."admin/news/new-id.phtml", $page_data);
 		}
 
 		return ob_get_clean();
@@ -266,7 +266,7 @@ class submodule
 			"NEWS" => $this->news_array()
 		];
 
-		return $this->core->sp(MCR_THEME_MOD."admin/news/new-list.html", $data);
+		return $this->core->sp(MCR_THEME_MOD."admin/news/new-list.phtml", $data);
 	}
 
 	private function add()
@@ -365,7 +365,7 @@ class submodule
 			}
 		}
 
-		return $this->core->sp(MCR_THEME_MOD."admin/news/new-add.html", [
+		return $this->core->sp(MCR_THEME_MOD."admin/news/new-add.phtml", [
 			"PAGE" => $this->l10n->gettext('news_add_page_name'),
 			"TITLE" => $this->db->HSC($title),
 			"CATEGORIES" => $categories,
@@ -533,7 +533,7 @@ class submodule
 			"PREVIEW" => $preview,
 		];
 
-		return $this->core->sp(MCR_THEME_MOD."admin/news/new-add.html", $result);
+		return $this->core->sp(MCR_THEME_MOD."admin/news/new-add.phtml", $result);
 	}
 
 	private function delete()

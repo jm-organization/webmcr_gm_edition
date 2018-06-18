@@ -40,7 +40,7 @@ class bbcode{
 				"IMG" => $img
 			);
 
-			echo $this->core->sp(MCR_THEME_PATH.'default_sp/smile-id.html', $data);
+			echo $this->core->sp(MCR_THEME_PATH.'default_sp/smile-id.phtml', $data);
 		}
 
 		return ob_get_clean();
@@ -51,7 +51,7 @@ class bbcode{
 		$data['PANEL_ID'] = $for;
 		$data['SMILES'] = $this->get_smiles_bb();
 
-		return $this->core->sp(MCR_THEME_PATH.'default_sp/bb-panel.html', $data);
+		return $this->core->sp(MCR_THEME_PATH.'default_sp/bb-panel.phtml', $data);
 	}
 
 	// Шаблоны обычных ББ-кодов (рекурсивные)
