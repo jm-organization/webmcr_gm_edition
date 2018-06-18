@@ -49,6 +49,7 @@ $(function () {
 	});
 	
 	$('.ui.dropdown').dropdown();
+	$('.ui.accordion').accordion();
 	
 	$('.menu .item').tab({
 		history: true,

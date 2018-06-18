@@ -65,6 +65,8 @@ $(document).ready(function(){
 
 
     $('.get_more_theme_info').on('click', onOpenThemeInfoModal);
+		
+		$('#themesModal').modal('attach events', '.get_more_theme_info', 'show');
     
     $('#theme_install').on('click', function () {
         var theme = $(this).data('theme-cod');

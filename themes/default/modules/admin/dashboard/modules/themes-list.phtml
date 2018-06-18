@@ -1,109 +1,91 @@
-<div class="card">
-
-    <div class="card-header">
-        <i class="fa fa-th-large"></i> <?=$this->l10n->gettext('themes')?>
-    </div>
-
-	<div class="admin-themes-menu card-block">
+<div class="ui segments">
+  <div class="ui segment">
+		<i class="fa fa-th-large"></i> <?= $this->l10n->gettext('themes') ?>
+	</div>
+	
+  <div class="ui segment admin-themes-menu">
 		<div class="owl-carousel owl-theme" id="themes_carusel">
 			<?php foreach ($data as $datum) { ?>
 				<div class="item">
 					<img class="i-icon" src="<?='themes/' . $datum['ThemeCode'] . '/' . $datum['Screenshots'][0]?>">
-
+					
 					<div class="theme-about">
 						<h3 class="theme-name"><?php echo $datum['ThemeName']; ?></h3>
 						<p class="theme-description"><?php echo $datum['About']; ?></p>
 					</div>
-
+					
 					<?php if($datum['active']) { ?>
 						<span class="theme-active fa fa-check-square-o"></span>
 					<?php } ?>
-
+					
 					<div class="item-footer" style="text-align:left;">
 						<span class="version"><?=$datum['Version'];?></span>
-                        <span class="btn btn-sm btn-link more pull-right get_more_theme_info"
-                              role="button"
-
-                              data-theme-cod="<?=$datum['ThemeCode'];?>"
-
-                              data-toggle="modal"
-                              data-target="#themesModal"
-                        ><?=$this->l10n->gettext('more')?></span>
+						<span class="ui primary right floated mini button get_more_theme_info" role="button" data-theme-cod="<?=$datum['ThemeCode'];?>">
+							<?= $this->l10n->gettext('more') ?>
+						</span>
 					</div>
 				</div>
 			<?php } ?>
 		</div>
 	</div>
-
-    <!--  THEME MODAL  -->
-    <div class="modal fade" id="themesModal" tabindex="-1" role="dialog" aria-labelledby="themesModalLabel" aria-hidden="true">
-        <div class="modal-dialog themes-modal" role="document" style="width:800px;max-width:unset;">
-            <div class="modal-content">
-
-                <div class="modal-header modal-with-nav">
-                    <h2 class="modal-title" id="themesModalLabel">
-                        <span class="badge badge-default theme-name" style="top: -7px;position: relative;"></span>
-                    </h2>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="top:-39px">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-
-                    <ul class="nav nav-tabs modal-header-tabs" id="themes_tabs" role="tablist">
-                        <li class="nav-item">
-                            <a class="nav-link active" id="about-tab" data-toggle="tab" href="#about" role="tab" aria-controls="home" aria-selected="true"><?=$this->l10n->gettext('about_theme')?></a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" id="screenshots-tab" data-toggle="tab" href="#screenshots" role="tab" aria-controls="home" aria-selected="true"><?=$this->l10n->gettext('themes_screenshots')?></a>
-                        </li>
-                    </ul>
-                </div>
-
-                <div class="modal-body tab-content" id="themes_tabs_content" style="margin: 0">
-                    <div class="tab-pane fade show active" id="about" role="tabpanel" aria-labelledby="home-tab">
-                        <div class="row">
-                            <div class="col-md-8">
-                                <h2><?=$this->l10n->gettext('about_theme')?> <span class="theme-name"></span></h2>
-
-                                <hr>
-
-                                <div class="about-theme"></div>
-                            </div>
-                            <div class="col-md-4" style="background: #f7f7f9;margin: -15px 0;border-left: 1px solid #ddd;padding: 15px;">
-								<p class="theme-version">
-                                    <i class="fa fa-info-circle theme-version-info mr-2"
-                                       title="<?=$this->l10n->gettext('magicmer_theme_version_info')?>"
-                                       data-container="body"
-                                       data-toggle="popover"
-                                       data-placement="bottom"
-                                       data-content=""
-                                       style="cursor:pointer;"
-                                    ></i>
-                                    <b><?=$this->l10n->gettext('magicmer_theme_version')?>:</b> <span></span>
-                                </p>
-								<p class="theme-supported-magicmcr-version"><b><?=$this->l10n->gettext('magicmer_theme_mcr_supported_version')?>:</b> <span></span></p>
-								<p class="theme-date-created"><b><?=$this->l10n->gettext('magicmer_theme_date_create')?>:</b> <span></span></p>
-								<p class="theme-date-of-last-release"><b><?=$this->l10n->gettext('magicmer_theme_date_last_release')?>:</b> <span></span></p>
-								<p class="theme-update-url"><b><?=$this->l10n->gettext('magicmer_theme_up_url')?>:</b> <span></span></p>
-								
-								<hr>
-								
-								<p class="theme-author"><b><?=$this->l10n->gettext('magicmer_theme_author')?>:</b> <span></span></p>
-								<p class="theme-author-url"><b><?=$this->l10n->gettext('magicmer_theme_author_url')?>:</b> <span></span></p>
-							</div>
-                        </div>
-                    </div>
-
-                    <div class="tab-pane fade" id="screenshots" role="tabpanel" aria-labelledby="profile-tab">
-                        <div id="lightgallery"></div>
-                    </div>
-                </div>
-
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-sm btn-primary" id="theme_install"><?=$this->l10n->gettext('patch_install')?></button>
-                </div>
-
-            </div>
-        </div>
-    </div>
+	
+	<!--  THEME MODAL  -->
+	
+	<div id="themesModal" class="ui modal">
+		<div class="modal-header header">
+			<h2 class="modal-title">
+				<span class="theme-name"></span>
+			</h2>
+		</div>
+		
+		<div class="ui top attached tabular menu" id="themes_tabs">
+			<a class="active item" id="about-tab" data-tab="about"><?= $this->l10n->gettext('about_theme') ?></a>
+			<a class="item" id="screenshots-tab" data-tab="screenshots"><?= $this->l10n->gettext('themes_screenshots') ?></a>
+		</div>
+		
+		<div class="scrolling content">
+			
+			<div id="themes_tabs_content">
+				<div class="ui active tab" id="about" data-tab="about">
+					<div class="row">
+						<div class="col-md-8">
+							<h2>
+								<?= $this->l10n->gettext('about_theme') ?> <span class="theme-name"></span>
+							</h2>
+							<hr>
+							<div class="about-theme"></div>
+						</div>
+						<div class="col-md-4" style="background: #f7f7f9;margin: -15px 0;border-left: 1px solid #ddd;padding: 15px;">
+							<p class="theme-version">
+								<i class="fa fa-info-circle theme-version-info mr-2"
+								title="<?= $this->l10n->gettext('magicmer_theme_version_info') ?>" data-container="body" data-toggle="popover" data-placement="bottom" data-content=""
+								style="cursor:pointer;"
+								></i>
+								<b><?= $this->l10n->gettext('magicmer_theme_version') ?>:</b> <span></span>
+							</p>
+							<p class="theme-supported-magicmcr-version"><b><?= $this->l10n->gettext('magicmer_theme_mcr_supported_version') ?>:</b> <span></span></p>
+							<p class="theme-date-created"><b><?= $this->l10n->gettext('magicmer_theme_date_create') ?>:</b> <span></span></p>
+							<p class="theme-date-of-last-release"><b><?= $this->l10n->gettext('magicmer_theme_date_last_release') ?>:</b> <span></span></p>
+							<p class="theme-update-url"><b><?= $this->l10n->gettext('magicmer_theme_up_url') ?>:</b> <span></span></p>
+							
+							<hr>
+							
+							<p class="theme-author"><b><?= $this->l10n->gettext('magicmer_theme_author') ?>:</b> <span></span></p>
+							<p class="theme-author-url"><b><?= $this->l10n->gettext('magicmer_theme_author_url') ?>:</b> <span></span></p>
+						</div>
+					</div>
+				</div>
+				
+				<div class="ui tab" id="screenshots" data-tab="screenshots">
+					<div id="lightgallery"></div>
+				</div>
+			</div>
+			
+			<div class="actions">
+				<button type="button" class="ui positive button" id="theme_install"><?= $this->l10n->gettext('patch_install') ?></button>
+			</div>
+			
+		</div>
+	</div>
 
 </div>
