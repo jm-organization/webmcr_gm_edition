@@ -77,12 +77,12 @@ class submodule
 		if (preg_match("/^[\w\-]{3,}$/i", $login) != 1) {
 			return (object)[
 				'status' => false,
-				'error' => $this->l10n['e_login_regexp'],
+				'error' => $this->l10n->gettext('login_format_error'),
 			];
 		} elseif (preg_match("/user|default|admin/i", $login) == 1) {
 			return (object)[
 				'status' => false,
-				'error' => $this->l10n['e_exist'],
+				'error' => $this->l10n->gettext('login-email_exist_error'),
 			];
 		}
 
