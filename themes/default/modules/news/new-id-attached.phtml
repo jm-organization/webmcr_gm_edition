@@ -1,39 +1,39 @@
 <div class="item new-id attached">
 	<div class="image">
-		<img src="<?php echo $data['IMG']; ?>">
+		<img src="<?= $data['IMG']; ?>">
 	</div>
 	<div class="content">
 		<a class="header">
-			<i rel="tooltip" title="<?php echo $this->l10n->gettext('attached'); ?>" class="fa fa-tag"></i>
-			<a href="<?php echo BASE_URL; ?>?mode=news&amp;id=<?php echo $data['ID']; ?>"><?php echo $data['TITLE']; ?>
-				<?php echo $data['TITLE']; ?>
-				<!-- <?php echo $data['ADMIN']; ?>
-				<?php echo $data['LIKES']; ?> -->
+			<i rel="tooltip" title="<?= $this->l10n->gettext('attached'); ?>" class="fa fa-tag"></i>
+			<a href="<?= BASE_URL; ?>?mode=news&amp;id=<?= $data['ID']; ?>"><?= $data['TITLE']; ?>
+				<?= $data['TITLE']; ?>
+				<!-- <?= $data['ADMIN']; ?>
+				<?= $data['LIKES']; ?> -->
 			</a>
 		</div>
 	</div>
 	<div class="meta">
 		<span class="date">
-			<?php echo $data['DATE']; ?>
+			<?= $data['DATE']; ?>
 		</span>
 		<span class="category">
-			<a href="<?php echo BASE_URL; ?>?mode=news&amp;cid=<?php echo $data['CID']; ?>" rel="tooltip" title="<?php echo $this->l10n->gettext('category'); ?>">
-				<?php echo $data['CATEGORY']; ?>
+			<a href="<?= BASE_URL; ?>?mode=news&amp;cid=<?= $data['CID']; ?>" rel="tooltip" title="<?= $this->l10n->gettext('category'); ?>">
+				<?= $data['CATEGORY']; ?>
 			</a>
 		</span>
 	</div>
 	<div class="description">
-		<?php echo $data['TEXT']; ?>
+		<?= $data['TEXT']; ?>
 	</div>
 	<div class="extra">
 		<div class="ui label views">
-			<i class="eye icon"></i><?php echo $data['VIEWS']; ?>
+			<i class="eye icon"></i><?= $data['VIEWS']; ?>
 		</div>
 		<div class="ui label">
-			<?php echo $data['COMMENTS']; ?>
+			<?= $data['COMMENTS']; ?>
 		</div>
 		
-		<a class="ui right floated primary button" href="<?php echo BASE_URL; ?>?mode=news&amp;id=<?php echo $data['ID']; ?>">
+		<a class="ui right floated primary button" href="<?= BASE_URL; ?>?mode=news&amp;id=<?= $data['ID']; ?>">
 			Подробнее <!-- TODO: Добавить фразу -->
 			<i class="right chevron icon"></i>
 		</a>

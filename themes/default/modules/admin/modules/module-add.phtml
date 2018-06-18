@@ -1,7 +1,7 @@
 <div class="ui segments">
 
 	<div class="ui segment">
-		<?php echo $data['PAGE']; ?>
+		<?= $data['PAGE']; ?>
 	</div>
 
 	<div class="ui segment">
@@ -10,7 +10,7 @@
 
 				<thead>
 					<tr>
-						<th colspan="2"><b><?php echo $data['TITLE']; ?></b> <?php echo $data['DESC']; ?></th>
+						<th colspan="2"><b><?= $data['TITLE']; ?></b> <?= $data['DESC']; ?></th>
 					</tr>
 				</thead>
 
@@ -18,79 +18,79 @@
 
 					<tr>
 						<td class="collapsing">
-							<?php echo $this->l10n->gettext('author'); ?>:
+							<?= $this->l10n->gettext('author'); ?>:
 						</td>
 						<td>
-							<?php echo $data['AUTHOR']; ?>
+							<?= $data['AUTHOR']; ?>
 						</td>
 					</tr>
 
 					<tr>
 						<td class="collapsing">
-							<?php echo $this->l10n->gettext('mod_field_site'); ?>:
+							<?= $this->l10n->gettext('mod_field_site'); ?>:
 						</td>
 						<td>
-							<a href="<?php echo $data['SITE']; ?>" target="_blank"><?php echo $data['SITE']; ?></a>
+							<a href="<?= $data['SITE']; ?>" target="_blank"><?= $data['SITE']; ?></a>
 						</td>
 					</tr>
 
 					<tr>
 						<td class="collapsing">
-							<?php echo $this->l10n->gettext('mod_field_email'); ?>:
+							<?= $this->l10n->gettext('mod_field_email'); ?>:
 						</td>
 						<td>
-							<a href="mailto:<?php echo $data['EMAIL']; ?>"><?php echo $data['EMAIL']; ?></a>
+							<a href="mailto:<?= $data['EMAIL']; ?>"><?= $data['EMAIL']; ?></a>
 						</td>
 					</tr>
 
 					<tr>
 						<td class="collapsing">
-							<?php echo $this->l10n->gettext('version'); ?>:
+							<?= $this->l10n->gettext('version'); ?>:
 						</td>
 						<td>
-							<?php echo $data['VERSION']; ?> <?php echo $data['UPDATE_RESULT']; ?>
+							<?= $data['VERSION']; ?> <?= $data['UPDATE_RESULT']; ?>
 						</td>
 					</tr>
 
 					<tr>
 						<td class="collapsing">
-							<label for="inputStatus"><?php echo $this->l10n->gettext('mod_field_status'); ?></label>
+							<label for="inputStatus"><?= $this->l10n->gettext('mod_field_status'); ?></label>
 						</td>
 						<td>
 							<select name="status" class="ui selection dropdown" id="inputStatus">
-								<option value="0"><?php echo $this->l10n->gettext('mod_off'); ?></option>
+								<option value="0"><?= $this->l10n->gettext('mod_off'); ?></option>
 								<option value="1"
-								<?php echo $data['STATUS']; ?>><?php echo $this->l10n->gettext('mod_on'); ?></option>
+								<?= $data['STATUS']; ?>><?= $this->l10n->gettext('mod_on'); ?></option>
 							</select>
 						</td>
 					</tr>
 
 					<tr>
 						<td class="collapsing">
-							<label for="inputUpdate"><?php echo $this->l10n->gettext('mod_field_upd'); ?></label>
+							<label for="inputUpdate"><?= $this->l10n->gettext('mod_field_upd'); ?></label>
 						</td>
 						<td>
 							<select name="updates" class="ui selection dropdown" id="inputUpdate">
-								<option value="0"><?php echo $this->l10n->gettext('mod_off1'); ?></option>
+								<option value="0"><?= $this->l10n->gettext('mod_off1'); ?></option>
 								<option value="1"
-								<?php echo $data['UPDATE_CHECK']; ?>><?php echo $this->l10n->gettext('mod_on1'); ?></option>
+								<?= $data['UPDATE_CHECK']; ?>><?= $this->l10n->gettext('mod_on1'); ?></option>
 							</select>
 						</td>
 					</tr>
 
 					<tr>
 						<td class="collapsing">
-							<label for="inputUrl"><?php echo $this->l10n->gettext('mod_field_url'); ?></label>
+							<label for="inputUrl"><?= $this->l10n->gettext('mod_field_url'); ?></label>
 						</td>
 						<td>
-							<input type="text" id="inputUrl" name="update_url" value="<?php echo $data['UPDATE_URL']; ?>">
+							<input type="text" id="inputUrl" name="update_url" value="<?= $data['UPDATE_URL']; ?>">
 						</td>
 					</tr>
 
 				</tbody>
 			</table>
 
-			<button type="submit" class="ui fluid primary button" name="submit"><?php echo $data['BUTTON']; ?></button>
+			<button type="submit" class="ui fluid primary button" name="submit"><?= $data['BUTTON']; ?></button>
 
 		</form>
 

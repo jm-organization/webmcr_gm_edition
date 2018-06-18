@@ -1,21 +1,21 @@
-<div class="comment" class="comment-id" id="<?php echo $data['ID']; ?>">
+<div class="comment" class="comment-id" id="<?= $data['ID']; ?>">
 	<div class="content">
-		<a class="author"><?php echo $data['LOGIN']; ?></a>
+		<a class="author"><?= $data['LOGIN']; ?></a>
 		<div class="metadata">
-			<div class="date" data-tooltip="<?php echo $this->l10n->gettext('date_create'); ?>">
-				<?php echo date("d.m.Y", $data['DATA']['time_create']); ?>
+			<div class="date" data-tooltip="<?= $this->l10n->gettext('date_create'); ?>">
+				<?= date("d.m.Y", $data['DATA']['time_create']); ?>
 			</div>
-			<div class="date" data-tooltip="<?php echo $this->l10n->gettext('time_create'); ?>">
-				<?php echo date("H:i:s", $data['DATA']['time_create']); ?>
+			<div class="date" data-tooltip="<?= $this->l10n->gettext('time_create'); ?>">
+				<?= date("H:i:s", $data['DATA']['time_create']); ?>
 			</div>
 		</div>
 		<div class="text">
-			<?php echo $data['TEXT']; ?>
+			<?= $data['TEXT']; ?>
 		</div>
 		<div class="actions">
-			<?php echo $data['ACTION_DELETE']; ?>
-			<?php echo $data['ACTION_EDIT']; ?>
-			<?php echo $data['ACTION_QUOTE']; ?>
+			<?= $data['ACTION_DELETE']; ?>
+			<?= $data['ACTION_EDIT']; ?>
+			<?= $data['ACTION_QUOTE']; ?>
 		</div>
 	</div>
 </div>

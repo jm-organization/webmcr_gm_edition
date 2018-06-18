@@ -1,22 +1,22 @@
-<form method="post" class="panel-menu-adm" action="<?php echo ADMIN_URL; ?>&do=menu_adm&op=delete">
+<form method="post" class="panel-menu-adm" action="<?= ADMIN_URL; ?>&do=menu_adm&op=delete">
 	<div class="form-block">
 		
 		<div class="card">
-            <h5 class="card-header"><?php echo $this->l10n->gettext('manucp'); ?></h5>
+            <h5 class="card-header"><?= $this->l10n->gettext('manucp'); ?></h5>
             <div class="card-body card-block">
 
                 <h5 class="card-title block-name">
                     <span id="actions" class="pull-right">
                         <span class="btn-group" role="group">
-                            <input type="text" class="adm-search-input form-control" id="adm-search-id" placeholder="<?php echo $this->l10n->gettext('search_placeholder'); ?>">
+                            <input type="text" class="adm-search-input form-control" id="adm-search-id" placeholder="<?= $this->l10n->gettext('search_placeholder'); ?>">
                             <span class="input-group-prepend">
-                                <button class="btn btn-secondary adm-search" data-for="#adm-search-id" type="button" rel="tooltip" title="<?php echo $this->l10n->gettext('search'); ?>"><i class="fa fa-search"></i></button>
+                                <button class="btn btn-secondary adm-search" data-for="#adm-search-id" type="button" rel="tooltip" title="<?= $this->l10n->gettext('search'); ?>"><i class="fa fa-search"></i></button>
                             </span>
                         </span>
 
                         <span class="btn-group" role="group">
-                            <a role="button" href="<?php echo ADMIN_URL; ?>&do=menu_adm&op=add" class="btn btn-primary"><?php echo $this->l10n->gettext('add'); ?></a>
-                            <button class="btn btn-secondary remove" data-for="check-input" data-text="<?php echo $this->l10n->gettext('menu_accept'); ?>" type="submit" name="delete"><i class="fa fa-times"></i></button>
+                            <a role="button" href="<?= ADMIN_URL; ?>&do=menu_adm&op=add" class="btn btn-primary"><?= $this->l10n->gettext('add'); ?></a>
+                            <button class="btn btn-secondary remove" data-for="check-input" data-text="<?= $this->l10n->gettext('menu_accept'); ?>" type="submit" name="delete"><i class="fa fa-times"></i></button>
                         </span>
                     </span>
                 </h5>
@@ -26,35 +26,35 @@
                         <thead>
                         <tr>
                             <th style="width: 3%"></th>
-                            <th><a href="#" class="sort-trigger" data-field="title" data-order="desc"><?php echo $this->l10n->gettext('mcp_field_name'); ?></a></th>
-                            <th><a href="#" class="sort-trigger" data-field="group" data-order="desc"><?php echo $this->l10n->gettext('group'); ?></a></th>
-                            <th class="action"><?php echo $this->l10n->gettext('action'); ?> <input type="checkbox" class="check-all" data-for="check-input"></th>
+                            <th><a href="#" class="sort-trigger" data-field="title" data-order="desc"><?= $this->l10n->gettext('mcp_field_name'); ?></a></th>
+                            <th><a href="#" class="sort-trigger" data-field="group" data-order="desc"><?= $this->l10n->gettext('group'); ?></a></th>
+                            <th class="action"><?= $this->l10n->gettext('action'); ?> <input type="checkbox" class="check-all" data-for="check-input"></th>
                         </tr>
                         </thead>
 
                         <tbody>
-						<?php foreach ($data['MENU'] as $pages) { ?>
+						<? foreach ($data['MENU'] as $pages) { ?>
                             <tr>
                                 <td style="width: 3%;text-align: center">
-                                    <input type="checkbox" id="fixed_<?=$pages['ID'];?>" <?=$pages['FIXED'];?> name="fixed" data-page="<?=$pages['ID'];?>" class="check-input align-middle fixed_" value="1" style="display: none">
-                                    <label for="fixed_<?=$pages['ID'];?>" class="fa fa-paperclip paperclip" ></label>
+                                    <input type="checkbox" id="fixed_<?= $pages['ID']; ?>" <?= $pages['FIXED']; ?> name="fixed" data-page="<?= $pages['ID']; ?>" class="check-input align-middle fixed_" value="1" style="display: none">
+                                    <label for="fixed_<?= $pages['ID']; ?>" class="fa fa-paperclip paperclip" ></label>
                                 </td>
-                                <td style="width: 20%;"><a href="<?php echo $pages['URL']; ?>" target="<?php echo $pages['TARGET']; ?>"><?php echo $pages['TITLE']; ?></a></td>
-                                <td><?php echo $pages['GROUP']; ?></td>
+                                <td style="width: 20%;"><a href="<?= $pages['URL']; ?>" target="<?= $pages['TARGET']; ?>"><?= $pages['TITLE']; ?></a></td>
+                                <td><?= $pages['GROUP']; ?></td>
                                 <td class="action">
-                                    <a class="btn btn-outline-warning btn-sm fa fa-pencil" href="<?php echo ADMIN_URL; ?>&do=menu_adm&op=edit&id=<?=$pages['ID'];?>"></a>
+                                    <a class="btn btn-outline-warning btn-sm fa fa-pencil" href="<?= ADMIN_URL; ?>&do=menu_adm&op=edit&id=<?= $pages['ID']; ?>"></a>
 
-                                    <input type="checkbox"  name="id[]" class="check-input align-middle" value="<?php echo $pages['ID']; ?>">
+                                    <input type="checkbox"  name="id[]" class="check-input align-middle" value="<?= $pages['ID']; ?>">
                                 </td>
                             </tr>
-                        <?php } ?>
+                        <? } ?>
                         </tbody>
                     </table>
                 </div>
 
-				<?php if (!empty($data['PAGINATION'])) {?>
-                    <div class="left-act"><?php echo $data['PAGINATION']; ?></div>
-				<?php } ?>
+				<? if (!empty($data['PAGINATION'])) {?>
+                    <div class="left-act"><?= $data['PAGINATION']; ?></div>
+				<? } ?>
             </div>
         </div>
 

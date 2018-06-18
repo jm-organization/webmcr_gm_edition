@@ -1,18 +1,18 @@
 <div class="ui grid">
 	<div class="four wide column">
 		<div class="ui vertical fluid menu" id="v-pills-tab">
-			<?php echo $data['TABS']; ?>
+			<?= $data['TABS']; ?>
 		</div>
 	</div>
 	<div class="twelve wide stretched column" id="v-pills-tabContent">
 		<div class="ui segment">
 			<p id="actions" class="ui right floated buttons" role="group">
-				<a role="button" href="<?php echo ADMIN_URL; ?>&do=menu_adm&op=add" class="ui primary button">
-					<?php echo $this->l10n->gettext('add'); ?>
+				<a role="button" href="<?= ADMIN_URL; ?>&do=menu_adm&op=add" class="ui primary button">
+					<?= $this->l10n->gettext('add'); ?>
 				</a>
 			</p>
 
-			<?php echo $data['GROUPS']; ?>
+			<?= $data['GROUPS']; ?>
 
 		</div>
 	</div>

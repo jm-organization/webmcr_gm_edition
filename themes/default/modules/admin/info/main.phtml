@@ -1,12 +1,12 @@
 <div class="ui top attached tabular menu">
-	<a class="active item" href="<?php echo ADMIN_URL; ?>&do=info&op=main">
-		<?php echo $this->l10n->gettext('system_log'); ?>
+	<a class="active item" href="<?= ADMIN_URL; ?>&do=info&op=main">
+		<?= $this->l10n->gettext('system_log'); ?>
 	</a>
-	<a class="item" href="<?php echo ADMIN_URL; ?>&do=info&op=update_center">
-		<?php echo $this->l10n->gettext('update_center'); ?>
+	<a class="item" href="<?= ADMIN_URL; ?>&do=info&op=update_center">
+		<?= $this->l10n->gettext('update_center'); ?>
 	</a>
-	<a class="item" href="<?php echo ADMIN_URL; ?>&do=info&op=stats">
-		<?php echo $this->l10n->gettext('info_stats'); ?>
+	<a class="item" href="<?= ADMIN_URL; ?>&do=info&op=stats">
+		<?= $this->l10n->gettext('info_stats'); ?>
 	</a>
 </div>
 
@@ -19,14 +19,14 @@
 		<div class="ui grid">
 			<div class="four wide column">
 				<div class="ui vertical fluid menu" id="logs-list">
-					<?php foreach ($data['LOGS'] as $LOG) { ?>
+					<? foreach ($data['LOGS'] as $LOG) { ?>
 						<a class="item" data-file-name="<?= $LOG ?>"
-						data-delete="<?php echo ADMIN_URL; ?>&do=info&op=delete"
-						data-download="<?php echo ADMIN_URL; ?>&do=info&op=download"
-						data-archivate="<?php echo ADMIN_URL; ?>&do=info&op=archivate">
+						data-delete="<?= ADMIN_URL; ?>&do=info&op=delete"
+						data-download="<?= ADMIN_URL; ?>&do=info&op=download"
+						data-archivate="<?= ADMIN_URL; ?>&do=info&op=archivate">
 							<i class="fa fa-file-text"></i> <?= $LOG ?>
 						</a>
-					<?php } ?>
+					<? } ?>
 				</div>
 			</div>
 			<div class="twelve wide stretched column">

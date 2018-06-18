@@ -1,34 +1,34 @@
 <div class="ui segments">
 
 	<div class="ui segment">
-		<div class="header"><i class="icon user"></i> <?php echo $this->l10n->gettext('auth'); ?></div>
+		<div class="header"><i class="icon user"></i> <?= $this->l10n->gettext('auth'); ?></div>
 	</div>
 
 	<div class="ui secondary segment">
 
-		<form class="ui form" method="post" action="<?php echo BASE_URL; ?>?mode=auth">
+		<form class="ui form" method="post" action="<?= BASE_URL; ?>?mode=auth">
 
 			<div class="field">
-				<input type="text" name="login" class="form-control" placeholder="<?php echo $this->l10n->gettext('login_or_email'); ?>">
+				<input type="text" name="login" class="form-control" placeholder="<?= $this->l10n->gettext('login_or_email'); ?>">
 			</div>
 			<div class="field">
-				<input type="password" name="password" class="form-control" placeholder="<?php echo $this->l10n->gettext('password'); ?>">
+				<input type="password" name="password" class="form-control" placeholder="<?= $this->l10n->gettext('password'); ?>">
 			</div>
 			<div class="field">
 				<div class="ui checked checkbox">
 					<input checked="" type="checkbox" name="remember" value="1">
-					<label><?php echo $this->l10n->gettext('remember'); ?></label>
+					<label><?= $this->l10n->gettext('remember'); ?></label>
 				</div>
 			</div>
 
 			<div class="field">
 				<div class="ui fluid primary buttons">
-					<button class="ui button" type="submit" name="submit" value="1"><?php echo $this->l10n->gettext('sign_in'); ?></button>
-					<a class="ui button" href="<?php echo BASE_URL; ?>?mode=restore"><?php echo $this->l10n->gettext('restore'); ?></a>
+					<button class="ui button" type="submit" name="submit" value="1"><?= $this->l10n->gettext('sign_in'); ?></button>
+					<a class="ui button" href="<?= BASE_URL; ?>?mode=restore"><?= $this->l10n->gettext('restore'); ?></a>
 				</div>
 			</div>
 			<div class="field">
-				<a class="ui fluid primary button" href="<?php echo BASE_URL; ?>?mode=register"><?php echo $this->l10n->gettext('register'); ?></a>
+				<a class="ui fluid primary button" href="<?= BASE_URL; ?>?mode=register"><?= $this->l10n->gettext('register'); ?></a>
 			</div>
 		</form>
 

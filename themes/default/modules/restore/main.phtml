@@ -1,15 +1,15 @@
 <div class="ui segments">
 	
-	<div class="ui segment"><?php echo $this->l10n->gettext('module_restore'); ?></div>
+	<div class="ui segment"><?= $this->l10n->gettext('module_restore'); ?></div>
 
 	<div class="ui segment mcr-restore">
 		<form class="ui form" method="post">
 			<div class="field">
-				<label for="inputEmail"><?php echo $this->l10n->gettext('email'); ?></label>
-				<input type="email" name="email" id="inputEmail" placeholder="<?php echo $this->l10n->gettext('email'); ?>" required>
+				<label for="inputEmail"><?= $this->l10n->gettext('email'); ?></label>
+				<input type="email" name="email" id="inputEmail" placeholder="<?= $this->l10n->gettext('email'); ?>" required>
 			</div>
 
-			<button type="submit" class="ui fluid primary huge button"><?php echo $this->l10n->gettext('restore'); ?></button>
+			<button type="submit" class="ui fluid primary huge button"><?= $this->l10n->gettext('restore'); ?></button>
 		</form>
 	</div>
 </div>

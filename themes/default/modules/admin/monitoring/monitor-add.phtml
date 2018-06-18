@@ -1,7 +1,7 @@
 <div class="ui segments">
 
 	<div class="ui segment">
-		<?php echo $data['PAGE']; ?>
+		<?= $data['PAGE']; ?>
 	</div>
 
 	<div class="ui segment">
@@ -11,72 +11,72 @@
 
 					<tr>
 						<td class="collapsing">
-							<label for="inputTitle"><?php echo $this->l10n->gettext('mon_field_name'); ?></label>
+							<label for="inputTitle"><?= $this->l10n->gettext('mon_field_name'); ?></label>
 						</td>
 						<td>
-							<input type="text" name="title" value="<?php echo $data['TITLE']; ?>" id="inputTitle" placeholder="<?php echo $this->l10n->gettext('mon_field_name'); ?>">
+							<input type="text" name="title" value="<?= $data['TITLE']; ?>" id="inputTitle" placeholder="<?= $this->l10n->gettext('mon_field_name'); ?>">
 						</td>
 					</tr>
 
 					<tr>
 						<td class="collapsing">
-							<label for="inputText"><?php echo $this->l10n->gettext('mon_field_desc'); ?></label>
+							<label for="inputText"><?= $this->l10n->gettext('mon_field_desc'); ?></label>
 						</td>
 						<td>
-							<textarea id="inputText" placeholder="<?php echo $this->l10n->gettext('mon_field_desc'); ?>" name="text" maxlength="255" rows="5"><?php echo $data['TEXT']; ?></textarea>
+							<textarea id="inputText" placeholder="<?= $this->l10n->gettext('mon_field_desc'); ?>" name="text" maxlength="255" rows="5"><?= $data['TEXT']; ?></textarea>
 						</td>
 					</tr>
 
 					<tr>
 						<td class="collapsing">
-							<label for="inputTitle"><?php echo $this->l10n->gettext('mon_field_ip'); ?></label>
+							<label for="inputTitle"><?= $this->l10n->gettext('mon_field_ip'); ?></label>
 						</td>
 						<td>
-							<input type="text" name="ip" value="<?php echo $data['IP']; ?>" id="inputTitle" placeholder="<?php echo $this->l10n->gettext('mon_field_ip'); ?>>">
+							<input type="text" name="ip" value="<?= $data['IP']; ?>" id="inputTitle" placeholder="<?= $this->l10n->gettext('mon_field_ip'); ?>>">
 						</td>
 					</tr>
 
 					<tr>
 						<td class="collapsing">
-							<label for="inputTitle"><?php echo $this->l10n->gettext('mon_field_port'); ?></label>
+							<label for="inputTitle"><?= $this->l10n->gettext('mon_field_port'); ?></label>
 						</td>
 						<td>
-							<input type="number" name="port" value="<?php echo $data['PORT']; ?>" id="inputTitle" placeholder="<?php echo $this->l10n->gettext('mon_field_port'); ?>">
+							<input type="number" name="port" value="<?= $data['PORT']; ?>" id="inputTitle" placeholder="<?= $this->l10n->gettext('mon_field_port'); ?>">
 						</td>
 					</tr>
 
 					<tr>
 						<td class="collapsing">
-							<label for="inputType"><?php echo $this->l10n->gettext('mon_field_type'); ?></label>
+							<label for="inputType"><?= $this->l10n->gettext('mon_field_type'); ?></label>
 						</td>
 						<td>
 							<select class="ui selection fluid dropdown" id="inputType" name="type">
-								<?php echo $data['TYPES']; ?>
+								<?= $data['TYPES']; ?>
 							</select>
 						</td>
 					</tr>
 
 					<tr>
 						<td class="collapsing">
-							<label for="inputCache"><?php echo $this->l10n->gettext('mon_field_cache'); ?></label>
+							<label for="inputCache"><?= $this->l10n->gettext('mon_field_cache'); ?></label>
 						</td>
 						<td>
-							<input type="number" name="cache" value="<?php echo $data['CACHE']; ?>" id="inputCache" placeholder="<?php echo $this->l10n->gettext('mon_field_cache'); ?>">
+							<input type="number" name="cache" value="<?= $data['CACHE']; ?>" id="inputCache" placeholder="<?= $this->l10n->gettext('mon_field_cache'); ?>">
 						</td>
 					</tr>
 
 					<tr>
 						<td class="collapsing">
-							<label for="inputError"><?php echo $this->l10n->gettext('mon_field_error'); ?></label>
+							<label for="inputError"><?= $this->l10n->gettext('mon_field_error'); ?></label>
 						</td>
 						<td>
-							<input type="text" value="<?php echo $data['ERROR']; ?>" id="inputError" disabled placeholder="<?php echo $this->l10n->gettext('mon_field_error'); ?>">
+							<input type="text" value="<?= $data['ERROR']; ?>" id="inputError" disabled placeholder="<?= $this->l10n->gettext('mon_field_error'); ?>">
 						</td>
 					</tr>
 
 				</tbody>
 			</table>
-			<button type="submit" class="ui fluid primary button" name="submit"><?php echo $data['BUTTON']; ?></button>
+			<button type="submit" class="ui fluid primary button" name="submit"><?= $data['BUTTON']; ?></button>
 
 		</form>
 	</div>

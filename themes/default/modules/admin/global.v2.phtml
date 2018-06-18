@@ -12,7 +12,7 @@
 	</head>
 	<body>
 		
-		<?php $data['DEBUG'] = [
+		<? $data['DEBUG'] = [
 			"PLT" => number_format(microtime(true)-DEBUG_PLT,3),
 			"QUERIES" => $this->db->count_queries,
 			"MEMORY_USAGE" => intval(memory_get_usage()/1024),
@@ -53,7 +53,7 @@
 					<a class="nav-link icons" title="<?= $this->l10n->gettext('system_errors') ?>">
 						<i class="exclamation triangle icon"></i>
 						<span class="ui mini horizontal label"><?= $this->log->get_logs_num('error') ?></span>
-						<?php
+						<?
 							
 							if (!empty(error_get_last())) {
 								$error = error_get_last();
@@ -69,7 +69,7 @@
 							data-content="<?=$error?>"
 							style="cursor:pointer;"
 							>!</span>
-							<?php
+							<?
 							}
 							
 							?>
@@ -77,8 +77,8 @@
 					</div>
 					<div class="right menu">
 						<div class="item">
-							<img class="ui avatar image" width="20px" height="20px" src="<?=SKIN_URL?>interface/<?=$this->user->skin?>_mini.png?<?=mt_rand(1000,9999)?>">
-							<a href="<?=BASE_URL.'?mode=profile'?>" class="nav-link"><?=$this->user->login?></a>
+							<img class="ui avatar image" width="20px" height="20px" src="<?= SKIN_URL ?>interface/<?=$this->user->skin?>_mini.png?<?=mt_rand(1000,9999)?>">
+							<a href="<?=BASE_URL.'?mode=profile'?>" class="nav-link"><?= $this->user->login ?></a>
 						</div>
 					</div>
 				</div>
@@ -112,12 +112,12 @@
 				<img src="<?= STYLE_URL; ?>img/ajaxload.info_FFFFFF_facebook.gif" alt="<?= $this->l10n->gettext('loading'); ?>"/>
 			</div>
 			
-			<script src="<?=STYLE_URL?>galery/js/lightgallery.min.js"></script>
+			<script src="<?= STYLE_URL ?>galery/js/lightgallery.min.js"></script>
 			<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-mousewheel/3.1.13/jquery.mousewheel.min.js"></script>
-			<script src="<?=STYLE_URL?>galery/js/lg-thumbnail.min.js"></script>
-			<script src="<?=STYLE_URL?>galery/js/lg-fullscreen.min.js"></script>
-			<script src="<?=STYLE_URL?>galery/js/lg-pager.min.js"></script>
-			<script src="<?=STYLE_URL?>galery/js/lg-zoom.min.js"></script>
+			<script src="<?= STYLE_URL ?>galery/js/lg-thumbnail.min.js"></script>
+			<script src="<?= STYLE_URL ?>galery/js/lg-fullscreen.min.js"></script>
+			<script src="<?= STYLE_URL ?>galery/js/lg-pager.min.js"></script>
+			<script src="<?= STYLE_URL ?>galery/js/lg-zoom.min.js"></script>
 			
 		</body>
 	</html>

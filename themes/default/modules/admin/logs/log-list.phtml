@@ -1,13 +1,13 @@
 <div class="ui segments">
 	<div class="ui segment">
-		<span class="title"><?php echo $this->l10n->gettext('logs'); ?></span>
+		<span class="title"><?= $this->l10n->gettext('logs'); ?></span>
 	</div>
 	<div class="ui segment">
-		<form method="post" class="ui form panel-logs" action="<?php echo ADMIN_URL; ?>&do=logs&op=delete">
+		<form method="post" class="ui form panel-logs" action="<?= ADMIN_URL; ?>&do=logs&op=delete">
 
 			<div class="ui fluid action input">
-				<input type="text" id="adm-search-id" placeholder="<?php echo $this->l10n->gettext('search_placeholder'); ?>">
-				<button class="ui button" data-for="#adm-search-id" type="button" rel="tooltip" title="<?php echo $this->l10n->gettext('search'); ?>">
+				<input type="text" id="adm-search-id" placeholder="<?= $this->l10n->gettext('search_placeholder'); ?>">
+				<button class="ui button" data-for="#adm-search-id" type="button" rel="tooltip" title="<?= $this->l10n->gettext('search'); ?>">
 					<i class="search fitted icon"></i>
 				</button>
 			</div>
@@ -17,25 +17,25 @@
 					<tr>
 						<th><a href="#" class="sort-trigger" data-field="id" data-order="desc">#</a></th>
 						<th>
-							<a href="#" class="sort-trigger" data-field="user" data-order="desc"><?php echo $this->l10n->gettext('logs_user'); ?></a>
+							<a href="#" class="sort-trigger" data-field="user" data-order="desc"><?= $this->l10n->gettext('logs_user'); ?></a>
 						</th>
 						<th>
-							<a href="#" class="sort-trigger" data-field="msg" data-order="desc"><?php echo $this->l10n->gettext('action'); ?></a>
+							<a href="#" class="sort-trigger" data-field="msg" data-order="desc"><?= $this->l10n->gettext('action'); ?></a>
 						</th>
 						<th>
-							<a href="#" class="sort-trigger" data-field="date" data-order="desc"><?php echo $this->l10n->gettext('date'); ?></a>
+							<a href="#" class="sort-trigger" data-field="date" data-order="desc"><?= $this->l10n->gettext('date'); ?></a>
 						</th>
 					</tr>
 				</thead>
 
 				<tbody>
-					<?php echo $data['LOGS']; ?>
+					<?= $data['LOGS']; ?>
 				</tbody>
 			</table>
 
 			<div class="ui one column stackable center aligned page grid">
 				<div class="column wide">
-					<?php echo $data['PAGINATION']; ?>
+					<?= $data['PAGINATION']; ?>
 				</div>
 			</div>
 

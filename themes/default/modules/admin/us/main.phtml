@@ -3,7 +3,7 @@
 	<div class="block-header">
 		<div class="block-name">
 			<p id="title">
-				<span class="title"><?php echo $this->l10n->gettext('module_users'); ?></span>
+				<span class="title"><?= $this->l10n->gettext('module_users'); ?></span>
 			</p>
 		</div>
 	</div>
@@ -13,35 +13,35 @@
 	<form class="form-horizontal" method="post">
 
 		<div class="form-group row">
-			<label class="col-sm-4 col-form-label text-right" for="input_use_comments"><?php echo $this->l10n->gettext('use_comments'); ?></label>
+			<label class="col-sm-4 col-form-label text-right" for="input_use_comments"><?= $this->l10n->gettext('use_comments'); ?></label>
 			<div class="input-group col-sm-6 float-left">
 				<select name="use_comments" id="input_use_comments" class="form-control">
 					<option value="0">Нет</option>
 					<option value="1"
-					<?php echo $data['USE_COMMENTS']; ?>>Да</option>
+					<?= $data['USE_COMMENTS']; ?>>Да</option>
 				</select>
 			</div>
 		</div>
 
 		<div class="form-group row">
-			<label class="col-sm-4 col-form-label text-right" for="input_rop_users"><?php echo $this->l10n->gettext('users_on_page'); ?></label>
+			<label class="col-sm-4 col-form-label text-right" for="input_rop_users"><?= $this->l10n->gettext('users_on_page'); ?></label>
 			<div class="input-group col-sm-6 float-left">
-				<input type="number" min="5" class="form-control" name="users_on_page" value="<?php echo $data['CFG']['users_on_page']; ?>" id="input_rop_users">
+				<input type="number" min="5" class="form-control" name="users_on_page" value="<?= $data['CFG']['users_on_page']; ?>" id="input_rop_users">
 			</div>
 		</div>
 
 		<div class="form-group row">
-			<label class="col-sm-4 col-form-label text-right" for="input_rop_comments"><?php echo $this->l10n->gettext('comments_on_page'); ?></label>
+			<label class="col-sm-4 col-form-label text-right" for="input_rop_comments"><?= $this->l10n->gettext('comments_on_page'); ?></label>
 			<div class="input-group col-sm-6 float-left">
-				<input type="number" min="3" class="form-control" name="comments_on_page" value="<?php echo $data['CFG']['comments_on_page']; ?>" id="input_rop_comments">
+				<input type="number" min="3" class="form-control" name="comments_on_page" value="<?= $data['CFG']['comments_on_page']; ?>" id="input_rop_comments">
 			</div>
 		</div>
 
 		<div class="form-group row">
 			<label class="col-sm-4 col-form-label text-right"></label>
 			<div class="col-sm-6">
-				<button type="submit" name="submit" class="btn btn-primary"><?php echo $this->l10n->gettext('save'); ?></button>
-				<a href="<?php echo ADMIN_URL.'&do=us'; ?>" class="btn btn-outline-secondary" role="button"><?php echo $this->l10n->gettext('cancel'); ?></a>
+				<button type="submit" name="submit" class="btn btn-primary"><?= $this->l10n->gettext('save'); ?></button>
+				<a href="<?= ADMIN_URL.'&do=us'; ?>" class="btn btn-outline-secondary" role="button"><?= $this->l10n->gettext('cancel'); ?></a>
 			</div>
 		</div>
 

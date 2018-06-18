@@ -1,19 +1,19 @@
 <div class="ui segments comment-list">
 	
 	<div class="ui segment">
-		<?php echo $this->l10n->gettext('comments'); ?> (<span id="comment-count"><?php echo $data['COUNT']; ?></span>)
+		<?= $this->l10n->gettext('comments'); ?> (<span id="comment-count"><?= $data['COUNT']; ?></span>)
 	</div>
 	
 	<div class="ui segment">
 		<div class="comment-list-content">
 			<div class="ui comments">
-				<?php echo $data['COMMENTS']; ?>
+				<?= $data['COMMENTS']; ?>
 			</div>
 		</div>
 	</div>
 	
-	<?php echo $data['PAGINATION']; ?>
+	<?= $data['PAGINATION']; ?>
 	
 </div>
 
-<?php echo $data['COMMENTS_FORM']; ?>
+<?= $data['COMMENTS_FORM']; ?>

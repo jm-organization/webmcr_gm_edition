@@ -1,9 +1,9 @@
 <div class="search-block">
 	<div class="search-query">
-		<?php echo sprintf($this->l10n->gettext('search_message'), $data['QUERY'], $data['QUERY_COUNT']) ?>
+		<?= sprintf($this->l10n->gettext('search_message'), $data['QUERY'], $data['QUERY_COUNT']) ?>
 	</div>
 
-	<?php echo $data['RESULT']; ?>
+	<?= $data['RESULT']; ?>
 </div>
 
-<?php echo $data['PAGINATION']; ?>
+<?= $data['PAGINATION']; ?>

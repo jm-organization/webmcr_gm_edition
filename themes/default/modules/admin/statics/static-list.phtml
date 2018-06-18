@@ -1,36 +1,36 @@
-<form method="post" class="panel-news" action="<?php echo ADMIN_URL; ?>&do=statics&op=delete">
+<form method="post" class="panel-news" action="<?= ADMIN_URL; ?>&do=statics&op=delete">
 	<div class="form-block">
 
 		<div class="block-header">
 			<div class="block-name">
 				<p id="title">
-					<span class="title"><?php echo $this->l10n->gettext('module_statics'); ?></span>
+					<span class="title"><?= $this->l10n->gettext('module_statics'); ?></span>
 				</p>
 				<p id="actions">
 					<span class="btn-group">
-						<a href="#" class="btn btn-secondary edit" data-for="check-input" data-link="<?php echo ADMIN_URL; ?>&do=statics&op=edit&id="><i class="fa fa-pencil"></i></a>
-						<button class="btn btn-secondary remove" data-for="check-input" data-text="<?php echo $this->l10n->gettext('remove_accept'); ?>" type="submit" name="delete"><i class="fa fa-times"></i></button>
+						<a href="#" class="btn btn-secondary edit" data-for="check-input" data-link="<?= ADMIN_URL; ?>&do=statics&op=edit&id="><i class="fa fa-pencil"></i></a>
+						<button class="btn btn-secondary remove" data-for="check-input" data-text="<?= $this->l10n->gettext('remove_accept'); ?>" type="submit" name="delete"><i class="fa fa-times"></i></button>
 					</span>
 
 					<span class="btn-group" role="group">
-						<input type="text" class="adm-search-input form-control" id="adm-search-id" placeholder="<?php echo $this->l10n->gettext('search_placeholder'); ?>">
+						<input type="text" class="adm-search-input form-control" id="adm-search-id" placeholder="<?= $this->l10n->gettext('search_placeholder'); ?>">
 						<span class="input-group-prepend">
-							<button class="btn btn-secondary adm-search" data-for="#adm-search-id" type="button" rel="tooltip" title="<?php echo $this->l10n->gettext('search'); ?>"><i class="fa fa-search"></i></button>
+							<button class="btn btn-secondary adm-search" data-for="#adm-search-id" type="button" rel="tooltip" title="<?= $this->l10n->gettext('search'); ?>"><i class="fa fa-search"></i></button>
 						</span>
                     </span>
 
 					<span class="btn-group" role="group">
-                    	<a role="button" href="<?php echo ADMIN_URL; ?>&do=statics&op=add" class="btn btn-primary"><?php echo $this->l10n->gettext('add'); ?></a>
+                    	<a role="button" href="<?= ADMIN_URL; ?>&do=statics&op=add" class="btn btn-primary"><?= $this->l10n->gettext('add'); ?></a>
                     </span>
 				</p>
 			</div>
 		</div>
 
-		<?php if (!empty($data['PAGINATION'])) {?>
+		<? if (!empty($data['PAGINATION'])) {?>
 		<div class="block-line"></div>
 
-		<div class="left-act"><?php echo $data['PAGINATION']; ?></div>
-		<?php } ?>
+		<div class="left-act"><?= $data['PAGINATION']; ?></div>
+		<? } ?>
 
 		<div class="table-responsive">
 			<table class="table table-striped">
@@ -38,18 +38,18 @@
 					<tr>
 						<th><a href="#" class="sort-trigger" data-field="id" data-order="desc">#</a></th>
 						<th>
-							<a href="#" class="sort-trigger" data-field="title" data-order="desc"><?php echo $this->l10n->gettext('stc_field_name'); ?></a>
+							<a href="#" class="sort-trigger" data-field="title" data-order="desc"><?= $this->l10n->gettext('stc_field_name'); ?></a>
 						</th>
 						<th>
-							<a href="#" class="sort-trigger" data-field="perm" data-order="desc"><?php echo $this->l10n->gettext('stc_field_perm'); ?></a>
+							<a href="#" class="sort-trigger" data-field="perm" data-order="desc"><?= $this->l10n->gettext('stc_field_perm'); ?></a>
 						</th>
-						<th class="action"><?php echo $this->l10n->gettext('action'); ?>
+						<th class="action"><?= $this->l10n->gettext('action'); ?>
 							<input type="checkbox" class="check-all" data-for="check-input"></th>
 					</tr>
 				</thead>
 
 				<tbody>
-					<?php echo $data['STATICS']; ?>
+					<?= $data['STATICS']; ?>
 				</tbody>
 			</table>
 		</div>

@@ -7,14 +7,14 @@
 	</div>
   <div class="ui segment admin-menu-groups">
 		<div class="spl-body owl-carousel owl-theme" id="modules_carusel">
-			<?php foreach ($data as $datum) { ?>
+			<? foreach ($data as $datum) { ?>
 				<div class="item">
-					<a href="<?php echo $datum['url']; ?>" title="<?php echo $datum['text']; ?>" target="<?php echo $datum['target']; ?>">
-						<div class="i-icon" style="background: url(<?php echo UPLOAD_URL; ?>panel-icons/<?php echo $datum['img'] ?>);"></div>
-						<?php echo $datum['title']; ?>
+					<a href="<?= $datum['url']; ?>" title="<?= $datum['text']; ?>" target="<?= $datum['target']; ?>">
+						<div class="i-icon" style="background: url(<?= UPLOAD_URL; ?>panel-icons/<?= $datum['img'] ?>);"></div>
+						<?= $datum['title']; ?>
 					</a>
 				</div>
-			<?php } ?>
+			<? } ?>
 		</div>
 	</div>
 </div>

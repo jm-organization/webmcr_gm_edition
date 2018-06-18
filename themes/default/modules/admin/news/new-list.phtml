@@ -1,14 +1,14 @@
-<form method="post" class="panel-news" action="<?php echo ADMIN_URL; ?>&do=news&op=delete">
+<form method="post" class="panel-news" action="<?= ADMIN_URL; ?>&do=news&op=delete">
 	<div class="form-block">
 
 		<div class="block-header">
 			<div class="block-name">
 				<p id="title">
-					<span class="title"><?php echo $this->l10n->gettext('news'); ?></span>
+					<span class="title"><?= $this->l10n->gettext('news'); ?></span>
 				</p>
 				<p id="actions">
 					<span class="btn-group" role="group">
-                    	<a role="button" href="<?php echo ADMIN_URL.'&do=news&op=add'; ?>" class="btn btn-primary"><?php echo $this->l10n->gettext('news_add'); ?></a>
+                    	<a role="button" href="<?= ADMIN_URL.'&do=news&op=add'; ?>" class="btn btn-primary"><?= $this->l10n->gettext('news_add'); ?></a>
                     </span>
 				</p>
 			</div>
@@ -20,15 +20,15 @@
 			<thead>
 				<tr>
 					<th class="news-id">#</th>
-					<th class="news-title"><?php echo $this->l10n->gettext('news_field_name'); ?></th>
-					<th class="news-category"><?php echo $this->l10n->gettext('news_field_cat'); ?></th>
-					<th class="news-action sorting_disabled"><?php echo $this->l10n->gettext('action'); ?>
+					<th class="news-title"><?= $this->l10n->gettext('news_field_name'); ?></th>
+					<th class="news-category"><?= $this->l10n->gettext('news_field_cat'); ?></th>
+					<th class="news-action sorting_disabled"><?= $this->l10n->gettext('action'); ?>
 						<input type="checkbox" class="check-all" data-for="check-input"></th>
 				</tr>
 			</thead>
 
 			<tbody>
-				<?php echo $data['NEWS']; ?>
+				<?= $data['NEWS']; ?>
 			</tbody>
 		</table>
 	</div>

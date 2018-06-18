@@ -1,28 +1,28 @@
 <form class="ui form" method="post">
-	<input type="hidden" name="key" value="<?php echo $data['KEY']; ?>">
+	<input type="hidden" name="key" value="<?= $data['KEY']; ?>">
 	<table class="ui definition table">
 		<tbody>
 
 			<tr>
-				<td class="center aligned disabled" colspan="2"><h4><?php echo $data['TITLE']; ?></h4></td>
+				<td class="center aligned disabled" colspan="2"><h4><?= $data['TITLE']; ?></h4></td>
 			</tr>
 
 			<tr>
 				<td class="collapsing">
-					<label for="input_title"><?php echo $this->l10n->gettext('set_srch_name'); ?></label>
+					<label for="input_title"><?= $this->l10n->gettext('set_srch_name'); ?></label>
 				</td>
 				<td>
-					<input type="text" name="title" value="<?php echo $data['TITLE']; ?>" id="input_title" placeholder="<?php echo $this->l10n->gettext('set_srch_name'); ?>">
+					<input type="text" name="title" value="<?= $data['TITLE']; ?>" id="input_title" placeholder="<?= $this->l10n->gettext('set_srch_name'); ?>">
 				</td>
 			</tr>
 
 			<tr>
 				<td class="collapsing">
-					<label for="input_permissions"><?php echo $this->l10n->gettext('set_srch_lvl'); ?></label>
+					<label for="input_permissions"><?= $this->l10n->gettext('set_srch_lvl'); ?></label>
 				</td>
 				<td>
 					<select name="permissions" id="input_permissions" class="ui fluid selection dropdown">
-						<?php echo $data['PERMISSIONS']; ?>
+						<?= $data['PERMISSIONS']; ?>
 					</select>
 				</td>
 			</tr>
@@ -30,5 +30,5 @@
 		</tbody>
 	</table>
 
-	<button type="submit" name="submit" class="ui huge primary fluid button"><?php echo $this->l10n->gettext('save'); ?></button>
+	<button type="submit" name="submit" class="ui huge primary fluid button"><?= $this->l10n->gettext('save'); ?></button>
 </form>

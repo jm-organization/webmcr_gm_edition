@@ -1,10 +1,10 @@
 <tr>
-	<td><?php echo $data['ID']; ?></td>
-	<td><?php echo $data['TITLE']; ?></td>
-	<td><?php echo $data['IP']; ?>:<?php echo $data['PORT']; ?></td>
+	<td><?= $data['ID']; ?></td>
+	<td><?= $data['TITLE']; ?></td>
+	<td><?= $data['IP']; ?>:<?= $data['PORT']; ?></td>
 	<td class="action">
 		<div class="ui checkbox">
-			<input type="checkbox" name="id[]" class="check-input" value="<?php echo $data['NAME']; ?>">
+			<input type="checkbox" name="id[]" class="check-input" value="<?= $data['NAME']; ?>">
 			<label></label>
 		</div>
 	</td>

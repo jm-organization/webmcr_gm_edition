@@ -1,13 +1,13 @@
 <tr>
-	<td class="center aligned status"><i class="<?php echo $data['STATUS']; ?>"></i></td>
+	<td class="center aligned status"><i class="<?= $data['STATUS']; ?>"></i></td>
 	<td>
-		<a href="<?php echo BASE_URL; ?>?mode=<?php echo $data['NAME']; ?>" target="_blank"><i class="fa fa-share"></i></a> <?php echo $data['TITLE']; ?>
+		<a href="<?= BASE_URL; ?>?mode=<?= $data['NAME']; ?>" target="_blank"><i class="fa fa-share"></i></a> <?= $data['TITLE']; ?>
 	</td>
-	<td><?php echo $data['AUTHOR']; ?></td>
-	<td><?php echo $data['VERSION']; ?></td>
+	<td><?= $data['AUTHOR']; ?></td>
+	<td><?= $data['VERSION']; ?></td>
 	<td class="action">
 		<div class="ui checkbox">
-			<input type="checkbox" name="id[]" class="check-input" value="<?php echo $data['NAME']; ?>">
+			<input type="checkbox" name="id[]" class="check-input" value="<?= $data['NAME']; ?>">
 			<label></label>
 		</div>
 	</td>

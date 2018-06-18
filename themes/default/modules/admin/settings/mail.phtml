@@ -1,10 +1,10 @@
 <div class="ui top attached tabular menu">
-	<a class="item" href="<?php echo ADMIN_URL; ?>&do=settings&op=main"><?php echo $this->l10n->gettext('set_main'); ?></a>
-	<a class="item" href="<?php echo ADMIN_URL; ?>&do=settings&op=pagin"><?php echo $this->l10n->gettext('set_pagin'); ?></a>
-	<a class="active item" href="<?php echo ADMIN_URL; ?>&do=settings&op=mail"><?php echo $this->l10n->gettext('set_mail'); ?></a>
-	<a class="item" href="<?php echo ADMIN_URL; ?>&do=settings&op=search"><?php echo $this->l10n->gettext('set_search'); ?></a>
-	<a class="item" href="<?php echo ADMIN_URL; ?>&do=settings&op=functions"><?php echo $this->l10n->gettext('set_func'); ?></a>
-	<a class="item" href="<?php echo ADMIN_URL; ?>&do=settings&op=base"><?php echo $this->l10n->gettext('set_base'); ?></a>
+	<a class="item" href="<?= ADMIN_URL; ?>&do=settings&op=main"><?= $this->l10n->gettext('set_main'); ?></a>
+	<a class="item" href="<?= ADMIN_URL; ?>&do=settings&op=pagin"><?= $this->l10n->gettext('set_pagin'); ?></a>
+	<a class="active item" href="<?= ADMIN_URL; ?>&do=settings&op=mail"><?= $this->l10n->gettext('set_mail'); ?></a>
+	<a class="item" href="<?= ADMIN_URL; ?>&do=settings&op=search"><?= $this->l10n->gettext('set_search'); ?></a>
+	<a class="item" href="<?= ADMIN_URL; ?>&do=settings&op=functions"><?= $this->l10n->gettext('set_func'); ?></a>
+	<a class="item" href="<?= ADMIN_URL; ?>&do=settings&op=base"><?= $this->l10n->gettext('set_base'); ?></a>
 </div>
 
 <div class="ui bottom attached segment">
@@ -18,94 +18,94 @@
 					
 					<tr>
 						<td class="collapsing">
-							<label class="control-label" for="input_from"><?php echo $this->l10n->gettext('set_mail_from'); ?></label>
+							<label class="control-label" for="input_from"><?= $this->l10n->gettext('set_mail_from'); ?></label>
 						</td>
 						<td>
-							<input type="text" name="from" id="input_from" value="<?php echo $data['CFG']['from']; ?>" placeholder="<?php echo $this->l10n->gettext('set_mail_from_ph'); ?>">
+							<input type="text" name="from" id="input_from" value="<?= $data['CFG']['from']; ?>" placeholder="<?= $this->l10n->gettext('set_mail_from_ph'); ?>">
 						</td>
 					</tr>
 					
 					<tr>
 						<td class="collapsing">
-							<label class="control-label" for="input_from_name"><?php echo $this->l10n->gettext('set_mail_from_name'); ?></label>
+							<label class="control-label" for="input_from_name"><?= $this->l10n->gettext('set_mail_from_name'); ?></label>
 						</td>
 						<td>
-							<input type="text" name="from_name" value="<?php echo $data['CFG']['from_name']; ?>" id="input_from_name" placeholder="<?php echo $this->l10n->gettext('set_mail_from_name_ph'); ?>">
+							<input type="text" name="from_name" value="<?= $data['CFG']['from_name']; ?>" id="input_from_name" placeholder="<?= $this->l10n->gettext('set_mail_from_name_ph'); ?>">
 						</td>
 					</tr>
 					
 					<tr>
 						<td class="collapsing">
-							<label class="control-label" for="input_reply"><?php echo $this->l10n->gettext('set_mail_reply'); ?></label>
+							<label class="control-label" for="input_reply"><?= $this->l10n->gettext('set_mail_reply'); ?></label>
 						</td>
 						<td>
-							<input type="text" name="reply" value="<?php echo $data['CFG']['reply']; ?>" id="input_reply" placeholder="<?php echo $this->l10n->gettext('set_mail_reply_ph'); ?>">
+							<input type="text" name="reply" value="<?= $data['CFG']['reply']; ?>" id="input_reply" placeholder="<?= $this->l10n->gettext('set_mail_reply_ph'); ?>">
 						</td>
 					</tr>
 					
 					<tr>
 						<td class="collapsing">
-							<label class="control-label" for="input_reply_name"><?php echo $this->l10n->gettext('set_mail_reply_name'); ?></label>
+							<label class="control-label" for="input_reply_name"><?= $this->l10n->gettext('set_mail_reply_name'); ?></label>
 						</td>
 						<td>
-							<input type="text" name="reply_name" value="<?php echo $data['CFG']['reply_name']; ?>" id="input_reply_name" placeholder="<?php echo $this->l10n->gettext('set_mail_reply_name_ph'); ?>">
+							<input type="text" name="reply_name" value="<?= $data['CFG']['reply_name']; ?>" id="input_reply_name" placeholder="<?= $this->l10n->gettext('set_mail_reply_name_ph'); ?>">
 						</td>
 					</tr>
 					
 					<tr>
-						<td class="center aligned disabled" colspan="2"><h4><?php echo $this->l10n->gettext('set_mail_smtp'); ?></h4>
+						<td class="center aligned disabled" colspan="2"><h4><?= $this->l10n->gettext('set_mail_smtp'); ?></h4>
 						</td>
 					</tr>
 					
 					<tr>
 						<td class="collapsing">
-							<label class="control-label" for="input_smtp"><?php echo $this->l10n->gettext('set_mail_smtp_use'); ?></label>
+							<label class="control-label" for="input_smtp"><?= $this->l10n->gettext('set_mail_smtp_use'); ?></label>
 						</td>
 						<td>
 							<select name="smtp" id="input_smtp" class="ui fluid selection dropdown">
-								<option value="0"><?php echo $this->l10n->gettext('no'); ?></option>
+								<option value="0"><?= $this->l10n->gettext('no'); ?></option>
 								<option value="1"
-								<?php echo $data['SMTP']; ?>><?php echo $this->l10n->gettext('yes'); ?></option>
+								<?= $data['SMTP']; ?>><?= $this->l10n->gettext('yes'); ?></option>
 							</select>
 						</td>
 					</tr>
 					
 					<tr>
 						<td class="collapsing">
-							<label class="control-label" for="input_smtp_host"><?php echo $this->l10n->gettext('set_mail_smtp_host'); ?></label>
+							<label class="control-label" for="input_smtp_host"><?= $this->l10n->gettext('set_mail_smtp_host'); ?></label>
 						</td>
 						<td>
-							<input type="text" name="smtp_host" value="<?php echo $data['CFG']['smtp_host']; ?>" id="input_smtp_host" placeholder="<?php echo $this->l10n->gettext('set_mail_smtp_host_ph'); ?>">
+							<input type="text" name="smtp_host" value="<?= $data['CFG']['smtp_host']; ?>" id="input_smtp_host" placeholder="<?= $this->l10n->gettext('set_mail_smtp_host_ph'); ?>">
 						</td>
 					</tr>
 					
 					<tr>
 						<td class="collapsing">
-							<label class="control-label" for="input_smtp_user"><?php echo $this->l10n->gettext('set_mail_smtp_user'); ?></label>
+							<label class="control-label" for="input_smtp_user"><?= $this->l10n->gettext('set_mail_smtp_user'); ?></label>
 						</td>
 						<td>
-							<input type="text" name="smtp_user" value="<?php echo $data['CFG']['smtp_user']; ?>" id="input_smtp_user" placeholder="<?php echo $this->l10n->gettext('set_mail_smtp_user_ph'); ?>">
+							<input type="text" name="smtp_user" value="<?= $data['CFG']['smtp_user']; ?>" id="input_smtp_user" placeholder="<?= $this->l10n->gettext('set_mail_smtp_user_ph'); ?>">
 						</td>
 					</tr>
 					
 					<tr>
 						<td class="collapsing">
-							<label class="control-label" for="input_smtp_pass"><?php echo $this->l10n->gettext('set_mail_smtp_pass'); ?></label>
+							<label class="control-label" for="input_smtp_pass"><?= $this->l10n->gettext('set_mail_smtp_pass'); ?></label>
 						</td>
 						<td>
-							<input type="password" name="smtp_pass" value="<?php echo $data['CFG']['smtp_pass']; ?>" id="input_smtp_pass" placeholder="<?php echo $this->l10n->gettext('set_mail_smtp_pass_ph'); ?>">
+							<input type="password" name="smtp_pass" value="<?= $data['CFG']['smtp_pass']; ?>" id="input_smtp_pass" placeholder="<?= $this->l10n->gettext('set_mail_smtp_pass_ph'); ?>">
 						</td>
 					</tr>
 					
 					<tr>
 						<td class="collapsing">
-							<label class="control-label" for="input_smtp_tls"><?php echo $this->l10n->gettext('set_mail_smtp_tls'); ?></label>
+							<label class="control-label" for="input_smtp_tls"><?= $this->l10n->gettext('set_mail_smtp_tls'); ?></label>
 						</td>
 						<td>
 							<select name="smtp" id="input_smtp_tls" class="ui fluid selection dropdown">
-								<option value="0"><?php echo $this->l10n->gettext('no'); ?></option>
+								<option value="0"><?= $this->l10n->gettext('no'); ?></option>
 								<option value="1"
-								<?php echo $data['SMTP_TLS']; ?>><?php echo $this->l10n->gettext('yes'); ?></option>
+								<?= $data['SMTP_TLS']; ?>><?= $this->l10n->gettext('yes'); ?></option>
 							</select>
 						</td>
 					</tr>
@@ -113,7 +113,7 @@
 				</tbody>
 			</table>
 			
-			<button type="submit" name="submit" class="ui huge primary fluid button"><?php echo $this->l10n->gettext('save'); ?></button>
+			<button type="submit" name="submit" class="ui huge primary fluid button"><?= $this->l10n->gettext('save'); ?></button>
 		</form>
 	</div>
 </div>

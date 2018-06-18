@@ -1,16 +1,16 @@
 <div class="ui segments">
 
-	<form method="post" class="ui form" action="<?php echo ADMIN_URL; ?>&do=modules&op=delete">
+	<form method="post" class="ui form" action="<?= ADMIN_URL; ?>&do=modules&op=delete">
 
 		<div class="ui segment">
 
 			<table class="ui celled table">
 				<thead>
 					<tr>
-						<th class="collapsing"><?php echo $this->l10n->gettext('mod_field_status'); ?></th>
-						<th><?php echo $this->l10n->gettext('mod_field_name'); ?></th>
-						<th><?php echo $this->l10n->gettext('author'); ?></th>
-						<th><?php echo $this->l10n->gettext('version'); ?></th>
+						<th class="collapsing"><?= $this->l10n->gettext('mod_field_status'); ?></th>
+						<th><?= $this->l10n->gettext('mod_field_name'); ?></th>
+						<th><?= $this->l10n->gettext('author'); ?></th>
+						<th><?= $this->l10n->gettext('version'); ?></th>
 						<th class="right aligned collapsing action">
 							<div class="ui checkbox">
 								<input class="check-all" type="checkbox" data-for="check-input">
@@ -21,7 +21,7 @@
 				</thead>
 
 				<tbody>
-					<?php echo $data['MODULES']; ?>
+					<?= $data['MODULES']; ?>
 				</tbody>
 			</table>
 
@@ -33,8 +33,8 @@
 				<button class="ui primary button" id="disable" data-for="check-input">
 					<i class="icon pause fitted"></i>
 				</button>
-				<a role="button" href="#" class="ui primary button edit" data-for="check-input" data-link="<?php echo ADMIN_URL; ?>&do=modules&op=edit&id=">
-					<?php echo $this->l10n->gettext('edit'); ?>
+				<a role="button" href="#" class="ui primary button edit" data-for="check-input" data-link="<?= ADMIN_URL; ?>&do=modules&op=edit&id=">
+					<?= $this->l10n->gettext('edit'); ?>
 				</a>
 			</div>
 

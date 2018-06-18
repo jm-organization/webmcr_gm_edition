@@ -1,7 +1,7 @@
 <div class="ui segments">
 
 	<div class="ui segment">
-		<?php echo $this->l10n->gettext('info_ext'); ?>
+		<?= $this->l10n->gettext('info_ext'); ?>
 	</div>
 
 
@@ -9,11 +9,11 @@
 		<form method="post"></form>
 		<ul class="nav nav-tabs" id="myTab">
 			<li class="nav-item">
-				<a class="nav-link" href="<?php echo ADMIN_URL; ?>&do=info&op=main"><?php echo $this->l10n->gettext('info'); ?></a>
+				<a class="nav-link" href="<?= ADMIN_URL; ?>&do=info&op=main"><?= $this->l10n->gettext('info'); ?></a>
 			</li>
-			<!--<li class="nav-item"><a class="nav-link active" href="<?php echo ADMIN_URL; ?>&do=info&op=extensions"><?php echo $this->l10n->gettext('info_ext'); ?></a></li>-->
+			<!--<li class="nav-item"><a class="nav-link active" href="<?= ADMIN_URL; ?>&do=info&op=extensions"><?= $this->l10n->gettext('info_ext'); ?></a></li>-->
 			<li class="nav-item">
-				<a class="nav-link" href="<?php echo ADMIN_URL; ?>&do=info&op=stats"><?php echo $this->l10n->gettext('info_stats'); ?></a>
+				<a class="nav-link" href="<?= ADMIN_URL; ?>&do=info&op=stats"><?= $this->l10n->gettext('info_stats'); ?></a>
 			</li>
 		</ul>
 

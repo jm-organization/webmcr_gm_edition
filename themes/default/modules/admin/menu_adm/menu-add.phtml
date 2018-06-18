@@ -7,7 +7,7 @@
             <div class="block-header">
                 <div class="block-name">
                     <p id="title">
-                        <span class="title"><?=$data['PAGE']?></span>
+                        <span class="title"><?= $data['PAGE'] ?></span>
                     </p>
                 </div>
             </div>
@@ -20,102 +20,102 @@
                         <div class="col-sm-6 offset-3">
                             <div class="input-group">
                                 <span class="input-group-addon">#page_id</span>
-                                <input type="text" class="form-control" <?=$data['EDIT']?'disabled readonly':''?> required name="page_id" value="<?=$data['PAGE_ID']?>">
+                                <input type="text" class="form-control" <?= $data['EDIT'] ? 'disabled readonly' : '' ?> required name="page_id" value="<?= $data['PAGE_ID'] ?>">
                             </div>
-                            <small class="form-text text-muted">(<?php echo $this->l10n->gettext('menu_page_id_same_with_class'); ?>)</small>
+                            <small class="form-text text-muted">(<?= $this->l10n->gettext('menu_page_id_same_with_class'); ?>)</small>
                         </div>
                     </div>
 
                     <div class="form-group row">
                         <div class="col-sm-6 offset-3">
                             <div class="input-group">
-                                <span class="input-group-addon"><?php echo $this->cfg->main['s_root_full']; ?>?mode=admin&do=</span>
-                                <input type="text" class="form-control disabled" readonly id="page_url" value="<?=$data['PAGE_ID']?>">
-                                <input type="hidden" data-prefix="/?mode=admin&do=" id="page_main_url" name="url" value="/?mode=admin&do=<?=$data['PAGE_ID']?>">
+                                <span class="input-group-addon"><?= $this->cfg->main['s_root_full']; ?>?mode=admin&do=</span>
+                                <input type="text" class="form-control disabled" readonly id="page_url" value="<?= $data['PAGE_ID'] ?>">
+                                <input type="hidden" data-prefix="/?mode=admin&do=" id="page_main_url" name="url" value="/?mode=admin&do=<?= $data['PAGE_ID'] ?>">
                             </div>
                         </div>
 
-                        <a href="#" id="copylink" title="Copy to clipboard" data-toggle="tooltip" class="btn btn-link" onclick="return false;" data-prefix="<?php echo $this->cfg->main['s_root_full']; ?>?mode=admin&do=" data-clipboard-text="<?php echo $this->cfg->main['s_root_full']; ?>?mode=admin&do=<?=$data['PAGE_ID']?>" style="margin-left:-15px"><i class="fa fa-link"></i></a>
+                        <a href="#" id="copylink" title="Copy to clipboard" data-toggle="tooltip" class="btn btn-link" onclick="return false;" data-prefix="<?= $this->cfg->main['s_root_full']; ?>?mode=admin&do=" data-clipboard-text="<?= $this->cfg->main['s_root_full']; ?>?mode=admin&do=<?= $data['PAGE_ID'] ?>" style="margin-left:-15px"><i class="fa fa-link"></i></a>
                     </div>
 
                     <hr>
 
                     <div class="form-group row">
-                        <label for="menuTitle" class="col-sm-3 col-form-label text-right"><?php echo $this->l10n->gettext('mcp_field_name'); ?></label>
+                        <label for="menuTitle" class="col-sm-3 col-form-label text-right"><?= $this->l10n->gettext('mcp_field_name'); ?></label>
                         <div class="col-sm-6 float-left">
-                            <input type="text" class="form-control" id="menuTitle" name="title" value="<?=$data['TITLE']?>">
+                            <input type="text" class="form-control" id="menuTitle" name="title" value="<?= $data['TITLE'] ?>">
                         </div>
                     </div>
 
                     <div class="form-group row">
-                        <label for="selectGid" class="col-sm-3 col-form-label text-right"><?=$this->l10n->gettext('group')?></label>
+                        <label for="selectGid" class="col-sm-3 col-form-label text-right"><?= $this->l10n->gettext('group') ?></label>
                         <div class="col-sm-6 float-left">
                             <select name="gid" class="form-control" id="selectGid">
-								<?=$data['GROUPS']?>
+								<?= $data['GROUPS'] ?>
                             </select>
                         </div>
                     </div>
 
                     <div class="form-group row">
-						<label for="selectPerm" class="col-sm-3 col-form-label text-right"><?=$this->l10n->gettext('mcp_field_access')?></label>
+						<label for="selectPerm" class="col-sm-3 col-form-label text-right"><?= $this->l10n->gettext('mcp_field_access') ?></label>
 						<div class="col-sm-6 float-left">
 							<select class="form-control"name="permissions" id="selectPerm">
-                                <?=$data['PERMISSIONS']?>
+                                <?= $data['PERMISSIONS'] ?>
                             </select>
 						</div>
 					</div>
 
                     <div class="form-group row">
-						<label class="col-sm-3 col-form-label text-right"><?=$this->l10n->gettext('mcp_field_icon')?></label>
+						<label class="col-sm-3 col-form-label text-right"><?= $this->l10n->gettext('mcp_field_icon') ?></label>
 						<div class="col-sm-6 float-left">
 
                             <div class="btn-group w-100" role="group" aria-label="Button group with nested dropdown">
                                 <img src="" width="33" height="33" class="img-thumbnail" id="menu_icon" style="height:33px">
 
                                 <div class="btn-group w-100" role="group">
-                                    <button id="btnGroupDrop1" type="button" data-target="#icons-list" class="btn btn-link"><?=$this->l10n->gettext('select_icon')?></button>
+                                    <button id="btnGroupDrop1" type="button" data-target="#icons-list" class="btn btn-link"><?= $this->l10n->gettext('select_icon') ?></button>
                                 </div>
                             </div>
 
                             <div class="menu-icons-select triangled" id="icons-list">
-                                <h5 class="d-block mb-3"><?=$this->l10n->gettext('icons')?></h5>
+                                <h5 class="d-block mb-3"><?= $this->l10n->gettext('icons') ?></h5>
 
-                                <?php foreach ($data['ICONS'] as $icons_chank) { ?>
+                                <? foreach ($data['ICONS'] as $icons_chank) { ?>
                                     <div class="row">
-                                        <?php foreach ($icons_chank as $icon) {?>
-                                            <label class="menu-icon col-md-1" title="<?php echo $data['TITLE']; ?>">
-                                                <input class="icon-input" type="radio" name="icon" data-icon="<?php echo UPLOAD_URL; ?>panel-icons/<?php echo $icon['IMG']; ?>" value="<?php echo $icon['ID']; ?>" <?php echo $icon['CHECKED']; ?>>
-                                                <div class="icon-img" style="background-image: url(<?php echo UPLOAD_URL; ?>panel-icons/<?php echo $icon['IMG']; ?>);"></div>
+                                        <? foreach ($icons_chank as $icon) {?>
+                                            <label class="menu-icon col-md-1" title="<?= $data['TITLE']; ?>">
+                                                <input class="icon-input" type="radio" name="icon" data-icon="<?= UPLOAD_URL; ?>panel-icons/<?= $icon['IMG']; ?>" value="<?= $icon['ID']; ?>" <?= $icon['CHECKED']; ?>>
+                                                <div class="icon-img" style="background-image: url(<?= UPLOAD_URL; ?>panel-icons/<?= $icon['IMG']; ?>);"></div>
                                             </label>
-                                        <?php }?>
+                                        <? }?>
                                     </div>
-								<?php }?>
+								<? }?>
 
                             </div>
                         </div>
 					</div>
 
                     <div class="form-group row">
-						<label for="inputPriority" class="col-sm-3 col-form-label text-right"><?=$this->l10n->gettext('mcp_field_priority')?></label>
+						<label for="inputPriority" class="col-sm-3 col-form-label text-right"><?= $this->l10n->gettext('mcp_field_priority') ?></label>
 						<div class="col-sm-6 float-left">
                             <input type="number" class="form-control" name="priority" value="<?=$data['PRIORITY']?>" id="inputPriority">
                         </div>
 					</div>
 
                     <div class="form-group row">
-						<label for="selectTarget" class="col-sm-3 col-form-label text-right"><?=$this->l10n->gettext('mcp_field_target')?></label>
+						<label for="selectTarget" class="col-sm-3 col-form-label text-right"><?= $this->l10n->gettext('mcp_field_target') ?></label>
 						<div class="col-sm-6 float-left">
                             <select id="selectTarget" class="form-control" name="target">
-                                <option value="_self"><?=$this->l10n->gettext('mcp_target_self')?></option>
-                                <option value="_blank" <?=$data['TARGET']?>><?=$this->l10n->gettext('target_blank2')?></option>
+                                <option value="_self"><?= $this->l10n->gettext('mcp_target_self') ?></option>
+                                <option value="_blank" <?= $data['TARGET']?>><?= $this->l10n->gettext('target_blank2') ?></option>
                             </select>
                         </div>
 					</div>
 
                     <div class="form-group row">
-                        <label for="text" class="col-sm-3 col-form-label text-right"><?=$this->l10n->gettext('mcp_field_desc')?></label>
+                        <label for="text" class="col-sm-3 col-form-label text-right"><?= $this->l10n->gettext('mcp_field_desc') ?></label>
                         <div class="col-sm-6 float-left">
-                            <textarea class="form-control" id="text" name="text" rows="8" maxlength="255"><?=$data['TEXT']?></textarea>
+                            <textarea class="form-control" id="text" name="text" rows="8" maxlength="255"><?= $data['TEXT'] ?></textarea>
                         </div>
                     </div>
 
@@ -124,8 +124,8 @@
                     <div class="form-group row mb-0">
                         <label class="col-sm-3 col-form-label text-right"></label>
                         <div class="col-sm-6">
-                            <button type="submit" class="btn btn-success"><?php echo $this->l10n->gettext('save'); ?></button>
-                            <a href="<?php echo ADMIN_URL.'&do=menu_adm'; ?>" class="btn btn-outline-primary" role="button"><?php echo $this->l10n->gettext('cancel'); ?></a>
+                            <button type="submit" class="btn btn-success"><?= $this->l10n->gettext('save'); ?></button>
+                            <a href="<?= ADMIN_URL.'&do=menu_adm'; ?>" class="btn btn-outline-primary" role="button"><?= $this->l10n->gettext('cancel'); ?></a>
                         </div>
                     </div>
                 </form>

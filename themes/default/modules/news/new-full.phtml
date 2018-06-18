@@ -2,15 +2,15 @@
 	
 	<div class="ui clearing segment">
 		<div class="ui header">
-			<?php echo $data['TITLE']; ?>
-			<?php echo $data['LIKES']; ?>
-			<?php echo $data['ADMIN']; ?>
+			<?= $data['TITLE']; ?>
+			<?= $data['LIKES']; ?>
+			<?= $data['ADMIN']; ?>
 		</div>
 	</div>
 	
 	<div class="ui segment">
 		<div class="new-full-content">
-			<?php echo $data['TEXT']; ?>
+			<?= $data['TEXT']; ?>
 		</div>
 	</div>
 	
@@ -18,15 +18,15 @@
 		<div class="ui horizontal divided list">
 			<div class="item">
     <div class="middle aligned content">
-					<div class="date" rel="tooltip" title="<?php echo $this->l10n->gettext('date_create'); ?>">
-						<i class="icon calendar alternate outline"></i><?php echo $data['DATE'] ?>
+					<div class="date" rel="tooltip" title="<?= $this->l10n->gettext('date_create'); ?>">
+						<i class="icon calendar alternate outline"></i><?= $data['DATE'] ?>
 					</div>
 				</div>
 			</div>
 			<div class="item">
     <div class="middle aligned content">
-					<div class="views" rel="tooltip" title="<?php echo $this->l10n->gettext('views'); ?>">
-						<i class="icon eye"></i><?php echo $data['VIEWS']; ?>
+					<div class="views" rel="tooltip" title="<?= $this->l10n->gettext('views'); ?>">
+						<i class="icon eye"></i><?= $data['VIEWS']; ?>
 					</div>
 				</div>
 			</div>
@@ -34,7 +34,7 @@
     <div class="middle aligned content">
 					<div class="category">
 						<i class="icon folder open outline"></i>
-						<a href="<?php echo BASE_URL; ?>?mode=news&amp;cid=<?php echo $data['CID']; ?>" rel="tooltip" title="<?php echo $this->l10n->gettext('category'); ?>"><?php echo $data['CATEGORY']; ?></a>
+						<a href="<?= BASE_URL; ?>?mode=news&amp;cid=<?= $data['CID']; ?>" rel="tooltip" title="<?= $this->l10n->gettext('category'); ?>"><?= $data['CATEGORY']; ?></a>
 					</div>
 				</div>
 			</div>
@@ -43,4 +43,4 @@
 	
 </div>
 
-<?php echo $data['COMMENTS']; ?>
+<?= $data['COMMENTS']; ?>

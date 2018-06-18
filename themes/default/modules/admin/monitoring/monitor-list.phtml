@@ -1,15 +1,15 @@
 <div class="ui segments">
 
 	<div class="ui segment">
-		<?php echo $this->l10n->gettext('monitoring'); ?>
+		<?= $this->l10n->gettext('monitoring'); ?>
 	</div>
 
 	<div class="ui segment">
-		<form method="post" class="panel-categories" action="<?php echo ADMIN_URL; ?>&do=monitoring&op=delete">
+		<form method="post" class="panel-categories" action="<?= ADMIN_URL; ?>&do=monitoring&op=delete">
 
 			<div class="ui fluid action input">
-				<input type="text" id="adm-search-id" placeholder="<?php echo $this->l10n->gettext('search_placeholder'); ?>">
-				<button class="ui button" data-for="#adm-search-id" type="button" rel="tooltip" title="<?php echo $this->l10n->gettext('search'); ?>">
+				<input type="text" id="adm-search-id" placeholder="<?= $this->l10n->gettext('search_placeholder'); ?>">
+				<button class="ui button" data-for="#adm-search-id" type="button" rel="tooltip" title="<?= $this->l10n->gettext('search'); ?>">
 					<i class="search fitted icon"></i>
 				</button>
 			</div>
@@ -19,10 +19,10 @@
 					<tr>
 						<th><a href="#" class="sort-trigger" data-field="id" data-order="desc">#</a></th>
 						<th>
-							<a href="#" class="sort-trigger" data-field="title" data-order="desc"><?php echo $this->l10n->gettext('mon_field_name'); ?></a>
+							<a href="#" class="sort-trigger" data-field="title" data-order="desc"><?= $this->l10n->gettext('mon_field_name'); ?></a>
 						</th>
 						<th>
-							<a href="#" class="sort-trigger" data-field="address" data-order="desc"><?php echo $this->l10n->gettext('mon_field_addr'); ?></a>
+							<a href="#" class="sort-trigger" data-field="address" data-order="desc"><?= $this->l10n->gettext('mon_field_addr'); ?></a>
 						</th>
 						<th class="right aligned collapsing action">
 							<div class="ui checkbox">
@@ -34,25 +34,25 @@
 				</thead>
 
 				<tbody>
-					<?php echo $data['SERVERS']; ?>
+					<?= $data['SERVERS']; ?>
 				</tbody>
 			</table>
 
 			<div class="ui one column stackable center aligned page grid">
 				<div class="column wide">
-					<?php echo $data['PAGINATION']; ?>
+					<?= $data['PAGINATION']; ?>
 				</div>
 			</div>
 
 			<div id="actions">
 				<div class="ui fluid buttons">
-					<a href="#" class="ui primary button edit" data-for="check-input" data-link="<?php echo ADMIN_URL; ?>&do=monitoring&op=edit&id=">
+					<a href="#" class="ui primary button edit" data-for="check-input" data-link="<?= ADMIN_URL; ?>&do=monitoring&op=edit&id=">
 						<i class="icon pencil"></i>
 					</a>
-					<button class="ui primary button remove" data-for="check-input" data-text="<?php echo $this->l10n->gettext('remove_accept'); ?>" type="submit" name="delete">
+					<button class="ui primary button remove" data-for="check-input" data-text="<?= $this->l10n->gettext('remove_accept'); ?>" type="submit" name="delete">
 						<i class="icon times"></i>
 					</button>
-					<a class="ui primary button" role="button" href="<?php echo ADMIN_URL; ?>&do=monitoring&op=add"><?php echo $this->l10n->gettext('add'); ?></a>
+					<a class="ui primary button" role="button" href="<?= ADMIN_URL; ?>&do=monitoring&op=add"><?= $this->l10n->gettext('add'); ?></a>
 				</div>
 			</div>
 

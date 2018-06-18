@@ -5,27 +5,27 @@
 	
   <div class="ui segment admin-themes-menu">
 		<div class="owl-carousel owl-theme" id="themes_carusel">
-			<?php foreach ($data as $datum) { ?>
+			<? foreach ($data as $datum) { ?>
 				<div class="item">
-					<img class="i-icon" src="<?='themes/' . $datum['ThemeCode'] . '/' . $datum['Screenshots'][0]?>">
+					<img class="i-icon" src="<?='themes/' . $datum['ThemeCode'] . '/' . $datum['Screenshots'][0] ?>">
 					
 					<div class="theme-about">
-						<h3 class="theme-name"><?php echo $datum['ThemeName']; ?></h3>
-						<p class="theme-description"><?php echo $datum['About']; ?></p>
+						<h3 class="theme-name"><?= $datum['ThemeName']; ?></h3>
+						<p class="theme-description"><?= $datum['About']; ?></p>
 					</div>
 					
-					<?php if($datum['active']) { ?>
+					<? if($datum['active']) { ?>
 						<span class="theme-active fa fa-check-square-o"></span>
-					<?php } ?>
+					<? } ?>
 					
 					<div class="item-footer" style="text-align:left;">
 						<span class="version"><?=$datum['Version'];?></span>
-						<span class="ui primary right floated mini button get_more_theme_info" role="button" data-theme-cod="<?=$datum['ThemeCode'];?>">
+						<span class="ui primary right floated mini button get_more_theme_info" role="button" data-theme-cod="<?= $datum['ThemeCode']; ?>">
 							<?= $this->l10n->gettext('more') ?>
 						</span>
 					</div>
 				</div>
-			<?php } ?>
+			<? } ?>
 		</div>
 	</div>
 	
