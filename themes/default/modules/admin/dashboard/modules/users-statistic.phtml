@@ -6,22 +6,15 @@
 			<small class="text-muted"><?= $this->l10n->gettext('info_count_users') ?>: <?= $data['count'] ?></small>
 		</p>
 	</div>
-
+	
 	<div class="ui segment">
-		<div class="chart-container"
-										data-data='<?= json_encode($data[' groups
-		'], JSON_UNESCAPED_UNICODE) ?>'
-		style="position:relative;margin:auto;width:200px;height:100%;display:inline-block;"
-		>
-		<canvas id="user-group-statistic"></canvas>
+		<div class="chart-container" data-data='<?= json_encode($data['groups'], JSON_UNESCAPED_UNICODE) ?>' style="position:relative;margin:auto;width:200px;height:100%;display:inline-block;">
+			<canvas id="user-group-statistic"></canvas>
+		</div>
+		
+		<div class="chart-container" data-data='<?= json_encode($data['date-regs'], JSON_UNESCAPED_UNICODE) ?>' style="position:relative;margin:auto;width:calc(100% - 200px);height:100%;display:inline-block;float:right;">
+			<canvas id="user-date-reg-statistic"></canvas>
+		</div>
+		
 	</div>
-
-	<div class="chart-container" data-data='<?= json_encode($data[' date-regs
-	'], JSON_UNESCAPED_UNICODE) ?>'
-	style="position:relative;margin:auto;width:calc(100% - 200px);height:100%;display:inline-block;float:right;"
-	>
-	<canvas id="user-date-reg-statistic"></canvas>
-</div>
-
-</div>
 </div>
