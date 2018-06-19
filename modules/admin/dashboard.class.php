@@ -30,13 +30,10 @@ class submodule
 	private function modules()
 	{
 		// Получаем список модулей с базы
-		$query = $this->db->query(
-			"SELECT
- 				`m`.id, `m`.title, 
+		$query = $this->db->query("
+			SELECT `m`.id, `m`.title, 
  				`m`.`text`, `m`.`url`, `m`.`target`, 
- 				`m`.`access`, 
- 				
- 				`i`.img
+ 				`m`.`access`, `i`.img
 			FROM `mcr_menu_adm` AS `m`
 			
 			LEFT JOIN `mcr_menu_adm_icons` AS `i`
@@ -44,19 +41,31 @@ class submodule
 			
 			WHERE `m`.`fixed`='1'
 				
-			ORDER BY `priority` ASC"
-		);
-		$results = [];
+			ORDER BY `priority` ASC
+		");
+
+		$items = '';
 
 		if ($query && $this->db->num_rows($query) > 0) {
 			while ($ar = $this->db->fetch_assoc($query)) {
-				$results[] = $ar;
+
+				$item_data = array(
+					"ID" => intval($ar['id']),
+					"TITLE" => $this->db->HSC($ar['title']),
+					"TEXT" => $this->db->HSC($ar['text']),
+					"URL" => $this->db->HSC($ar['url']),
+					"TARGET" => $this->db->HSC($ar['target']),
+					"IMG" => $this->db->HSC($ar['img']),
+				);
+
+				$items .= $this->core->sp(MCR_THEME_MOD."admin/dashboard/modules/modules-id.phtml", $item_data);
 			}
 
-			return $this->core->sp(MCR_THEME_MOD."admin/dashboard/modules/modules-list.phtml", $results);
 		}
 
-		return null;
+		$data = array("CONTENT" => $items);
+
+		return $this->core->sp(MCR_THEME_MOD."admin/dashboard/modules/modules-list.phtml", $data);
 	}
 
 	private function user_groups()
@@ -184,7 +193,8 @@ class submodule
 	private function themes($select='')
 	{
 		$scan = scandir(MCR_ROOT.'themes/');
-		$results = [];
+
+		$items = '';
 
 		foreach ($scan as $key => $value) {
 			if($value=='.' || $value=='..' || !is_dir(MCR_ROOT.'themes/'.$value)) continue;
@@ -192,12 +202,26 @@ class submodule
 
 			require(MCR_ROOT.'themes/'.$value.'/theme.php');
 			$theme['img_path'] = '/themes/'.$value.'/';
-			$theme['active'] = $this->cfg->main['s_theme'] == $value;
 
-			$results[] = $theme;
+			$item_data = array(
+				"CODE" => $this->db->HSC($theme['ThemeCode']),
+				"NAME" => $this->db->HSC($theme['ThemeName']),
+				"ABOUT" => $this->db->HSC($theme['About']),
+				"ABOUT_FULL" => $this->db->HSC($theme['MoreAbout']),
+				"SCREENSHOT" => $this->db->HSC($theme['Screenshots'][0]),
+				"ACTIVE" => $this->cfg->main['s_theme'] == $value,
+				"VERSION" => $this->db->HSC($theme['Version']),
+				"DATE_CREATE" => $this->db->HSC($theme['DateCreate']),
+				"DATE_RELEASE" => $this->db->HSC($theme['DateOfRelease']),
+			);
+
+			$items .= $this->core->sp(MCR_THEME_MOD."admin/dashboard/modules/themes-id.phtml", $item_data);
+
 		}
 
-		return $this->core->sp(MCR_THEME_MOD."admin/dashboard/modules/themes-list.phtml", $results);
+		$data = array("CONTENT" => $items);
+
+		return $this->core->sp(MCR_THEME_MOD."admin/dashboard/modules/themes-list.phtml", $data);
 	}
 
 	public function content()
