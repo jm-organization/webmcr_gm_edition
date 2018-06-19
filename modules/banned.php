@@ -27,7 +27,7 @@ class module{
 		$expire = date("d.m.Y - H:i:s", $this->user->is_banned);
 
 		$data = array(
-			'EXPIRE' => ($this->user->is_banned<=0) ? $this->l10n['ban_forever'] : $this->l10n['ban_expired'].' '.$expire,
+			'EXPIRE' => ($this->user->is_banned<=0) ? $this->l10n->gettext('ban_forever') : $this->l10n->gettext('ban_expired').' '.$expire,
 		);
 
 		echo $this->core->sp(MCR_THEME_MOD."banned/main.phtml", $data);

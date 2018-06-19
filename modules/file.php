@@ -14,7 +14,7 @@ class module{
 		$this->l10n = $core->l10n;
 
 		$bc = array(
-			$this->l10n['mod_name'] => BASE_URL."?mode=file"
+			$this->l10n->gettext('mod_name') => BASE_URL."?mode=file"
 		);
 
 		$this->core->bc = $this->core->gen_bc($bc);

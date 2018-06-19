@@ -125,13 +125,17 @@ class submodule{
 	}
 
 	private function delete(){
-		if(!$this->core->is_access('sys_adm_news_votes_delete')){ $this->core->notify($this->l10n["e_msg"], $this->l10n->gettext('e_403'), 2, '?mode=admin&do=news_votes'); }
+		if(!$this->core->is_access('sys_adm_news_votes_delete')){
+			$this->core->notify($this->l10n->gettext("e_msg"), $this->l10n->gettext('e_403'), 2, '?mode=admin&do=news_votes');
+		}
 
-		if($_SERVER['REQUEST_METHOD']!='POST'){ $this->core->notify($this->l10n["e_msg"], $this->l10n->gettext('e_hack'), 2, '?mode=admin&do=news_votes'); }
+		if($_SERVER['REQUEST_METHOD']!='POST'){
+			$this->core->notify($this->l10n->gettext("e_msg"), $this->l10n->gettext('e_hack'), 2, '?mode=admin&do=news_votes');
+		}
 			
 		$list = @$_POST['id'];
 
-		if(empty($list)){ $this->core->notify($this->l10n["e_msg"], $this->l10n->gettext('nvt_not_selected'), 2, '?mode=admin&do=news_votes'); }
+		if(empty($list)){ $this->core->notify($this->l10n->gettext("e_msg"), $this->l10n->gettext('nvt_not_selected'), 2, '?mode=admin&do=news_votes'); }
 
 		$list = $this->core->filter_int_array($list);
 
@@ -139,7 +143,9 @@ class submodule{
 
 		$list = $this->db->safesql(implode(", ", $list));
 
-		if(!$this->db->remove_fast("mcr_news_votes", "id IN ($list)")){ $this->core->notify($this->l10n["e_msg"], $this->l10n["e_sql_critical"], 2, '?mode=admin&do=news_votes'); }
+		if(!$this->db->remove_fast("mcr_news_votes", "id IN ($list)")){
+			$this->core->notify($this->l10n->gettext("e_msg"), $this->l10n->gettext("e_sql_critical"), 2, '?mode=admin&do=news_votes');
+		}
 
 		$count1 = $this->db->affected_rows();
 
@@ -149,7 +155,7 @@ class submodule{
 		// Лог действия
 		$this->db->actlog($this->l10n->gettext('log_del_nvt')." $list ".$this->l10n->gettext('log_nvt'), $this->user->id);
 
-		$this->core->notify($this->l10n["e_success"], sprintf($this->l10n->gettext('elements_deleted'), $count1), 3, '?mode=admin&do=news_votes');
+		$this->core->notify($this->l10n->gettext("e_success"), sprintf($this->l10n->gettext('elements_deleted'), $count1), 3, '?mode=admin&do=news_votes');
 
 	}
 

@@ -35,7 +35,7 @@ class submodule
 		$query = $this->db->query("SELECT uid, `from` FROM `mod_users_comments` WHERE id='$id'");
 
 		if (!$query || $this->db->num_rows($query) <= 0) {
-			$this->core->js_notify($this->l10n['com_not_found']);
+			$this->core->js_notify($this->l10n->gettext('com_not_found'));
 		}
 
 		$ar = $this->db->fetch_assoc($query);
