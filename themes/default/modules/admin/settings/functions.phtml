@@ -9,12 +9,12 @@
 
 <div class="ui bottom attached segment">
 	<form method="post"></form>
-	
+
 	<div class="tab-content">
 		<form class="ui form" method="post">
 			<table class="ui definition table">
 				<tbody>
-					
+
 					<tr>
 						<td class="collapsing">
 							<label for="input_advice"><?= $this->l10n->gettext('set_func_advice'); ?></label>
@@ -27,7 +27,7 @@
 							</select>
 						</td>
 					</tr>
-					
+
 					<tr>
 						<td class="collapsing">
 							<label for="input_breadcrumbs"><?= $this->l10n->gettext('set_funt_bc'); ?></label>
@@ -40,7 +40,7 @@
 							</select>
 						</td>
 					</tr>
-					
+
 					<tr>
 						<td class="collapsing">
 							<label for="input_close"><?= $this->l10n->gettext('set_funt_close'); ?></label>
@@ -53,7 +53,7 @@
 							</select>
 						</td>
 					</tr>
-					
+
 					<tr>
 						<td class="collapsing">
 							<label for="input_close_time"><?= $this->l10n->gettext('set_funt_close_time'); ?></label>
@@ -62,12 +62,12 @@
 							<input type="text" name="close_time" id="input_close_time" value="<?= $data['CLOSE_TIME']; ?>">
 						</td>
 					</tr>
-					
+
 				</tbody>
 			</table>
-			
+
 			<button type="submit" name="submit" class="ui huge primary fluid button"><?= $this->l10n->gettext('save'); ?></button>
-			
+
 		</form>
 	</div>
 </div>

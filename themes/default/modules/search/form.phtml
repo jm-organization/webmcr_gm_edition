@@ -2,12 +2,12 @@
 	<form class="ui form" method="get" action="<?= BASE_URL; ?>">
 		<input type="hidden" name="mode" value="search">
 		<input type="hidden" name="type" id="mcr-search-hidden" value="news">
-		
+
 		<div class="ui icon transparent input">
 			<input id="mcr-search" type="text" name="value" placeholder="<?= $this->l10n->gettext('search'); ?>" autocomplete="off" required>
 			<i class="search icon"></i>
 		</div>
-		
+
 		<div class="ui mcr-search fluid popup">
 			<div class="field">
 				<select class="ui fluid selection dropdown" id="mcr-search-selector">
@@ -16,11 +16,11 @@
 					</div>
 				</select>
 			</div>
-			
+
 			<div class="field">
 				<button type="submit" class="ui fluid basic button"><?= $this->l10n->gettext('search'); ?></button>
 			</div>
 		</div>
-		
+
 	</form>
 </div>

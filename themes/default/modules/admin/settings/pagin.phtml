@@ -9,18 +9,18 @@
 
 <div class="ui bottom attached segment">
 	<form method="post"></form>
-	
+
 	<div class="tab-content">
 		<form class="ui form" method="post">
-			
+
 			<table class="ui definition table">
 				<tbody>
-					
+
 					<tr>
 						<td class="center aligned disabled" colspan="2">
-						<h4><?= $this->l10n->gettext('set_pagin_user_sect'); ?></h4></td>
+							<h4><?= $this->l10n->gettext('set_pagin_user_sect'); ?></h4></td>
 					</tr>
-					
+
 					<tr>
 						<td class="collapsing">
 							<label for="input_arrows"><?= $this->l10n->gettext('set_pagin_arrows'); ?></label>
@@ -29,7 +29,7 @@
 							<input type="number" min="1" name="arrows" id="input_arrows" value="<?= $data['CFG']['arrows']; ?>" placeholder="<?= $this->l10n->gettext('set_pagin_arrows_ph'); ?>">
 						</td>
 					</tr>
-					
+
 					<tr>
 						<td class="collapsing">
 							<label for="input_news"><?= $this->l10n->gettext('set_pagin_news'); ?></label>
@@ -38,7 +38,7 @@
 							<input type="number" min="1" name="news" value="<?= $data['CFG']['news']; ?>" id="input_news" placeholder="<?= $this->l10n->gettext('set_pagin_news_ph'); ?>">
 						</td>
 					</tr>
-					
+
 					<tr>
 						<td class="collapsing">
 							<label for="input_comments"><?= $this->l10n->gettext('set_pagin_comments'); ?></label>
@@ -47,7 +47,7 @@
 							<input type="number" min="1" name="comments" value="<?= $data['CFG']['comments']; ?>" id="input_comments" placeholder="<?= $this->l10n->gettext('set_pagin_comments_ph'); ?>">
 						</td>
 					</tr>
-					
+
 					<tr>
 						<td class="collapsing">
 							<label for="input_search_news"><?= $this->l10n->gettext('set_pagin_search_n'); ?></label>
@@ -56,7 +56,7 @@
 							<input type="number" min="1" name="search_news" value="<?= $data['CFG']['search_news']; ?>" id="input_search_news" placeholder="<?= $this->l10n->gettext('set_pagin_search_n_ph'); ?>">
 						</td>
 					</tr>
-					
+
 					<tr>
 						<td class="collapsing">
 							<label for="input_search_comments"><?= $this->l10n->gettext('set_pagin_search_c'); ?></label>
@@ -65,12 +65,13 @@
 							<input type="number" min="1" name="search_comments" value="<?= $data['CFG']['search_comments']; ?>" id="input_search_comments" placeholder="<?= $this->l10n->gettext('set_pagin_search_c_ph'); ?>">
 						</td>
 					</tr>
-					
+
 					<tr>
-						<td class="center aligned disabled" colspan="2"><h4><?= $this->l10n->gettext('set_pagin_cp_sect'); ?></h4>
+						<td class="center aligned disabled" colspan="2">
+							<h4><?= $this->l10n->gettext('set_pagin_cp_sect'); ?></h4>
 						</td>
 					</tr>
-					
+
 					<tr>
 						<td class="collapsing">
 							<label for="input_search_comments"><?= $this->l10n->gettext('set_pagin_search_c'); ?></label>
@@ -79,7 +80,7 @@
 							<input type="number" min="1" name="search_comments" value="<?= $data['CFG']['search_comments']; ?>" id="input_search_comments" placeholder="<?= $this->l10n->gettext('set_pagin_search_c_ph'); ?>">
 						</td>
 					</tr>
-					
+
 					<tr>
 						<td class="collapsing">
 							<label for="input_adm_news"><?= $this->l10n->gettext('set_pagin_cp_news'); ?></label>
@@ -88,7 +89,7 @@
 							<input type="number" min="1" name="adm_news" id="input_adm_news" value="<?= $data['CFG']['adm_news']; ?>" placeholder="<?= $this->l10n->gettext('set_pagin_cp_news_ph'); ?>">
 						</td>
 					</tr>
-					
+
 					<tr>
 						<td class="collapsing">
 							<label for="input_adm_comments"><?= $this->l10n->gettext('set_pagin_cp_coms'); ?></label>
@@ -97,7 +98,7 @@
 							<input type="number" min="1" name="adm_comments" id="input_adm_comments" value="<?= $data['CFG']['adm_comments']; ?>" placeholder="<?= $this->l10n->gettext('set_pagin_cp_coms_ph'); ?>">
 						</td>
 					</tr>
-					
+
 					<tr>
 						<td class="collapsing">
 							<label for="input_adm_news_cats"><?= $this->l10n->gettext('set_pagin_cp_cats'); ?></label>
@@ -106,7 +107,7 @@
 							<input type="number" min="1" name="adm_news_cats" id="input_adm_news_cats" value="<?= $data['CFG']['adm_news_cats']; ?>" placeholder="<?= $this->l10n->gettext('set_pagin_cp_cats_ph'); ?>">
 						</td>
 					</tr>
-					
+
 					<tr>
 						<td class="collapsing">
 							<label for="input_adm_news_views"><?= $this->l10n->gettext('set_pagin_cp_views'); ?></label>
@@ -115,7 +116,7 @@
 							<input type="number" min="1" name="adm_news_views" id="input_adm_news_views" value="<?= $data['CFG']['adm_news_views']; ?>" placeholder="<?= $this->l10n->gettext('set_pagin_cp_views_ph'); ?>">
 						</td>
 					</tr>
-					
+
 					<tr>
 						<td class="collapsing">
 							<label for="input_adm_news_votes"><?= $this->l10n->gettext('set_pagin_cp_votes'); ?></label>
@@ -124,7 +125,7 @@
 							<input type="number" min="1" name="adm_news_votes" id="input_adm_news_votes" value="<?= $data['CFG']['adm_news_votes']; ?>" placeholder="<?= $this->l10n->gettext('set_pagin_cp_votes_ph'); ?>">
 						</td>
 					</tr>
-					
+
 					<tr>
 						<td class="collapsing">
 							<label for="input_adm_menu"><?= $this->l10n->gettext('set_pagin_cp_menu'); ?></label>
@@ -133,7 +134,7 @@
 							<input type="number" min="1" name="adm_menu" id="input_adm_menu" value="<?= $data['CFG']['adm_menu']; ?>" placeholder="<?= $this->l10n->gettext('set_pagin_cp_menu_ph'); ?>">
 						</td>
 					</tr>
-					
+
 					<tr>
 						<td class="collapsing">
 							<label for="input_adm_menu_adm"><?= $this->l10n->gettext('set_pagin_cp_menu_cp'); ?></label>
@@ -142,7 +143,7 @@
 							<input type="number" min="1" name="adm_menu_adm" id="input_adm_menu_adm" value="<?= $data['CFG']['adm_menu_adm']; ?>" placeholder="<?= $this->l10n->gettext('set_pagin_cp_menu_cp_ph'); ?>">
 						</td>
 					</tr>
-					
+
 					<tr>
 						<td class="collapsing">
 							<label for="input_adm_menu_groups"><?= $this->l10n->gettext('set_pagin_cp_mgroups'); ?></label>
@@ -151,7 +152,7 @@
 							<input type="number" min="1" name="adm_menu_groups" id="input_adm_menu_groups" value="<?= $data['CFG']['adm_menu_groups']; ?>" placeholder="<?= $this->l10n->gettext('set_pagin_cp_mgroups_ph'); ?>">
 						</td>
 					</tr>
-					
+
 					<tr>
 						<td class="collapsing">
 							<label for="input_adm_menu_icons"><?= $this->l10n->gettext('set_pagin_cp_icons'); ?></label>
@@ -160,7 +161,7 @@
 							<input type="number" min="1" name="adm_menu_icons" id="input_adm_menu_icons" value="<?= $data['CFG']['adm_menu_icons']; ?>" placeholder="<?= $this->l10n->gettext('set_pagin_cp_icons_ph'); ?>">
 						</td>
 					</tr>
-					
+
 					<tr>
 						<td class="collapsing">
 							<label for="input_adm_monitoring"><?= $this->l10n->gettext('set_pagin_cp_mon'); ?></label>
@@ -169,7 +170,7 @@
 							<input type="number" min="1" name="adm_monitoring" id="input_adm_monitoring" value="<?= $data['CFG']['adm_monitoring']; ?>" placeholder="<?= $this->l10n->gettext('set_pagin_cp_mon_ph'); ?>">
 						</td>
 					</tr>
-					
+
 					<tr>
 						<td class="collapsing">
 							<label for="input_adm_users"><?= $this->l10n->gettext('set_pagin_cp_users'); ?></label>
@@ -178,7 +179,7 @@
 							<input type="number" min="1" name="adm_users" id="input_adm_users" value="<?= $data['CFG']['adm_users']; ?>" placeholder="<?= $this->l10n->gettext('set_pagin_cp_users_ph'); ?>">
 						</td>
 					</tr>
-					
+
 					<tr>
 						<td class="collapsing">
 							<label for="input_adm_groups"><?= $this->l10n->gettext('set_pagin_cp_groups'); ?></label>
@@ -187,7 +188,7 @@
 							<input type="number" min="1" name="adm_groups" id="input_adm_groups" value="<?= $data['CFG']['adm_groups']; ?>" placeholder="<?= $this->l10n->gettext('set_pagin_cp_groups_ph'); ?>">
 						</td>
 					</tr>
-					
+
 					<tr>
 						<td class="collapsing">
 							<label for="input_adm_permissions"><?= $this->l10n->gettext('set_pagin_cp_prems'); ?></label>
@@ -196,7 +197,7 @@
 							<input type="number" min="1" name="adm_permissions" id="input_adm_permissions" value="<?= $data['CFG']['adm_permissions']; ?>" placeholder="<?= $this->l10n->gettext('set_pagin_cp_prems_ph'); ?>">
 						</td>
 					</tr>
-					
+
 					<tr>
 						<td class="collapsing">
 							<label for="input_adm_statics"><?= $this->l10n->gettext('set_pagin_cp_stc'); ?></label>
@@ -205,7 +206,7 @@
 							<input type="number" min="1" name="adm_statics" id="input_adm_statics" value="<?= $data['CFG']['adm_statics']; ?>" placeholder="<?= $this->l10n->gettext('set_pagin_cp_stc_ph'); ?>">
 						</td>
 					</tr>
-					
+
 					<tr>
 						<td class="collapsing">
 							<label for="input_adm_logs"><?= $this->l10n->gettext('set_pagin_cp_logs'); ?></label>
@@ -214,12 +215,12 @@
 							<input type="number" min="1" name="adm_logs" id="input_adm_logs" value="<?= $data['CFG']['adm_logs']; ?>" placeholder="<?= $this->l10n->gettext('set_pagin_cp_logs_ph'); ?>">
 						</td>
 					</tr>
-					
+
 				</tbody>
 			</table>
-			
+
 			<button type="submit" name="submit" class="ui huge primary fluid button"><?= $this->l10n->gettext('save'); ?></button>
-			
+
 		</form>
 	</div>
 </div>

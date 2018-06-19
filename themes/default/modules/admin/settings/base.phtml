@@ -9,12 +9,12 @@
 
 <div class="ui bottom attached segment">
 	<form method="post"></form>
-	
+
 	<div class="tab-content">
 		<form class="ui form" method="post">
 			<table class="ui definition table">
 				<tbody>
-					
+
 					<tr>
 						<td class="collapsing">
 							<label for="input_host"><?= $this->l10n->gettext('set_base_host'); ?></label>
@@ -23,7 +23,7 @@
 							<input type="text" name="host" id="input_host" value="<?= $data['HOST']; ?>" placeholder="<?= $this->l10n->gettext('set_base_host_ph'); ?>">
 						</td>
 					</tr>
-					
+
 					<tr>
 						<td class="collapsing">
 							<label for="input_port"><?= $this->l10n->gettext('set_base_port'); ?></label>
@@ -32,7 +32,7 @@
 							<input type="text" name="port" id="input_port" value="<?= $data['PORT']; ?>" placeholder="<?= $this->l10n->gettext('set_base_port_ph'); ?>">
 						</td>
 					</tr>
-					
+
 					<tr>
 						<td class="collapsing">
 							<label for="input_name"><?= $this->l10n->gettext('set_base_base'); ?></label>
@@ -41,7 +41,7 @@
 							<input type="text" name="name" value="<?= $data['BASE']; ?>" id="input_name" placeholder="<?= $this->l10n->gettext('set_base_base_ph'); ?>">
 						</td>
 					</tr>
-					
+
 					<tr>
 						<td class="collapsing">
 							<label for="input_user"><?= $this->l10n->gettext('set_base_user'); ?></label>
@@ -50,7 +50,7 @@
 							<input type="text" name="user" value="<?= $data['USER']; ?>" id="input_user" placeholder="<?= $this->l10n->gettext('set_base_user_ph'); ?>">
 						</td>
 					</tr>
-					
+
 					<tr>
 						<td class="collapsing">
 							<label for="input_pass"><?= $this->l10n->gettext('set_base_pass'); ?></label>
@@ -59,7 +59,7 @@
 							<input type="password" name="pass" value="<?= $data['PASS']; ?>" id="input_pass" placeholder="<?= $this->l10n->gettext('set_base_pass_ph'); ?>">
 						</td>
 					</tr>
-					
+
 					<tr>
 						<td class="collapsing">
 							<label for="input_backend"><?= $this->l10n->gettext('set_base_type'); ?></label>
@@ -74,12 +74,12 @@
 							</select>
 						</td>
 					</tr>
-					
+
 				</tbody>
 			</table>
-			
+
 			<button type="submit" name="submit" class="ui huge primary fluid button"><?= $this->l10n->gettext('save'); ?></button>
-			
+
 		</form>
 	</div>
 </div>

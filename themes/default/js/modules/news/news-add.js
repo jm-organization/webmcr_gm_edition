@@ -7,18 +7,18 @@ function check_switch(checkbox, callback_true, callback_false) {
 }
 
 $(document).ready(function () {
-    mcr.init_database('#news_list', {
-        searching: true,
-        language: {
-            url: '/language/ru-RU/js/database.json'
-        },
-        "aoColumns": [
-            null,
-            null,
-            null,
-            { "bSortable": false }
-        ]
-    });
+	mcr.init_database('#news_list', {
+		searching: true,
+		language: {
+			url: '/language/ru-RU/js/database.json'
+		},
+		"aoColumns": [
+			null,
+			null,
+			null,
+			{"bSortable": false}
+		]
+	});
 
 	tinymce.init({
 		selector: "textarea.tinymce",
@@ -38,7 +38,7 @@ $(document).ready(function () {
 	$('.switch').on(
 		'click',
 		'[name="planed_publish"]'
-		+', [name="closed_comments"]',
+		+ ', [name="closed_comments"]',
 		function () {
 			switch (this.name) {
 				case 'planed_publish':
@@ -74,10 +74,10 @@ $(document).ready(function () {
 
 	// DataTime Picker
 	$('#input_publish_time, #input_date_cs').datetimepicker({
-		lang:'ru',
-		timepicker:true,
-		value:'',
-		format:'d.m.Y H:i:s',
-		minDate:'+1970/01/02'
-    });
+		lang: 'ru',
+		timepicker: true,
+		value: '',
+		format: 'd.m.Y H:i:s',
+		minDate: '+1970/01/02'
+	});
 });

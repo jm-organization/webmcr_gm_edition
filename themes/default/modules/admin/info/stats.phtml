@@ -12,8 +12,8 @@
 
 <div class="ui bottom attached segment">
 	<form method="post"></form>
-	
-	
+
+
 	<table class="ui selectable celled table">
 		<thead>
 			<tr>
@@ -25,29 +25,29 @@
 				<td><?= $this->l10n->gettext('info_count_news'); ?></td>
 				<td class="text-right"><?= $data['COUNT_NEWS']; ?></td>
 			</tr>
-			
+
 			<tr>
 				<td><?= $this->l10n->gettext('info_count_views'); ?></td>
 				<td class="text-right"><?= $data['COUNT_VIEWS']; ?></td>
 			</tr>
-			
+
 			<tr>
 				<td><?= $this->l10n->gettext('info_count_votes'); ?></td>
 				<td class="text-right"><?= $data['COUNT_VOTES']; ?></td>
 			</tr>
-			
+
 			<tr>
 				<td><?= $this->l10n->gettext('info_count_cats'); ?></td>
 				<td class="text-right"><?= $data['COUNT_CATEGORIES']; ?></td>
 			</tr>
-			
+
 			<tr>
 				<td><?= $this->l10n->gettext('info_count_coms'); ?></td>
 				<td class="text-right"><?= $data['COUNT_COMMENTS']; ?></td>
 			</tr>
 		</tbody>
 	</table>
-	
+
 	<table class="ui selectable celled table">
 		<thead>
 			<tr>
@@ -56,19 +56,19 @@
 		</thead>
 		<tbody>
 			<?= $data['USERS_STATS']; ?>
-			
+
 			<tr>
 				<td><b><?= $this->l10n->gettext('info_count_users'); ?></b></td>
 				<td class="text-right"><?= $data['COUNT_USERS']; ?></td>
 			</tr>
-			
+
 			<tr>
 				<td><b><?= $this->l10n->gettext('info_count_groups'); ?></b></td>
 				<td class="text-right"><?= $data['COUNT_GROUPS']; ?></td>
 			</tr>
 		</tbody>
 	</table>
-	
+
 	<table class="ui selectable celled table">
 		<thead>
 			<tr>
@@ -76,17 +76,17 @@
 			</tr>
 		</thead>
 		<tbody>
-			
+
 			<tr>
 				<td><?= $this->l10n->gettext('info_count_statics'); ?></td>
 				<td class="text-right"><?= $data['COUNT_STATICS']; ?></td>
 			</tr>
-			
+
 			<tr>
 				<td><?= $this->l10n->gettext('info_count_perms'); ?></td>
 				<td class="text-right"><?= $data['COUNT_PERMISSIONS']; ?></td>
 			</tr>
-			
+
 		</tbody>
 	</table>
 </div>

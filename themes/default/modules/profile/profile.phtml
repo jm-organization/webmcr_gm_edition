@@ -1,41 +1,41 @@
 <div class="profile">
-	
+
 	<div class="ui top attached tabular menu">
 		<a class="active item" href="#" data-tab="tab1"><?= $this->l10n->gettext('f_info'); ?></a>
 		<a class="item" href="#" data-tab="tab2"><?= $this->l10n->gettext('f_skin'); ?></a>
 		<a class="item" href="#" data-tab="tab3"><?= $this->l10n->gettext('f_settings'); ?></a>
 	</div>
-	
+
 	<div class="ui bottom attached segment">
-		
+
 		<div class="ui tab active" data-tab="tab1">
 			<div class="profile-info">
 				<div class="info-line"><b><?= $this->l10n->gettext('login'); ?>:</b>
-				<span><?= $this->user->login; ?></span></div>
+					<span><?= $this->user->login; ?></span></div>
 				<div class="info-line"><b><?= $this->l10n->gettext('email'); ?>:</b>
-				<span><?= $this->user->email; ?></span></div>
+					<span><?= $this->user->email; ?></span></div>
 				<div class="info-line"><b><?= $this->l10n->gettext('group'); ?>:</b>
-				<span><?= $this->user->group; ?></span></div>
+					<span><?= $this->user->group; ?></span></div>
 				<div class="info-line"><b><?= $this->l10n->gettext('date_registration'); ?>:</b>
-				<span><?= $this->l10n->parse_date(strtotime($this->user->time_create)); ?></span></div>
+					<span><?= $this->l10n->parse_date(strtotime($this->user->time_create)); ?></span></div>
 				<div class="info-line"><b><?= $this->l10n->gettext('last_activity'); ?>:</b>
-				<span><?= $this->l10n->parse_date(strtotime($this->user->time_last)); ?></span></div>
+					<span><?= $this->l10n->parse_date(strtotime($this->user->time_last)); ?></span></div>
 				<div class="info-line"><b><?= $this->l10n->gettext('f_gender'); ?>:</b>
-				<span><?= $this->user->gender; ?></span></div>
+					<span><?= $this->user->gender; ?></span></div>
 				<div class="info-line"><b><?= $this->l10n->gettext('f_gmoney'); ?>:</b>
-				<span><?= $this->user->money; ?> майн.</span></div>
+					<span><?= $this->user->money; ?> майн.</span></div>
 				<div class="info-line"><b><?= $this->l10n->gettext('f_rmoney'); ?>:</b>
-				<span><?= $this->user->realmoney; ?> руб.</span></div>
+					<span><?= $this->user->realmoney; ?> руб.</span></div>
 			</div>
 		</div>
-		
+
 		<div class="ui tab" data-tab="tab2">
-			
+
 			<div class="ui center aligned equal width grid">
 				<div class="row">
-					
+
 					<div class="column">
-						
+
 						<div class="profile-info">
 							<div class="row">
 								<div class="col-md-4">
@@ -45,51 +45,51 @@
 								</div>
 							</div>
 						</div>
-						
+
 					</div>
-					
+
 					<div class="column">
 						<form class="skin-uploader" enctype="multipart/form-data" method="POST">
 							<input type="file" name="skin" class="file-inputs" title="<?= $this->l10n->gettext('drop_skin_here'); ?>">
 							<button class="ui negative button" name="del-skin" value="1"><?= $this->l10n->gettext('delete_skin'); ?></button>
 						</form>
 					</div>
-					
+
 					<div class="column">
 						<form class="cloak-uploader" enctype="multipart/form-data" method="POST">
 							<input type="file" name="cloak" class="file-inputs" title="<?= $this->l10n->gettext('drop_cloak_here'); ?>">
 							<button class="ui negative button" name="del-cloak" value="1"><?= $this->l10n->gettext('delete_cloak'); ?></button>
 						</form>
 					</div>
-						</div>
-						
-					</div>
-					
 				</div>
-				
-				<div class="ui tab" data-tab="tab3">
-					<form class="ui form" method="post">
-						
-						<div class="field">
-							<label for="inputOldpass"><?= $this->l10n->gettext('f_oldpass'); ?></label>
-							<input type="password" class="form-control" name="oldpass" id="inputOldpass" placeholder="<?= $this->l10n->gettext('f_oldpass'); ?>">
-						</div>
-						
-						<div class="field">
-							<label for="inputNewpass"><?= $this->l10n->gettext('password'); ?></label>
-							<input type="password" class="form-control" name="newpass" id="inputNewpass" placeholder="<?= $this->l10n->gettext('password'); ?>">
-						</div>
-						
-						<div class="field">
-							<label for="inputRepass"><?= $this->l10n->gettext('repass'); ?></label>
-							<input type="password" class="form-control" name="repass" id="inputRepass" placeholder="<?= $this->l10n->gettext('repass'); ?>">
-						</div>
-						
-						<button type="submit" name="settings" class="ui primary fluid huge button"><?= $this->l10n->gettext('save'); ?></button>
-					</form>
-				</div>
-				
+
 			</div>
-			
+
 		</div>
+
+		<div class="ui tab" data-tab="tab3">
+			<form class="ui form" method="post">
+
+				<div class="field">
+					<label for="inputOldpass"><?= $this->l10n->gettext('f_oldpass'); ?></label>
+					<input type="password" class="form-control" name="oldpass" id="inputOldpass" placeholder="<?= $this->l10n->gettext('f_oldpass'); ?>">
+				</div>
+
+				<div class="field">
+					<label for="inputNewpass"><?= $this->l10n->gettext('password'); ?></label>
+					<input type="password" class="form-control" name="newpass" id="inputNewpass" placeholder="<?= $this->l10n->gettext('password'); ?>">
+				</div>
+
+				<div class="field">
+					<label for="inputRepass"><?= $this->l10n->gettext('repass'); ?></label>
+					<input type="password" class="form-control" name="repass" id="inputRepass" placeholder="<?= $this->l10n->gettext('repass'); ?>">
+				</div>
+
+				<button type="submit" name="settings" class="ui primary fluid huge button"><?= $this->l10n->gettext('save'); ?></button>
+			</form>
+		</div>
+
+	</div>
+
+</div>
 		

@@ -11,27 +11,27 @@
 		<?= $data['HEADER']; ?>
 	</head>
 	<body>
-		
+
 		<? $data['DEBUG'] = [
 			"PLT" => number_format(microtime(true)-DEBUG_PLT,3),
-			"QUERIES" => $this->db->count_queries,
-			"MEMORY_USAGE" => intval(memory_get_usage()/1024),
-			"MEMORY_PEAK" => intval(memory_get_peak_usage()/1024),
-			"BASE_ERROR" => $this->db->error(),
-			"PHP_ERROR" => error_get_last()
+		"QUERIES" => $this->db->count_queries,
+		"MEMORY_USAGE" => intval(memory_get_usage()/1024),
+		"MEMORY_PEAK" => intval(memory_get_peak_usage()/1024),
+		"BASE_ERROR" => $this->db->error(),
+		"PHP_ERROR" => error_get_last()
 		]; ?>
-		
+
 		<div class="ui sidebar vertical borderless visible inverted menu" id="mcr-sidebar">
 			<div class="header centered item">
 				<?= $this->cfg->main['s_name'] ?>
 			</div>
-			
+
 			<div class="ui inverted accordion">
 				<?= $data["ADMIN_MENU"]; ?>
 			</div>
-			
+
 		</div>
-		
+
 		<div id="mcr-wrapper">
 			<div class="ui inverted top attached borderless mini menu">
 				<a class="item">
@@ -58,66 +58,66 @@
 							if (!empty(error_get_last())) {
 								$error = error_get_last();
 								$type = $this->log->get_log_type($error['type']);
-								$error = "[{$type}] {$error['message']} in file: {$error['file']} on line: {$error['line']}";
-								
-							?>
-							<span class="badge badge-danger ml-1"
-							title="Last PHP error:"
-							data-container="body"
-							data-toggle="popover"
-							data-placement="bottom"
-							data-content="<?=$error?>"
-							style="cursor:pointer;"
-							>!</span>
-							<?
+						$error = "[{$type}] {$error['message']} in file: {$error['file']} on line: {$error['line']}";
+
+						?>
+						<span class="badge badge-danger ml-1"
+														title="Last PHP error:"
+														data-container="body"
+														data-toggle="popover"
+														data-placement="bottom"
+														data-content="<?=$error?>"
+														style="cursor:pointer;"
+						>!</span>
+						<?
 							}
 							
 							?>
-						</a>
-					</div>
-					<div class="right menu">
-						<div class="item">
-							<img class="ui avatar image" width="20px" height="20px" src="<?= SKIN_URL ?>interface/<?=$this->user->skin?>_mini.png?<?=mt_rand(1000,9999)?>">
-							<a href="<?=BASE_URL.'?mode=profile'?>" class="nav-link"><?= $this->user->login ?></a>
-						</div>
+					</a>
+				</div>
+				<div class="right menu">
+					<div class="item">
+						<img class="ui avatar image" width="20px" height="20px" src="<?= SKIN_URL ?>interface/<?=$this->user->skin?>_mini.png?<?=mt_rand(1000,9999)?>">
+						<a href="<?=BASE_URL.'?mode=profile'?>" class="nav-link"><?= $this->user->login ?></a>
 					</div>
 				</div>
-				
-				<div class="ui top attached tertiary segment mcr-breadcrumbs">
-					<div class="ui breadcrumb">
-						<a class="section" href="<?= BASE_URL; ?>"><?= $this->l10n->gettext('home'); ?></a>
-						<?= $data['BREADCRUMBS']; ?>
-					</div>
-				</div>
-				
-				<div class="ui left aligned padded grid stackable admin-container">
-					
-					<?= $data['CONTENT']; ?>
-					
-					<div class="notifys">
-						<div id="js-notify" class="alert alert-warning">
-							<a href="#" id="close">&times;</a>
-							<div id="title"></div>
-							<div id="message"></div>
-						</div>
-						
-						<?= $data['L_BLOCKS']?>
-					</div>
-					
-				</div>
-				
 			</div>
-			
-			<div id="js-loader" title="<?= $this->l10n->gettext('loading'); ?>">
-				<img src="<?= STYLE_URL; ?>img/ajaxload.info_FFFFFF_facebook.gif" alt="<?= $this->l10n->gettext('loading'); ?>"/>
+
+			<div class="ui top attached tertiary segment mcr-breadcrumbs">
+				<div class="ui breadcrumb">
+					<a class="section" href="<?= BASE_URL; ?>"><?= $this->l10n->gettext('home'); ?></a>
+					<?= $data['BREADCRUMBS']; ?>
+				</div>
 			</div>
-			
-			<script src="<?= STYLE_URL ?>galery/js/lightgallery.min.js"></script>
-			<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-mousewheel/3.1.13/jquery.mousewheel.min.js"></script>
-			<script src="<?= STYLE_URL ?>galery/js/lg-thumbnail.min.js"></script>
-			<script src="<?= STYLE_URL ?>galery/js/lg-fullscreen.min.js"></script>
-			<script src="<?= STYLE_URL ?>galery/js/lg-pager.min.js"></script>
-			<script src="<?= STYLE_URL ?>galery/js/lg-zoom.min.js"></script>
-			
-		</body>
-	</html>
+
+			<div class="ui left aligned padded grid stackable admin-container">
+
+				<?= $data['CONTENT']; ?>
+
+				<div class="notifys">
+					<div id="js-notify" class="alert alert-warning">
+						<a href="#" id="close">&times;</a>
+						<div id="title"></div>
+						<div id="message"></div>
+					</div>
+
+					<?= $data['L_BLOCKS']?>
+				</div>
+
+			</div>
+
+		</div>
+
+		<div id="js-loader" title="<?= $this->l10n->gettext('loading'); ?>">
+			<img src="<?= STYLE_URL; ?>img/ajaxload.info_FFFFFF_facebook.gif" alt="<?= $this->l10n->gettext('loading'); ?>"/>
+		</div>
+
+		<script src="<?= STYLE_URL ?>galery/js/lightgallery.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-mousewheel/3.1.13/jquery.mousewheel.min.js"></script>
+		<script src="<?= STYLE_URL ?>galery/js/lg-thumbnail.min.js"></script>
+		<script src="<?= STYLE_URL ?>galery/js/lg-fullscreen.min.js"></script>
+		<script src="<?= STYLE_URL ?>galery/js/lg-pager.min.js"></script>
+		<script src="<?= STYLE_URL ?>galery/js/lg-zoom.min.js"></script>
+
+	</body>
+</html>

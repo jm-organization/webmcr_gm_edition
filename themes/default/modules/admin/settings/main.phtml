@@ -9,10 +9,10 @@
 
 <div class="ui bottom attached segment">
 	<form method="post"></form>
-	
+
 	<div class="tab-content">
 		<form class="ui form" method="post">
-			
+
 			<table class="ui definition table">
 				<tbody>
 					<tr>
@@ -23,7 +23,7 @@
 							<input name="s_name" id="input_s_name" value="<?= $data['CFG']['s_name']; ?>" placeholder="<?= $this->l10n->gettext('set_main_sitename'); ?>" type="text">
 						</td>
 					</tr>
-					
+
 					<tr>
 						<td class="collapsing">
 							<label for="input_s_about"><?= $this->l10n->gettext('set_main_sitedesc'); ?></label>
@@ -32,7 +32,7 @@
 							<input name="s_about" value="<?= $data['CFG']['s_about']; ?>" id="input_s_about" placeholder="<?= $this->l10n->gettext('set_main_sitedesc'); ?>" type="text">
 						</td>
 					</tr>
-					
+
 					<tr>
 						<td class="collapsing">
 							<label for="input_s_keywords"><?= $this->l10n->gettext('set_main_sitekeys'); ?></label>
@@ -41,7 +41,7 @@
 							<input name="s_keywords" value="<?= $data['CFG']['s_keywords']; ?>" id="input_s_keywords" placeholder="<?= $this->l10n->gettext('set_main_sitekeys'); ?>" type="text">
 						</td>
 					</tr>
-					
+
 					<tr>
 						<td class="collapsing">
 							<label for="input_s_keywords"><?= $this->l10n->gettext('set_main_sitekeys'); ?></label>
@@ -50,7 +50,7 @@
 							<input name="s_keywords" value="<?= $data['CFG']['s_keywords']; ?>" id="input_s_keywords" placeholder="<?= $this->l10n->gettext('set_main_sitekeys'); ?>" type="text">
 						</td>
 					</tr>
-					
+
 					<tr>
 						<td class="collapsing">
 							<label for="input_s_dpage"><?= $this->l10n->gettext('set_main_start'); ?></label>
@@ -59,7 +59,7 @@
 							<input name="s_dpage" value="<?= $data['CFG']['s_dpage']; ?>" id="input_s_dpage" placeholder="<?= $this->l10n->gettext('set_main_start'); ?>" type="text">
 						</td>
 					</tr>
-					
+
 					<tr>
 						<td class="collapsing">
 							<label for="input_s_theme"><?= $this->l10n->gettext('set_main_theme'); ?></label>
@@ -70,7 +70,7 @@
 							</select>
 						</td>
 					</tr>
-					
+
 					<tr>
 						<td class="collapsing">
 							<label for="input_log"><?= $this->l10n->gettext('set_main_log'); ?></label>
@@ -83,7 +83,7 @@
 							</select>
 						</td>
 					</tr>
-					
+
 					<tr>
 						<td class="collapsing">
 							<label for="input_debug"><?= $this->l10n->gettext('set_main_debug'); ?></label>
@@ -96,7 +96,7 @@
 							</select>
 						</td>
 					</tr>
-					
+
 					<tr>
 						<td class="collapsing">
 							<label for="input_reg_accept"><?= $this->l10n->gettext('set_main_reg'); ?></label>
@@ -109,7 +109,7 @@
 							</select>
 						</td>
 					</tr>
-					
+
 					<tr>
 						<td class="collapsing">
 							<label for="input_captch"><?= $this->l10n->gettext('set_main_captcha'); ?></label>
@@ -120,11 +120,11 @@
 							</select>
 						</td>
 					</tr>
-					
+
 					<tr>
 						<td class="center aligned disabled" colspan="2"><h4>ReCaptcha</h4></td>
 					</tr>
-					
+
 					<tr>
 						<td class="collapsing">
 							<label for="input_rc_public"><?= $this->l10n->gettext('set_main_key_public'); ?></label>
@@ -133,7 +133,7 @@
 							<input name="rc_public" value="<?= $data['CFG']['rc_public']; ?>" id="input_rc_public" placeholder="<?= $this->l10n->gettext('set_main_key_public'); ?>" type="text">
 						</td>
 					</tr>
-					
+
 					<tr>
 						<td class="collapsing">
 							<label for="input_rc_private"><?= $this->l10n->gettext('set_main_key_private'); ?></label>
@@ -142,11 +142,11 @@
 							<input name="rc_private" value="<?= $data['CFG']['rc_private']; ?>" id="input_rc_private" placeholder="<?= $this->l10n->gettext('set_main_key_private'); ?>" type="text">
 						</td>
 					</tr>
-					
+
 					<tr>
 						<td class="center aligned disabled" colspan="2"><h4>KeyCaptcha</h4></td>
 					</tr>
-					
+
 					<tr>
 						<td class="collapsing">
 							<label for="input_kc_public"><?= $this->l10n->gettext('set_main_key_public'); ?></label>
@@ -155,7 +155,7 @@
 							<input name="kc_public" value="<?= $data['CFG']['kc_public']; ?>" id="input_kc_public" placeholder="<?= $this->l10n->gettext('set_main_key_public'); ?> " type="text">
 						</td>
 					</tr>
-					
+
 					<tr>
 						<td class="collapsing">
 							<label for="input_kc_private"><?= $this->l10n->gettext('set_main_key_private'); ?></label>
@@ -164,14 +164,14 @@
 							<input name="kc_private" value="<?= $data['CFG']['kc_private']; ?>" id="input_kc_private" placeholder="<?= $this->l10n->gettext('set_main_key_private'); ?>" type="text">
 						</td>
 					</tr>
-					
+
 				</tbody>
 			</table>
-			
+
 			<div class="field">
 				<button type="submit" name="submit" class="ui huge primary fluid button"><?= $this->l10n->gettext('save'); ?></button>
 			</div>
-			
+
 		</form>
 	</div>
 </div>

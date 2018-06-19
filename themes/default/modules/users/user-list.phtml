@@ -1,5 +1,5 @@
 <div class="ui segments mod-users-list">
-	
+
 	<div class="ui segment mod-users-content">
 		<div class="ui search" id="users-search">
 			<div class="ui left icon fluid action input">
@@ -8,7 +8,7 @@
 				<button class="ui basic button" type="button"><i class="icon fitted search"></i></button>
 			</div>
 		</div>
-		
+
 		<table class="ui striped selectable table">
 			<thead>
 				<tr>
@@ -19,13 +19,13 @@
 					<th><?= $this->l10n->gettext('gender'); ?></th>
 				</tr>
 			</thead>
-			
+
 			<tbody>
 				<?= $data['USERS']; ?>
 			</tbody>
 		</table>
-		
+
 		<?= $data['PAGINATION']; ?>
 	</div>
-	
+
 </div>
