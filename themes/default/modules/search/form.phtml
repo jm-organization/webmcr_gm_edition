@@ -1,14 +1,26 @@
 <div class="item">
-	<form method="get" action="<?= BASE_URL; ?>">
+	<form class="ui form" method="get" action="<?= BASE_URL; ?>">
 		<input type="hidden" name="mode" value="search">
-		<input type="hidden" name="type" id="search-hidden" value="news">
+		<input type="hidden" name="type" id="mcr-search-hidden" value="news">
 		
-		<div class="ui action transparent input">
-			<input type="text" name="value" placeholder="<?= $this->l10n->gettext('search'); ?>" required>
-			<select class="ui compact selection dropdown">
-				<?= $data['SEARCH_ELEMENTS']; ?>
-			</select>
-			<div class="ui button"><i class="icon search"></i></div>
+		<div class="ui icon transparent input">
+			<input id="mcr-search" type="text" name="value" placeholder="<?= $this->l10n->gettext('search'); ?>" autocomplete="off" required>
+			<i class="search icon"></i>
 		</div>
+		
+		<div class="ui mcr-search fluid popup">
+			<div class="field">
+				<select class="ui fluid selection dropdown" id="mcr-search-selector">
+					<div class="menu">
+						<?= $data['SEARCH_ELEMENTS']; ?>
+					</div>
+				</select>
+			</div>
+			
+			<div class="field">
+				<button type="submit" class="ui fluid basic button"><?= $this->l10n->gettext('search'); ?></button>
+			</div>
+		</div>
+		
 	</form>
 </div>

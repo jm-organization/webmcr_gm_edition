@@ -9,14 +9,6 @@ body {
 	flex: 1;
 }
 
-.masthead .logo.item img {
-	margin-right: 1em;
-}
-
-.masthead .ui.menu .ui.button {
-	margin-left: 0.5em;
-}
-
 #header {
 	min-height: 270px;
 	background-image: url(/themes/default/img/header-bg.png) !important;
@@ -50,10 +42,6 @@ body {
 
 .masthead .logo.item img {
 	margin-right: 1em;
-}
-
-.masthead .ui.menu .ui.button {
-	margin-left: 0.5em;
 }
 
 .masthead h2.ui.header {
