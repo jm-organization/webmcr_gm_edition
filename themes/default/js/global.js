@@ -406,6 +406,10 @@ var mcr = {
 // Функции, вызываемые при загрузке
 $(function () {
 
+	// Активация MomentJS
+	moment.locale('ru');
+	moment().format();
+
 	$('input[type="file"].file-inputs').bootstrapFileInput();
 
 	// Загрузка мониторинга

@@ -105,9 +105,6 @@ class module
 				? mb_substr($text_with_pagebreaker, 0, $text_pos, "UTF-8")
 				: $text_with_pagebreaker;
 
-			$date = '<div class="date" rel="tooltip" title="'.$this->l10n->gettext('date_create').'">'.$this->l10n->localize($ar['date'], 'unixtime', $this->l10n->get_date_format()).'</div>';
-			$time = '<div class="time" rel="tooltip" title="'.$this->l10n->gettext('time_create').'">'.$this->l10n->localize($ar['date'], 'unixtime', $this->l10n->get_time_format()).'</div>';
-
 			$votes = isset($data['votes'])
 				? $data['votes']
 				: [];
@@ -123,7 +120,7 @@ class module
 				"VIEWS" => isset($data['views'])
 					? $data['views']
 					: 0,
-				"DATE" => $date.$time,
+				"DATE" => intval($ar['date']),
 				"LIKES" => $this->get_likes($ar['vote'], $id, $votes),
 				"ADMIN" => $this->get_admin($id, $attach),
 			];

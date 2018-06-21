@@ -1,72 +1,80 @@
 <div class="ui segments mod-users-full">
-
+	
 	<div class="ui segment">
 		Профиль пользователя "<?= $data['LOGIN']; ?>"
 		<div class="block-right">
 			<?= $data['ADMIN']; ?>
 		</div>
 	</div>
-
+	
 	<div class="ui segment mod-content">
-
+		
 		<div class="ui center aligned equal width grid">
 			<div class="row">
 				<div class="column">
-
+					
 					<div class="skin-block">
 						<div class="skin-left" style="background-image: url('<?= $data['AVATAR']; ?>');"></div>
 					</div>
-
+					
 					<div class="skin-block">
 						<div class="skin-right" style="background-image: url('<?= $data['AVATAR']; ?>');"></div>
 					</div>
-
+					
 				</div>
-
+				
 				<div class="column">
-
+					
 					<table class="ui table striped">
 						<tbody>
 							<tr>
 								<td><b><?= $this->l10n->gettext('group'); ?></b></td>
 								<td><?= $data['GROUP']; ?></td>
 							</tr>
-
+							
 							<tr>
 								<td><b><?= $this->l10n->gettext('gender'); ?></b></td>
 								<td><?= $data['GENDER']; ?></td>
 							</tr>
-
+							
 							<tr>
-								<td><b><?= $this->l10n->gettext('date_reg'); ?></b></td>
-								<td><?= $data['DATE_REG']; ?></td>
+								<td><b><?= $this->l10n->gettext('date_registration'); ?></b></td>
+								<td>
+									<span data-livestamp="<?= strtotime($data['DATE_REG']); ?>">
+										<?= $this->l10n->parse_date(strtotime($data['DATE_REG'])); ?>
+									</span>
+								</td>
 							</tr>
-
+							
 							<tr>
 								<td><b><?= $this->l10n->gettext('last_activity'); ?></b></td>
-								<td><?= $data['DATE_LAST']; ?></td>
+								<td>
+									<span data-livestamp="<?= strtotime($data['DATE_LAST']); ?>">
+										<?= $this->l10n->parse_date(strtotime($data['DATE_LAST'])); ?>
+									</span>
+								</td>
 							</tr>
-
+							
 							<tr>
 								<td><b><?= $this->l10n->gettext('money'); ?></b></td>
 								<td><?= $data['MONEY']; ?> $</td>
 							</tr>
-
+							
 							<tr>
-								<td><b><?= $this->l10n->gettext('realmoney'); ?></b></td>
+								<td><b><?= $this->l10n->gettext('real_money'); ?></b></td>
 								<td><?= $data['REALMONEY']; ?> руб.</td>
 							</tr>
-
+							
 						</tbody>
 					</table>
-
+					
 				</div>
-
+				
 			</div>
 		</div>
-
+		
 	</div>
-
+	
 </div>
 
 <?= $data['COMMENTS']; ?>

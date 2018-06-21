@@ -2,12 +2,9 @@
 	<div class="content">
 		<a class="author"><?= $data['LOGIN']; ?></a>
 		<div class="metadata">
-			<div class="date" data-tooltip="<?= $this->l10n->gettext('date_create'); ?>">
-				<?= date("d.m.Y", $data['DATA']['time_create']); ?>
-			</div>
-			<div class="date" data-tooltip="<?= $this->l10n->gettext('time_create'); ?>">
-				<?= date("H:i:s", $data['DATA']['time_create']); ?>
-			</div>
+			<span data-livestamp="<?= $data['DATA']['time_create']; ?>">
+				<?= $this->l10n->parse_date($data['DATA']['time_create']); ?>
+			</span>
 		</div>
 		<div class="text">
 			<?= $data['TEXT']; ?>

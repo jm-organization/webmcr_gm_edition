@@ -1,5 +1,5 @@
 <div class="ui segments new-full">
-
+	
 	<div class="ui clearing segment">
 		<div class="ui header">
 			<?= $data['TITLE']; ?>
@@ -7,19 +7,22 @@
 			<?= $data['ADMIN']; ?>
 		</div>
 	</div>
-
+	
 	<div class="ui segment">
 		<div class="new-full-content">
 			<?= $data['TEXT']; ?>
 		</div>
 	</div>
-
+	
 	<div class="ui clearing segment">
 		<div class="ui horizontal divided list">
 			<div class="item">
 				<div class="middle aligned content">
 					<div class="date" rel="tooltip" title="<?= $this->l10n->gettext('date_create'); ?>">
-						<i class="icon calendar alternate outline"></i><?= $data['DATE'] ?>
+						<i class="icon calendar alternate"></i>
+						<span data-livestamp="<?= $data['DATE'] ?>">
+							<?= $this->l10n->parse_date($data['DATE']); ?>
+						</span>
 					</div>
 				</div>
 			</div>
@@ -33,14 +36,14 @@
 			<div class="item">
 				<div class="middle aligned content">
 					<div class="category">
-						<i class="icon folder open outline"></i>
+						<i class="icon folder open"></i>
 						<a href="<?= BASE_URL; ?>?mode=news&amp;cid=<?= $data['CID']; ?>" rel="tooltip" title="<?= $this->l10n->gettext('category'); ?>"><?= $data['CATEGORY']; ?></a>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-
+	
 </div>
 
 <?= $data['COMMENTS']; ?>
