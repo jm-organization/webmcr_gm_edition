@@ -154,7 +154,7 @@ class module
 		];
 		$this->core->bc = $this->core->gen_bc($bc);
 
-		$login = $this->db->safesql(@$_GET['uid']);
+		$login = $this->db->safesql($_GET['uid']);
 
 		$query = $this->db->query("
 			SELECT 
