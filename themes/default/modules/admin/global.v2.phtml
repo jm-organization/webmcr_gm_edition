@@ -11,113 +11,127 @@
 		<?= $data['HEADER']; ?>
 	</head>
 	<body>
-
+		
 		<? $data['DEBUG'] = [
-			"PLT" => number_format(microtime(true)-DEBUG_PLT,3),
-		"QUERIES" => $this->db->count_queries,
-		"MEMORY_USAGE" => intval(memory_get_usage()/1024),
-		"MEMORY_PEAK" => intval(memory_get_peak_usage()/1024),
-		"BASE_ERROR" => $this->db->error(),
-		"PHP_ERROR" => error_get_last()
+			"PLT" => number_format(microtime(true) - DEBUG_PLT, 3),
+			"QUERIES" => $this->db->count_queries,
+			"MEMORY_USAGE" => intval(memory_get_usage() / 1024),
+			"MEMORY_PEAK" => intval(memory_get_peak_usage() / 1024),
+			"BASE_ERROR" => $this->db->error(),
+			"PHP_ERROR" => error_get_last()
 		]; ?>
-
-		<div class="ui sidebar vertical borderless visible inverted menu" id="mcr-sidebar">
-			<div class="header centered item">
-				<?= $this->cfg->main['s_name'] ?>
+		
+		<div class="ui top attached borderless inverted mini menu" id="mcr-menu">
+			<div class="header item">
+				<h5 class="ui inverted header">
+					<?= $this->cfg->main['s_name'] ?>
+				</h5>
 			</div>
-
-			<div class="ui inverted accordion">
-				<?= $data["ADMIN_MENU"]; ?>
-			</div>
-
-		</div>
-
-		<div id="mcr-wrapper">
-			<div class="ui inverted top attached borderless mini menu">
-				<a class="item">
-					<i class="sidebar icon"></i>
+			
+			<a class="item" id="mcr-sidebar-toggle">
+				<i class="sidebar icon"></i>
+			</a>
+			<div class="item">
+				<a class="nav-link icons" title="<?= $this->l10n->gettext('debug_plt') ?>: <?= $data['DEBUG']['PLT'] . ' ' . $this->l10n->gettext('sec') ?>">
+					<i class="tachometer alternate icon"></i>
+					<span class="badge ml-1"><?= $data['DEBUG']['PLT'] . ' ' . $this->l10n->gettext('sec') ?></span>
 				</a>
-				<div class="item">
-					<a class="nav-link icons" title="<?= $this->l10n->gettext('debug_plt') ?>: <?= $data['DEBUG']['PLT'] . ' ' . $this->l10n->gettext('sec') ?>">
-						<i class="tachometer alternate icon"></i>
-						<span class="badge ml-1"><?= $data['DEBUG']['PLT'] . ' ' . $this->l10n->gettext('sec') ?></span>
-					</a>
-				</div>
-				<div class="item">
-					<a class="nav-link icons" title="<?= $this->l10n->gettext('debug_num_q') ?>: <?= $data['DEBUG']['QUERIES'] ?>">
-						<i class="database icon"></i>
-						<span class="badge ml-1"><?= $data['DEBUG']['QUERIES'] ?></span>
-					</a>
-				</div>
-				<div class="item">
-					<a class="nav-link icons" title="<?= $this->l10n->gettext('system_errors') ?>">
-						<i class="exclamation triangle icon"></i>
-						<span class="ui mini horizontal label"><?= $this->log->get_logs_num('error') ?></span>
-						<?
+			</div>
+			<div class="item">
+				<a class="nav-link icons" title="<?= $this->l10n->gettext('debug_num_q') ?>: <?= $data['DEBUG']['QUERIES'] ?>">
+					<i class="database icon"></i>
+					<span class="badge ml-1"><?= $data['DEBUG']['QUERIES'] ?></span>
+				</a>
+			</div>
+			<div class="item">
+				<a class="nav-link icons" title="<?= $this->l10n->gettext('system_errors') ?>">
+					<i class="exclamation triangle icon"></i>
+					<span class="ui mini horizontal label"><?= $this->log->get_logs_num('error') ?></span>
+					<?
+						
+						if (!empty(error_get_last())) {
+							$error = error_get_last();
+							$type = $this->log->get_log_type($error['type']);
+							$error = "[{$type}] {$error['message']} in file: {$error['file']} on line: {$error['line']}";
 							
-							if (!empty(error_get_last())) {
-								$error = error_get_last();
-								$type = $this->log->get_log_type($error['type']);
-						$error = "[{$type}] {$error['message']} in file: {$error['file']} on line: {$error['line']}";
-
 						?>
 						<span class="badge badge-danger ml-1"
-														title="Last PHP error:"
-														data-container="body"
-														data-toggle="popover"
-														data-placement="bottom"
-														data-content="<?=$error?>"
-														style="cursor:pointer;"
+						title="Last PHP error:"
+						data-container="body"
+						data-toggle="popover"
+						data-placement="bottom"
+						data-content="<?= $error ?>"
+						style="cursor:pointer;"
 						>!</span>
 						<?
-							}
-							
-							?>
-					</a>
-				</div>
-				<div class="right menu">
-					<div class="item">
-						<img class="ui avatar image" width="20px" height="20px" src="<?= SKIN_URL ?>interface/<?=$this->user->skin?>_mini.png?<?=mt_rand(1000,9999)?>">
-						<a href="<?=BASE_URL.'?mode=profile'?>" class="nav-link"><?= $this->user->login ?></a>
-					</div>
+						}
+						
+					?>
+				</a>
+			</div>
+			<div class="right menu">
+				<div class="item">
+					<img class="ui avatar image" width="20px" height="20px" src="<?= SKIN_URL ?>interface/<?= $this->user->skin ?>_mini.png?<?= mt_rand(1000, 9999) ?>">
+					<a href="<?= BASE_URL . '?mode=profile' ?>" class="nav-link"><?= $this->user->login ?></a>
 				</div>
 			</div>
-
-			<div class="ui top attached tertiary segment mcr-breadcrumbs">
-				<div class="ui breadcrumb">
-					<a class="section" href="<?= BASE_URL; ?>"><?= $this->l10n->gettext('home'); ?></a>
-					<?= $data['BREADCRUMBS']; ?>
-				</div>
-			</div>
-
-			<div class="ui left aligned padded grid stackable admin-container">
-
-				<?= $data['CONTENT']; ?>
-
-				<div class="notifys">
-					<div id="js-notify" class="alert alert-warning">
-						<a href="#" id="close">&times;</a>
-						<div id="title"></div>
-						<div id="message"></div>
-					</div>
-
-					<?= $data['L_BLOCKS']?>
-				</div>
-
-			</div>
-
 		</div>
-
+		
+		<div class="ui bottom attached segment pushable" id="mcr-sidebar">
+			
+			<div class="ui vertical inverted borderless screen sidebar labeled visible menu">
+				<div class="ui inverted accordion">
+					<?= $data["ADMIN_MENU"]; ?>
+				</div>
+			</div>
+			
+			<!--
+				-- Дополнительный сайдбар для мобильных устройств
+			-->
+			<div class="ui left vertical inverted thin mobile sidebar labeled icon menu">
+				<div class="ui inverted accordion">
+					<?= $data["ADMIN_MENU"]; ?>
+				</div>
+			</div>
+			
+			<div class="pusher" id="mcr-wrapper">
+				
+				<div class="ui top attached tertiary segment mcr-breadcrumbs">
+					<div class="ui breadcrumb">
+						<a class="section" href="<?= BASE_URL; ?>"><?= $this->l10n->gettext('home'); ?></a>
+						<?= $data['BREADCRUMBS']; ?>
+					</div>
+				</div>
+				
+				<div class="ui left aligned padded grid stackable admin-container">
+					
+					<?= $data['CONTENT']; ?>
+					
+					<div class="notifys">
+						<div id="js-notify" class="alert alert-warning">
+							<a href="#" id="close">&times;</a>
+							<div id="title"></div>
+							<div id="message"></div>
+						</div>
+						
+						<?= $data['L_BLOCKS'] ?>
+					</div>
+					
+				</div>
+				
+			</div>
+		</div>
+		
 		<div id="js-loader" title="<?= $this->l10n->gettext('loading'); ?>">
 			<img src="<?= STYLE_URL; ?>img/ajaxload.info_FFFFFF_facebook.gif" alt="<?= $this->l10n->gettext('loading'); ?>"/>
 		</div>
-
+		
 		<script src="<?= STYLE_URL ?>galery/js/lightgallery.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-mousewheel/3.1.13/jquery.mousewheel.min.js"></script>
 		<script src="<?= STYLE_URL ?>galery/js/lg-thumbnail.min.js"></script>
 		<script src="<?= STYLE_URL ?>galery/js/lg-fullscreen.min.js"></script>
 		<script src="<?= STYLE_URL ?>galery/js/lg-pager.min.js"></script>
 		<script src="<?= STYLE_URL ?>galery/js/lg-zoom.min.js"></script>
-
+		
 	</body>
 </html>

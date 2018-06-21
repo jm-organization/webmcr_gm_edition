@@ -27,7 +27,7 @@ $(function () {
 		}
 
 		mcr.changeUrlParam({search: val, pid: false});
-
+		
 		return false;
 	});
 
@@ -47,6 +47,16 @@ $(function () {
 
 		return false;
 	});
+
+	// Активируем триггер мобильного сайдбара
+
+	$sidebar = $('.ui.mobile.sidebar');
+
+	$sidebar.sidebar({
+		context: $('.bottom.attached.segment')
+	})
+		.sidebar('attach events', '#mcr-sidebar-toggle')
+	;
 
 	$('.ui.dropdown').dropdown();
 	$('.ui.accordion').accordion();
