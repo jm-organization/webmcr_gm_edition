@@ -26,13 +26,13 @@
 				<div class="info-line">
 					<b><?= $this->l10n->gettext('date_registration'); ?>:</b>
 					<span data-livestamp="<?= strtotime($this->user->time_create); ?>">
-						<?= $this->l10n->parse_date($this->user->time_create); ?>
+						<?= $this->l10n->parse_date(strtotime($this->user->time_create)); ?>
 					</span>
 				</div>
 				<div class="info-line">
 					<b><?= $this->l10n->gettext('last_activity'); ?>:</b>
 					<span data-livestamp="<?= strtotime($this->user->time_last); ?>">
-						<?= $this->l10n->parse_date($this->user->time_last); ?>
+						<?= $this->l10n->parse_date(strtotime($this->user->time_last)); ?>
 					</span>
 				</div>
 				<div class="info-line">
