@@ -154,7 +154,7 @@ class module
 		];
 		$this->core->bc = $this->core->gen_bc($bc);
 
-		$login = $this->db->safesql($_GET['uid']);
+		$login = $this->db->safesql(@$_GET['uid']);
 
 		$query = $this->db->query("
 			SELECT 
@@ -186,11 +186,8 @@ class module
 
 		$ar = $this->db->fetch_assoc($query);
 
-		$color = $this->db->HSC('gcolor');
-		$group = $this->db->HSC('group');
-
-		$date_reg = $this->l10n->parse_date(strtotime($this->user->time_create));
-		$date_last = $this->l10n->parse_date(strtotime($this->user->time_last));
+		$color = $this->db->HSC($ar['gcolor']);
+		$group = $this->db->HSC($ar['group']);
 
 		$is_skin = (intval($ar['is_skin']) == 1) ? true : false;
 		$is_cloak = (intval($ar['is_cloak']) == 1) ? true : false;
@@ -209,8 +206,8 @@ class module
 			'REALMONEY' => floatval(@$ar['realmoney']),
 			// @ because realmoney can be null
 			'AVATAR' => UPLOAD_URL.'skins/interface/'.$avatar.'.png?'.mt_rand(1000, 9999),
-			'DATE_REG' => $date_reg,
-			'DATE_LAST' => $date_last,
+			'DATE_REG' => $this->db->HSC($ar['time_create']),
+			'DATE_LAST' => $this->db->HSC($ar['time_last']),
 			'GENDER' => $gender,
 			'ADMIN' => '',
 			'COMMENTS' => $this->comment_list($ar['id']),
