@@ -22,12 +22,37 @@ class submodule
 
 		$bc = [
 			$this->l10n->gettext('module_admin-panel') => ADMIN_URL,
-			$this->l10n->gettext('logs') => ADMIN_URL."&do=logs"
+			$this->l10n->gettext('logs') => ADMIN_URL . "&do=logs"
 		];
 
 		$this->core->bc = $this->core->gen_bc($bc);
 
-		$this->core->header .= $this->core->sp(MCR_THEME_MOD."admin/logs/header.phtml");
+		$this->core->header .= $this->core->sp(MCR_THEME_MOD . "admin/logs/header.phtml");
+	}
+
+	public function content()
+	{
+		$sql = "SELECT COUNT(*) FROM `mcr_logs`";
+		$page = "?mode=admin&do=logs";
+
+		if (isset($_GET['search']) && !empty($_GET['search'])) {
+			$search = $this->db->safesql($_GET['search']);
+			$sql = "SELECT COUNT(*) FROM `mcr_logs` WHERE `message` LIKE '%$search%'";
+			$search = $this->db->HSC($_GET['search']);
+			$page = "?mode=admin&do=logs&search=$search";
+		}
+
+		if (isset($_GET['sort']) && !empty($_GET['sort'])) {
+			$page .= '&sort=' . $this->db->HSC(urlencode($_GET['sort']));
+		}
+
+		$query = $this->db->query($sql);
+		$ar = @$this->db->fetch_array($query);
+
+		return $this->core->sp(MCR_THEME_MOD . "admin/logs/log-list.phtml", [
+			"PAGINATION" => $this->core->pagination($this->cfg->pagin['adm_logs'], $page . '&pid=', $ar[0]),
+			"LOGS" => $this->logs_array()
+		]);
 	}
 
 	private function logs_array()
@@ -46,9 +71,7 @@ class submodule
 		if (isset($_GET['sort']) && !empty($_GET['sort'])) {
 			$expl = explode(' ', $_GET['sort']);
 
-			$sortby = ($expl[0] == 'asc')
-				? "ASC"
-				: "DESC";
+			$sortby = ($expl[0] == 'asc') ? "ASC" : "DESC";
 
 			switch (@$expl[1]) {
 				case 'user':
@@ -63,8 +86,8 @@ class submodule
 			}
 		}
 
-		$query = $this->db->query(
-			"SELECT 
+		$query = $this->db->query("
+			SELECT 
 				`l`.`id`, `l`.`uid`, `l`.`message`, 
 				`l`.`date`,
 				
@@ -83,11 +106,11 @@ class submodule
 			
 			ORDER BY $sort $sortby
 			
-			LIMIT $start, $end"
-		);
+			LIMIT $start, $end
+		");
 
 		if (!$query || $this->db->num_rows($query) <= 0) {
-			return $this->core->sp(MCR_THEME_MOD."admin/logs/log-none.phtml");
+			return $this->core->sp(MCR_THEME_MOD . "admin/logs/log-none.phtml");
 		}
 
 		ob_start();
@@ -106,34 +129,9 @@ class submodule
 				"LOGIN" => $this->core->colorize($login, $color),
 			];
 
-			echo $this->core->sp(MCR_THEME_MOD."admin/logs/log-id.phtml", $page_data);
+			echo $this->core->sp(MCR_THEME_MOD . "admin/logs/log-id.phtml", $page_data);
 		}
 
 		return ob_get_clean();
-	}
-
-	public function content()
-	{
-		$sql = "SELECT COUNT(*) FROM `mcr_logs`";
-		$page = "?mode=admin&do=logs";
-
-		if (isset($_GET['search']) && !empty($_GET['search'])) {
-			$search = $this->db->safesql($_GET['search']);
-			$sql = "SELECT COUNT(*) FROM `mcr_logs` WHERE `message` LIKE '%$search%'";
-			$search = $this->db->HSC($_GET['search']);
-			$page = "?mode=admin&do=logs&search=$search";
-		}
-
-		if (isset($_GET['sort']) && !empty($_GET['sort'])) {
-			$page .= '&sort='.$this->db->HSC(urlencode($_GET['sort']));
-		}
-
-		$query = $this->db->query($sql);
-		$ar = @$this->db->fetch_array($query);
-
-		return $this->core->sp(MCR_THEME_MOD."admin/logs/log-list.phtml", [
-			"PAGINATION" => $this->core->pagination($this->cfg->pagin['adm_logs'], $page.'&pid=', $ar[0]),
-			"LOGS" => $this->logs_array()
-		]);
 	}
 }

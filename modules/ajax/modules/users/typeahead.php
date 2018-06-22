@@ -18,17 +18,16 @@ class submodule
 
 	public function content()
 	{
-
 		$login = $this->db->safesql(@$_GET['query']); // only latin1
 
 		$ctables = $this->core->cfg->db['tables'];
 		$us_f = $ctables['users']['fields'];
 
-		$query = $this->db->query(
-			"SELECT `login` FROM `mcr_users` WHERE `login` LIKE '%$login%'
+		$query = $this->db->query("
+			SELECT `login` FROM `mcr_users` WHERE `login` LIKE '%$login%'
 			ORDER BY `login` ASC
-			LIMIT 10"
-		);
+			LIMIT 10
+		");
 
 		if (!$query || $this->db->num_rows($query) <= 0) {
 			$this->core->js_notify('Empty', 'Empty');

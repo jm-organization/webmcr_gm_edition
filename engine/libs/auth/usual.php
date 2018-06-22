@@ -32,9 +32,7 @@ class auth
 	{
 		$post_password = $this->createHash($post_password, $salt);
 
-		return ($post_password === $password)
-			? true
-			: false;
+		return ($post_password === $password) ? true : false;
 	}
 }
 

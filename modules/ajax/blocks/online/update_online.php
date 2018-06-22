@@ -15,7 +15,7 @@ class submodule
 		$this->db = $core->db;
 		$this->cfg = $core->cfg;
 
-		include(MCR_CONF_PATH.'blocks/online.php');
+		include(MCR_CONF_PATH . 'blocks/online.php');
 		$this->core->cfg_b = $cfg;
 	}
 

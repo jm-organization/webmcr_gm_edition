@@ -1,13 +1,15 @@
 <?php
 
-if(!defined("MCR")){ exit("Hacking Attempt!"); }
+if (!defined("MCR")) {
+	exit("Hacking Attempt!");
+}
 
-class user{
+class user
+{
 	// Set default system vars
-	private $core, $db, $cfg, $l10n;
+	public $email, $login, $login_v2, $group, $group_v2, $uuid, $group_desc, $password, $salt, $tmp, $ip, $data, $permissions, $permissions_v2;
 
 	// Set default user vars
-	public $email, $login, $login_v2, $group, $group_v2, $uuid, $group_desc, $password, $salt, $tmp, $ip, $data, $permissions, $permissions_v2;
 	public $gender = 0;
 	public $time_create = 0;
 	public $time_last = 0;
@@ -17,11 +19,12 @@ class user{
 	public $is_cloak = false;
 	public $skin = 'default';
 	public $cloak = '';
-	public $money= 0;
+	public $money = 0;
 	public $realmoney = 0;
 	public $bank = 0;
 	public $gid = -1;
 	public $auth;
+	private $core, $db, $cfg, $l10n;
 
 	/**
 	 * user constructor.
@@ -31,7 +34,8 @@ class user{
 	 *
 	 * @documentation:
 	 */
-	public function __construct(core $core){
+	public function __construct(core $core)
+	{
 		$this->core = $core;
 		$this->db = $core->db;
 		$this->cfg = $core->cfg;
@@ -46,7 +50,7 @@ class user{
 		$this->auth = $this->load_auth();
 
 		// Check cookies
-		if(!isset($_COOKIE['mcr_user'])){
+		if (!isset($_COOKIE['mcr_user'])) {
 			$perm_ar = @$this->get_default_permissions();
 			$this->permissions = $perm_ar[0];
 			$this->permissions_v2 = $perm_ar[1];
@@ -55,19 +59,22 @@ class user{
 
 		$user_cookie = explode("_", $_COOKIE['mcr_user']);
 
-		if(!isset($user_cookie[0], $user_cookie[1])){ $this->set_unauth(); $this->core->notify(); }
+		if (!isset($user_cookie[0], $user_cookie[1])) {
+			$this->set_unauth();
+			$this->core->notify();
+		}
 
 		$uid = intval($user_cookie[0]);
 		//$hash = $user_cookie[1];
 
-		$ctables	= $this->cfg->db['tables'];
+		$ctables = $this->cfg->db['tables'];
 
-		$ug_f	= $ctables['ugroups']['fields'];
-		$us_f	= $ctables['users']['fields'];
-		$ic_f	= $ctables['iconomy']['fields'];
+		$ug_f = $ctables['ugroups']['fields'];
+		$us_f = $ctables['users']['fields'];
+		$ic_f = $ctables['iconomy']['fields'];
 
-		$query = $this->db->query(
-			"SELECT 
+		$query = $this->db->query("
+			SELECT 
 				`u`.`{$us_f['group']}`, `u`.`{$us_f['login']}`, `u`.`{$us_f['email']}`, 
 				`u`.`{$us_f['pass']}`, `u`.`{$us_f['salt']}`, `u`.`{$us_f['tmp']}`, 
 				`u`.`{$us_f['date_reg']}`, `u`.`{$us_f['date_last']}`, `u`.`{$us_f['gender']}`,
@@ -85,21 +92,28 @@ class user{
 			LEFT JOIN `{$this->cfg->tabname('iconomy')}` AS `i`
 				ON `i`.`{$ic_f['login']}`=`u`.`{$us_f['login']}`
 				
-			WHERE `u`.`{$us_f['id']}`='$uid'"
-		);
-		if (!$query || $this->db->num_rows($query)<=0) { $this->set_unauth(); $this->core->notify(); }
+			WHERE `u`.`{$us_f['id']}`='$uid'
+		");
+
+		if (!$query || $this->db->num_rows($query) <= 0) {
+			$this->set_unauth();
+			$this->core->notify();
+		}
 
 		$ar = $this->db->fetch_assoc($query);
 
 		$tmp = $this->db->HSC($ar[$us_f['tmp']]);
 		$password = $this->db->HSC($ar[$us_f['pass']]);
 
-		$new_hash = $uid.$tmp.$this->ip.md5($this->cfg->main['mcr_secury']);
+		$new_hash = $uid . $tmp . $this->ip . md5($this->cfg->main['mcr_secury']);
 
-		$ar_hash = $uid.'_'.md5($new_hash);
+		$ar_hash = $uid . '_' . md5($new_hash);
 
 		// Check security auth
-		if($_COOKIE['mcr_user'] !== $ar_hash){ $this->set_unauth(); $this->core->notify('Warning!'); }
+		if ($_COOKIE['mcr_user'] !== $ar_hash) {
+			$this->set_unauth();
+			$this->core->notify('Warning!');
+		}
 
 		$login = $this->db->HSC($ar[$us_f['login']]);
 
@@ -127,10 +141,10 @@ class user{
 		$this->uuid = $this->db->HSC($ar[$us_f['uuid']]);
 
 		// Password hash
-		$this->password	= $password;
+		$this->password = $password;
 
 		// Salt of password
-		$this->salt	= $ar[$us_f['salt']];
+		$this->salt = $ar[$us_f['salt']];
 
 		// Temp hash
 		$this->tmp = $tmp;
@@ -154,10 +168,10 @@ class user{
 		$this->is_auth = true;
 
 		// Is default skin
-		$this->is_skin = (intval($ar[$us_f['is_skin']])==1) ? true : false;
+		$this->is_skin = (intval($ar[$us_f['is_skin']]) == 1) ? true : false;
 
 		// Is isset cloak
-		$this->is_cloak	= (intval($ar[$us_f['is_cloak']])==1) ? true : false;
+		$this->is_cloak = (intval($ar[$us_f['is_cloak']]) == 1) ? true : false;
 
 		$this->skin = ($this->is_skin || $this->is_cloak) ? $this->login : 'default';
 
@@ -165,12 +179,12 @@ class user{
 
 		// Gender
 		$this->gender = ($ar[$us_f['gender']] == 'female')
-			?$this->l10n->gettext('gender_w')
-			:(($ar[$us_f['gender']]=='male')
-				?$this->l10n->gettext('gender_m')
-				:(($ar[$us_f['gender']]=='no_set')
-					?$this->l10n->gettext('gender_n')
-					:''
+			? $this->l10n->gettext('gender_w')
+			: (($ar[$us_f['gender']] == 'male')
+				? $this->l10n->gettext('gender_m')
+				: (($ar[$us_f['gender']] == 'no_set')
+					? $this->l10n->gettext('gender_n')
+					: ''
 				)
 			);
 
@@ -188,59 +202,43 @@ class user{
 		$this->realmoney = floatval($ar[$ic_f['rm']]);
 
 		// Bank money balance (for plugins)
-		$this->bank	= floatval($ar[$ic_f['bank']]);
+		$this->bank = floatval($ar[$ic_f['bank']]);
 
 		return $this;
 	}
 
-	private function load_auth(){
-		if(!file_exists(MCR_LIBS_PATH.'auth/'.$this->cfg->main['p_logic'].'.php')){ exit('Auth Type Error!'); }
+	private function ip()
+	{
+		if (!empty($_SERVER['HTTP_CF_CONNECTING_IP'])) {
+			$ip = $_SERVER['HTTP_CF_CONNECTING_IP'];
+		} elseif (!empty($_SERVER['HTTP_X_REAL_IP'])) {
+			$ip = $_SERVER['HTTP_X_REAL_IP'];
+		} elseif (!empty($_SERVER['HTTP_CLIENT_IP'])) {
+			$ip = $_SERVER['HTTP_CLIENT_IP'];
+		} elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+			$ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+		} else {
+			$ip = $_SERVER['REMOTE_ADDR'];
+		}
 
-		require_once(MCR_LIBS_PATH.'auth/'.$this->cfg->main['p_logic'].'.php');
+		return mb_substr($ip, 0, 16, "UTF-8");
+	}
+
+	private function load_auth()
+	{
+		if (!file_exists(MCR_LIBS_PATH . 'auth/' . $this->cfg->main['p_logic'] . '.php')) {
+			exit('Auth Type Error!');
+		}
+
+		require_once(MCR_LIBS_PATH . 'auth/' . $this->cfg->main['p_logic'] . '.php');
 
 		return new auth($this->core);
 	}
 
-	public function update_default_permissions(){
-
-		$query = $this->db->query("SELECT `value`, `type`, `default` FROM `mcr_permissions`");
-
-		if(!$query || $this->db->num_rows($query)<=0){ return null; }
-
-		$array = array();
-
-		while($ar = $this->db->fetch_assoc($query)){
-
-			switch($ar['type']){
-				case 'integer':
-					$array[$ar['value']] = intval($ar['default']);
-				break;
-
-				case 'float':
-					$array[$ar['value']] = floatval($ar['default']);
-				break;
-
-				case 'string':
-					$array[$ar['value']] = $this->db->safesql($ar['default']);
-				break;
-
-				default:
-					$array[$ar['value']] = ($ar['default']=='true') ? true : false;
-				break;
-			}
-
-		}
-
-		$permissions = json_encode($array);
-
-		@file_put_contents(MCR_CACHE_PATH.'permissions', $permissions);
-
-		return $permissions;
-	}
-
-	public function get_default_permissions(){
-		if(file_exists(MCR_CACHE_PATH.'permissions')){
-			$json = file_get_contents(MCR_CACHE_PATH.'permissions');
+	public function get_default_permissions()
+	{
+		if (file_exists(MCR_CACHE_PATH . 'permissions')) {
+			$json = file_get_contents(MCR_CACHE_PATH . 'permissions');
 			$array = json_decode($json, true);
 			$object = json_decode($json);
 
@@ -251,27 +249,52 @@ class user{
 
 		return array(json_decode($permissions), json_decode($permissions, true));
 	}
-	
-	public function set_unauth(){
-		if(isset($_COOKIE['mcr_user'])){ setcookie("mcr_user", "", time()-3600, '/'); }
 
-		return true;
-	}
+	public function update_default_permissions()
+	{
+		$query = $this->db->query("SELECT `value`, `type`, `default` FROM `mcr_permissions`");
 
-	private function ip(){
-
-		if(!empty($_SERVER['HTTP_CF_CONNECTING_IP'])){
-			$ip = $_SERVER['HTTP_CF_CONNECTING_IP'];
-		}elseif(!empty($_SERVER['HTTP_X_REAL_IP'])){
-			$ip = $_SERVER['HTTP_X_REAL_IP'];
-		}elseif(!empty($_SERVER['HTTP_CLIENT_IP'])){
-			$ip = $_SERVER['HTTP_CLIENT_IP'];
-		}elseif(!empty($_SERVER['HTTP_X_FORWARDED_FOR'])){
-			$ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
-		}else{
-			$ip = $_SERVER['REMOTE_ADDR'];
+		if (!$query || $this->db->num_rows($query) <= 0) {
+			return null;
 		}
 
-		return mb_substr($ip, 0, 16, "UTF-8");
+		$array = array();
+
+		while ($ar = $this->db->fetch_assoc($query)) {
+
+			switch ($ar['type']) {
+				case 'integer':
+					$array[$ar['value']] = intval($ar['default']);
+					break;
+
+				case 'float':
+					$array[$ar['value']] = floatval($ar['default']);
+					break;
+
+				case 'string':
+					$array[$ar['value']] = $this->db->safesql($ar['default']);
+					break;
+
+				default:
+					$array[$ar['value']] = ($ar['default'] == 'true') ? true : false;
+					break;
+			}
+
+		}
+
+		$permissions = json_encode($array);
+
+		@file_put_contents(MCR_CACHE_PATH . 'permissions', $permissions);
+
+		return $permissions;
+	}
+
+	public function set_unauth()
+	{
+		if (isset($_COOKIE['mcr_user'])) {
+			setcookie("mcr_user", "", time() - 3600, '/');
+		}
+
+		return true;
 	}
 }

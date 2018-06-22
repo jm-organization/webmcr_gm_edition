@@ -16,7 +16,7 @@ class submodule
 		$this->user = $core->user;
 		$this->l10n = $core->l10n;
 
-		require_once(MCR_CONF_PATH.'modules/users.php');
+		require_once(MCR_CONF_PATH . 'modules/users.php');
 		$this->cfg_m = $cfg;
 	}
 
@@ -85,7 +85,8 @@ class submodule
 		if (!$this->db->query(
 			"INSERT INTO `mcr_users_comments` (uid, `from`, text_html, text_bb, `data`)
 			VALUES ('$uid', '{$this->user->id}', '$safe_text_html', '$text_bb', '$safedata')"
-		)) {
+		)
+		) {
 			$this->core->js_notify($this->l10n->gettext('error_sql_critical'));
 		}
 
@@ -95,23 +96,23 @@ class submodule
 		$this->db->update_user($this->user);
 
 		// Лог действия
-		$this->db->actlog($this->l10n->gettext('log_com_add')." #$login", $this->user->id);
+		$this->db->actlog($this->l10n->gettext('log_com_add') . " #$login", $this->user->id);
 
 		$admin = '';
 
 		if ($this->core->is_access('mod_users_comment_del') || $this->core->is_access('mod_users_comment_del_all')) {
-			$admin = $this->core->sp(MCR_THEME_MOD."users/comments/comment-admin.html");
+			$admin = $this->core->sp(MCR_THEME_MOD . "users/comments/comment-admin.html");
 		}
 
 		$com_data = [
 			"ID" => $id,
 			"TEXT" => $text_html,
-			"DATE_CREATE" => date('d.m.Y '.$this->l10n->gettext('in').' H:i'),
+			"DATE_CREATE" => date('d.m.Y ' . $this->l10n->gettext('in') . ' H:i'),
 			"LOGIN" => $this->user->login_v2,
 			'ADMIN' => $admin,
 		];
 
-		$content = $this->core->sp(MCR_THEME_MOD."users/comments/comment-id-self.html", $com_data);
+		$content = $this->core->sp(MCR_THEME_MOD . "users/comments/comment-id-self.html", $com_data);
 
 		$this->core->js_notify($this->l10n->gettext('com_add_success'), $this->l10n->gettext('error_success'), true, $content);
 	}

@@ -1,11 +1,15 @@
 <?php
 
-if(!defined("MCR")){ exit("Hacking Attempt!"); }
+if (!defined("MCR")) {
+	exit("Hacking Attempt!");
+}
 
-class module{
+class module
+{
 	private $core, $db, $cfg, $user, $l10n;
 
-	public function __construct(core $core){
+	public function __construct(core $core)
+	{
 		$this->core = $core;
 		$this->db = $core->db;
 		$this->cfg = $core->cfg;
@@ -13,12 +17,13 @@ class module{
 		$this->l10n = $core->l10n;
 
 		$bc = array(
-			$this->l10n->gettext('module_ban-manager') => BASE_URL."?mode=banned"
+			$this->l10n->gettext('module_ban-manager') => BASE_URL . "?mode=banned"
 		);
 		$this->core->bc = $this->core->gen_bc($bc);
 	}
 
-	public function content() {
+	public function content()
+	{
 		// TODO: Ban-Manager
 		/*$time = time();
 

@@ -1,36 +1,40 @@
 <?php
 
-if(!defined("MCR")){ exit("Hacking Attempt!"); }
+if (!defined("MCR")) {
+	exit("Hacking Attempt!");
+}
 
 ini_set("upload_max_filesize", "50M");
 ini_set("post_max_size", "50M");
 @date_default_timezone_set('Europe/Kiev');
 
 // System constants
-define('PROGNAME', 'MagicMCR'. MCR);
+define('PROGNAME', 'MagicMCR' . MCR);
 define('VERSION', 'webmcr_gm_edition_v1.18.6-beta');
-define('FEEDBACK', PROGNAME.' powered by <a href="http://webmcr.com" target="_blank">WebMCR</a> &copy; 2017-'.date("Y").' <a href="http://www.jm-org.net/about/#Magicmen">Magicmen</a>');
-define('MCR_ROOT', dirname(__FILE__).'/');
-define('MCR_MODE_PATH', MCR_ROOT.'modules/');
-define('MCR_TOOL_PATH', MCR_ROOT.'engine/');
-define('MCR_LIBS_PATH', MCR_TOOL_PATH.'libs/');
-define('MCR_MON_PATH', MCR_TOOL_PATH.'monitoring/');
-define('MCR_SIDE_PATH', MCR_ROOT.'blocks/');
-define('MCR_LANG_PATH', MCR_ROOT.'language/');
-define('MCR_CONF_PATH', MCR_ROOT.'configs/');
-define('MCR_UPL_PATH', MCR_ROOT.'uploads/');
-define('MCR_CACHE_PATH', MCR_ROOT.'data/cache/');
+define('FEEDBACK', PROGNAME . ' powered by <a href="http://webmcr.com" target="_blank">WebMCR</a> &copy; 2017-' . date("Y") . ' <a href="http://www.jm-org.net/about/#Magicmen">Magicmen</a>');
+define('MCR_ROOT', dirname(__FILE__) . '/');
+define('MCR_MODE_PATH', MCR_ROOT . 'modules/');
+define('MCR_TOOL_PATH', MCR_ROOT . 'engine/');
+define('MCR_LIBS_PATH', MCR_TOOL_PATH . 'libs/');
+define('MCR_MON_PATH', MCR_TOOL_PATH . 'monitoring/');
+define('MCR_SIDE_PATH', MCR_ROOT . 'blocks/');
+define('MCR_LANG_PATH', MCR_ROOT . 'language/');
+define('MCR_CONF_PATH', MCR_ROOT . 'configs/');
+define('MCR_UPL_PATH', MCR_ROOT . 'uploads/');
+define('MCR_CACHE_PATH', MCR_ROOT . 'data/cache/');
 
 error_reporting(0);
 
-session_save_path(MCR_UPL_PATH.'tmp');
-if(!session_start()){ session_start(); }
+session_save_path(MCR_UPL_PATH . 'tmp');
+if (!session_start()) {
+	session_start();
+}
 
 // Set default charset
 header('Content-Type: text/html; charset=UTF-8');
 
 // Load core
-require_once(MCR_TOOL_PATH.'core.class.php');
+require_once(MCR_TOOL_PATH . 'core.class.php');
 // Create new core object
 $core = new core();
 

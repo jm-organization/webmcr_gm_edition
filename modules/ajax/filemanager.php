@@ -21,62 +21,29 @@ class submodule
 		}
 	}
 
-	private function get_files()
+	public function content()
 	{
-		$limit = 10;
-		$page = intval(@$_POST['page']);
-		if ($page <= 0) {
-			$this->core->js_notify($this->l10n->gettext('fm_file_not_found'));
-		}
-		$page = $page * $limit - $limit;
-
-		$query = $this->db->query("
-			SELECT 
-				`f`.id, `f`.`uniq`, `f`.`name`, 
-				`f`.`oldname`, `f`.`data`, `f`.uid, 
-				
-				`u`.`login`			
-			FROM `mcr_files` AS `f`
-			
-			LEFT JOIN `mcr_users` AS `u`
-				ON `u`.`id`=`f`.uid
-				
-			ORDER BY `f`.id DESC
-			
-			LIMIT $page, $limit
-		");
-
-		if (!$query || $this->db->num_rows($query) <= 0) {
-			$this->core->js_notify($this->l10n->gettext('fm_file_not_found'));
+		if ($_SERVER['REQUEST_METHOD'] != 'POST') {
+			$this->core->js_notify($this->l10n->gettext('error_method'));
 		}
 
-		$list = [];
+		$op = (isset($_GET['op'])) ? $_GET['op'] : 'main';
 
-		while ($ar = $this->db->fetch_assoc($query)) {
-			$uniq = $this->db->HSC($ar['uniq']);
+		switch ($op) {
+			case 'upload':
+				$this->upload();
+				break;
+			case 'remove':
+				$this->remove();
+				break;
+			case 'edit':
+				$this->edit();
+				break;
 
-			$data = json_decode($ar['data'], true);
-
-			$oldname = $ar['oldname'];
-
-			if (mb_strlen($oldname, "UTF-8") > 22) {
-				$oldname = mb_substr($ar['oldname'], 0, 10, "UTF-8").'...';
-				$oldname .= mb_substr($ar['oldname'], -9, mb_strlen($ar['oldname'], "UTF-8"), "UTF-8");
-			}
-
-			$list[] = [
-				'link' => BASE_URL.'?mode=file&uniq='.$uniq,
-				'uid' => intval($ar['uid']),
-				'login' => $this->db->HSC($ar['login']),
-				'oldname' => $this->db->HSC($oldname),
-				'date' => date('d.m.Y в H:i', $data['date_upload']),
-				'size' => floatval($data['size']),
-				'uniq' => $uniq,
-				'downloads' => intval($data['downloads']),
-			];
+			default:
+				$this->get_files();
+				break;
 		}
-
-		$this->core->js_notify($this->l10n->gettext('fm_success_load'), $this->l10n->gettext('error_success'), true, $list);
 	}
 
 	private function upload()
@@ -121,10 +88,10 @@ class submodule
 			}
 
 			$oldname = $file['name'];
-			$ext = '.'.substr(strrchr($oldname, '.'), 1);
+			$ext = '.' . substr(strrchr($oldname, '.'), 1);
 
 			$uniq = $this->core->random(12);
-			$name = md5($this->core->random(12, false)).$ext;
+			$name = md5($this->core->random(12, false)) . $ext;
 
 			$safe_uniq = $this->db->safesql($uniq);
 			$safe_name = $this->db->safesql($name);
@@ -139,17 +106,17 @@ class submodule
 
 			$line .= "('$safe_uniq', '$safe_name', '$safe_oldname', '{$this->user->id}', '$safe_data', '$hash'),";
 
-			if (!move_uploaded_file($file['tmp_name'], MCR_UPL_PATH.'files/'.$name)) {
+			if (!move_uploaded_file($file['tmp_name'], MCR_UPL_PATH . 'files/' . $name)) {
 				$errors[] = $this->l10n->gettext('fm_e_not_loaded');
 			}
 
 			if (mb_strlen($oldname, "UTF-8") > 22) {
-				$oldname = mb_substr($file['name'], 0, 10, "UTF-8").'...';
+				$oldname = mb_substr($file['name'], 0, 10, "UTF-8") . '...';
 				$oldname .= mb_substr($file['name'], -9, mb_strlen($file['name'], "UTF-8"), "UTF-8");
 			}
 
 			$result[] = [
-				'link' => BASE_URL.'?mode=file&uniq='.$this->db->HSC($uniq),
+				'link' => BASE_URL . '?mode=file&uniq=' . $this->db->HSC($uniq),
 				'uid' => intval($this->user->id),
 				'login' => $this->db->HSC($this->user->login),
 				'date' => date('d.m.Y в H:i', time()),
@@ -204,8 +171,8 @@ class submodule
 			$this->core->js_notify($this->l10n->gettext('fm_e_not_deleted'));
 		}
 
-		if (file_exists(MCR_UPL_PATH.'files/'.$name)) {
-			unlink(MCR_UPL_PATH.'files/'.$name);
+		if (file_exists(MCR_UPL_PATH . 'files/' . $name)) {
+			unlink(MCR_UPL_PATH . 'files/' . $name);
 		}
 
 		$this->core->js_notify($this->l10n->gettext('fm_success_del'), $this->l10n->gettext('error_success'), true);
@@ -249,37 +216,68 @@ class submodule
 		}
 
 		$data = [
-			'link' => BASE_URL.'?mode=file&uniq='.$this->db->HSC(@$_POST['val']),
+			'link' => BASE_URL . '?mode=file&uniq=' . $this->db->HSC(@$_POST['val']),
 			'uniq' => $this->db->HSC(@$_POST['val']),
 		];
 
 		$this->core->js_notify($this->l10n->gettext('fm_success_edit'), $this->l10n->gettext('error_success'), true, $data);
 	}
 
-	public function content()
+	private function get_files()
 	{
-		if ($_SERVER['REQUEST_METHOD'] != 'POST') {
-			$this->core->js_notify($this->l10n->gettext('error_method'));
+		$limit = 10;
+		$page = intval(@$_POST['page']);
+		if ($page <= 0) {
+			$this->core->js_notify($this->l10n->gettext('fm_file_not_found'));
+		}
+		$page = $page * $limit - $limit;
+
+		$query = $this->db->query("
+			SELECT 
+				`f`.id, `f`.`uniq`, `f`.`name`, 
+				`f`.`oldname`, `f`.`data`, `f`.uid, 
+				
+				`u`.`login`			
+			FROM `mcr_files` AS `f`
+			
+			LEFT JOIN `mcr_users` AS `u`
+				ON `u`.`id`=`f`.uid
+				
+			ORDER BY `f`.id DESC
+			
+			LIMIT $page, $limit
+		");
+
+		if (!$query || $this->db->num_rows($query) <= 0) {
+			$this->core->js_notify($this->l10n->gettext('fm_file_not_found'));
 		}
 
-		$op = (isset($_GET['op']))
-			? $_GET['op']
-			: 'main';
+		$list = [];
 
-		switch ($op) {
-			case 'upload':
-				$this->upload();
-				break;
-			case 'remove':
-				$this->remove();
-				break;
-			case 'edit':
-				$this->edit();
-				break;
+		while ($ar = $this->db->fetch_assoc($query)) {
+			$uniq = $this->db->HSC($ar['uniq']);
 
-			default:
-				$this->get_files();
-				break;
+			$data = json_decode($ar['data'], true);
+
+			$oldname = $ar['oldname'];
+
+			if (mb_strlen($oldname, "UTF-8") > 22) {
+				$oldname = mb_substr($ar['oldname'], 0, 10, "UTF-8") . '...';
+				$oldname .= mb_substr($ar['oldname'], -9, mb_strlen($ar['oldname'], "UTF-8"), "UTF-8");
+			}
+
+			$list[] = [
+				'link' => BASE_URL . '?mode=file&uniq=' . $uniq,
+				'uid' => intval($ar['uid']),
+				'login' => $this->db->HSC($ar['login']),
+				'oldname' => $this->db->HSC($oldname),
+				'date' => date('d.m.Y в H:i', $data['date_upload']),
+				'size' => floatval($data['size']),
+				'uniq' => $uniq,
+				'downloads' => intval($data['downloads']),
+			];
 		}
+
+		$this->core->js_notify($this->l10n->gettext('fm_success_load'), $this->l10n->gettext('error_success'), true, $list);
 	}
 }

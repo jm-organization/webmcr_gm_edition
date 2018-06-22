@@ -5,7 +5,7 @@ if (!defined("MCR")) {
 	exit("Hacking Attempt!");
 }
 
-require_once MCR_LIBS_PATH.'array_group_by.php';
+require_once MCR_LIBS_PATH . 'array_group_by.php';
 
 class submodule
 {
@@ -24,7 +24,20 @@ class submodule
 		];
 		$this->core->bc = $this->core->gen_bc($bc);
 
-		$this->core->header .= $this->core->sp(MCR_THEME_PATH."modules/admin/dashboard/header.phtml");
+		$this->core->header .= $this->core->sp(MCR_THEME_PATH . "modules/admin/dashboard/header.phtml");
+	}
+
+	public function content()
+	{
+		$content = [];
+
+		# Добавление админ-блоков в админ-панель
+		$content['MODULES'] = $this->modules();
+		$content['THEMES'] = $this->themes();
+
+		$content['USERS'] = $this->users();
+
+		return $this->core->sp(MCR_THEME_MOD . "admin/dashboard/dashboard.phtml", $content);
 	}
 
 	private function modules()
@@ -58,44 +71,64 @@ class submodule
 					"IMG" => $this->db->HSC($ar['img']),
 				);
 
-				$items .= $this->core->sp(MCR_THEME_MOD."admin/dashboard/modules/modules-id.phtml", $item_data);
+				$items .= $this->core->sp(MCR_THEME_MOD . "admin/dashboard/modules/modules-id.phtml", $item_data);
 			}
 
 		}
 
 		$data = array("CONTENT" => $items);
 
-		return $this->core->sp(MCR_THEME_MOD."admin/dashboard/modules/modules-list.phtml", $data);
+		return $this->core->sp(MCR_THEME_MOD . "admin/dashboard/modules/modules-list.phtml", $data);
 	}
 
-	private function user_groups()
+	private function themes($select = '')
 	{
-		$results = [ 'xKeys' => [], 'yKeys' => [], 'colors' => [] ];
+		$scan = scandir(MCR_ROOT . 'themes/');
 
-		$query = $this->db->query("SELECT `u`.`id`, `g`.`title` FROM `mcr_groups` AS `g` LEFT JOIN `mcr_users` AS `u` ON `u`.`gid`=`g`.`id`");
+		$items = '';
 
-		if ($query && $this->db->num_rows($query) > 0) {
-			$groups = [];
-			while ($ar = $this->db->fetch_assoc($query)) { $groups[] = $ar; }
+		foreach ($scan as $key => $value) {
+			if ($value == '.' || $value == '..' || !is_dir(MCR_ROOT . 'themes/' . $value)) continue;
+			if (!file_exists(MCR_ROOT . 'themes/' . $value . '/theme.php')) continue;
 
-			$grouped_groups = array_group_by($groups, 'title');
+			require(MCR_ROOT . 'themes/' . $value . '/theme.php');
+			$theme['img_path'] = '/themes/' . $value . '/';
 
-			$grouped_groups = array_map(function($users) {
-				return count($users);
-			}, $grouped_groups);
+			$item_data = array(
+				"CODE" => $this->db->HSC($theme['ThemeCode']),
+				"NAME" => $this->db->HSC($theme['ThemeName']),
+				"ABOUT" => $this->db->HSC($theme['About']),
+				"ABOUT_FULL" => $this->db->HSC($theme['MoreAbout']),
+				"SCREENSHOT" => $this->db->HSC($theme['Screenshots'][0]),
+				"ACTIVE" => $this->cfg->main['s_theme'] == $value,
+				"VERSION" => $this->db->HSC($theme['Version']),
+				"DATE_CREATE" => $this->db->HSC($theme['DateCreate']),
+				"DATE_RELEASE" => $this->db->HSC($theme['DateOfRelease']),
+			);
 
-			//var_dump($grouped_groups);
-			$results['xKeys'] = array_keys($grouped_groups);
-			$results['yKeys'] = array_values($grouped_groups);
-			$results['colors'] = ['#dc3545','#ffc107','#28a745','#17a2b8','#6c757d'];
+			$items .= $this->core->sp(MCR_THEME_MOD . "admin/dashboard/modules/themes-id.phtml", $item_data);
+
 		}
 
-		return $results;
+		$data = array("CONTENT" => $items);
+
+		return $this->core->sp(MCR_THEME_MOD . "admin/dashboard/modules/themes-list.phtml", $data);
+	}
+
+	private function users()
+	{
+		$results = [];
+
+		$results['date-regs'] = $this->users_on_datereg();
+		$results['groups'] = $this->user_groups();
+		$results['count'] = $this->users_count();
+
+		return $this->core->sp(MCR_THEME_MOD . "admin/dashboard/modules/users-statistic.phtml", $results);
 	}
 
 	private function users_on_datereg()
 	{
-		$results = [ 'xKeys' => [], 'yKeys' => [] ];
+		$results = ['xKeys' => [], 'yKeys' => []];
 
 		$now = new DateTime();
 		$three_mouth_back = $now->modify('-3 months')->format('Y-m-d H:i:s.u');
@@ -137,14 +170,14 @@ class submodule
 				}
 			}
 
-			$grouped_users = array_group_by($users, function($user) {
+			$grouped_users = array_group_by($users, function ($user) {
 				return $this->l10n->localize(strtotime($user['time_create']), 'unixtime', '%d/%m/%y');
 			});
 
 			// сортируем по дате
 			ksort($grouped_users);
 
-			$grouped_users = array_map(function($users) {
+			$grouped_users = array_map(function ($users) {
 				$counted = [];
 
 				// если за день не было пользователей (id => null), не учитываем их при подсчёте
@@ -168,6 +201,33 @@ class submodule
 		return $results;
 	}
 
+	private function user_groups()
+	{
+		$results = ['xKeys' => [], 'yKeys' => [], 'colors' => []];
+
+		$query = $this->db->query("SELECT `u`.`id`, `g`.`title` FROM `mcr_groups` AS `g` LEFT JOIN `mcr_users` AS `u` ON `u`.`gid`=`g`.`id`");
+
+		if ($query && $this->db->num_rows($query) > 0) {
+			$groups = [];
+			while ($ar = $this->db->fetch_assoc($query)) {
+				$groups[] = $ar;
+			}
+
+			$grouped_groups = array_group_by($groups, 'title');
+
+			$grouped_groups = array_map(function ($users) {
+				return count($users);
+			}, $grouped_groups);
+
+			//var_dump($grouped_groups);
+			$results['xKeys'] = array_keys($grouped_groups);
+			$results['yKeys'] = array_values($grouped_groups);
+			$results['colors'] = ['#dc3545', '#ffc107', '#28a745', '#17a2b8', '#6c757d'];
+		}
+
+		return $results;
+	}
+
 	private function users_count()
 	{
 		$query = $this->db->query("SELECT COUNT(`id`) as `count` FROM `mcr_users`");
@@ -177,63 +237,5 @@ class submodule
 		}
 
 		return 0;
-	}
-
-	private function users()
-	{
-		$results = [];
-
-		$results['date-regs'] = $this->users_on_datereg();
-		$results['groups'] =  $this->user_groups();
-		$results['count'] =  $this->users_count();
-
-		return $this->core->sp(MCR_THEME_MOD."admin/dashboard/modules/users-statistic.phtml", $results);
-	}
-
-	private function themes($select='')
-	{
-		$scan = scandir(MCR_ROOT.'themes/');
-
-		$items = '';
-
-		foreach ($scan as $key => $value) {
-			if($value=='.' || $value=='..' || !is_dir(MCR_ROOT.'themes/'.$value)) continue;
-			if(!file_exists(MCR_ROOT.'themes/'.$value.'/theme.php')) continue;
-
-			require(MCR_ROOT.'themes/'.$value.'/theme.php');
-			$theme['img_path'] = '/themes/'.$value.'/';
-
-			$item_data = array(
-				"CODE" => $this->db->HSC($theme['ThemeCode']),
-				"NAME" => $this->db->HSC($theme['ThemeName']),
-				"ABOUT" => $this->db->HSC($theme['About']),
-				"ABOUT_FULL" => $this->db->HSC($theme['MoreAbout']),
-				"SCREENSHOT" => $this->db->HSC($theme['Screenshots'][0]),
-				"ACTIVE" => $this->cfg->main['s_theme'] == $value,
-				"VERSION" => $this->db->HSC($theme['Version']),
-				"DATE_CREATE" => $this->db->HSC($theme['DateCreate']),
-				"DATE_RELEASE" => $this->db->HSC($theme['DateOfRelease']),
-			);
-
-			$items .= $this->core->sp(MCR_THEME_MOD."admin/dashboard/modules/themes-id.phtml", $item_data);
-
-		}
-
-		$data = array("CONTENT" => $items);
-
-		return $this->core->sp(MCR_THEME_MOD."admin/dashboard/modules/themes-list.phtml", $data);
-	}
-
-	public function content()
-	{
-		$content = [];
-
-		# Добавление админ-блоков в админ-панель
-		$content['MODULES'] = $this->modules();
-		$content['THEMES'] = $this->themes();
-
-		$content['USERS'] = $this->users();
-
-		return $this->core->sp(MCR_THEME_MOD."admin/dashboard/dashboard.phtml", $content);
 	}
 }

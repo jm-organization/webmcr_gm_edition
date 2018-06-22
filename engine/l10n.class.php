@@ -7,15 +7,9 @@
  * @Date    : 15.10.2017
  * @Time    : 21:20
  */
-
 class l10n
 {
-	private $core, $configs, $db;
-
-	protected $locale;
-
 	public $locales = ['af-ZA', 'am-ET', 'ar-AR', 'ay-BO', 'az-AZ', 'be-BY', 'bg-BG', 'bn-IN', 'bs-BA', 'ca-ES', 'cs-CZ', 'cy-GB', 'da-DK', 'de-DE', 'el-GR', 'en-GB', 'en-US', 'eo-EO', 'es-CL', 'es-CO', 'es-ES', 'es-LA', 'fr-CA', 'fr-FR', 'ga-IE', 'gl-ES', 'gu-IN', 'ha-NG', 'he-IL', 'hi-IN', 'hr-HR', 'ht-HT', 'hu-HU', 'hy-AM', 'id-ID', 'ig-NG', 'is-IS', 'it-IT', 'ja-JP', 'jv-ID', 'ka-GE', 'kk-KZ', 'km-KH', 'kn-IN', 'ko-KR', 'ku-TR', 'la-VA', 'li-NL', 'lo-LA', 'lt-LT', 'lv-LV', 'mg-MG', 'mk-MK', 'ml-IN', 'mn-MN', 'mr-IN', 'ms-MY', 'mt-MT', 'my-MM', 'nb-NO', 'ne-NP', 'nl-NL', 'nn-NO', 'or-IN', 'pa-IN', 'pl-PL', 'ps-AF', 'pt-BR', 'pt-PT', 'qu-PE', 'rm-CH', 'ro-RO', 'ru-RU', 'sa-IN', 'sk-SK', 'sl-SI', 'so-SO', 'sq-AL', 'sr-RS', 'sv-SE', 'sw-KE', 'ta-IN', 'te-IN', 'tg-TJ', 'th-TH', 'tl-PH', 'tl-ST', 'tr-TR', 'tt-RU', 'uk-UA', 'ur-PK', 'uz-UZ', 'vi-VN', 'xh-ZA', 'yi-DE', 'yo-NG', 'zh-CN', 'zh-HK', 'zh-TW', 'zu-ZA'];
-
 	public $date_formats = [
 		'M j, Y' => '%b %d, %Y',
 		'F j, Y' => '%B %d, %Y',
@@ -25,11 +19,12 @@ class l10n
 		'n/j/y' => '%m/%d/%y',
 		'd.m.Y' => '%d.%m.%Y'
 	];
-
 	public $time_formats = [
 		'g:i A' => '%I:%M %p',
 		'H:i' => '%H:%M'
 	];
+	protected $locale;
+	private $core, $configs, $db;
 
 	public function __construct(core $core)
 	{
@@ -40,22 +35,22 @@ class l10n
 		// Берём значение из конфига, как локаль сайта.
 		$this->locale = $this->configs->main['s_lang'];
 
-		$this->core->is_install(function() {
+		$this->core->is_install(function () {
 			// если движок установлен,
 			// то устанвливаем локаль сайта с конфига по умолчанию.
 			$locale = $this->get_config_locale();
 			Locale::setDefault($locale);
 
 			// генерируем путь к кешу локали.
-			$locale_path = MCR_CACHE_PATH.'l10n/'.$locale;
+			$locale_path = MCR_CACHE_PATH . 'l10n/' . $locale;
 
 			// Если путь к кешу локали не существует.
 			// Или не существует кеша фраз локали
 			// или информации о локали
-			if (!file_exists($locale_path) || (!file_exists($locale_path.'/.info') || !file_exists($locale_path.'/.cache'))) {
+			if (!file_exists($locale_path) || (!file_exists($locale_path . '/.info') || !file_exists($locale_path . '/.cache'))) {
 				// Проверяем на существование директории l10n
-				if (!file_exists(MCR_CACHE_PATH.'l10n')) {
-					mkdir(MCR_CACHE_PATH.'l10n');
+				if (!file_exists(MCR_CACHE_PATH . 'l10n')) {
+					mkdir(MCR_CACHE_PATH . 'l10n');
 				}
 				// проверяем на существование папки локали
 				// в директории l10n
@@ -69,20 +64,6 @@ class l10n
 				$this->set_cache();
 			}
 		});
-	}
-
-	/**
-	 * @function     : get_user_locale
-	 *
-	 * @documentation: Метод для определения
-	 * языка пользователя.
-	 *
-	 * @return string
-	 */
-	public function get_user_locale()
-	{
-		//TODO: Initialize user locale
-		return '';
 	}
 
 	/**
@@ -105,86 +86,109 @@ class l10n
 	}
 
 	/**
-	 * @function     : get_config_locale
+	 * @function     : set_cache
 	 *
-	 * @documentation: Задаёт локаль для локализации даты и прочего.
-	 *               Локаль устанавливается на основании данных системы
-	 * 				 на которой установлен интерпретатор php.
+	 * @documentation: Функция установки кеша.
 	 *
-	 *               Если язык(локаль) не найден в системе на которой стоит интерпретатор,
-	 * 				 то по умолчанию будет установлена локаль en_EU.
+	 * @param bool $locale
 	 *
-	 * @return string
 	 */
-	public function get_locale()
+	public function set_cache($locale = false)
 	{
-		$default_locale = Locale::getDefault();
-		// изменяем формат локали в тот, который понимает функция установки локали.
-		$dl_formated = str_replace('-', '_', $default_locale);
+		// Если $locale принмает значение локали,
+		// то создаём кеш для данной локали.
+		// Иначе для той, которая установлена по умолчанию
+		$locale = ($locale) ? $locale : Locale::getDefault();
+		$locale_cache_path = MCR_CACHE_PATH . 'l10n/' . $locale;
+		if (!file_exists($locale_cache_path)) {
+			mkdir(MCR_CACHE_PATH . 'l10n/' . $locale);
+		}
 
-		// Определяем навзание язіка из локали на английском.
-		$language = Locale::getDisplayLanguage($default_locale, 'en-US');
+		// Получаем настройки и фразы локали из базы.
+		$languages = $this->get_languages($locale, false);
+		$languages = $this->db->fetch_assoc($languages);
 
-		$locale = setlocale(LC_ALL, $dl_formated.'.UTF-8', $language);
-
-		return $locale;
+		// Создаём соответствующий кеш.
+		file_put_contents($locale_cache_path . '/.info', $languages['settings']);
+		file_put_contents($locale_cache_path . '/.cache', $languages['phrases']);
 	}
 
 	/**
-	 * @function     : get_locale_info
+	 * @function     : get_languages
 	 *
-	 * @documentation: Возвращает инормацию о текущем,
-	 * выбранном языке в виде объекта.
+	 * @documentation: Отдаёт спискок всех языков,
+	 * если передано значение true. Иначе отдаёт список
+	 * фраз и их значений, а также настройки и индитификатор
+	 * для отдельного языка.
 	 *
-	 * @param $key
+	 * @param string $language
+	 * @param bool $is_all
 	 *
-	 * @return null
+	 * @return bool|resource
 	 */
-	public function get_locale_info($key)
+	public function get_languages($language = 'ru-RU', $is_all = true)
 	{
-		$locale = $this->get_config_locale();
-		$locale_info_path = MCR_CACHE_PATH.'l10n/'.$locale;
-		$locale_info = file_get_contents($locale_info_path.'/.info');
+		if ($is_all) {
+			$sql = "SELECT `id`, `parent_language`, `language`, `settings` FROM `mcr_l10n_languages`";
+		} else {
+			$sql = "
+				SELECT 
+					`id`, 
+					`settings`,
+					`phrases`
+				FROM `mcr_l10n_languages`
+				WHERE `language`='$language' or `id`='$language'
+			";
+		}
 
-		$locale_info = json_decode($locale_info, true);
+		$results = $this->db->query($sql);
 
-		if (array_key_exists($key, $locale_info)) {
-			return $locale_info[$key];
+		if ($results || $this->db->num_rows($results) > 0) {
+			return $results;
 		}
 
 		return null;
 	}
 
 	/**
-	 * @function     : get_date_format
+	 * @function     : get_user_locale
 	 *
-	 * @documentation: Функция для получения формата даты по умолчанию.
-	 * Информация о формате берётся из настроек локали.
-	 * Настройки определяются на сайте по маршруту:
-	 * /?mode=admin&do=l10n_languages&op=edit&language=:locale_id:
+	 * @documentation: Метод для определения
+	 * языка пользователя.
 	 *
-	 * @return mixed|string
+	 * @return string
 	 */
-	public function get_date_format()
+	public function get_user_locale()
 	{
-		$date_format = $this->get_locale_info('date_format');
-
-		if (array_key_exists($date_format, $this->date_formats)) {
-			return $this->date_formats[$date_format];
-		}
-
-		return '%d %b %Y';
+		//TODO: Initialize user locale
+		return '';
 	}
 
-	public function get_time_format()
+	/**
+	 * @function     : update_cache
+	 *
+	 * @documentation:
+	 *
+	 * @param        $locale
+	 * @param string $route
+	 *
+	 */
+	public function update_cache($locale, $route = '')
 	{
-		$time_format = $this->get_locale_info('time_format');
+		$pattern = '/([a-z]{2})-([A-Z]{2})/';
 
-		if (array_key_exists($time_format, $this->time_formats)) {
-			return $this->time_formats[$time_format];
+		$locale = (preg_match($pattern, $locale) == 1) ? $locale : false;
+
+		$locale_cache_path = MCR_CACHE_PATH . 'l10n/' . $locale;
+		if (!$locale || !file_exists($locale_cache_path)) {
+			$this->core->notify($this->gettext('error_message'), $this->gettext('error_locale_not_found'), 2, $route);
 		}
 
-		return '%R';
+		$languages = $this->get_languages($locale, false);
+		$languages = $this->db->fetch_assoc($languages);
+
+		file_put_contents($locale_cache_path . '/.info', $languages['settings']);
+		file_put_contents($locale_cache_path . '/.cache', $languages['phrases']);
 	}
 
 	/**
@@ -215,9 +219,9 @@ class l10n
 			return $phrase;
 		}
 
-		$locale_cache_path = MCR_CACHE_PATH.'l10n/'.$locale;
+		$locale_cache_path = MCR_CACHE_PATH . 'l10n/' . $locale;
 		// Берём содержимое кеша фраз локали
-		$phrases = file_get_contents($locale_cache_path.'/.cache');
+		$phrases = file_get_contents($locale_cache_path . '/.cache');
 		// Переводим из json => ассоциативный массив.
 		$unjson_phrases = json_decode($phrases, true);
 
@@ -238,61 +242,6 @@ class l10n
 	}
 
 	/**
-	 * @function     : set_cache
-	 *
-	 * @documentation: Функция установки кеша.
-	 *
-	 * @param bool $locale
-	 *
-	 */
-	public function set_cache($locale = false)
-	{
-		// Если $locale принмает значение локали,
-		// то создаём кеш для данной локали.
-		// Иначе для той, которая установлена по умолчанию
-		$locale = ($locale) ? $locale : Locale::getDefault();
-		$locale_cache_path = MCR_CACHE_PATH.'l10n/'.$locale;
-		if (!file_exists($locale_cache_path)) {
-			mkdir(MCR_CACHE_PATH.'l10n/'.$locale);
-		}
-
-		// Получаем настройки и фразы локали из базы.
-		$languages = $this->get_languages($locale, false);
-		$languages = $this->db->fetch_assoc($languages);
-
-		// Создаём соответствующий кеш.
-		file_put_contents($locale_cache_path.'/.info', $languages['settings']);
-		file_put_contents($locale_cache_path.'/.cache', $languages['phrases']);
-	}
-
-	/**
-	 * @function     : update_cache
-	 *
-	 * @documentation:
-	 *
-	 * @param        $locale
-	 * @param string $route
-	 *
-	 */
-	public function update_cache($locale, $route = '')
-	{
-		$pattern = '/([a-z]{2})-([A-Z]{2})/';
-
-		$locale = (preg_match($pattern, $locale) == 1) ? $locale : false;
-
-		$locale_cache_path = MCR_CACHE_PATH.'l10n/'.$locale;
-		if (!$locale || !file_exists($locale_cache_path)) {
-			$this->core->notify($this->gettext('error_message'), $this->gettext('error_locale_not_found'), 2, $route);
-		}
-
-		$languages = $this->get_languages($locale, false);
-		$languages = $this->db->fetch_assoc($languages);
-
-		file_put_contents($locale_cache_path.'/.info', $languages['settings']);
-		file_put_contents($locale_cache_path.'/.cache', $languages['phrases']);
-	}
-
-	/**
 	 * @function     : delete_cache
 	 *
 	 * @documentation:
@@ -306,7 +255,7 @@ class l10n
 		$locales = explode(', ', str_replace("'", '', $locales));
 
 		foreach ($locales as $locale) {
-			$locale_cache_path = MCR_CACHE_PATH.'l10n/'.$locale;
+			$locale_cache_path = MCR_CACHE_PATH . 'l10n/' . $locale;
 			if (!file_exists($locale_cache_path)) {
 				continue;
 			}
@@ -315,7 +264,7 @@ class l10n
 
 			foreach ($files as $file) {
 				if ($file != '.' && $file != '..') {
-					unlink($locale_cache_path.'/'.$file);
+					unlink($locale_cache_path . '/' . $file);
 				}
 			}
 
@@ -323,6 +272,75 @@ class l10n
 		}
 
 		return false;
+	}
+
+	/**
+	 * @function     : get_phrases
+	 *
+	 * @documentation:
+	 *
+	 * @param string $phrase
+	 * @param bool $is_all
+	 *
+	 * @return null
+	 */
+	public function get_phrases($phrase = '', $is_all = true)
+	{
+		if ($is_all) {
+			$sql = "
+				SELECT 
+					`phrases`.`id`,
+					`languages`.`settings` AS `language_settings`, 
+					`phrase_key`,
+					`phrase_value`
+				FROM `mcr_l10n_phrases` AS `phrases`
+				INNER JOIN `mcr_l10n_languages` AS `languages`
+				ON `phrases`.`language_id` = `languages`.`id`;
+			";
+		} else {
+			$sql = "
+				SELECT 
+                    `language_id`,
+					`phrase_key`,
+					`phrase_value`
+				FROM `mcr_l10n_phrases`
+				WHERE `phrase_key`= '$phrase' OR `id`='$phrase';
+			";
+		}
+
+		$results = $this->db->query($sql);
+
+		if ($results || $this->db->num_rows($results) > 0) {
+			return $results;
+		}
+
+		return null;
+	}
+
+	public function parse_date($datetime, array $tooltips = [])
+	{
+		if ($datetime instanceof DateTime) {
+			$type = 'datetime';
+		} else {
+			$type = 'unixtime';
+		}
+
+		$date = $this->localize($datetime, $type, $this->get_date_format());
+		$time = $this->localize($datetime, $type, $this->get_time_format());
+
+		if (trim($date) && isset($tooltips['date'])) {
+			$text = $this->gettext($tooltips['date']);
+
+			$date = '<div class="date" rel="tooltip" title="' . $text . '">' . $date . '</div>';
+		}
+
+		if (trim($time) && isset($tooltips['time'])) {
+			$text = $this->gettext($tooltips['time']);
+
+			$time = '<div class="time" rel="tooltip" title="' . $text . '">' . $time . '</div>';
+		}
+
+		return $date . " {$this->gettext('in')} " . $time;
 	}
 
 	/**
@@ -387,108 +405,85 @@ class l10n
 	}
 
 	/**
-	 * @function     : get_languages
+	 * @function     : get_config_locale
 	 *
-	 * @documentation: Отдаёт спискок всех языков,
-	 * если передано значение true. Иначе отдаёт список
-	 * фраз и их значений, а также настройки и индитификатор
-	 * для отдельного языка.
+	 * @documentation: Задаёт локаль для локализации даты и прочего.
+	 *               Локаль устанавливается на основании данных системы
+	 *                 на которой установлен интерпретатор php.
 	 *
-	 * @param string $language
-	 * @param bool   $is_all
+	 *               Если язык(локаль) не найден в системе на которой стоит интерпретатор,
+	 *                 то по умолчанию будет установлена локаль en_EU.
 	 *
-	 * @return bool|resource
+	 * @return string
 	 */
-	public function get_languages($language = 'ru-RU', $is_all = true)
+	public function get_locale()
 	{
-		if ($is_all) {
-			$sql = "SELECT `id`, `parent_language`, `language`, `settings` FROM `mcr_l10n_languages`";
-		} else {
-			$sql = "
-				SELECT 
-					`id`, 
-					`settings`,
-					`phrases`
-				FROM `mcr_l10n_languages`
-				WHERE `language`='$language' or `id`='$language'
-			";
-		}
+		$default_locale = Locale::getDefault();
+		// изменяем формат локали в тот, который понимает функция установки локали.
+		$dl_formated = str_replace('-', '_', $default_locale);
 
-		$results = $this->db->query($sql);
+		// Определяем навзание язіка из локали на английском.
+		$language = Locale::getDisplayLanguage($default_locale, 'en-US');
 
-		if ($results || $this->db->num_rows($results) > 0) {
-			return $results;
-		}
+		$locale = setlocale(LC_ALL, $dl_formated . '.UTF-8', $language);
 
-		return null;
+		return $locale;
 	}
 
 	/**
-	 * @function     : get_phrases
+	 * @function     : get_date_format
 	 *
-	 * @documentation:
+	 * @documentation: Функция для получения формата даты по умолчанию.
+	 * Информация о формате берётся из настроек локали.
+	 * Настройки определяются на сайте по маршруту:
+	 * /?mode=admin&do=l10n_languages&op=edit&language=:locale_id:
 	 *
-	 * @param string $phrase
-	 * @param bool   $is_all
+	 * @return mixed|string
+	 */
+	public function get_date_format()
+	{
+		$date_format = $this->get_locale_info('date_format');
+
+		if (array_key_exists($date_format, $this->date_formats)) {
+			return $this->date_formats[$date_format];
+		}
+
+		return '%d %b %Y';
+	}
+
+	/**
+	 * @function     : get_locale_info
+	 *
+	 * @documentation: Возвращает инормацию о текущем,
+	 * выбранном языке в виде объекта.
+	 *
+	 * @param $key
 	 *
 	 * @return null
 	 */
-	public function get_phrases($phrase = '', $is_all = true)
+	public function get_locale_info($key)
 	{
-		if ($is_all) {
-			$sql = "
-				SELECT 
-					`phrases`.`id`,
-					`languages`.`settings` AS `language_settings`, 
-					`phrase_key`,
-					`phrase_value`
-				FROM `mcr_l10n_phrases` AS `phrases`
-				INNER JOIN `mcr_l10n_languages` AS `languages`
-				ON `phrases`.`language_id` = `languages`.`id`;
-			";
-		} else {
-			$sql = "
-				SELECT 
-                    `language_id`,
-					`phrase_key`,
-					`phrase_value`
-				FROM `mcr_l10n_phrases`
-				WHERE `phrase_key`= '$phrase' OR `id`='$phrase';
-			";
-		}
+		$locale = $this->get_config_locale();
+		$locale_info_path = MCR_CACHE_PATH . 'l10n/' . $locale;
+		$locale_info = file_get_contents($locale_info_path . '/.info');
 
-		$results = $this->db->query($sql);
+		$locale_info = json_decode($locale_info, true);
 
-		if ($results || $this->db->num_rows($results) > 0) {
-			return $results;
+		if (array_key_exists($key, $locale_info)) {
+			return $locale_info[$key];
 		}
 
 		return null;
 	}
 
-	public function parse_date($datetime, array $tooltips = [])
+	public function get_time_format()
 	{
-		if ($datetime instanceof DateTime) {
-			$type = 'datetime';
-		} else {
-			$type = 'unixtime';
+		$time_format = $this->get_locale_info('time_format');
+
+		if (array_key_exists($time_format, $this->time_formats)) {
+			return $this->time_formats[$time_format];
 		}
 
-		$date = $this->localize($datetime, $type, $this->get_date_format());
-		$time = $this->localize($datetime, $type, $this->get_time_format());
-
-		if (trim($date) && isset($tooltips['date'])) {
-			$text = $this->gettext($tooltips['date']);
-
-			$date = '<div class="date" rel="tooltip" title="'.$text.'">'.$date.'</div>';
-		}
-
-		if (trim($time) && isset($tooltips['time'])) {
-			$text = $this->gettext($tooltips['time']);
-
-			$time = '<div class="time" rel="tooltip" title="'.$text.'">'.$time.'</div>';
-		}
-
-		return $date." {$this->gettext('in')} ".$time;
+		return '%R';
 	}
 }

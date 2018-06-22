@@ -16,7 +16,7 @@ class submodule
 		$this->user = $core->user;
 		$this->l10n = $core->l10n;
 
-		require_once(MCR_CONF_PATH.'modules/users.php');
+		require_once(MCR_CONF_PATH . 'modules/users.php');
 		$this->cfg_m = $cfg;
 
 		if (!$this->core->is_access('mod_users_adm_settings')) {
@@ -24,8 +24,8 @@ class submodule
 		}
 
 		$bc = [
-			$this->l10n->gettext('module_admin-panel') => BASE_URL."?mode=admin",
-			$this->l10n->gettext('module_users') => BASE_URL."?mode=admin&do=us"
+			$this->l10n->gettext('module_admin-panel') => BASE_URL . "?mode=admin",
+			$this->l10n->gettext('module_users') => BASE_URL . "?mode=admin&do=us"
 		];
 
 		$this->core->bc = $this->core->gen_bc($bc);
@@ -59,6 +59,6 @@ class submodule
 			"USE_COMMENTS" => ($cfg['enable_comments']) ? 'selected' : '',
 		];
 
-		return $this->core->sp(MCR_THEME_MOD."admin/us/main.phtml", $data);
+		return $this->core->sp(MCR_THEME_MOD . "admin/us/main.phtml", $data);
 	}
 }

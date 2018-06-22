@@ -1,11 +1,15 @@
 <?php
 
-if(!defined("MCR")){ exit("Hacking Attempt!"); }
+if (!defined("MCR")) {
+	exit("Hacking Attempt!");
+}
 
-class module{
+class module
+{
 	private $core, $db, $cfg, $user, $l10n;
 
-	public function __construct(core $core){
+	public function __construct(core $core)
+	{
 		$this->core = $core;
 		$this->db = $core->db;
 		$this->cfg = $core->cfg;
@@ -18,10 +22,11 @@ class module{
 
 		$this->core->bc = $this->core->gen_bc($bc);
 
-		$this->core->header .= $this->core->sp(MCR_THEME_PATH."modules/admin/header.phtml");
+		$this->core->header .= $this->core->sp(MCR_THEME_PATH . "modules/admin/header.phtml");
 	}
 
-	public function content(){
+	public function content()
+	{
 		if (!$this->core->is_access('sys_adm_main')) {
 			$this->core->notify(
 				$this->l10n->gettext('error_403'),
@@ -29,9 +34,7 @@ class module{
 			);
 		}
 
-		$do = isset($_GET['do'])
-			?$_GET['do']
-			:'dashboard';
+		$do = isset($_GET['do']) ? $_GET['do'] : 'dashboard';
 
 		if (!preg_match("/^[\w\.\-]+$/i", $do)) {
 			$this->core->notify(
@@ -40,21 +43,21 @@ class module{
 			);
 		}
 
-		if(!file_exists(MCR_MODE_PATH.'admin/'.$do.'.class.php')){
+		if (!file_exists(MCR_MODE_PATH . 'admin/' . $do . '.class.php')) {
 			$this->core->notify(
 				$this->l10n->gettext('error_404'),
 				sprintf($this->l10n->gettext('error_code'), 404)
 			);
 		}
 
-		require_once(MCR_MODE_PATH.'admin/'.$do.'.class.php');
-		if(!class_exists('submodule')){
+		require_once(MCR_MODE_PATH . 'admin/' . $do . '.class.php');
+		if (!class_exists('submodule')) {
 			$this->core->notify(
 				$this->l10n->gettext('error_404'),
 				sprintf($this->l10n->gettext('error_code'), 404)
 			);
 		}
-		
+
 		$submodule = new submodule($this->core);
 
 		return $submodule->content();

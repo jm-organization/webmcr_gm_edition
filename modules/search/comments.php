@@ -17,10 +17,45 @@ class submodule
 		$this->l10n = $core->l10n;
 
 		$bc = [
-			$this->l10n->gettext('module_search') => BASE_URL."?mode=search",
-			$this->l10n->gettext('by_comments') => BASE_URL."?mode=search&type=comments"
+			$this->l10n->gettext('module_search') => BASE_URL . "?mode=search",
+			$this->l10n->gettext('by_comments') => BASE_URL . "?mode=search&type=comments"
 		];
 		$this->core->bc = $this->core->gen_bc($bc);
+	}
+
+	public function results()
+	{
+		if (!$this->core->is_access('sys_search_comments')) {
+			$this->core->notify($this->l10n->gettext('error_403'), $this->l10n->gettext('access_denied_com'), 1, "?mode=403");
+		}
+
+		$value = (isset($_GET['value'])) ? $_GET['value'] : '';
+		$value = trim($value);
+
+		if (empty($value)) {
+			$this->core->notify($this->l10n->gettext('error_404'), $this->l10n->gettext('empty_query'), 2, "?mode=403");
+		}
+
+		$safe_value = $this->db->safesql($value);
+		$html_value = $this->db->HSC($value);
+		$sql = "SELECT COUNT(*) FROM `mcr_users_comments` WHERE text_bb LIKE '%$safe_value%'";
+		$query = $this->db->query($sql);
+
+		if (!$query) {
+			$this->core->notify($this->l10n->gettext('error_message'), $this->l10n->gettext('error_sql_critical'), 2);
+		}
+
+		$ar = $this->db->fetch_array($query);
+		$page = "?mode=search&type=comments&value=$html_value&pid=";
+
+		$data = [
+			"PAGINATION" => $this->core->pagination($this->cfg->pagin['search_comments'], $page, $ar[0]),
+			"RESULT" => $this->results_array($safe_value),
+			"QUERY" => $html_value,
+			"QUERY_COUNT" => intval($ar[0])
+		];
+
+		return $this->core->sp(MCR_THEME_MOD . "search/results.phtml", $data);
 	}
 
 	private function results_array($value)
@@ -72,44 +107,9 @@ class submodule
 				"TEXT" => $text
 			];
 
-			echo $this->core->sp(MCR_THEME_MOD."search/comments/comment-id.phtml", $data);
+			echo $this->core->sp(MCR_THEME_MOD . "search/comments/comment-id.phtml", $data);
 		}
 
 		return ob_get_clean();
-	}
-
-	public function results()
-	{
-		if (!$this->core->is_access('sys_search_comments')) {
-			$this->core->notify($this->l10n->gettext('error_403'), $this->l10n->gettext('access_denied_com'), 1, "?mode=403");
-		}
-
-		$value = (isset($_GET['value'])) ? $_GET['value'] : '';
-		$value = trim($value);
-
-		if (empty($value)) {
-			$this->core->notify($this->l10n->gettext('error_404'), $this->l10n->gettext('empty_query'), 2, "?mode=403");
-		}
-
-		$safe_value = $this->db->safesql($value);
-		$html_value = $this->db->HSC($value);
-		$sql = "SELECT COUNT(*) FROM `mcr_users_comments` WHERE text_bb LIKE '%$safe_value%'";
-		$query = $this->db->query($sql);
-
-		if (!$query) {
-			$this->core->notify($this->l10n->gettext('error_message'), $this->l10n->gettext('error_sql_critical'), 2);
-		}
-
-		$ar = $this->db->fetch_array($query);
-		$page = "?mode=search&type=comments&value=$html_value&pid=";
-
-		$data = [
-			"PAGINATION" => $this->core->pagination($this->cfg->pagin['search_comments'], $page, $ar[0]),
-			"RESULT" => $this->results_array($safe_value),
-			"QUERY" => $html_value,
-			"QUERY_COUNT" => intval($ar[0])
-		];
-
-		return $this->core->sp(MCR_THEME_MOD."search/results.phtml", $data);
 	}
 }

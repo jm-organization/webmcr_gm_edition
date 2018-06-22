@@ -17,21 +17,6 @@ class submodule
 		$this->l10n = $core->l10n;
 	}
 
-	private function is_discus($nid = 1)
-	{
-		$query = $this->db->query("SELECT COUNT(*) FROM `mcr_news` WHERE id='$nid' AND discus='1'");
-
-		if ($query) {
-			$ar = $this->db->fetch_array($query);
-
-			if ($ar[0] <= 0) return false;
-
-			return true;
-		}
-
-		return false;
-	}
-
 	public function content()
 	{
 		if ($_SERVER['REQUEST_METHOD'] != 'POST') {
@@ -49,17 +34,16 @@ class submodule
 		}
 
 		$sql_query = ($this->core->is_access('sys_comment_edt_all'))
-			? "SELECT 
-				  `data` 
-			  FROM `mcr_news_comments` 
-			  
-			  WHERE uid='{$this->user->id}' AND id='$id' AND nid='$nid'"
+			? "
+				SELECT `data` 
+			  	FROM `mcr_news_comments` 
+			  	WHERE uid='{$this->user->id}' AND id='$id' AND nid='$nid'
+			" : "
+				SELECT `data` 
+				FROM `mcr_news_comments` 
+			  	WHERE id='$id' AND nid='$nid'
+			";
 
-			: "SELECT 
-			  	  `data` 
-			  FROM `mcr_news_comments` 
-			  
-			  WHERE id='$id' AND nid='$nid'";
 		$query = $this->db->query($sql_query);
 
 		if (!$query || $this->db->num_rows($query) <= 0) {
@@ -99,8 +83,7 @@ class submodule
 				text_bb='$text_bb',
 				`data`='$safedata'
 			WHERE id='$id' AND nid='$nid' AND uid='{$this->user->id}'
-		"
-			: "
+		" : "
 			UPDATE `mcr_news_comments`
 			SET text_html='$safe_text_html',
 				text_bb='$text_bb',
@@ -116,8 +99,23 @@ class submodule
 		// Последнее обновление пользователя
 		$this->db->update_user($this->user);
 		// Лог действия
-		$this->db->actlog($this->l10n->gettext('log_com_edit')." #$id", $this->user->id);
+		$this->db->actlog($this->l10n->gettext('log_com_edit') . " #$id", $this->user->id);
 
 		$this->core->js_notify($this->l10n->gettext('com_edit_success'), $this->l10n->gettext('error_success'), true, $text_html);
+	}
+
+	private function is_discus($nid = 1)
+	{
+		$query = $this->db->query("SELECT COUNT(*) FROM `mcr_news` WHERE id='$nid' AND discus='1'");
+
+		if ($query) {
+			$ar = $this->db->fetch_array($query);
+
+			if ($ar[0] <= 0) return false;
+
+			return true;
+		}
+
+		return false;
 	}
 }

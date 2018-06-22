@@ -4,7 +4,7 @@ if (!defined("MCR")) {
 	exit("Hacking Attempt!");
 }
 
-require_once MCR_LIBS_PATH.'htmLawed/htmLawed.php';
+require_once MCR_LIBS_PATH . 'htmLawed/htmLawed.php';
 
 class submodule
 {
@@ -24,146 +24,34 @@ class submodule
 
 		$bc = [
 			$this->l10n->gettext('module_admin-panel') => ADMIN_URL,
-			$this->l10n->gettext('module_statics') => ADMIN_URL."&do=statics"
+			$this->l10n->gettext('module_statics') => ADMIN_URL . "&do=statics"
 		];
 		$this->core->bc = $this->core->gen_bc($bc);
 
-		$this->core->header .= $this->core->sp(MCR_THEME_MOD."admin/statics/header.phtml");
+		$this->core->header .= $this->core->sp(MCR_THEME_MOD . "admin/statics/header.phtml");
 	}
 
-	private function static_array()
+	public function content()
 	{
-		$start = $this->core->pagination($this->cfg->pagin['adm_statics'], 0, 0); // Set start pagination
-		$end = $this->cfg->pagin['adm_statics']; // Set end pagination
+		$op = (isset($_GET['op'])) ? $_GET['op'] : 'list';
 
-		$where = "";
-		$sort = "`s`.`id`";
-		$sortby = "DESC";
+		switch ($op) {
+			case 'add':
+				$content = $this->add();
+				break;
+			case 'edit':
+				$content = $this->edit();
+				break;
+			case 'delete':
+				$this->delete();
+				break;
 
-		if (isset($_GET['search']) && !empty($_GET['search'])) {
-			$search = $this->db->safesql($_GET['search']);
-			$where = "WHERE `s`.title LIKE '%$search%'";
+			default:
+				$content = $this->static_list();
+				break;
 		}
 
-		if (isset($_GET['sort']) && !empty($_GET['sort'])) {
-			$expl = explode(' ', $_GET['sort']);
-
-			$sortby = ($expl[0] == 'asc') ? "ASC" : "DESC";
-
-			switch (@$expl[1]) {
-				case 'title':
-					$sort = "`s`.title";
-					break;
-				case 'perm':
-					$sort = "`p`.title";
-					break;
-			}
-		}
-
-		$query = $this->db->query(
-			"SELECT 
-				`s`.id, `s`.`uniq`, `s`.title, `s`.uid,
-				
-				`p`.title AS `perm`
-			FROM `mcr_statics` AS `s`
-			
-			LEFT JOIN `mcr_permissions` AS `p`
-				ON `p`.`value`=`s`.`permissions`
-				
-			$where
-			
-			ORDER BY $sort $sortby
-			
-			LIMIT $start, $end"
-		);
-		if (!$query || $this->db->num_rows($query) <= 0) {
-			return $this->core->sp(MCR_THEME_MOD."admin/statics/static-none.phtml");
-		}
-
-		ob_start();
-
-		while ($ar = $this->db->fetch_assoc($query)) {
-
-			$perm = (is_null($ar['perm'])) ? $this->l10n->gettext('stc_perm_not_exist') : $this->db->HSC($ar['perm']);
-
-			$page_data = [
-				"ID" => intval($ar['id']),
-				"UID" => intval($ar['uid']),
-				"UNIQ" => $this->db->HSC($ar['uniq']),
-				"TITLE" => $this->db->HSC($ar['title']),
-				"PERMISSIONS" => $perm
-			];
-
-			echo $this->core->sp(MCR_THEME_MOD."admin/statics/static-id.phtml", $page_data);
-		}
-
-		return ob_get_clean();
-	}
-
-	private function static_list()
-	{
-
-		$sql = "SELECT COUNT(*) FROM `mcr_statics`";
-		$page = "?mode=admin&do=statics";
-
-		if (isset($_GET['search']) && !empty($_GET['search'])) {
-			$search = $this->db->safesql($_GET['search']);
-			$sql = "SELECT COUNT(*) FROM `mcr_statics` WHERE title LIKE '%$search%'";
-			$search = $this->db->HSC($_GET['search']);
-			$page = "?mode=admin&do=statics&search=$search";
-		}
-
-		if (isset($_GET['sort']) && !empty($_GET['sort'])) {
-			$page .= '&sort='.$this->db->HSC(urlencode($_GET['sort']));
-		}
-
-		$query = $this->db->query($sql);
-
-		$ar = @$this->db->fetch_array($query);
-
-		$data = [
-			"PAGINATION" => $this->core->pagination($this->cfg->pagin['adm_statics'], $page.'&pid=', $ar[0]),
-			"STATICS" => $this->static_array()
-		];
-
-		return $this->core->sp(MCR_THEME_MOD."admin/statics/static-list.phtml", $data);
-	}
-
-	private function delete()
-	{
-		if (!$this->core->is_access('sys_adm_statics_delete')) {
-			$this->core->notify($this->l10n->gettext('error_message'), $this->l10n->gettext('error_403'), 2, '?mode=admin&do=statics');
-		}
-
-		if ($_SERVER['REQUEST_METHOD'] != 'POST') {
-			$this->core->notify($this->l10n->gettext('error_message'), $this->l10n->gettext('error_hack'), 2, '?mode=admin&do=statics');
-		}
-
-		$list = @$_POST['id'];
-
-		if (empty($list)) {
-			$this->core->notify($this->l10n->gettext('error_message'), $this->l10n->gettext('stc_not_selected'), 2, '?mode=admin&do=statics');
-		}
-
-		$list = $this->core->filter_int_array($list);
-
-		$list = array_unique($list);
-
-		$list = $this->db->safesql(implode(", ", $list));
-
-		if (!$this->db->remove_fast("mcr_statics", "id IN ($list)")) {
-			$this->core->notify($this->l10n->gettext('error_message'), $this->l10n->gettext('error_sql_critical'), 2, '?mode=admin&do=statics');
-		}
-
-		$count1 = $this->db->affected_rows();
-
-		// Последнее обновление пользователя
-		$this->db->update_user($this->user);
-
-		// Лог действия
-		$this->db->actlog($this->l10n->gettext('log_del_stc')." $list ".$this->l10n->gettext('log_del_stc'), $this->user->id);
-
-		$this->core->notify($this->l10n->gettext('error_success'), sprintf($this->l10n->gettext('elements_deleted'), $count1), 3, '?mode=admin&do=statics');
+		return $content;
 	}
 
 	private function add()
@@ -173,9 +61,9 @@ class submodule
 		}
 
 		$bc = [
-			$this->l10n->gettext('module_admin-panel') => ADMIN_URL."",
-			$this->l10n->gettext('module_statics') => ADMIN_URL."&do=statics",
-			$this->l10n->gettext('stc_add_page_name') => ADMIN_URL."&do=statics&op=add",
+			$this->l10n->gettext('module_admin-panel') => ADMIN_URL . "",
+			$this->l10n->gettext('module_statics') => ADMIN_URL . "&do=statics",
+			$this->l10n->gettext('stc_add_page_name') => ADMIN_URL . "&do=statics&op=add",
 		];
 		$this->core->bc = $this->core->gen_bc($bc);
 
@@ -226,7 +114,8 @@ class submodule
 				if (!$this->db->query(
 					"INSERT INTO `mcr_statics` (`uniq`, title, text_html, uid, `permissions`, `data`)
 					VALUES ('$uniq', '$title', '$safe_text', '{$this->user->id}', '$permissions', '$new_data')"
-				)) {
+				)
+				) {
 					$this->core->notify($this->l10n->gettext('error_message'), $this->l10n->gettext('error_sql_critical'), 2, '?mode=admin&do=statics&op=add');
 				}
 
@@ -236,7 +125,7 @@ class submodule
 				$this->db->update_user($this->user);
 
 				// Лог действия
-				$this->db->actlog($this->l10n->gettext('log_add_stc')." #$id ".$this->l10n->gettext('log_add_stc'), $this->user->id);
+				$this->db->actlog($this->l10n->gettext('log_add_stc') . " #$id " . $this->l10n->gettext('log_add_stc'), $this->user->id);
 
 				$this->core->notify($this->l10n->gettext('error_success'), $this->l10n->gettext('stc_add_success'), 3, '?mode=admin&do=statics');
 			}
@@ -252,7 +141,7 @@ class submodule
 			"PREVIEW" => $preview,
 		];
 
-		return $this->core->sp(MCR_THEME_MOD."admin/statics/static-form.phtml", $data);
+		return $this->core->sp(MCR_THEME_MOD . "admin/statics/static-form.phtml", $data);
 	}
 
 	private function get_preview($title = '', $text = '')
@@ -262,7 +151,7 @@ class submodule
 			"TEXT" => $text
 		];
 
-		return $this->core->sp(MCR_THEME_MOD."admin/statics/static-preview.phtml", $data);
+		return $this->core->sp(MCR_THEME_MOD . "admin/statics/static-preview.phtml", $data);
 	}
 
 	private function edit()
@@ -273,13 +162,14 @@ class submodule
 
 		$id = intval($_GET['id']);
 
-		$query = $this->db->query(
-			"SELECT 
+		$query = $this->db->query("
+			SELECT 
 				`uniq`, title, `text_html` as `text`, `permissions`, `data`
 			FROM `mcr_statics`
 			
-			WHERE id='$id'"
-		);
+			WHERE id='$id'
+		");
+
 		if (!$query || $this->db->num_rows($query) <= 0) {
 			$this->core->notify($this->l10n->gettext('error_message'), $this->l10n->gettext('error_sql_critical'), 2, '?mode=admin&do=statics');
 		}
@@ -295,9 +185,9 @@ class submodule
 		$data = json_decode($ar['data']);
 
 		$bc = [
-			$this->l10n->gettext('module_admin-panel') => ADMIN_URL."",
-			$this->l10n->gettext('module_statics') => ADMIN_URL."&do=statics",
-			$this->l10n->gettext('stc_edit') => ADMIN_URL."&do=statics&op=edit&id=$id"
+			$this->l10n->gettext('module_admin-panel') => ADMIN_URL . "",
+			$this->l10n->gettext('module_statics') => ADMIN_URL . "&do=statics",
+			$this->l10n->gettext('stc_edit') => ADMIN_URL . "&do=statics&op=edit&id=$id"
 		];
 		$this->core->bc = $this->core->gen_bc($bc);
 
@@ -347,15 +237,16 @@ class submodule
 						text_html='$safe_text',
 						`permissions`='$permissions', `data`='$new_data'
 					WHERE id='$id'"
-				)) {
-					$this->core->notify($this->l10n->gettext('error_message'), $this->l10n->gettext('error_sql_critical'), 2, '?mode=admin&do=statics&op=edit&id='.$id);
+				)
+				) {
+					$this->core->notify($this->l10n->gettext('error_message'), $this->l10n->gettext('error_sql_critical'), 2, '?mode=admin&do=statics&op=edit&id=' . $id);
 				}
 
 				// Последнее обновление пользователя
 				$this->db->update_user($this->user);
 
 				// Лог действия
-				$this->db->actlog($this->l10n->gettext('log_edit_stc')." #$id ".$this->l10n->gettext('log_edit_stc'), $this->user->id);
+				$this->db->actlog($this->l10n->gettext('log_edit_stc') . " #$id " . $this->l10n->gettext('log_edit_stc'), $this->user->id);
 
 				$this->core->notify($this->l10n->gettext('error_success'), $this->l10n->gettext('stc_edit_success'), 3, '?mode=admin&do=statics');
 			}
@@ -371,31 +262,143 @@ class submodule
 			"PREVIEW" => $preview,
 		];
 
-		return $this->core->sp(MCR_THEME_MOD."admin/statics/static-form.phtml", $data);
+		return $this->core->sp(MCR_THEME_MOD . "admin/statics/static-form.phtml", $data);
 	}
 
-	public function content()
+	private function delete()
 	{
-
-		$op = (isset($_GET['op'])) ? $_GET['op'] : 'list';
-
-		switch ($op) {
-			case 'add':
-				$content = $this->add();
-				break;
-			case 'edit':
-				$content = $this->edit();
-				break;
-			case 'delete':
-				$this->delete();
-				break;
-
-			default:
-				$content = $this->static_list();
-				break;
+		if (!$this->core->is_access('sys_adm_statics_delete')) {
+			$this->core->notify($this->l10n->gettext('error_message'), $this->l10n->gettext('error_403'), 2, '?mode=admin&do=statics');
 		}
 
-		return $content;
+		if ($_SERVER['REQUEST_METHOD'] != 'POST') {
+			$this->core->notify($this->l10n->gettext('error_message'), $this->l10n->gettext('error_hack'), 2, '?mode=admin&do=statics');
+		}
+
+		$list = @$_POST['id'];
+
+		if (empty($list)) {
+			$this->core->notify($this->l10n->gettext('error_message'), $this->l10n->gettext('stc_not_selected'), 2, '?mode=admin&do=statics');
+		}
+
+		$list = $this->core->filter_int_array($list);
+
+		$list = array_unique($list);
+
+		$list = $this->db->safesql(implode(", ", $list));
+
+		if (!$this->db->remove_fast("mcr_statics", "id IN ($list)")) {
+			$this->core->notify($this->l10n->gettext('error_message'), $this->l10n->gettext('error_sql_critical'), 2, '?mode=admin&do=statics');
+		}
+
+		$count1 = $this->db->affected_rows();
+
+		// Последнее обновление пользователя
+		$this->db->update_user($this->user);
+
+		// Лог действия
+		$this->db->actlog($this->l10n->gettext('log_del_stc') . " $list " . $this->l10n->gettext('log_del_stc'), $this->user->id);
+
+		$this->core->notify($this->l10n->gettext('error_success'), sprintf($this->l10n->gettext('elements_deleted'), $count1), 3, '?mode=admin&do=statics');
+	}
+
+	private function static_list()
+	{
+
+		$sql = "SELECT COUNT(*) FROM `mcr_statics`";
+		$page = "?mode=admin&do=statics";
+
+		if (isset($_GET['search']) && !empty($_GET['search'])) {
+			$search = $this->db->safesql($_GET['search']);
+			$sql = "SELECT COUNT(*) FROM `mcr_statics` WHERE title LIKE '%$search%'";
+			$search = $this->db->HSC($_GET['search']);
+			$page = "?mode=admin&do=statics&search=$search";
+		}
+
+		if (isset($_GET['sort']) && !empty($_GET['sort'])) {
+			$page .= '&sort=' . $this->db->HSC(urlencode($_GET['sort']));
+		}
+
+		$query = $this->db->query($sql);
+
+		$ar = @$this->db->fetch_array($query);
+
+		$data = [
+			"PAGINATION" => $this->core->pagination($this->cfg->pagin['adm_statics'], $page . '&pid=', $ar[0]),
+			"STATICS" => $this->static_array()
+		];
+
+		return $this->core->sp(MCR_THEME_MOD . "admin/statics/static-list.phtml", $data);
+	}
+
+	private function static_array()
+	{
+		$start = $this->core->pagination($this->cfg->pagin['adm_statics'], 0, 0); // Set start pagination
+		$end = $this->cfg->pagin['adm_statics']; // Set end pagination
+
+		$where = "";
+		$sort = "`s`.`id`";
+		$sortby = "DESC";
+
+		if (isset($_GET['search']) && !empty($_GET['search'])) {
+			$search = $this->db->safesql($_GET['search']);
+			$where = "WHERE `s`.title LIKE '%$search%'";
+		}
+
+		if (isset($_GET['sort']) && !empty($_GET['sort'])) {
+			$expl = explode(' ', $_GET['sort']);
+
+			$sortby = ($expl[0] == 'asc') ? "ASC" : "DESC";
+
+			switch (@$expl[1]) {
+				case 'title':
+					$sort = "`s`.title";
+					break;
+				case 'perm':
+					$sort = "`p`.title";
+					break;
+			}
+		}
+
+		$query = $this->db->query("
+			SELECT 
+				`s`.id, `s`.`uniq`, `s`.title, `s`.uid,
+				
+				`p`.title AS `perm`
+			FROM `mcr_statics` AS `s`
+			
+			LEFT JOIN `mcr_permissions` AS `p`
+				ON `p`.`value`=`s`.`permissions`
+				
+			$where
+			
+			ORDER BY $sort $sortby
+			
+			LIMIT $start, $end
+		");
+
+		if (!$query || $this->db->num_rows($query) <= 0) {
+			return $this->core->sp(MCR_THEME_MOD . "admin/statics/static-none.phtml");
+		}
+
+		ob_start();
+
+		while ($ar = $this->db->fetch_assoc($query)) {
+
+			$perm = (is_null($ar['perm'])) ? $this->l10n->gettext('stc_perm_not_exist') : $this->db->HSC($ar['perm']);
+
+			$page_data = [
+				"ID" => intval($ar['id']),
+				"UID" => intval($ar['uid']),
+				"UNIQ" => $this->db->HSC($ar['uniq']),
+				"TITLE" => $this->db->HSC($ar['title']),
+				"PERMISSIONS" => $perm
+			];
+
+			echo $this->core->sp(MCR_THEME_MOD . "admin/statics/static-id.phtml", $page_data);
+		}
+
+		return ob_get_clean();
 	}
 }
 

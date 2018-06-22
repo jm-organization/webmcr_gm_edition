@@ -14,7 +14,7 @@ if (!defined("MCR")) {
 	exit("Hacking Attempt!");
 }
 
-require_once MCR_LIBS_PATH.'htmLawed/htmLawed.php';
+require_once MCR_LIBS_PATH . 'htmLawed/htmLawed.php';
 
 class submodule
 {
@@ -34,99 +34,11 @@ class submodule
 
 		$bc = [
 			$this->l10n->gettext('module_admin-panel') => ADMIN_URL,
-			$this->l10n->gettext('news') => ADMIN_URL."&do=news"
+			$this->l10n->gettext('news') => ADMIN_URL . "&do=news"
 		];
 		$this->core->bc = $this->core->gen_bc($bc);
 
-		$this->core->header .= $this->core->sp(MCR_THEME_MOD."admin/news/header.phtml");
-	}
-
-	private function categories($selected = 1)
-	{
-		$selected = intval($selected);
-		$query = $this->db->query("SELECT id, title FROM `mcr_news_cats` ORDER BY title ASC");
-
-		if (!$query || $this->db->num_rows($query) <= 0) {
-			$data = [
-				"ID" => 1,
-				"TITLE" => $this->l10n->gettext('news_wo_cats'),
-				"SELECTED" => 'selected disabled',
-			];
-
-			return $this->core->sp(MCR_THEME_MOD."admin/news/select-options.phtml", $data);
-		}
-
-		ob_start();
-
-		while ($ar = $this->db->fetch_assoc($query)) {
-			$data = [
-				"ID" => intval($ar['id']),
-				"TITLE" => $this->db->HSC($ar['title']),
-				"SELECTED" => ($selected == intval($ar['id'])) ? 'selected' : '',
-			];
-
-			echo $this->core->sp(MCR_THEME_MOD."admin/news/select-options.phtml", $data);
-		}
-
-		return ob_get_clean();
-	}
-
-	private function user_groups($user_group = -1)
-	{
-		$id_user_group = intval($user_group);
-		$query = $this->db->query("SELECT `id`, `title` FROM `mcr_groups` ORDER BY `id` ASC");
-
-		if (!$query || $this->db->num_rows($query) <= 0) {
-
-			$data = [
-				"ID" => -1,
-				"TITLE" => $this->l10n->gettext('news_wo_cats'),
-				"SELECTED" => 'selected disabled',
-			];
-
-			return $this->core->sp(MCR_THEME_MOD."admin/news/select-options.phtml", $data);
-		}
-
-		ob_start();
-
-		while ($ar = $this->db->fetch_assoc($query)) {
-			$data = [
-				"ID" => intval($ar['id']),
-				"TITLE" => $this->db->HSC($ar['title']),
-				"SELECTED" => ($id_user_group == intval($ar['id'])) ? 'selected' : '',
-			];
-
-			echo $this->core->sp(MCR_THEME_MOD."admin/news/select-options.phtml", $data);
-		}
-
-		return ob_get_clean();
-	}
-
-	private function get_preview($title = '', $text = '', $category = '', $cid = 0, $vote = 0, $planed_publish = false)
-	{
-		$data = [
-			"TITLE" => $this->db->HSC($title),
-			"PLANED_PUBLISH" => $this->l10n->parse_date($planed_publish, ['date'=>'date_create','time'=>'time_create']),
-			"TEXT" => $text,
-			"CATEGORY" => $this->db->HSC($category),
-			"CID" => intval($cid),
-			"LIKES" => (!$vote)
-				? ''
-				: $this->core->sp(MCR_THEME_MOD."admin/news/new-preview-likes.phtml"),
-		];
-
-		return $this->core->sp(MCR_THEME_MOD."admin/news/new-preview.phtml", $data);
-	}
-
-	private function is_fill_title($title)
-	{
-		if (!$title) {
-			$this->core->notify(
-				$this->l10n->gettext('error_msg'),
-				$this->l10n->gettext('news_title_is_null'),
-				2
-			);
-		}
+		$this->core->header .= $this->core->sp(MCR_THEME_MOD . "admin/news/header.phtml");
 	}
 
 	function checktime($hour, $min, $sec)
@@ -144,129 +56,28 @@ class submodule
 		return true;
 	}
 
-	private function get_short_information($article)
+	public function content()
 	{
-		$short_information = '';
-		$data = json_decode($article['data'], true);
+		$op = (isset($_GET['op'])) ? $_GET['op'] : 'list';
+		$content = '';
 
-		if ($article['date'] > time() || $data['planed_news']) {
-			$short_information .= '<i class="fa fa-calendar" data-toggle="tooltip" data-placement="top" title="'.$this->l10n->gettext('planed_article').'"></i>';
+		switch ($op) {
+			case 'add':
+				$content = $this->add();
+				break;
+			case 'edit':
+				$content = $this->edit();
+				break;
+			case 'delete':
+				$this->delete();
+				break;
+
+			default:
+				$content = $this->news_list();
+				break;
 		}
 
-		if ($article['hidden'] == 1) {
-			$short_information .= '<i class="fa fa-eye-slash" data-toggle="tooltip" data-placement="top" title="'.$this->l10n->gettext('hidden_article').'"></i>';
-		}
-
-		if ($article['attach'] == 1) {
-			$short_information .= '<i class="fa fa-paperclip" data-toggle="tooltip" data-placement="top" title="'.$this->l10n->gettext('fixed_article').'"></i>';
-		}
-
-		return $short_information;
-	}
-
-	private function get_avatar($user, $rank)
-	{
-		if (!is_array($user)) {
-			return null;
-		}
-
-		$is_skin = (intval($user[$rank.'_skin']) == 1)
-			? true
-			: false;
-		$is_cloak = (intval($user[$rank.'_cloak']) == 1)
-			? true
-			: false;
-
-		$is_girl = (intval($user[$rank.'_gender']) == 1)
-			? 'default_female'
-			: 'default';
-
-		$avatar = ($is_skin || $is_cloak)
-			? $this->db->HSC($user[$rank.'_login'])
-			: $is_girl;
-
-		return UPLOAD_URL.'skins/interface/'.$avatar.'_mini.png?'.mt_rand(1000, 9999);
-	}
-
-	private function news_array()
-	{
-		$query = $this->db->query("
-			SELECT 
-				`n`.`id`, `n`.`cid`, `n`.`title`,
-				`n`.`date`, `n`.`hidden`, `n`.`attach`,
-				`n`.`data`, `n`.`uid`, `n`.`img`,
-				
-				`c`.`title` AS `category`,
-				`c`.`description` AS `category_description`,
-				
-				`u`.`login` AS `author_login`, `u`.`is_skin` AS `author_skin`, 
-				`u`.`is_cloak` AS `author_cloak`, `u`.`gender` AS `author_gender`,
-				
-				`l`.`date` AS `edit_date`,
-				
-				`ue`.`login` AS `editor_login`, `ue`.`is_skin` AS `editor_skin`, 
-				`ue`.`is_cloak` AS `editor_cloak`, `ue`.`gender` AS `editor_gender`
-			FROM `mcr_news` AS `n`
-			LEFT JOIN `mcr_news_cats` AS `c` 
-				ON `c`.id=`n`.`cid` 
-			LEFT JOIN `mcr_users` AS `u` 
-				ON `u`.id=`n`.`uid`
-			LEFT JOIN `mcr_logs_of_edit` AS `l` 
-				ON `l`.`things`=`n`.`id` AND `l`.`table`='mcr_news'
-			LEFT JOIN `mcr_users` AS `ue` 
-				ON `ue`.id=`l`.`editor`
-		");
-		if (!$query || $this->db->num_rows($query) <= 0) {
-			return null;
-		}
-
-		ob_start();
-
-		while ($ar = $this->db->fetch_assoc($query)) {
-			$author = $this->l10n->gettext('article_writer').": <a href='/?mode=users&uid={$ar['author_login']}'>{$ar['author_login']}</a>";
-			$editor = $this->l10n->gettext('article_editor').": <a href='/?mode=users&uid={$ar['editor_login']}'>{$ar['editor_login']}</a>";
-
-			$author_avatar = $this->get_avatar($ar, 'author');
-			$editor_avatar = $this->get_avatar($ar, 'editor');
-
-			$avatars = "
-				<img class='user_a-news_avatar' width='18px' src='$author_avatar' data-toggle='tooltip' data-placement='top' title='{$this->l10n->gettext('article_writer')}'>
-			".(($ar['editor_login'])
-					? ("
-				<img class='user_e-news_avatar' width='18px' src='$editor_avatar' data-toggle='tooltip' data-placement='top' title='{$this->l10n->gettext('article_editor')}'>
-			")
-					: null);
-
-			$page_data = [
-				"ID" => intval($ar['id']),
-				"CID" => intval($ar['cid']),
-				"TITLE" => $this->db->HSC($ar['title']),
-				"CATEGORY" => $this->db->HSC($ar['category']),
-				"DESCRIPTION" => $this->db->HSC($ar['category_description']),
-				"DATE" => ($this->l10n->localize($ar['date'], 'unixtime', $this->l10n->get_date_format())." {$this->l10n->gettext('in')} ".$this->l10n->localize($ar['date'], 'unixtime', $this->l10n->get_time_format())),
-				"INFORMATION" => $this->get_short_information($ar),
-				"IMG" => (trim($ar['img']))
-					? trim($ar['img'])
-					: '/themes/default/img/cacke.128.png',
-				"AUTHORS" => "$author".(($ar['editor_login'])
-						? (", $editor")
-						: null),
-				"USER_AVATARS" => $avatars,
-			];
-
-			echo $this->core->sp(MCR_THEME_MOD."admin/news/new-id.phtml", $page_data);
-		}
-
-		return ob_get_clean();
-	}
-
-	private function news_list()
-	{
-		$data = [
-			"NEWS" => $this->news_array()
-		];
-
-		return $this->core->sp(MCR_THEME_MOD."admin/news/new-list.phtml", $data);
+		return $content;
 	}
 
 	private function add()
@@ -276,9 +87,9 @@ class submodule
 		}
 
 		$bc = [
-			$this->l10n->gettext('module_admin-panel') => ADMIN_URL."",
-			$this->l10n->gettext('module_news') => ADMIN_URL."&do=news",
-			$this->l10n->gettext('news_add') => ADMIN_URL."&do=news&op=add",
+			$this->l10n->gettext('module_admin-panel') => ADMIN_URL . "",
+			$this->l10n->gettext('module_news') => ADMIN_URL . "&do=news",
+			$this->l10n->gettext('news_add') => ADMIN_URL . "&do=news&op=add",
 		];
 
 		$this->core->bc = $this->core->gen_bc($bc);
@@ -360,12 +171,12 @@ class submodule
 				// Последнее обновление пользователя
 				$this->db->update_user($this->user);
 				// Лог действия
-				$this->db->actlog($this->l10n->gettext('log_add_news')." #$id ".$this->l10n->gettext('log_news'), $this->user->id);
+				$this->db->actlog($this->l10n->gettext('log_add_news') . " #$id " . $this->l10n->gettext('log_news'), $this->user->id);
 				$this->core->notify($this->l10n->gettext('error_success'), $this->l10n->gettext('news_add_success'), 3, '?mode=admin&do=news');
 			}
 		}
 
-		return $this->core->sp(MCR_THEME_MOD."admin/news/new-form.phtml", [
+		return $this->core->sp(MCR_THEME_MOD . "admin/news/new-form.phtml", [
 			"PAGE" => $this->l10n->gettext('news_add_page_name'),
 			"TITLE" => $this->db->HSC($title),
 			"CATEGORIES" => $categories,
@@ -380,6 +191,92 @@ class submodule
 			"BUTTON" => $this->l10n->gettext('news_add_btn'),
 			"PREVIEW" => $preview,
 		]);
+	}
+
+	private function categories($selected = 1)
+	{
+		$selected = intval($selected);
+		$query = $this->db->query("SELECT id, title FROM `mcr_news_cats` ORDER BY title ASC");
+
+		if (!$query || $this->db->num_rows($query) <= 0) {
+			$data = [
+				"ID" => 1,
+				"TITLE" => $this->l10n->gettext('news_wo_cats'),
+				"SELECTED" => 'selected disabled',
+			];
+
+			return $this->core->sp(MCR_THEME_MOD . "admin/news/select-options.phtml", $data);
+		}
+
+		ob_start();
+
+		while ($ar = $this->db->fetch_assoc($query)) {
+			$data = [
+				"ID" => intval($ar['id']),
+				"TITLE" => $this->db->HSC($ar['title']),
+				"SELECTED" => ($selected == intval($ar['id'])) ? 'selected' : '',
+			];
+
+			echo $this->core->sp(MCR_THEME_MOD . "admin/news/select-options.phtml", $data);
+		}
+
+		return ob_get_clean();
+	}
+
+	private function user_groups($user_group = -1)
+	{
+		$id_user_group = intval($user_group);
+		$query = $this->db->query("SELECT `id`, `title` FROM `mcr_groups` ORDER BY `id` ASC");
+
+		if (!$query || $this->db->num_rows($query) <= 0) {
+
+			$data = [
+				"ID" => -1,
+				"TITLE" => $this->l10n->gettext('news_wo_cats'),
+				"SELECTED" => 'selected disabled',
+			];
+
+			return $this->core->sp(MCR_THEME_MOD . "admin/news/select-options.phtml", $data);
+		}
+
+		ob_start();
+
+		while ($ar = $this->db->fetch_assoc($query)) {
+			$data = [
+				"ID" => intval($ar['id']),
+				"TITLE" => $this->db->HSC($ar['title']),
+				"SELECTED" => ($id_user_group == intval($ar['id'])) ? 'selected' : '',
+			];
+
+			echo $this->core->sp(MCR_THEME_MOD . "admin/news/select-options.phtml", $data);
+		}
+
+		return ob_get_clean();
+	}
+
+	private function is_fill_title($title)
+	{
+		if (!$title) {
+			$this->core->notify(
+				$this->l10n->gettext('error_msg'),
+				$this->l10n->gettext('news_title_is_null'),
+				2
+			);
+		}
+	}
+
+	private function get_preview($title = '', $text = '', $category = '', $cid = 0, $vote = 0, $planed_publish = false)
+	{
+		$data = [
+			"TITLE" => $this->db->HSC($title),
+			"PLANED_PUBLISH" => $this->l10n->parse_date($planed_publish, ['date' => 'date_create', 'time' => 'time_create']),
+			"TEXT" => $text,
+			"CATEGORY" => $this->db->HSC($category),
+			"CID" => intval($cid),
+			"LIKES" => (!$vote) ? '' : $this->core->sp(MCR_THEME_MOD . "admin/news/new-preview-likes.phtml"),
+		];
+
+		return $this->core->sp(MCR_THEME_MOD . "admin/news/new-preview.phtml", $data);
 	}
 
 	private function edit()
@@ -408,14 +305,14 @@ class submodule
 		$text = $this->db->HSC($ar['text_html']);
 		$votes = (intval($ar['vote']) === 1) ? 'checked' : '';
 		$discuses = (intval($ar['discus']) === 1) ? 'checked' : '';
-		$attached = (intval($ar['attach']) === 1) ? 'checked': '';
-		$hiddened = (intval($ar['hidden']) === 1) ? 'checked': '';
+		$attached = (intval($ar['attach']) === 1) ? 'checked' : '';
+		$hiddened = (intval($ar['hidden']) === 1) ? 'checked' : '';
 		$data = json_decode($ar['data'], true);
 
 		$bc = [
-			$this->l10n->gettext('mod_name') => ADMIN_URL."",
-			$this->l10n->gettext('news') => ADMIN_URL."&do=news",
-			$this->l10n->gettext('news_edit') => ADMIN_URL."&do=news&op=edit&id=$id"
+			$this->l10n->gettext('mod_name') => ADMIN_URL . "",
+			$this->l10n->gettext('news') => ADMIN_URL . "&do=news",
+			$this->l10n->gettext('news_edit') => ADMIN_URL . "&do=news&op=edit&id=$id"
 		];
 		$this->core->bc = $this->core->gen_bc($bc);
 
@@ -450,7 +347,7 @@ class submodule
 			}
 
 			if (!$publish_date) {
-				$this->core->notify($this->l10n->gettext('error_message'), $this->l10n->gettext('news_add_time_error'), 2, '?mode=admin&do=news&op=edit&id='.$id);
+				$this->core->notify($this->l10n->gettext('error_message'), $this->l10n->gettext('news_add_time_error'), 2, '?mode=admin&do=news&op=edit&id=' . $id);
 			}
 
 			if (isset($_POST['preview'])) {
@@ -488,7 +385,7 @@ class submodule
 						`id`='$id'
 				";
 				if (!$this->db->query($updated_news)) {
-					$this->core->notify($this->l10n->gettext('error_message'), $this->l10n->gettext('error_sql_critical'), 2, '?mode=admin&do=news&op=edit&id='.$id);
+					$this->core->notify($this->l10n->gettext('error_message'), $this->l10n->gettext('error_sql_critical'), 2, '?mode=admin&do=news&op=edit&id=' . $id);
 				}
 
 				$loe_row = "SELECT `id` FROM `mcr_logs_of_edit` WHERE `things`='$id' AND `table`='mcr_news'";
@@ -510,7 +407,7 @@ class submodule
 				// Последнее обновление пользователя
 				$this->db->update_user($this->user);
 				// Лог действия
-				$this->db->actlog($this->l10n->gettext('log_edit_news')." #$id ".$this->l10n->gettext('log_news'), $this->user->id);
+				$this->db->actlog($this->l10n->gettext('log_edit_news') . " #$id " . $this->l10n->gettext('log_news'), $this->user->id);
 				$this->core->notify($this->l10n->gettext('error_success'), $this->l10n->gettext('news_edit_success'), 3, '?mode=admin&do=news');
 			}
 		}
@@ -521,9 +418,7 @@ class submodule
 			"CATEGORIES" => $categories,
 			"TITLE" => $title,
 			"TEXT" => $text,
-			"PLANED_PUBLISH" => (@$data['planed_news'] || @$_POST['planed_publish'] == 1)
-				? 'checked'
-				: '',
+			"PLANED_PUBLISH" => (@$data['planed_news'] || @$_POST['planed_publish'] == 1) ? 'checked' : '',
 			"DATE" => date('d.m.Y H:i:s', $date),
 			"VOTE" => $votes,
 			"DISCUS" => $discuses,
@@ -533,7 +428,7 @@ class submodule
 			"PREVIEW" => $preview,
 		];
 
-		return $this->core->sp(MCR_THEME_MOD."admin/news/new-form.phtml", $result);
+		return $this->core->sp(MCR_THEME_MOD . "admin/news/new-form.phtml", $result);
 	}
 
 	private function delete()
@@ -565,25 +460,122 @@ class submodule
 		// Последнее обновление пользователя
 		$this->db->update_user($this->user);
 		// Лог действия
-		$this->db->actlog($this->l10n->gettext('log_del_news')." $news_list ".$this->l10n->gettext('log_news'), $this->user->id);
-		$this->core->notify($this->l10n->gettext('error_success'), $this->l10n->gettext('news_del_elements')." $count1", 3, '?mode=admin&do=news');
+		$this->db->actlog($this->l10n->gettext('log_del_news') . " $news_list " . $this->l10n->gettext('log_news'), $this->user->id);
+		$this->core->notify($this->l10n->gettext('error_success'), $this->l10n->gettext('news_del_elements') . " $count1", 3, '?mode=admin&do=news');
 	}
 
-	public function content()
+	private function news_list()
 	{
-		$op = (isset($_GET['op']))
-			? $_GET['op']
-			: 'list';
-		$content = '';
+		$data = [
+			"NEWS" => $this->news_array()
+		];
 
-		switch ($op) {
-			case 'add': $content = $this->add(); break;
-			case 'edit': $content = $this->edit(); break;
-			case 'delete': $this->delete(); break;
+		return $this->core->sp(MCR_THEME_MOD . "admin/news/new-list.phtml", $data);
+	}
 
-			default: $content = $this->news_list(); break;
+	private function news_array()
+	{
+		$query = $this->db->query("
+			SELECT 
+				`n`.`id`, `n`.`cid`, `n`.`title`,
+				`n`.`date`, `n`.`hidden`, `n`.`attach`,
+				`n`.`data`, `n`.`uid`, `n`.`img`,
+				
+				`c`.`title` AS `category`,
+				`c`.`description` AS `category_description`,
+				
+				`u`.`login` AS `author_login`, `u`.`is_skin` AS `author_skin`, 
+				`u`.`is_cloak` AS `author_cloak`, `u`.`gender` AS `author_gender`,
+				
+				`l`.`date` AS `edit_date`,
+				
+				`ue`.`login` AS `editor_login`, `ue`.`is_skin` AS `editor_skin`, 
+				`ue`.`is_cloak` AS `editor_cloak`, `ue`.`gender` AS `editor_gender`
+			FROM `mcr_news` AS `n`
+			LEFT JOIN `mcr_news_cats` AS `c` 
+				ON `c`.id=`n`.`cid` 
+			LEFT JOIN `mcr_users` AS `u` 
+				ON `u`.id=`n`.`uid`
+			LEFT JOIN `mcr_logs_of_edit` AS `l` 
+				ON `l`.`things`=`n`.`id` AND `l`.`table`='mcr_news'
+			LEFT JOIN `mcr_users` AS `ue` 
+				ON `ue`.id=`l`.`editor`
+		");
+		if (!$query || $this->db->num_rows($query) <= 0) {
+			return null;
 		}
 
-		return $content;
+		ob_start();
+
+		while ($ar = $this->db->fetch_assoc($query)) {
+			$author = $this->l10n->gettext('article_writer') . ": <a href='/?mode=users&uid={$ar['author_login']}'>{$ar['author_login']}</a>";
+			$editor = $this->l10n->gettext('article_editor') . ": <a href='/?mode=users&uid={$ar['editor_login']}'>{$ar['editor_login']}</a>";
+
+			$author_avatar = $this->get_avatar($ar, 'author');
+			$editor_avatar = $this->get_avatar($ar, 'editor');
+
+			$avatars = "
+				<img class='user_a-news_avatar' width='18px' src='$author_avatar' data-toggle='tooltip' data-placement='top' title='{$this->l10n->gettext('article_writer')}'>
+			" . (($ar['editor_login'])
+					? ("
+				<img class='user_e-news_avatar' width='18px' src='$editor_avatar' data-toggle='tooltip' data-placement='top' title='{$this->l10n->gettext('article_editor')}'>
+			")
+					: null);
+
+			$page_data = [
+				"ID" => intval($ar['id']),
+				"CID" => intval($ar['cid']),
+				"TITLE" => $this->db->HSC($ar['title']),
+				"CATEGORY" => $this->db->HSC($ar['category']),
+				"DESCRIPTION" => $this->db->HSC($ar['category_description']),
+				"DATE" => ($this->l10n->localize($ar['date'], 'unixtime', $this->l10n->get_date_format())
+					. " {$this->l10n->gettext('in')} "
+					. $this->l10n->localize($ar['date'], 'unixtime', $this->l10n->get_time_format())),
+				"INFORMATION" => $this->get_short_information($ar),
+				"IMG" => (trim($ar['img'])) ? trim($ar['img']) : '/themes/default/img/cacke.128.png',
+				"AUTHORS" => "$author" . (($ar['editor_login']) ? (", $editor") : null),
+				"USER_AVATARS" => $avatars,
+			];
+
+			echo $this->core->sp(MCR_THEME_MOD . "admin/news/new-id.phtml", $page_data);
+		}
+
+		return ob_get_clean();
+	}
+
+	private function get_avatar($user, $rank)
+	{
+		if (!is_array($user)) {
+			return null;
+		}
+
+		$is_skin = (intval($user[$rank . '_skin']) == 1) ? true : false;
+		$is_cloak = (intval($user[$rank . '_cloak']) == 1) ? true : false;
+
+		$is_girl = (intval($user[$rank . '_gender']) == 1) ? 'default_female' : 'default';
+
+		$avatar = ($is_skin || $is_cloak) ? $this->db->HSC($user[$rank . '_login']) : $is_girl;
+
+		return UPLOAD_URL . 'skins/interface/' . $avatar . '_mini.png?' . mt_rand(1000, 9999);
+	}
+
+	private function get_short_information($article)
+	{
+		$short_information = '';
+		$data = json_decode($article['data'], true);
+
+		if ($article['date'] > time() || $data['planed_news']) {
+			$short_information .= '<i class="fa fa-calendar" data-toggle="tooltip" data-placement="top" title="' . $this->l10n->gettext('planed_article') . '"></i>';
+		}
+
+		if ($article['hidden'] == 1) {
+			$short_information .= '<i class="fa fa-eye-slash" data-toggle="tooltip" data-placement="top" title="' . $this->l10n->gettext('hidden_article') . '"></i>';
+		}
+
+		if ($article['attach'] == 1) {
+			$short_information .= '<i class="fa fa-paperclip" data-toggle="tooltip" data-placement="top" title="' . $this->l10n->gettext('fixed_article') . '"></i>';
+		}
+
+		return $short_information;
 	}
 }

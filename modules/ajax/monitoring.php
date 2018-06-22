@@ -56,7 +56,7 @@ class submodule
 			$this->core->js_notify($this->l10n->gettext('mon_empty'), '', true);
 		}
 
-		require_once(MCR_TOOL_PATH.'monitoring.class.php');
+		require_once(MCR_TOOL_PATH . 'monitoring.class.php');
 
 		$m = new monitoring();
 
@@ -94,7 +94,8 @@ class submodule
 					last_error='$error', 
 					last_update='$time'
 				WHERE id='$id'"
-			)) continue;
+			)
+			) continue;
 
 			$data[] = [
 				'id' => $id,

@@ -17,7 +17,7 @@ class module
 		$this->l10n = $core->l10n;
 
 		$bc = [
-			$this->l10n->gettext('module_statics') => BASE_URL."?mode=statics"
+			$this->l10n->gettext('module_statics') => BASE_URL . "?mode=statics"
 		];
 		$this->core->bc = $this->core->gen_bc($bc);
 	}
@@ -33,8 +33,8 @@ class module
 		$ctables = $this->cfg->db['tables'];
 		$us_f = $ctables['users']['fields'];
 
-		$query = $this->db->query(
-			"SELECT 
+		$query = $this->db->query("
+			SELECT 
 				`s`.`title`, 
 				`s`.`text_html`, 
 				`s`.`uid`, 
@@ -47,8 +47,9 @@ class module
 			LEFT JOIN `mcr_users` AS `u`
 				ON `u`.`id`=`s`.`uid`
 				
-			WHERE `s`.`uniq`='$uniq'"
-		);
+			WHERE `s`.`uniq`='$uniq'
+		");
+
 		if (!$query || $this->db->num_rows($query) <= 0) {
 			$this->core->notify($this->l10n->gettext('error_message'), $this->l10n->gettext('error_403'));
 		}
@@ -63,8 +64,8 @@ class module
 		$title = $this->db->HSC($ar['title']);
 
 		$bc = [
-			$this->l10n->gettext('module_statics') => BASE_URL."?mode=statics&id=$uniq",
-			$title => BASE_URL."?mode=statics&id=$uniq"
+			$this->l10n->gettext('module_statics') => BASE_URL . "?mode=statics&id=$uniq",
+			$title => BASE_URL . "?mode=statics&id=$uniq"
 		];
 
 		$this->core->bc = $this->core->gen_bc($bc);
@@ -78,6 +79,6 @@ class module
 
 		];
 
-		return $this->core->sp(MCR_THEME_MOD."statics/static-id.phtml", $page_data);
+		return $this->core->sp(MCR_THEME_MOD . "statics/static-id.phtml", $page_data);
 	}
 }

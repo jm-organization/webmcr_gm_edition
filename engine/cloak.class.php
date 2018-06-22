@@ -77,8 +77,8 @@ class cloak
 		}
 
 		// Resave head of skin +
-		if (!file_exists(MCR_SKIN_PATH.'interface/'.$this->user->login.'_mini.png')) {
-			if (!copy(MCR_SKIN_PATH.'interface/default_mini.png', MCR_SKIN_PATH.'interface/'.$this->user->login.'_mini.png')) {
+		if (!file_exists(MCR_SKIN_PATH . 'interface/' . $this->user->login . '_mini.png')) {
+			if (!copy(MCR_SKIN_PATH . 'interface/default_mini.png', MCR_SKIN_PATH . 'interface/' . $this->user->login . '_mini.png')) {
 				$this->core->notify("", $this->l10n->gettext('error_cloak_save'), 2, '?mode=profile');
 			}
 		}
@@ -91,116 +91,14 @@ class cloak
 			$this->core->notify($this->l10n->gettext('error_message'), $this->l10n->gettext('error_cloak_isnt_png'), 2, '?mode=profile');
 		}
 
-		imagepng($new_preview, MCR_SKIN_PATH.'interface/'.$this->user->login.'.png');
+		imagepng($new_preview, MCR_SKIN_PATH . 'interface/' . $this->user->login . '.png');
 		// Create and save preview of cloak -
 
 		// Save new cloak +
-		if (!file_exists(MCR_CLOAK_PATH.$this->user->login.'.png') && !copy($tmp, MCR_CLOAK_PATH.$this->user->login.'.png')) {
+		if (!file_exists(MCR_CLOAK_PATH . $this->user->login . '.png') && !copy($tmp, MCR_CLOAK_PATH . $this->user->login . '.png')) {
 			$this->core->notify("", $this->l10n->gettext('error_cloak_save'), 2, '?mode=profile');
 		}
 		// Save new cloak -
-	}
-
-	/**
-	 * Создание миниатюры
-	 *
-	 * @param $path - путь к изображению
-	 * @param $size - размер
-	 *
-	 * @return resource
-	 */
-	public function create_preview($path, $size = 224)
-	{
-		//header('Content-Type: image/png');
-
-		$image = @imagecreatefrompng($path);
-
-		if (!$image) {
-			return false;
-		}
-
-		if (file_exists(MCR_SKIN_PATH.$this->user->skin.'.png')) {
-			$skin_path = MCR_SKIN_PATH.$this->user->skin.'.png';
-		} else {
-			$skin_path = MCR_SKIN_PATH.'default.png';
-		}
-
-		$skin = @imagecreatefrompng($skin_path);
-
-		$skin_size = @getimagesize($skin_path);
-		$cloak_size = @getimagesize($path);
-
-		$multiple = $skin_size[0] / 64;
-		$size_x = 32;
-		$preview = imagecreatetruecolor($size_x * $multiple, 32 * $multiple);
-		$mp_x_h = imagesx($preview) / 2;
-
-		$transparent = imagecolorallocatealpha($preview, 255, 255, 255, 127);
-		imagefill($preview, 0, 0, $transparent);
-
-		imagecopy($preview, $skin, 4 * $multiple, 0 * $multiple, 8 * $multiple, 8 * $multiple, 8 * $multiple, 8 * $multiple);
-		imagecopy($preview, $skin, 0 * $multiple, 8 * $multiple, 44 * $multiple, 20 * $multiple, 4 * $multiple, 12 * $multiple);
-		$this->core->imageflip($preview, $skin, 12 * $multiple, 8 * $multiple, 44 * $multiple, 20 * $multiple, 4 * $multiple, 12 * $multiple);
-		imagecopy($preview, $skin, 4 * $multiple, 8 * $multiple, 20 * $multiple, 20 * $multiple, 8 * $multiple, 12 * $multiple);
-		imagecopy($preview, $skin, 4 * $multiple, 20 * $multiple, 4 * $multiple, 20 * $multiple, 4 * $multiple, 12 * $multiple);
-		$this->core->imageflip($preview, $skin, 8 * $multiple, 20 * $multiple, 4 * $multiple, 20 * $multiple, 4 * $multiple, 12 * $multiple);
-		imagecopy($preview, $skin, 4 * $multiple, 0 * $multiple, 40 * $multiple, 8 * $multiple, 8 * $multiple, 8 * $multiple);
-
-		imagecopy($preview, $skin, $mp_x_h + 4 * $multiple, 8 * $multiple, 32 * $multiple, 20 * $multiple, 8 * $multiple, 12 * $multiple);
-		imagecopy($preview, $skin, $mp_x_h + 4 * $multiple, 0 * $multiple, 24 * $multiple, 8 * $multiple, 8 * $multiple, 8 * $multiple);
-		$this->core->imageflip($preview, $skin, $mp_x_h + 0 * $multiple, 8 * $multiple, 52 * $multiple, 20 * $multiple, 4 * $multiple, 12 * $multiple);
-		imagecopy($preview, $skin, $mp_x_h + 12 * $multiple, 8 * $multiple, 52 * $multiple, 20 * $multiple, 4 * $multiple, 12 * $multiple);
-		$this->core->imageflip($preview, $skin, $mp_x_h + 4 * $multiple, 20 * $multiple, 12 * $multiple, 20 * $multiple, 4 * $multiple, 12 * $multiple);
-		imagecopy($preview, $skin, $mp_x_h + 8 * $multiple, 20 * $multiple, 12 * $multiple, 20 * $multiple, 4 * $multiple, 12 * $multiple);
-		imagecopy($preview, $skin, $mp_x_h + 4 * $multiple, 0 * $multiple, 56 * $multiple, 8 * $multiple, 8 * $multiple, 8 * $multiple);
-
-		$mp_x = ($this->cfg->main['hd_cloaks'])
-			? 64
-			: 22;
-
-		$multiple_c = $cloak_size[0] / $mp_x;
-
-		$mp_x_h = ($multiple_c > $multiple)
-			? ($size_x * $multiple_c) / 2
-			: ($size_x * $multiple) / 2;
-		$mp_result = ($multiple_c > $multiple)
-			? $multiple_c
-			: $multiple;
-
-		$preview_cloak = imagecreatetruecolor($size_x * $mp_result, 32 * $mp_result);
-		$transparent = imagecolorallocatealpha($preview_cloak, 255, 255, 255, 127);
-		imagefill($preview_cloak, 0, 0, $transparent);
-
-		imagecopyresized($preview_cloak, // result image
-			$image, // source image
-			round(3 * $mp_result), // start x point of result
-			round(8 * $mp_result), // start y point of result
-			round(12 * $multiple_c), // start x point of source img
-			round(1 * $multiple_c), // start y point of source img
-			round(10 * $mp_result), // result <- width ->
-			round(16 * $mp_result), // result /|\ height \|/
-			round(10 * $multiple_c), // width of cloak img (from start x \ y) 
-			round(16 * $multiple_c) // height of cloak img (from start x \ y) 
-		);
-
-		imagecopyresized($preview_cloak, $preview, 0, 0, 0, 0, imagesx($preview_cloak), imagesy($preview_cloak), imagesx($preview), imagesy($preview));
-
-		imagecopyresized($preview_cloak, $image, $mp_x_h + 3 * $mp_result, round(8 * $mp_result), round(1 * $multiple_c), round(1 * $multiple_c), round(10 * $mp_result), round(16 * $mp_result), round(10 * $multiple_c), round(16 * $multiple_c));
-
-		$fullsize = imagecreatetruecolor($size, $size);
-
-		imagesavealpha($fullsize, true);
-		$transparent = imagecolorallocatealpha($fullsize, 255, 255, 255, 127);
-		imagefill($fullsize, 0, 0, $transparent);
-
-		imagecopyresized($fullsize, $preview_cloak, 0, 0, 0, 0, imagesx($fullsize), imagesy($fullsize), imagesx($preview_cloak), imagesy($preview_cloak));
-
-		imagedestroy($preview);
-		imagedestroy($preview_cloak);
-		imagedestroy($image);
-		imagedestroy($skin);
-
-		return $fullsize;
 	}
 
 	/**
@@ -245,6 +143,102 @@ class cloak
 		}
 
 		return true;
+	}
+
+	/**
+	 * Создание миниатюры
+	 *
+	 * @param $path - путь к изображению
+	 * @param $size - размер
+	 *
+	 * @return resource
+	 */
+	public function create_preview($path, $size = 224)
+	{
+		//header('Content-Type: image/png');
+
+		$image = @imagecreatefrompng($path);
+
+		if (!$image) {
+			return false;
+		}
+
+		if (file_exists(MCR_SKIN_PATH . $this->user->skin . '.png')) {
+			$skin_path = MCR_SKIN_PATH . $this->user->skin . '.png';
+		} else {
+			$skin_path = MCR_SKIN_PATH . 'default.png';
+		}
+
+		$skin = @imagecreatefrompng($skin_path);
+
+		$skin_size = @getimagesize($skin_path);
+		$cloak_size = @getimagesize($path);
+
+		$multiple = $skin_size[0] / 64;
+		$size_x = 32;
+		$preview = imagecreatetruecolor($size_x * $multiple, 32 * $multiple);
+		$mp_x_h = imagesx($preview) / 2;
+
+		$transparent = imagecolorallocatealpha($preview, 255, 255, 255, 127);
+		imagefill($preview, 0, 0, $transparent);
+
+		imagecopy($preview, $skin, 4 * $multiple, 0 * $multiple, 8 * $multiple, 8 * $multiple, 8 * $multiple, 8 * $multiple);
+		imagecopy($preview, $skin, 0 * $multiple, 8 * $multiple, 44 * $multiple, 20 * $multiple, 4 * $multiple, 12 * $multiple);
+		$this->core->imageflip($preview, $skin, 12 * $multiple, 8 * $multiple, 44 * $multiple, 20 * $multiple, 4 * $multiple, 12 * $multiple);
+		imagecopy($preview, $skin, 4 * $multiple, 8 * $multiple, 20 * $multiple, 20 * $multiple, 8 * $multiple, 12 * $multiple);
+		imagecopy($preview, $skin, 4 * $multiple, 20 * $multiple, 4 * $multiple, 20 * $multiple, 4 * $multiple, 12 * $multiple);
+		$this->core->imageflip($preview, $skin, 8 * $multiple, 20 * $multiple, 4 * $multiple, 20 * $multiple, 4 * $multiple, 12 * $multiple);
+		imagecopy($preview, $skin, 4 * $multiple, 0 * $multiple, 40 * $multiple, 8 * $multiple, 8 * $multiple, 8 * $multiple);
+
+		imagecopy($preview, $skin, $mp_x_h + 4 * $multiple, 8 * $multiple, 32 * $multiple, 20 * $multiple, 8 * $multiple, 12 * $multiple);
+		imagecopy($preview, $skin, $mp_x_h + 4 * $multiple, 0 * $multiple, 24 * $multiple, 8 * $multiple, 8 * $multiple, 8 * $multiple);
+		$this->core->imageflip($preview, $skin, $mp_x_h + 0 * $multiple, 8 * $multiple, 52 * $multiple, 20 * $multiple, 4 * $multiple, 12 * $multiple);
+		imagecopy($preview, $skin, $mp_x_h + 12 * $multiple, 8 * $multiple, 52 * $multiple, 20 * $multiple, 4 * $multiple, 12 * $multiple);
+		$this->core->imageflip($preview, $skin, $mp_x_h + 4 * $multiple, 20 * $multiple, 12 * $multiple, 20 * $multiple, 4 * $multiple, 12 * $multiple);
+		imagecopy($preview, $skin, $mp_x_h + 8 * $multiple, 20 * $multiple, 12 * $multiple, 20 * $multiple, 4 * $multiple, 12 * $multiple);
+		imagecopy($preview, $skin, $mp_x_h + 4 * $multiple, 0 * $multiple, 56 * $multiple, 8 * $multiple, 8 * $multiple, 8 * $multiple);
+
+		$mp_x = ($this->cfg->main['hd_cloaks']) ? 64 : 22;
+
+		$multiple_c = $cloak_size[0] / $mp_x;
+
+		$mp_x_h = ($multiple_c > $multiple) ? ($size_x * $multiple_c) / 2 : ($size_x * $multiple) / 2;
+		$mp_result = ($multiple_c > $multiple) ? $multiple_c : $multiple;
+
+		$preview_cloak = imagecreatetruecolor($size_x * $mp_result, 32 * $mp_result);
+		$transparent = imagecolorallocatealpha($preview_cloak, 255, 255, 255, 127);
+		imagefill($preview_cloak, 0, 0, $transparent);
+
+		imagecopyresized($preview_cloak, // result image
+			$image, // source image
+			round(3 * $mp_result), // start x point of result
+			round(8 * $mp_result), // start y point of result
+			round(12 * $multiple_c), // start x point of source img
+			round(1 * $multiple_c), // start y point of source img
+			round(10 * $mp_result), // result <- width ->
+			round(16 * $mp_result), // result /|\ height \|/
+			round(10 * $multiple_c), // width of cloak img (from start x \ y)
+			round(16 * $multiple_c) // height of cloak img (from start x \ y)
+		);
+
+		imagecopyresized($preview_cloak, $preview, 0, 0, 0, 0, imagesx($preview_cloak), imagesy($preview_cloak), imagesx($preview), imagesy($preview));
+
+		imagecopyresized($preview_cloak, $image, $mp_x_h + 3 * $mp_result, round(8 * $mp_result), round(1 * $multiple_c), round(1 * $multiple_c), round(10 * $mp_result), round(16 * $mp_result), round(10 * $multiple_c), round(16 * $multiple_c));
+
+		$fullsize = imagecreatetruecolor($size, $size);
+
+		imagesavealpha($fullsize, true);
+		$transparent = imagecolorallocatealpha($fullsize, 255, 255, 255, 127);
+		imagefill($fullsize, 0, 0, $transparent);
+
+		imagecopyresized($fullsize, $preview_cloak, 0, 0, 0, 0, imagesx($fullsize), imagesy($fullsize), imagesx($preview_cloak), imagesy($preview_cloak));
+
+		imagedestroy($preview);
+		imagedestroy($preview_cloak);
+		imagedestroy($image);
+		imagedestroy($skin);
+
+		return $fullsize;
 	}
 }
 

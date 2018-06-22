@@ -19,7 +19,7 @@ class submodule
 {
 	private $core, $user, $l10n;
 
-	public function __construct(core$core)
+	public function __construct(core $core)
 	{
 		$this->core = $core;
 		$this->user = $core->user;
@@ -28,15 +28,6 @@ class submodule
 		if (!$this->user->is_auth || !$this->core->is_access('sys_adm_main')) {
 			$this->core->js_notify($this->l10n->gettext('error_403'));
 		}
-	}
-
-	private function get_theme($theme_cod_name)
-	{
-		$theme_root = MCR_ROOT . 'themes/' . $theme_cod_name . '/theme.php';
-
-		require_once $theme_root;
-
-		return $theme;
 	}
 
 	public function content()
@@ -51,7 +42,8 @@ class submodule
 						$theme = $this->get_theme($theme_cod_name);
 					}
 
-					echo json_encode($theme, JSON_UNESCAPED_UNICODE); exit;
+					echo json_encode($theme, JSON_UNESCAPED_UNICODE);
+					exit;
 					break;
 
 				case 'settheme':
@@ -59,17 +51,27 @@ class submodule
 
 					$this->core->cfg->main['s_theme'] = $theme_cod_name;
 
-					if(!$this->core->cfg->savecfg($this->core->cfg->main)){
+					if (!$this->core->cfg->savecfg($this->core->cfg->main)) {
 						$this->core->js_notify($this->l10n->gettext('set_e_cfg_save'), $this->l10n->gettext('error_message'), 2, null);
 					}
 
 					$this->core->js_notify(null, $this->l10n->gettext('error_success'), 2, null);
 					break;
 
-				default: break;
+				default:
+					break;
 			}
 		} else {
 			$this->core->js_notify($this->l10n->gettext('error_hack'));
 		}
+	}
+
+	private function get_theme($theme_cod_name)
+	{
+		$theme_root = MCR_ROOT . 'themes/' . $theme_cod_name . '/theme.php';
+
+		require_once $theme_root;
+
+		return $theme;
 	}
 }

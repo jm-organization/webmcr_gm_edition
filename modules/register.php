@@ -16,21 +16,28 @@ class module
 		$this->cfg = $core->cfg;
 		$this->l10n = $core->l10n;
 
-		$bc = [$this->l10n->gettext('module_register') => BASE_URL."?mode=register"];
+		$bc = [$this->l10n->gettext('module_register') => BASE_URL . "?mode=register"];
 		$this->core->bc = $this->core->gen_bc($bc);
 	}
 
-	private function regmain()
+	public function content()
 	{
-		if (!$this->core->is_access('sys_register')) {
-			$this->core->notify($this->l10n->gettext('error_message'), $this->l10n->gettext('reg_off_for_group'), 1, "?mode=403");
+		$this->core->header = $this->core->sp(MCR_THEME_MOD . "register/header.phtml");
+
+		$op = (isset($_GET['op'])) ? $_GET['op'] : false;
+
+		switch ($op) {
+
+			case 'accept':
+				$content = $this->accept();
+				break;
+
+			default:
+				$content = $this->regmain();
+				break;
 		}
 
-		if ($this->user->is_auth) {
-			$this->core->notify($this->l10n->gettext('error_message'), $this->l10n->gettext('auth_already'), 2, '?mode=403');
-		}
-
-		return $this->core->sp(MCR_THEME_PATH."modules/register/main.phtml");
+		return $content;
 	}
 
 	private function accept()
@@ -65,7 +72,8 @@ class module
 			"UPDATE `mcr_users`
 			SET `gid`='2', `ip_last`='{$this->user->ip}', `time_last`=NOW()
 			WHERE `id`='$uid' AND `gid`='1'"
-		)) {
+		)
+		) {
 			$this->core->notify($this->l10n->gettext('error_attention'), $this->l10n->gettext('error_sql_critical'), 1, "?mode=register");
 		}
 
@@ -75,27 +83,17 @@ class module
 		$this->core->notify($this->l10n->gettext('error_success'), $this->l10n->gettext('registration_accept'), 3);
 	}
 
-	public function content()
+	private function regmain()
 	{
-
-		$this->core->header = $this->core->sp(MCR_THEME_MOD."register/header.phtml");
-
-		$op = (isset($_GET['op']))
-			? $_GET['op']
-			: false;
-
-		switch ($op) {
-
-			case 'accept':
-				$content = $this->accept();
-				break;
-
-			default:
-				$content = $this->regmain();
-				break;
+		if (!$this->core->is_access('sys_register')) {
+			$this->core->notify($this->l10n->gettext('error_message'), $this->l10n->gettext('reg_off_for_group'), 1, "?mode=403");
 		}
 
-		return $content;
+		if ($this->user->is_auth) {
+			$this->core->notify($this->l10n->gettext('error_message'), $this->l10n->gettext('auth_already'), 2, '?mode=403');
+		}
+
+		return $this->core->sp(MCR_THEME_PATH . "modules/register/main.phtml");
 	}
 }
 

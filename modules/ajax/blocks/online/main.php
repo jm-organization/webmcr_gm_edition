@@ -15,7 +15,7 @@ class submodule
 		$this->db = $core->db;
 		$this->cfg = $core->cfg;
 
-		include_once MCR_CONF_PATH.'blocks/online.php';
+		include_once MCR_CONF_PATH . 'blocks/online.php';
 		$this->core->cfg_b = $cfg;
 	}
 
@@ -36,8 +36,8 @@ class submodule
 
 		$expire = $time - $this->core->cfg_b['TIMEOUT'];
 
-		$query = $this->db->query(
-			"SELECT 
+		$query = $this->db->query("
+			SELECT 
 				`o`.online, 
 				
 				`u`.`login`, `u_id`.`login` AS `uidlogin`,
@@ -59,11 +59,11 @@ class submodule
 				
 			WHERE `o`.`date_update`>='$expire'
 			
-			GROUP BY `o`.id, `u`.`login`"
-		);
+			GROUP BY `o`.id, `u`.`login`
+		");
 
 		if (!$query) {
-			$this->core->js_notify($this->core->l10n->gettext('error_sql_critical').' '.$this->db->error());
+			$this->core->js_notify($this->core->l10n->gettext('error_sql_critical') . ' ' . $this->db->error());
 		}
 
 		if ($this->db->num_rows($query) <= 0) {
@@ -80,13 +80,9 @@ class submodule
 			$result['users']++;
 
 			$color = $this->db->HSC($ar['gcolor']);
-			$color = (!empty($ar['guidcolor']))
-				? $this->db->HSC($ar['guidcolor'])
-				: $color;
+			$color = (!empty($ar['guidcolor'])) ? $this->db->HSC($ar['guidcolor']) : $color;
 
-			$login = (!is_null($ar['uidlogin']))
-				? $this->db->HSC($ar['uidlogin'])
-				: $this->db->HSC($ar['login']);
+			$login = (!is_null($ar['uidlogin'])) ? $this->db->HSC($ar['uidlogin']) : $this->db->HSC($ar['login']);
 
 			$result['list'][] = $this->core->colorize($login, $color);
 		}

@@ -22,84 +22,42 @@ class submodule
 
 		$bc = [
 			$this->l10n->gettext('module_admin-panel') => ADMIN_URL,
-			$this->l10n->gettext('info') => ADMIN_URL."&do=statics"
+			$this->l10n->gettext('info') => ADMIN_URL . "&do=statics"
 		];
 		$this->core->bc = $this->core->gen_bc($bc);
 
-		$this->core->header .= $this->core->sp(MCR_THEME_MOD."admin/info/header.phtml");
+		$this->core->header .= $this->core->sp(MCR_THEME_MOD . "admin/info/header.phtml");
 	}
 
-	private function main()
+	public function content()
 	{
-		$this->core->header .= $this->core->sp(MCR_THEME_MOD."admin/info/header-log-viewer.phtml");
+		$op = (isset($_GET['op'])) ? $_GET['op'] : 'list';
 
-		$log_files = [];
+		switch ($op) {
+			case 'stats':
+				$content = $this->stats();
+				break;
+			case 'extensions':
+				$content = $this->extensions();
+				break;
+			case 'update_center':
+				$content = $this->update_center();
+				break;
+			case 'delete':
+				$content = '';
+				$this->delete();
+				break;
+			case 'download':
+				$content = '';
+				$this->download();
+				break;
 
-		if (file_exists(MCR_ROOT . '/data/logs/')) {
-			$log_files = scandir(MCR_ROOT . '/data/logs/');
-
-			$log_files = array_flip($log_files);
-			unset($log_files['.']);
-			unset($log_files['..']);
-			unset($log_files['.gitignore']);
-			unset($log_files['.htaccess']);
-			$log_files = array_flip($log_files);
+			default:
+				$content = $this->main();
+				break;
 		}
 
-		return $this->core->sp(MCR_THEME_MOD."admin/info/main.phtml", [
-			"LOGS" => $log_files
-		]);
-	}
-
-	private function users_stats()
-	{
-		$query = $this->db->query(
-			"SELECT 
-				`g`.`id`, `g`.`title`, COUNT(`u`.`id`) AS `count`
-			FROM `mcr_groups` AS `g`
-			
-			LEFT JOIN `mcr_users` AS `u`
-				ON `u`.`gid`=`g`.`id`
-				
-			GROUP BY `g`.`id`"
-		);
-		if (!$query || $this->db->num_rows($query) <= 0) {
-			return null;
-		}
-
-		ob_start();
-
-		while ($ar = $this->db->fetch_assoc($query)) {
-
-			switch (intval($ar['id'])) {
-				case 0:
-					$class = 'error';
-					break;
-				case 1:
-					$class = 'warning';
-					break;
-				case 2:
-					$class = 'success';
-					break;
-				case 3:
-					$class = 'info';
-					break;
-
-				default:
-					$class = '';
-					break;
-			}
-
-			$data = [
-				"CLASS" => $class,
-				"TITLE" => $this->db->HSC($ar['title']),
-				"COUNT" => intval($ar['count'])
-			];
-
-			echo $this->core->sp(MCR_THEME_MOD."admin/info/group-id.phtml", $data);
-		}
-
-		return ob_get_clean();
+		return $content;
 	}
 
 	private function stats()
@@ -135,21 +93,75 @@ class submodule
 			"USERS_STATS" => $this->users_stats()
 		];
 
-		return $this->core->sp(MCR_THEME_MOD."admin/info/stats.phtml", $data);
+		return $this->core->sp(MCR_THEME_MOD . "admin/info/stats.phtml", $data);
+	}
+
+	private function users_stats()
+	{
+		$query = $this->db->query("
+			SELECT 
+				`g`.`id`, `g`.`title`, COUNT(`u`.`id`) AS `count`
+			FROM `mcr_groups` AS `g`
+			
+			LEFT JOIN `mcr_users` AS `u`
+				ON `u`.`gid`=`g`.`id`
+				
+			GROUP BY `g`.`id`
+		");
+
+		if (!$query || $this->db->num_rows($query) <= 0) {
+			return null;
+		}
+
+		ob_start();
+
+		while ($ar = $this->db->fetch_assoc($query)) {
+
+			switch (intval($ar['id'])) {
+				case 0:
+					$class = 'error';
+					break;
+				case 1:
+					$class = 'warning';
+					break;
+				case 2:
+					$class = 'success';
+					break;
+				case 3:
+					$class = 'info';
+					break;
+
+				default:
+					$class = '';
+					break;
+			}
+
+			$data = [
+				"CLASS" => $class,
+				"TITLE" => $this->db->HSC($ar['title']),
+				"COUNT" => intval($ar['count'])
+			];
+
+			echo $this->core->sp(MCR_THEME_MOD . "admin/info/group-id.phtml", $data);
+		}
+
+		return ob_get_clean();
 	}
 
 	private function extensions()
 	{
-		return $this->core->sp(MCR_THEME_MOD."admin/info/extensions.phtml");
+		return $this->core->sp(MCR_THEME_MOD . "admin/info/extensions.phtml");
 	}
 
-	private function update_center() {
-		$this->core->header .= $this->core->sp(MCR_THEME_MOD."admin/info/header-update-center.phtml");
+	private function update_center()
+	{
+		$this->core->header .= $this->core->sp(MCR_THEME_MOD . "admin/info/header-update-center.phtml");
 
-		return $this->core->sp(MCR_THEME_MOD."admin/info/update_center.phtml");
+		return $this->core->sp(MCR_THEME_MOD . "admin/info/update_center.phtml");
 	}
 
-	private function delete() {
+	private function delete()
+	{
 		if (file_exists(MCR_ROOT . '/data/logs/' . $_GET['file'])) {
 			unlink(MCR_ROOT . '/data/logs/' . $_GET['file']);
 
@@ -169,13 +181,14 @@ class submodule
 		}
 	}
 
-	private function download() {
+	private function download()
+	{
 		if (file_exists(MCR_ROOT . '/data/logs/' . $_GET['file'])) {
 			$file_content = file_get_contents(MCR_ROOT . '/data/logs/' . $_GET['file']);
 
 			header('Content-Description: File Transfer');
 			header('Content-Type: application/json');
-			header('Content-Disposition: attachment; filename='.$_GET['file']);
+			header('Content-Disposition: attachment; filename=' . $_GET['file']);
 			header('Content-Transfer-Encoding: binary');
 			header('Expires: 0');
 			header('Cache-Control: must-revalidate');
@@ -187,42 +200,33 @@ class submodule
 			exit;
 		} else {
 			$this->core->notify(
-				 $this->l10n->gettext('fm_file_not_found '),
-				 $this->l10n->gettext('fm_not_found_error '),
+				$this->l10n->gettext('fm_file_not_found '),
+				$this->l10n->gettext('fm_not_found_error '),
 				3,
 				'?mode=admin&do=info&op=main'
 			);
 		}
 	}
 
-	public function content()
+	private function main()
 	{
-		$op = (isset($_GET['op']))
-			? $_GET['op']
-			: 'list';
+		$this->core->header .= $this->core->sp(MCR_THEME_MOD . "admin/info/header-log-viewer.phtml");
 
-		switch ($op) {
-			case 'stats':
-				$content = $this->stats();
-				break;
-			case 'extensions':
-				$content = $this->extensions();
-				break;
-			case 'update_center':
-				$content = $this->update_center();
-				break;
-			case 'delete':
-				$content = ''; $this->delete();
-				break;
-			case 'download':
-				$content =''; $this->download();
-				break;
+		$log_files = [];
 
-			default:
-				$content = $this->main();
-				break;
+		if (file_exists(MCR_ROOT . '/data/logs/')) {
+			$log_files = scandir(MCR_ROOT . '/data/logs/');
+
+			$log_files = array_flip($log_files);
+			unset($log_files['.']);
+			unset($log_files['..']);
+			unset($log_files['.gitignore']);
+			unset($log_files['.htaccess']);
+			$log_files = array_flip($log_files);
 		}
 
-		return $content;
+		return $this->core->sp(MCR_THEME_MOD . "admin/info/main.phtml", [
+			"LOGS" => $log_files
+		]);
 	}
 }

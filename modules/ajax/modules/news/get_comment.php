@@ -30,8 +30,8 @@ class submodule
 		$id = intval(@$_POST['id']);
 		$nid = intval(@$_POST['nid']);
 
-		$query = $this->db->query(
-			"SELECT 
+		$query = $this->db->query("
+			SELECT 
 				`c`.text_bb, `c`.`data`, 
 				
 				`u`.`login`
@@ -40,8 +40,8 @@ class submodule
 			LEFT JOIN `mcr_users` AS `u`
 				ON `c`.uid=`u`.`id`
 				
-			WHERE `c`.nid='$nid' AND `c`.id='$id'"
-		);
+			WHERE `c`.nid='$nid' AND `c`.id='$id'
+		");
 
 		if (!$query) {
 			$this->core->js_notify($this->l10n->gettext('error_sql_critical'));

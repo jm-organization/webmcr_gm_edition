@@ -1,11 +1,15 @@
 <?php
 
-if(!defined("MCR")){ exit("Hacking Attempt!"); }
+if (!defined("MCR")) {
+	exit("Hacking Attempt!");
+}
 
-class module{
+class module
+{
 	private $core, $db, $user, $cfg, $l10n;
 
-	public function __construct(core $core){
+	public function __construct(core $core)
+	{
 		$this->core = $core;
 		$this->db = $core->db;
 		$this->user = $core->user;
@@ -29,23 +33,24 @@ class module{
 		return new hook($this->core);
 	}*/
 
-	public function content(){
+	public function content()
+	{
 		$ajax = (isset($_GET['do'])) ? $_GET['do'] : '';
 		//$hook = (isset($_GET['hook'])) ? $_GET['hook'] : '';
 		$path = str_replace('|', '/', $ajax);
 
-		if(!preg_match("/^[\w\|]+$/i", $ajax) || !file_exists(MCR_MODE_PATH.'ajax/'.$path.'.php')){
+		if (!preg_match("/^[\w\|]+$/i", $ajax) || !file_exists(MCR_MODE_PATH . 'ajax/' . $path . '.php')) {
 			$this->core->js_notify('Hacking Attempt!');
 		}
 
-		require_once(MCR_MODE_PATH.'ajax/'.$path.'.php');
+		require_once(MCR_MODE_PATH . 'ajax/' . $path . '.php');
 
 		if (!class_exists("submodule")) $this->core->js_notify(sprintf($this->l10n->gettext('class_not_found'), 'submodule'));
 
 		//$this->core->hook = $this->load_hook($hook);
 
 		$submodule = new submodule($this->core);
-		
+
 		if (!method_exists($submodule, "content")) $this->core->js_notify(sprintf($this->l10n->gettext('method_not_found'), 'content'));
 
 		return $submodule->content();

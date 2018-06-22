@@ -39,7 +39,8 @@ class module
 			SET `tmp`='$new_tmp', `time_last`=NOW()
 			WHERE `id`='{$this->user->id}'
 			LIMIT 1
-		")) {
+		")
+		) {
 			$this->core->notify($this->l10n->gettext('error_attention'), $this->l10n->gettext('error_sql_critical'));
 		}
 

@@ -1,93 +1,103 @@
 <?php
 
-if(!defined("MCR")){ exit("Hacking Attempt!"); }
+if (!defined("MCR")) {
+	exit("Hacking Attempt!");
+}
 
-function filter($var, $type, $opt=''){
-	if(!empty($opt)){ $opt = json_decode($opt, true); }
+function filter($var, $type, $opt = '')
+{
+	if (!empty($opt)) {
+		$opt = json_decode($opt, true);
+	}
 
-	switch($type){
+	switch ($type) {
 		case 'int':
 			return intval($var);
-		break;
+			break;
 
 
 		case 'float':
 			return floatval($var);
-		break;
+			break;
 
 
 		case 'bool':
 			return filter_var($var, FILTER_VALIDATE_BOOLEAN);
-		break;
+			break;
 
 
 		case 'hsc':
 			return htmlspecialchars($var);
-		break;
+			break;
 
 
 		case 'chars':
 			return preg_replace("/[^\w]+/i", "", $var);
-		break;
+			break;
 
 
 		case 'nums':
 			return preg_replace("/[^\d]+/", "", $var);
-		break;
+			break;
 
 
 		case 'email':
 			return preg_replace("/[^a-z0-9\-\@\.]+/i", "", $var);
-		break;
+			break;
 
 
 		case 'ipv4':
 			return preg_replace("/[^\d\.]+/", "", $var);
-		break;
+			break;
 
 
 		case 'domain':
 			return preg_replace("/[^a-z0-9\-\.]+/i", "", $var);
-		break;
+			break;
 
 
 		case 'string':
 			return preg_replace("/[\'\"\`\>\<\{\\\}\%]+/i", "", $var);
-		break;
+			break;
 
 
 		case 'num_array':
 			$new_array = array();
 
-			if(!is_array($var) || empty($array)){ return $new_array; }
+			if (!is_array($var) || empty($array)) {
+				return $new_array;
+			}
 
-			foreach($var as $key => $value){ $new_array[$key] = (@$opt['float']) ? floatval($value) : intval($value); }
+			foreach ($var as $key => $value) {
+				$new_array[$key] = (@$opt['float']) ? floatval($value) : intval($value);
+			}
 
 			return $new_array;
-		break;
+			break;
 
 
 		case 'more_than_zero':
-			if(is_array($var)){
-				foreach($var as $key => $val){
-					if(@$opt['float']){
-						$var[$key] = (floatval($var)<=0) ? 1 : floatval($var);
-					}else{
-						$var[$key] =(intval($var)<=0) ? 1 : intval($var);
+			if (is_array($var)) {
+				foreach ($var as $key => $val) {
+					if (@$opt['float']) {
+						$var[$key] = (floatval($var) <= 0) ? 1 : floatval($var);
+					} else {
+						$var[$key] = (intval($var) <= 0) ? 1 : intval($var);
 					}
 				}
 
 				return $var;
-			}else{
-				if(@$opt['float']){
-					return (floatval($var)<=0) ? 1 : floatval($var);
-				}else{
-					return (intval($var)<=0) ? 1 : intval($var);
+			} else {
+				if (@$opt['float']) {
+					return (floatval($var) <= 0) ? 1 : floatval($var);
+				} else {
+					return (intval($var) <= 0) ? 1 : intval($var);
 				}
 			}
-		break;
+			break;
 
-		default: return false;
+		default:
+			return false;
 	}
 }
 

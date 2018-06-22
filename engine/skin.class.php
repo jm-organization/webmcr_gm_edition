@@ -19,7 +19,7 @@ class skin
 		if (!is_writable(MCR_SKIN_PATH)) {
 			$this->core->notify($this->l10n->gettext('error_message'), $this->l10n->gettext('skin_folder_permission_error'), 2, '?mode=profile');
 		}
-		if (!is_writable(MCR_SKIN_PATH.'interface/')) {
+		if (!is_writable(MCR_SKIN_PATH . 'interface/')) {
 			$this->core->notify($this->l10n->gettext('error_message'), $this->l10n->gettext('skin_intf_permission_error'), 2, '?mode=profile');
 		}
 
@@ -87,7 +87,7 @@ class skin
 			$this->core->notify($this->l10n->gettext('error_message'), $this->l10n->gettext('error_skin_isnt_png'), 2, '?mode=profile');
 		}
 
-		imagepng($new_head, MCR_SKIN_PATH.'interface/'.$this->user->login.'_mini.png');
+		imagepng($new_head, MCR_SKIN_PATH . 'interface/' . $this->user->login . '_mini.png');
 		// Create and save head of skin -
 
 		// Create and save preview of skin +
@@ -97,13 +97,53 @@ class skin
 			$this->core->notify($this->l10n->gettext('error_message'), $this->l10n->gettext('error_skin_isnt_png'), 2, '?mode=profile');
 		}
 
-		imagepng($new_preview, MCR_SKIN_PATH.'interface/'.$this->user->login.'.png');
+		imagepng($new_preview, MCR_SKIN_PATH . 'interface/' . $this->user->login . '.png');
 		// Create and save preview of skin -
 
-		if (!file_exists(MCR_SKIN_PATH.$this->user->login.'.png') && !copy($tmp, MCR_SKIN_PATH.$this->user->login.'.png')) {
+		if (!file_exists(MCR_SKIN_PATH . $this->user->login . '.png') && !copy($tmp, MCR_SKIN_PATH . $this->user->login . '.png')) {
 			$this->core->notify("", $this->l10n->gettext('error_skin_save'), 2, '?mode=profile');
 		}
 		// Save new skin -
+	}
+
+	/**
+	 * Валидация формата изображения
+	 *
+	 * @param $tmp - путь к изображению
+	 *
+	 * @return boolean
+	 * - Проверяет права на максимальный размер изображения
+	 */
+	public function is_skin_valid($size)
+	{
+		$formats = $this->core->get_array_formats();
+
+		$max_ratio = $this->user->permissions->sys_max_ratio;
+
+		if ($max_ratio <= 0) {
+			return false;
+		}
+
+		$width = $formats[$max_ratio]["skin_w"];
+		$height = $formats[$max_ratio]["skin_h"];
+
+		if ($size[0] > $width || $size[1] > $height) {
+			return false;
+		}
+
+		if ($width < 64 || $height < 32) {
+			return false;
+		}
+
+		if ($width % $height != 0) {
+			return false;
+		}
+
+		if ($size[0] / $size[1] != 2 && $size[0] / $size[1] != 1) {
+			return false;
+		}
+
+		return true;
 	}
 
 	public function create_head($path, $multiple = 1, $size = 151)
@@ -174,45 +214,5 @@ class skin
 		imagedestroy($image);
 
 		return $fullsize;
-	}
-
-	/**
-	 * Валидация формата изображения
-	 *
-	 * @param $tmp - путь к изображению
-	 *
-	 * @return boolean
-	 * - Проверяет права на максимальный размер изображения
-	 */
-	public function is_skin_valid($size)
-	{
-		$formats = $this->core->get_array_formats();
-
-		$max_ratio = $this->user->permissions->sys_max_ratio;
-
-		if ($max_ratio <= 0) {
-			return false;
-		}
-
-		$width = $formats[$max_ratio]["skin_w"];
-		$height = $formats[$max_ratio]["skin_h"];
-
-		if ($size[0] > $width || $size[1] > $height) {
-			return false;
-		}
-
-		if ($width < 64 || $height < 32) {
-			return false;
-		}
-
-		if ($width % $height != 0) {
-			return false;
-		}
-
-		if ($size[0] / $size[1] != 2 && $size[0] / $size[1] != 1) {
-			return false;
-		}
-
-		return true;
 	}
 }

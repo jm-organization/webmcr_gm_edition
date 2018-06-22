@@ -1,21 +1,28 @@
 <?php
 
-if(!defined("MCR")){ exit("Hacking Attempt!"); }
+if (!defined("MCR")) {
+	exit("Hacking Attempt!");
+}
 
-class module{
+class module
+{
 	private $install, $cfg, $lng;
 
-	public function __construct($install){
+	public function __construct($install)
+	{
 		$this->install = $install;
 		$this->cfg = $install->cfg;
 		$this->lng = $install->lng;
 
-		$this->install->title = $this->lng['mod_name'].' — '.$this->lng['reinstall'];
+		$this->install->title = $this->lng['mod_name'] . ' — ' . $this->lng['reinstall'];
 	}
 
-	public function content(){
-		if($_SERVER['REQUEST_METHOD']=='POST'){
-			if (intval(@$_POST['type']) != 1){ $this->install->notify(); }
+	public function content()
+	{
+		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+			if (intval(@$_POST['type']) != 1) {
+				$this->install->notify();
+			}
 
 			$tables = array(
 				'mcr_users_comments',
@@ -42,15 +49,15 @@ class module{
 				'mcr_groups'
 			);
 
-			require_once(DIR_ROOT.'engine/db/'.$this->cfg['db']['backend'].'.class.php');
+			require_once(DIR_ROOT . 'engine/db/' . $this->cfg['db']['backend'] . '.class.php');
 
 			$db = new db($this->cfg['db']['host'], $this->cfg['db']['user'], $this->cfg['db']['pass'], $this->cfg['db']['base'], $this->cfg['db']['port']);
 			$error = $db->error();
 
-			if(empty($error)){
-				$tables = '`'.implode('`, `', $tables).'`';
+			if (empty($error)) {
+				$tables = '`' . implode('`, `', $tables) . '`';
 				if (!$db->query("DROP TABLE IF EXISTS $tables")) {
-					$this->install->notify($this->lng['e_sql'].mysqli_error($db->obj).' #'.__LINE__, $this->lng['e_msg'], 'install/?do=reinstall');
+					$this->install->notify($this->lng['e_sql'] . mysqli_error($db->obj) . ' #' . __LINE__, $this->lng['e_msg'], 'install/?do=reinstall');
 				}
 
 				$this->cfg['main']['install'] = false;

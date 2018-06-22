@@ -27,6 +27,107 @@ class submodule
 		$this->l10n = $core->l10n;
 	}
 
+	public function content()
+	{
+		if ($this->is_post()->status) {
+			if ($this->is_unauth()->status) {
+				if ($this->is_agree_with_rules()->status) {
+					$raw_login = $this->db->safesql(@$_POST['login']);
+					$raw_email = $this->db->safesql(@$_POST['email']);
+					$raw_password = @$_POST['password'];
+					$tmp = $this->db->safesql($this->core->random(16));
+					$salt = $this->db->safesql($this->core->random());
+					$ip = $this->user->ip;
+					$gid = ($this->cfg->main['reg_accept'])
+						? 1
+						: 2;
+					$gender_enum = [
+						'no_set',
+						'male',
+						'female'
+					];
+
+					$login = ($this->is_vl($raw_login)->status) ? ($this->is_vl($raw_login)->data) : false;
+					$email = ($this->is_ve($raw_email)->status) ? ($this->is_ve($raw_email)->data) : false;
+					$password = ($this->is_vp($raw_password)->status)
+						? ($this->db->safesql($this->core->gen_password($raw_password, $salt)))
+						: false;
+					$gender = $gender_enum[intval($_POST['gender'])];
+
+					if ($login) {
+						if ($email) {
+							if ($password) {
+								if ($this->is_captcha()) {
+									$time = time();
+
+									if (!$this->db->query(
+										"INSERT INTO `mcr_users` (
+						`gid`, `login`, `email`, `password`, `uuid`,
+						`salt`, `tmp`, `ip_last`, `time_create`, `gender`
+					) VALUES (
+						'$gid', '$login', '$email', '$password', UNHEX(REPLACE(UUID(), '-', '')), 
+						'$salt', '$tmp', '$ip', NOW(), '$gender'
+					)"
+									)
+									) {
+										// Говорим юзверю, что такой логин, мыло или ююайди уже занят
+										$this->notify($this->l10n->gettext('login-email_exist_error'));
+									}
+
+									$id = $this->db->insert_id();
+
+									if (!$this->db->query(
+										"INSERT INTO `mcr_iconomy` (`login`) 
+					VALUES ( '$login')"
+									)
+									) {
+										$this->notify($this->l10n->gettext('error_sql_critical'));
+									}
+
+									// Лог действия
+									$this->db->actlog($this->l10n->gettext('log_reg'), $id);
+
+									if ($this->cfg->main['reg_accept']) {
+										$data_mail = [
+											"LINK" => $this->cfg->main['s_root_full'] . BASE_URL . '?mode=register&op=accept&key=' . $id . '_' . md5($salt),
+											"SITENAME" => $this->cfg->main['s_name'],
+											"SITEURL" => $this->cfg->main['s_root_full'] . BASE_URL,
+											"LNG" => $this->l10n,
+										];
+
+										$message = $this->core->sp(MCR_THEME_PATH . "modules/register/body.mail.html", $data_mail);
+
+										if (!$this->core->send_mail($email, $this->l10n->gettext('msg_title'), $message)) {
+											$this->core->js_notify($this->l10n->gettext('e_mail_send'));
+										}
+
+										$this->core->js_notify('', $this->l10n->gettext('sended_mail'), true);
+									}
+
+									$this->core->js_notify($this->l10n->gettext('error_success'), $this->l10n->gettext('registratin_success'), true);
+								} else {
+									$this->notify($this->is_captcha()->error);
+								}
+							} else {
+								$this->notify($this->is_vp($raw_password)->error);
+							}
+						} else {
+							$this->notify($this->is_ve($raw_email)->error);
+						}
+					} else {
+						$this->notify($this->is_vl($raw_login)->error);
+					}
+				} else {
+					$this->notify($this->is_agree_with_rules()->error);
+				}
+			} else {
+				$this->notify($this->is_auth()->error);
+			}
+		} else {
+			$this->notify($this->is_post()->error);
+		}
+	}
+
 	private function is_post()
 	{
 		if ($_SERVER['REQUEST_METHOD'] != 'POST') {
@@ -149,94 +250,5 @@ class submodule
 	private function notify($message)
 	{
 		$this->core->js_notify($message);
-	}
-
-	public function content()
-	{
-		if ($this->is_post()->status) {
-		if ($this->is_unauth()->status) {
-		if ($this->is_agree_with_rules()->status) {
-			$raw_login = $this->db->safesql(@$_POST['login']);
-			$raw_email = $this->db->safesql(@$_POST['email']);
-			$raw_password = @$_POST['password'];
-			$tmp = $this->db->safesql($this->core->random(16));
-			$salt = $this->db->safesql($this->core->random());
-			$ip = $this->user->ip;
-			$gid = ($this->cfg->main['reg_accept'])
-				? 1
-				: 2;
-			$gender_enum = [
-				'no_set',
-				'male',
-				'female'
-			];
-
-			$login = ($this->is_vl($raw_login)->status)
-				? ($this->is_vl($raw_login)->data)
-				: false;
-			$email = ($this->is_ve($raw_email)->status)
-				? ($this->is_ve($raw_email)->data)
-				: false;
-			$password = ($this->is_vp($raw_password)->status)
-				? ($this->db->safesql($this->core->gen_password($raw_password, $salt)))
-				: false;
-			$gender = $gender_enum[intval($_POST['gender'])];
-
-			if ($login) {
-			if ($email) {
-			if ($password) {
-			if ($this->is_captcha()) {
-				$time = time();
-
-				if (!$this->db->query(
-					"INSERT INTO `mcr_users` (
-						`gid`, `login`, `email`, `password`, `uuid`,
-						`salt`, `tmp`, `ip_last`, `time_create`, `gender`
-					) VALUES (
-						'$gid', '$login', '$email', '$password', UNHEX(REPLACE(UUID(), '-', '')), 
-						'$salt', '$tmp', '$ip', NOW(), '$gender'
-					)"
-				)) {
-					// Говорим юзверю, что такой логин, мыло или ююайди уже занят
-					$this->notify($this->l10n->gettext('login-email_exist_error'));
-				}
-
-				$id = $this->db->insert_id();
-
-				if (!$this->db->query(
-					"INSERT INTO `mcr_iconomy` (`login`) 
-					VALUES ( '$login')"
-				)) {
-					$this->notify($this->l10n->gettext('error_sql_critical'));
-				}
-
-				// Лог действия
-				$this->db->actlog($this->l10n->gettext('log_reg'), $id);
-
-				if ($this->cfg->main['reg_accept']) {
-					$data_mail = [
-						"LINK" => $this->cfg->main['s_root_full'].BASE_URL.'?mode=register&op=accept&key='.$id.'_'.md5($salt),
-						"SITENAME" => $this->cfg->main['s_name'],
-						"SITEURL" => $this->cfg->main['s_root_full'].BASE_URL,
-						"LNG" => $this->l10n,
-					];
-
-					$message = $this->core->sp(MCR_THEME_PATH."modules/register/body.mail.html", $data_mail);
-
-					if (!$this->core->send_mail($email, $this->l10n->gettext('msg_title'), $message)) {
-						$this->core->js_notify($this->l10n->gettext('e_mail_send'));
-					}
-
-					$this->core->js_notify('', $this->l10n->gettext('sended_mail'), true);
-				}
-
-				$this->core->js_notify($this->l10n->gettext('error_success'), $this->l10n->gettext('registratin_success'), true);
-			} else { $this->notify($this->is_captcha()->error); }
-			} else { $this->notify($this->is_vp($raw_password)->error); }
-			} else { $this->notify($this->is_ve($raw_email)->error); }
-			} else { $this->notify($this->is_vl($raw_login)->error); }
-		} else { $this->notify($this->is_agree_with_rules()->error); }
-		} else { $this->notify($this->is_auth()->error); }
-		} else { $this->notify($this->is_post()->error); }
 	}
 }

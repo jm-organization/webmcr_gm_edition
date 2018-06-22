@@ -1,20 +1,25 @@
 <?php
 
-if(!defined("MCR")){ exit("Hacking Attempt!"); }
+if (!defined("MCR")) {
+	exit("Hacking Attempt!");
+}
 
-class block_profile{
+class block_profile
+{
 	private $core, $user;
 
-	public function __construct(core $core){
+	public function __construct(core $core)
+	{
 		$this->core = $core;
 		$this->user = $core->user;
 	}
 
-	public function content(){
+	public function content()
+	{
 		$authfile = (!$this->user->is_auth) ? "unauth" : "auth";
 
-		$this->core->header .= $this->core->sp(MCR_THEME_PATH."blocks/profile/header.phtml");
+		$this->core->header .= $this->core->sp(MCR_THEME_PATH . "blocks/profile/header.phtml");
 
-		return $this->core->sp(MCR_THEME_PATH."blocks/profile/$authfile.phtml");
+		return $this->core->sp(MCR_THEME_PATH . "blocks/profile/$authfile.phtml");
 	}
 }

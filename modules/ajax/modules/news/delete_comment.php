@@ -46,7 +46,7 @@ class submodule
 		// Последнее обновление пользователя
 		$this->db->update_user($this->user);
 		// Лог действия
-		$this->db->actlog($this->l10n->gettext('log_com_del')." #$id", $this->user->id);
+		$this->db->actlog($this->l10n->gettext('log_com_del') . " #$id", $this->user->id);
 
 		$this->core->js_notify($this->l10n->gettext('com_del_success'), $this->l10n->gettext('error_success'), true);
 	}

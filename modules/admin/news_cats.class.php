@@ -22,100 +22,162 @@ class submodule
 
 		$bc = [
 			$this->l10n->gettext('module_admin-panel') => ADMIN_URL,
-			$this->l10n->gettext('categories') => ADMIN_URL."&do=news_cats"
+			$this->l10n->gettext('categories') => ADMIN_URL . "&do=news_cats"
 		];
 
 		$this->core->bc = $this->core->gen_bc($bc);
 
-		$this->core->header .= $this->core->sp(MCR_THEME_MOD."admin/news_cats/header.phtml");
+		$this->core->header .= $this->core->sp(MCR_THEME_MOD . "admin/news_cats/header.phtml");
 	}
 
-	private function cats_array()
+	public function content()
 	{
-		$start = $this->core->pagination($this->cfg->pagin['adm_news_cats'], 0, 0); // Set start pagination
-		$end = $this->cfg->pagin['adm_news_cats']; // Set end pagination
+		$op = (isset($_GET['op'])) ? $_GET['op'] : 'list';
 
-		$where = "";
-		$sort = "id";
-		$sortby = "DESC";
+		switch ($op) {
+			case 'add':
+				$content = $this->add();
+				break;
+			case 'edit':
+				$content = $this->edit();
+				break;
+			case 'delete':
+				$this->delete();
+				break;
 
-		if (isset($_GET['search']) && !empty($_GET['search'])) {
-			$search = $this->db->safesql($_GET['search']);
-			$where = "WHERE title LIKE '%$search%'";
+			default:
+				$content = $this->cats_list();
+				break;
 		}
 
-		if (isset($_GET['sort']) && !empty($_GET['sort'])) {
-			$expl = explode(' ', $_GET['sort']);
+		return $content;
+	}
 
-			$sortby = ($expl[0] == 'asc') ? "ASC" : "DESC";
+	private function add()
+	{
+		if (!$this->core->is_access('sys_adm_news_cats_add')) {
+			$this->core->notify($this->l10n->gettext('error_message'), $this->l10n->gettext('error_403'), 2, '?mode=admin&do=news_cats');
+		}
 
-			if (@$expl[1] == 'title') {
-				$sort = "title";
+		$bc = [
+			$this->l10n->gettext('module_admin-panel') => ADMIN_URL . "",
+			$this->l10n->gettext('categories') => ADMIN_URL . "&do=news_cats",
+			$this->l10n->gettext('cn_add') => ADMIN_URL . "&do=news_cats&op=add",
+		];
+		$this->core->bc = $this->core->gen_bc($bc);
+
+		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+			$title = $this->db->safesql(@$_POST['title']);
+			$text = $this->db->safesql(@$_POST['text']);
+
+			$new_data = [
+				"time_create" => time(),
+				"time_last" => time(),
+				"user" => $this->user->login
+			];
+
+			$new_data = $this->db->safesql(json_encode($new_data));
+
+			$insert = $this->db->query("
+				INSERT INTO `mcr_news_cats`
+					(title, description, `data`)
+				VALUES
+					('$title', '$text', '$new_data')
+			");
+			if (!$insert) {
+				$this->core->notify($this->l10n->gettext('error_message'), $this->l10n->gettext('error_sql_critical'), 2, '?mode=admin&do=news_cats');
 			}
+
+			$id = $this->db->insert_id();
+
+			// Последнее обновление пользователя
+			$this->db->update_user($this->user);
+
+			// Лог действия
+			$this->db->actlog($this->l10n->gettext('log_add_cn') . " #$id " . $this->l10n->gettext('log_cn'), $this->user->id);
+
+			$this->core->notify($this->l10n->gettext('error_success'), $this->l10n->gettext('cn_add_success'), 3, '?mode=admin&do=news_cats');
 		}
 
-		$query = $this->db->query(
-			"SELECT
-				id, title, `data`
+		$data = [
+			"PAGE" => $this->l10n->gettext('cn_add_page_name'),
+			"TITLE" => "",
+			"TEXT" => "",
+			"BUTTON" => $this->l10n->gettext('save')
+		];
+
+		return $this->core->sp(MCR_THEME_MOD . "admin/news_cats/cat-form.phtml", $data);
+	}
+
+	private function edit()
+	{
+		if (!$this->core->is_access('sys_adm_news_cats_edit')) {
+			$this->core->notify($this->l10n->gettext('error_message'), $this->l10n->gettext('error_403'), 2, '?mode=admin&do=news_cats');
+		}
+
+		$id = intval($_GET['id']);
+
+		$query = $this->db->query("
+			SELECT title, description, `data`
 			FROM `mcr_news_cats`
-			
-			$where
-			
-			ORDER BY $sort $sortby
-			
-			LIMIT $start, $end"
-		);
+			WHERE id='$id'
+		");
 
 		if (!$query || $this->db->num_rows($query) <= 0) {
-			return $this->core->sp(MCR_THEME_MOD."admin/news_cats/cat-none.phtml");
+			$this->core->notify($this->l10n->gettext('error_message'), $this->l10n->gettext('error_sql_critical'), 2, '?mode=admin&do=news_cats');
 		}
 
-		ob_start();
+		$ar = $this->db->fetch_assoc($query);
 
-		while ($ar = $this->db->fetch_assoc($query)) {
+		$bc = [
+			$this->l10n->gettext('module_admin-panel') => ADMIN_URL . "",
+			$this->l10n->gettext('categories') => ADMIN_URL . "&do=news_cats",
+			$this->l10n->gettext('cn_edit') => ADMIN_URL . "&do=news_cats&op=edit&id=$id",
+		];
 
-			$page_data = [
-				"ID" => intval($ar['id']),
-				"TITLE" => $this->db->HSC($ar['title']),
-				"DATA" => json_decode($ar['data'])
+		$this->core->bc = $this->core->gen_bc($bc);
+
+		$data = json_decode($ar['data']);
+
+		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+			$title = $this->db->safesql(@$_POST['title']);
+			$text = $this->db->safesql(@$_POST['text']);
+
+			$new_data = [
+				"time_create" => $data->time_create,
+				"time_last" => time(),
+				"user" => $data->user
 			];
 
-			echo $this->core->sp(MCR_THEME_MOD."admin/news_cats/cat-id.phtml", $page_data);
+			$new_data = $this->db->safesql(json_encode($new_data));
+
+			$update = $this->db->query("
+				UPDATE `mcr_news_cats`
+				SET title='$title', description='$text', `data`='$new_data'
+				WHERE id='$id'
+			");
+
+			if (!$update) {
+				$this->core->notify($this->l10n->gettext('error_message'), $this->l10n->gettext('error_sql_critical'), 2, '?mode=admin&do=news_cats&op=edit&id=' . $id);
+			}
+
+			// Последнее обновление пользователя
+			$this->db->update_user($this->user);
+
+			// Лог действия
+			$this->db->actlog($this->l10n->gettext('log_edit_cn') . " #$id " . $this->l10n->gettext('log_cn'), $this->user->id);
+
+			$this->core->notify($this->l10n->gettext('error_success'), $this->l10n->gettext('cn_edit_success'), 3, '?mode=admin&do=news_cats&op=edit&id=' . $id);
 		}
 
-		return ob_get_clean();
-	}
+		$data = [
+			"PAGE" => $this->l10n->gettext('cn_edit_page_name'),
+			"TITLE" => $this->db->HSC($ar['title']),
+			"TEXT" => $this->db->HSC($ar['description']),
+			"BUTTON" => $this->l10n->gettext('save')
+		];
 
-	private function cats_list()
-	{
-		$sql = "SELECT COUNT(*) FROM `mcr_news_cats`";
-		$page = "?mode=admin&do=news_cats";
-
-		if (isset($_GET['search']) && !empty($_GET['search'])) {
-			$search = $this->db->safesql($_GET['search']);
-			$sql = "SELECT COUNT(*) FROM `mcr_news_cats` WHERE title LIKE '%$search%'";
-			$search = $this->db->HSC($_GET['search']);
-			$page .= "&search=$search";
-		}
-
-		if (isset($_GET['sort']) && !empty($_GET['sort'])) {
-			$page .= '&sort='.$this->db->HSC(urlencode($_GET['sort']));
-		}
-
-		$query = $this->db->query($sql);
-
-		if ($query) {
-			$ar = $this->db->fetch_array($query);
-
-			$data = [
-				"PAGINATION" => $this->core->pagination($this->cfg->pagin['adm_news_cats'], $page.'&pid=', $ar[0]),
-				"CATEGORIES" => $this->cats_array()
-			];
-
-			return $this->core->sp(MCR_THEME_MOD."admin/news_cats/cat-list.phtml", $data);
-		}
-
-		exit("SQL Error");
+		return $this->core->sp(MCR_THEME_MOD . "admin/news_cats/cat-form.phtml", $data);
 	}
 
 	private function delete()
@@ -147,154 +209,97 @@ class submodule
 		// Последнее обновление пользователя
 		$this->db->update_user($this->user);
 		// Лог действия
-		$this->db->actlog($this->l10n->gettext('log_del_cn')." $list ".$this->l10n->gettext('log_cn'), $this->user->id);
+		$this->db->actlog($this->l10n->gettext('log_del_cn') . " $list " . $this->l10n->gettext('log_cn'), $this->user->id);
 
 		$this->core->notify($this->l10n->gettext('error_success'), sprintf($this->l10n->gettext('elements_deleted'), $count), 3, '?mode=admin&do=news_cats');
 	}
 
-	private function add()
+	private function cats_list()
 	{
-		if (!$this->core->is_access('sys_adm_news_cats_add')) {
-			$this->core->notify($this->l10n->gettext('error_message'), $this->l10n->gettext('error_403'), 2, '?mode=admin&do=news_cats');
+		$sql = "SELECT COUNT(*) FROM `mcr_news_cats`";
+		$page = "?mode=admin&do=news_cats";
+
+		if (isset($_GET['search']) && !empty($_GET['search'])) {
+			$search = $this->db->safesql($_GET['search']);
+			$sql = "SELECT COUNT(*) FROM `mcr_news_cats` WHERE title LIKE '%$search%'";
+			$search = $this->db->HSC($_GET['search']);
+			$page .= "&search=$search";
 		}
 
-		$bc = [
-			$this->l10n->gettext('module_admin-panel') => ADMIN_URL."",
-			$this->l10n->gettext('categories') => ADMIN_URL."&do=news_cats",
-			$this->l10n->gettext('cn_add') => ADMIN_URL."&do=news_cats&op=add",
-		];
-		$this->core->bc = $this->core->gen_bc($bc);
+		if (isset($_GET['sort']) && !empty($_GET['sort'])) {
+			$page .= '&sort=' . $this->db->HSC(urlencode($_GET['sort']));
+		}
 
-		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-			$title = $this->db->safesql(@$_POST['title']);
-			$text = $this->db->safesql(@$_POST['text']);
+		$query = $this->db->query($sql);
 
-			$new_data = [
-				"time_create" => time(),
-				"time_last" => time(),
-				"user" => $this->user->login
+		if ($query) {
+			$ar = $this->db->fetch_array($query);
+
+			$data = [
+				"PAGINATION" => $this->core->pagination($this->cfg->pagin['adm_news_cats'], $page . '&pid=', $ar[0]),
+				"CATEGORIES" => $this->cats_array()
 			];
 
-			$new_data = $this->db->safesql(json_encode($new_data));
-
-			$insert = $this->db->query("INSERT INTO `mcr_news_cats`
-											(title, description, `data`)
-										VALUES
-											('$title', '$text', '$new_data')");
-			if (!$insert) {
-				$this->core->notify($this->l10n->gettext('error_message'), $this->l10n->gettext('error_sql_critical'), 2, '?mode=admin&do=news_cats');
-			}
-
-			$id = $this->db->insert_id();
-
-			// Последнее обновление пользователя
-			$this->db->update_user($this->user);
-
-			// Лог действия
-			$this->db->actlog($this->l10n->gettext('log_add_cn')." #$id ".$this->l10n->gettext('log_cn'), $this->user->id);
-
-			$this->core->notify($this->l10n->gettext('error_success'), $this->l10n->gettext('cn_add_success'), 3, '?mode=admin&do=news_cats');
+			return $this->core->sp(MCR_THEME_MOD . "admin/news_cats/cat-list.phtml", $data);
 		}
 
-		$data = [
-			"PAGE" => $this->l10n->gettext('cn_add_page_name'),
-			"TITLE" => "",
-			"TEXT" => "",
-			"BUTTON" => $this->l10n->gettext('save')
-		];
-
-		return $this->core->sp(MCR_THEME_MOD."admin/news_cats/cat-form.phtml", $data);
+		exit("SQL Error");
 	}
 
-	private function edit()
+	private function cats_array()
 	{
-		if (!$this->core->is_access('sys_adm_news_cats_edit')) {
-			$this->core->notify($this->l10n->gettext('error_message'), $this->l10n->gettext('error_403'), 2, '?mode=admin&do=news_cats');
+		$start = $this->core->pagination($this->cfg->pagin['adm_news_cats'], 0, 0); // Set start pagination
+		$end = $this->cfg->pagin['adm_news_cats']; // Set end pagination
+
+		$where = "";
+		$sort = "id";
+		$sortby = "DESC";
+
+		if (isset($_GET['search']) && !empty($_GET['search'])) {
+			$search = $this->db->safesql($_GET['search']);
+			$where = "WHERE title LIKE '%$search%'";
 		}
 
-		$id = intval($_GET['id']);
+		if (isset($_GET['sort']) && !empty($_GET['sort'])) {
+			$expl = explode(' ', $_GET['sort']);
 
-		$query = $this->db->query("SELECT title, description, `data`
-									FROM `mcr_news_cats`
-									WHERE id='$id'");
+			$sortby = ($expl[0] == 'asc') ? "ASC" : "DESC";
+
+			if (@$expl[1] == 'title') {
+				$sort = "title";
+			}
+		}
+
+		$query = $this->db->query("
+			SELECT
+				id, title, `data`
+			FROM `mcr_news_cats`
+			
+			$where
+			
+			ORDER BY $sort $sortby
+			
+			LIMIT $start, $end
+		");
 
 		if (!$query || $this->db->num_rows($query) <= 0) {
-			$this->core->notify($this->l10n->gettext('error_message'), $this->l10n->gettext('error_sql_critical'), 2, '?mode=admin&do=news_cats');
+			return $this->core->sp(MCR_THEME_MOD . "admin/news_cats/cat-none.phtml");
 		}
 
-		$ar = $this->db->fetch_assoc($query);
+		ob_start();
 
-		$bc = [
-			$this->l10n->gettext('module_admin-panel') => ADMIN_URL."",
-			$this->l10n->gettext('categories') => ADMIN_URL."&do=news_cats",
-			$this->l10n->gettext('cn_edit') => ADMIN_URL."&do=news_cats&op=edit&id=$id",
-		];
+		while ($ar = $this->db->fetch_assoc($query)) {
 
-		$this->core->bc = $this->core->gen_bc($bc);
-
-		$data = json_decode($ar['data']);
-
-		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-			$title = $this->db->safesql(@$_POST['title']);
-			$text = $this->db->safesql(@$_POST['text']);
-
-			$new_data = [
-				"time_create" => $data->time_create,
-				"time_last" => time(),
-				"user" => $data->user
+			$page_data = [
+				"ID" => intval($ar['id']),
+				"TITLE" => $this->db->HSC($ar['title']),
+				"DATA" => json_decode($ar['data'])
 			];
 
-			$new_data = $this->db->safesql(json_encode($new_data));
-
-			$update = $this->db->query("UPDATE `mcr_news_cats`
-										SET title='$title', description='$text', `data`='$new_data'
-										WHERE id='$id'");
-
-			if (!$update) {
-				$this->core->notify($this->l10n->gettext('error_message'), $this->l10n->gettext('error_sql_critical'), 2, '?mode=admin&do=news_cats&op=edit&id='.$id);
-			}
-
-			// Последнее обновление пользователя
-			$this->db->update_user($this->user);
-
-			// Лог действия
-			$this->db->actlog($this->l10n->gettext('log_edit_cn')." #$id ".$this->l10n->gettext('log_cn'), $this->user->id);
-
-			$this->core->notify($this->l10n->gettext('error_success'), $this->l10n->gettext('cn_edit_success'), 3, '?mode=admin&do=news_cats&op=edit&id='.$id);
+			echo $this->core->sp(MCR_THEME_MOD . "admin/news_cats/cat-id.phtml", $page_data);
 		}
 
-		$data = [
-			"PAGE" => $this->l10n->gettext('cn_edit_page_name'),
-			"TITLE" => $this->db->HSC($ar['title']),
-			"TEXT" => $this->db->HSC($ar['description']),
-			"BUTTON" => $this->l10n->gettext('save')
-		];
-
-		return $this->core->sp(MCR_THEME_MOD."admin/news_cats/cat-form.phtml", $data);
-	}
-
-	public function content()
-	{
-
-		$op = (isset($_GET['op'])) ? $_GET['op'] : 'list';
-
-		switch ($op) {
-			case 'add':
-				$content = $this->add();
-				break;
-			case 'edit':
-				$content = $this->edit();
-				break;
-			case 'delete':
-				$this->delete();
-				break;
-
-			default:
-				$content = $this->cats_list();
-				break;
-		}
-
-		return $content;
+		return ob_get_clean();
 	}
 }
 

@@ -1,38 +1,47 @@
 <?php
 
-if(!defined("MCR")){ exit("Hacking Attempt!"); }
+if (!defined("MCR")) {
+	exit("Hacking Attempt!");
+}
 
-class module{
+class module
+{
 	private $install, $cfg, $lng;
 
-	public function __construct($install){
-		$this->install		= $install;
-		$this->cfg			= $install->cfg;
-		$this->lng			= $install->lng;
+	public function __construct($install)
+	{
+		$this->install = $install;
+		$this->cfg = $install->cfg;
+		$this->lng = $install->lng;
 
-		$this->install->title = $this->lng['mod_name'].' — '.$this->lng['step_3'];
+		$this->install->title = $this->lng['mod_name'] . ' — ' . $this->lng['step_3'];
 	}
 
-	public function content(){
-		if(!isset($_SESSION['step_2'])){ $this->install->notify('', '', 'install/?do=step_2'); }
-		if(isset($_SESSION['step_3'])){ $this->install->notify('', '', 'install/?do=step_4'); }
+	public function content()
+	{
+		if (!isset($_SESSION['step_2'])) {
+			$this->install->notify('', '', 'install/?do=step_2');
+		}
+		if (isset($_SESSION['step_3'])) {
+			$this->install->notify('', '', 'install/?do=step_4');
+		}
 
-		$_SESSION['fs_name']		= $this->cfg['main']['s_name'];
-		$_SESSION['fs_about']		= $this->cfg['main']['s_about'];
-		$_SESSION['fs_keywords']	= $this->cfg['main']['s_keywords'];
-		$_SESSION['fs_from']		= $this->cfg['mail']['from'];
-		$_SESSION['fs_from_name']	= $this->cfg['mail']['from_name'];
-		$_SESSION['fs_reply']		= $this->cfg['mail']['reply'];
-		$_SESSION['fs_reply_name']	= $this->cfg['mail']['reply_name'];
-		$_SESSION['fs_smtp']		= ($this->cfg['mail']['smtp']) ? 'selected' : '';
-		$_SESSION['fs_smtp_host']	= $this->cfg['mail']['smtp_host'];
-		$_SESSION['fs_smtp_user']	= $this->cfg['mail']['smtp_user'];
-		$_SESSION['fs_smtp_pass']	= $this->cfg['mail']['smtp_pass'];
-		$_SESSION['fs_smtp_tls']	= ($this->cfg['mail']['smtp_tls']) ? 'selected' : '';
+		$_SESSION['fs_name'] = $this->cfg['main']['s_name'];
+		$_SESSION['fs_about'] = $this->cfg['main']['s_about'];
+		$_SESSION['fs_keywords'] = $this->cfg['main']['s_keywords'];
+		$_SESSION['fs_from'] = $this->cfg['mail']['from'];
+		$_SESSION['fs_from_name'] = $this->cfg['mail']['from_name'];
+		$_SESSION['fs_reply'] = $this->cfg['mail']['reply'];
+		$_SESSION['fs_reply_name'] = $this->cfg['mail']['reply_name'];
+		$_SESSION['fs_smtp'] = ($this->cfg['mail']['smtp']) ? 'selected' : '';
+		$_SESSION['fs_smtp_host'] = $this->cfg['mail']['smtp_host'];
+		$_SESSION['fs_smtp_user'] = $this->cfg['mail']['smtp_user'];
+		$_SESSION['fs_smtp_pass'] = $this->cfg['mail']['smtp_pass'];
+		$_SESSION['fs_smtp_tls'] = ($this->cfg['mail']['smtp_tls']) ? 'selected' : '';
 
 		$time = time();
 
-		if($_SERVER['REQUEST_METHOD']=='POST'){
+		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 			$this->cfg['main']['s_name'] = $this->install->HSC(@$_POST['s_name']);
 
@@ -54,7 +63,7 @@ class module{
 
 			$this->cfg['mail']['reply_name'] = $this->install->HSC(@$_POST['reply_name']);
 
-			$this->cfg['mail']['smtp'] = (intval(@$_POST['smtp'])===1) ? true : false;
+			$this->cfg['mail']['smtp'] = (intval(@$_POST['smtp']) === 1) ? true : false;
 
 			$this->cfg['mail']['smtp_host'] = $this->install->HSC(@$_POST['smtp_host']);
 
@@ -62,19 +71,20 @@ class module{
 
 			$this->cfg['mail']['smtp_pass'] = $this->install->HSC(@$_POST['smtp_pass']);
 
-			$this->cfg['mail']['smtp_tls'] = (intval(@$_POST['smtp_tls'])===1) ? true : false;
+			$this->cfg['mail']['smtp_tls'] = (intval(@$_POST['smtp_tls']) === 1) ? true : false;
 
-			if(!$this->install->savecfg($this->cfg['main'], 'main.php', 'main')){
+			if (!$this->install->savecfg($this->cfg['main'], 'main.php', 'main')) {
 				$this->install->notify($this->lng['e_write'], $this->lng['e_msg'], 'install/?mode=finish');
 			}
 
-			if(!$this->install->savecfg($this->cfg['mail'], 'mail.php', 'mail')){
+			if (!$this->install->savecfg($this->cfg['mail'], 'mail.php', 'mail')) {
 				$this->install->notify($this->lng['e_write'], $this->lng['e_msg'], 'install/?mode=finish');
 			}
 
 			$_SESSION['step_3'] = true;
 
-			if(!($api = file_get_contents("http://api.webmcr.com/?do=install&domain=".$_SERVER['SERVER_NAME']))){ /* SUCCESS */ }
+			if (!($api = file_get_contents("http://api.webmcr.com/?do=install&domain=" . $_SERVER['SERVER_NAME']))) { /* SUCCESS */
+			}
 
 			$this->install->notify('', '', 'install/?do=step_4');
 

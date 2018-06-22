@@ -1,57 +1,66 @@
 <?php
 
-if(!defined("MCR")){ exit("Hacking Attempt!"); }
+if (!defined("MCR")) {
+	exit("Hacking Attempt!");
+}
 
-class module{
+class module
+{
 	private $install, $cfg, $lng;
 
-	public function __construct($install){
-		$this->install		= $install;
-		$this->cfg			= $install->cfg;
-		$this->lng			= $install->lng;
+	public function __construct($install)
+	{
+		$this->install = $install;
+		$this->cfg = $install->cfg;
+		$this->lng = $install->lng;
 
-		$this->install->title = $this->lng['mod_name'].' — '.$this->lng['step_1'];
+		$this->install->title = $this->lng['mod_name'] . ' — ' . $this->lng['step_1'];
 	}
 
-	public function content(){
-		if(!isset($_SESSION['start'])){ $this->install->notify('', '', 'install/'); }
-		if(isset($_SESSION['step_1'])){ $this->install->notify('', '', 'install/?do=step_2'); }
+	public function content()
+	{
+		if (!isset($_SESSION['start'])) {
+			$this->install->notify('', '', 'install/');
+		}
+		if (isset($_SESSION['step_1'])) {
+			$this->install->notify('', '', 'install/?do=step_2');
+		}
 
-		$_SESSION['f_host'] 	= (isset($_POST['host'])) ? $this->install->HSC($_POST['host']) : $this->cfg['db']['host'];
-		$_SESSION['f_port'] 	= (isset($_POST['port'])) ? intval($_POST['port']) : $this->cfg['db']['port'];
-		$_SESSION['f_base'] 	= (isset($_POST['base'])) ? $this->install->HSC($_POST['base']) : $this->cfg['db']['base'];
-		$_SESSION['f_user'] 	= (isset($_POST['user'])) ? $this->install->HSC($_POST['user']) : $this->cfg['db']['user'];
-		$_SESSION['f_pass'] 	= (isset($_POST['pass'])) ? $this->install->HSC($_POST['pass']) : $this->cfg['db']['pass'];
-		$_SESSION['f_backend'] 	= (@$_POST['type']=='mysql') ? 'selected' : ($this->cfg['db']['backend']=='mysql') ? 'selected' : '';
+		$_SESSION['f_host'] = (isset($_POST['host'])) ? $this->install->HSC($_POST['host']) : $this->cfg['db']['host'];
+		$_SESSION['f_port'] = (isset($_POST['port'])) ? intval($_POST['port']) : $this->cfg['db']['port'];
+		$_SESSION['f_base'] = (isset($_POST['base'])) ? $this->install->HSC($_POST['base']) : $this->cfg['db']['base'];
+		$_SESSION['f_user'] = (isset($_POST['user'])) ? $this->install->HSC($_POST['user']) : $this->cfg['db']['user'];
+		$_SESSION['f_pass'] = (isset($_POST['pass'])) ? $this->install->HSC($_POST['pass']) : $this->cfg['db']['pass'];
+		$_SESSION['f_backend'] = (@$_POST['type'] == 'mysql') ? 'selected' : ($this->cfg['db']['backend'] == 'mysql') ? 'selected' : '';
 
-		if($_SERVER['REQUEST_METHOD']=='POST'){
-			$type = (isset($_POST['type']) && $_POST['type']=='mysql') ? 'mysql' : 'mysqli';
-			require_once(DIR_ROOT.'engine/db/'.$type.'.class.php');
+		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+			$type = (isset($_POST['type']) && $_POST['type'] == 'mysql') ? 'mysql' : 'mysqli';
+			require_once(DIR_ROOT . 'engine/db/' . $type . '.class.php');
 
 			$db = new db($_SESSION['f_host'], $_SESSION['f_user'], $_SESSION['f_pass'], $_SESSION['f_base'], $_SESSION['f_port'], $this->install);
 			$error = $db->error();
-			if(!empty($error)){
-				$this->install->notify($this->lng['e_connection'].' | '.$db->error(), $this->lng['e_msg'], 'install/?do=step_1');
+			if (!empty($error)) {
+				$this->install->notify($this->lng['e_connection'] . ' | ' . $db->error(), $this->lng['e_msg'], 'install/?do=step_1');
 			}
 
-			$this->cfg['db']['host'] 		= $_SESSION['f_host'];
-			$this->cfg['db']['port'] 		= $_SESSION['f_port'];
-			$this->cfg['db']['base'] 		= $_SESSION['f_base'];
-			$this->cfg['db']['user'] 		= $_SESSION['f_user'];
-			$this->cfg['db']['pass'] 		= $_SESSION['f_pass'];
-			$this->cfg['db']['backend'] 	= $type;
+			$this->cfg['db']['host'] = $_SESSION['f_host'];
+			$this->cfg['db']['port'] = $_SESSION['f_port'];
+			$this->cfg['db']['base'] = $_SESSION['f_base'];
+			$this->cfg['db']['user'] = $_SESSION['f_user'];
+			$this->cfg['db']['pass'] = $_SESSION['f_pass'];
+			$this->cfg['db']['backend'] = $type;
 
-			if(!$this->install->savecfg($this->cfg['db'], 'db.php', 'db')){
+			if (!$this->install->savecfg($this->cfg['db'], 'db.php', 'db')) {
 				$this->core->notify($this->lng['e_msg'], $this->lng_m['e_write'], 'install/?do=step_1');
 			}
 
-			$tables = file(DIR_INSTALL.'tables.sql');
+			$tables = file(DIR_INSTALL . 'tables.sql');
 
 			$ctables = $this->cfg['db']['tables'];
 
 			$ug_f = $ctables['ugroups']['fields'];
 			$ic_f = $ctables['iconomy']['fields'];
-			$logs_f	= $ctables['logs']['fields'];
+			$logs_f = $ctables['logs']['fields'];
 			$us_f = $ctables['users']['fields'];
 
 			@$db->query("SET GLOBAL sql_mode='STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION'");
@@ -90,11 +99,11 @@ class module{
 				URL_ROOT,
 			);
 
-			foreach($tables as $key => $value){
+			foreach ($tables as $key => $value) {
 
 				$value = trim($value);
 
-				if($value=='#line'){
+				if ($value == '#line') {
 					$string = trim($string);
 
 					@$db->query($string);
@@ -111,11 +120,15 @@ class module{
 
 			$query = $db->query("UPDATE `{$ctables['ugroups']['name']}` SET `{$ug_f['id']}`='0' WHERE `{$ug_f['id']}`='4'");
 
-			if(!$query){ $this->install->notify($this->lng['e_upd_group'], $this->lng['e_msg'], 'install/?do=step_1'); }
+			if (!$query) {
+				$this->install->notify($this->lng['e_upd_group'], $this->lng['e_msg'], 'install/?do=step_1');
+			}
 
 			$query = $db->query("ALTER TABLE `{$ctables['ugroups']['name']}` AUTO_INCREMENT=0");
 
-			if(!$query){ $this->install->notify($this->lng['e_upd_group'], $this->lng['e_msg'], 'install/?do=step_1'); }
+			if (!$query) {
+				$this->install->notify($this->lng['e_upd_group'], $this->lng['e_msg'], 'install/?do=step_1');
+			}
 
 			$_SESSION['step_1'] = true;
 

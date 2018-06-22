@@ -16,7 +16,7 @@ class submodule
 		$this->user = $core->user;
 		$this->l10n = $core->l10n;
 
-		require_once(MCR_CONF_PATH.'modules/users.php');
+		require_once(MCR_CONF_PATH . 'modules/users.php');
 		$this->cfg_m = $cfg;
 	}
 

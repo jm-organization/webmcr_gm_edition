@@ -19,7 +19,7 @@ class submodule
 {
 	private $core, $user, $l10n;
 
-	public function __construct(core$core)
+	public function __construct(core $core)
 	{
 		$this->core = $core;
 		$this->user = $core->user;
