@@ -172,9 +172,7 @@ class submodule
 
 		$data = [
 			"PAGE" => $this->l10n->gettext('block_edit_page_name'),
-			"STATUS" => ($cfg['ENABLE'])
-				? 'selected'
-				: '',
+			"STATUS" => ($cfg['ENABLE']) ? 'selected' : '',
 			"TITLE" => $this->db->HSC($cfg['TITLE']),
 			"POSITION" => intval($cfg['POSITION']),
 			"DESC" => $this->db->HSC($cfg['DESC']),
@@ -183,21 +181,17 @@ class submodule
 			"EMAIL" => $this->db->HSC($cfg['EMAIL']),
 			"VERSION" => $this->db->HSC($cfg['VERSION']),
 			"UPDATE_URL" => $this->db->HSC($cfg['UPDATER']),
-			"UPDATE_CHECK" => ($cfg['UPDATES'])
-				? 'selected'
-				: '',
+			"UPDATE_CHECK" => ($cfg['UPDATES']) ? 'selected' : '',
 			"UPDATE_RESULT" => $update_result,
 			"BUTTON" => $this->l10n->gettext('block_edit_btn')
 		];
 
-		return $this->core->sp(MCR_THEME_MOD."admin/blocks/block-add.phtml", $data);
+		return $this->core->sp(MCR_THEME_MOD."admin/blocks/block-form.phtml", $data);
 	}
 
 	public function content()
 	{
-		$op = (isset($_GET['op']))
-			? $_GET['op']
-			: 'list';
+		$op = (isset($_GET['op'])) ? $_GET['op'] : 'list';
 
 		switch ($op) {
 			case 'edit':

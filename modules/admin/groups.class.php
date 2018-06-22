@@ -292,7 +292,7 @@ class submodule
 			"BUTTON" => $this->l10n->gettext('save')
 		];
 
-		return $this->core->sp(MCR_THEME_MOD."admin/groups/group-add.phtml", $data);
+		return $this->core->sp(MCR_THEME_MOD."admin/groups/group-form.phtml", $data);
 	}
 
 	private function edit()
@@ -360,7 +360,7 @@ class submodule
 			"BUTTON" => $this->l10n->gettext('save')
 		];
 
-		return $this->core->sp(MCR_THEME_MOD."admin/groups/group-add.phtml", $data);
+		return $this->core->sp(MCR_THEME_MOD."admin/groups/group-form.phtml", $data);
 	}
 
 	public function content()

@@ -181,7 +181,7 @@ class submodule
 			"BUTTON" => $this->l10n->gettext('mod_edit_btn')
 		];
 
-		return $this->core->sp(MCR_THEME_MOD."admin/modules/module-add.phtml", $data);
+		return $this->core->sp(MCR_THEME_MOD."admin/modules/module-form.phtml", $data);
 	}
 
 	public function content()

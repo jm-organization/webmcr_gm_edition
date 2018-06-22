@@ -252,7 +252,7 @@ class submodule
 			"PREVIEW" => $preview,
 		];
 
-		return $this->core->sp(MCR_THEME_MOD."admin/statics/static-add.phtml", $data);
+		return $this->core->sp(MCR_THEME_MOD."admin/statics/static-form.phtml", $data);
 	}
 
 	private function get_preview($title = '', $text = '')
@@ -371,7 +371,7 @@ class submodule
 			"PREVIEW" => $preview,
 		];
 
-		return $this->core->sp(MCR_THEME_MOD."admin/statics/static-add.phtml", $data);
+		return $this->core->sp(MCR_THEME_MOD."admin/statics/static-form.phtml", $data);
 	}
 
 	public function content()

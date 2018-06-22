@@ -365,7 +365,7 @@ class submodule
 			}
 		}
 
-		return $this->core->sp(MCR_THEME_MOD."admin/news/new-add.phtml", [
+		return $this->core->sp(MCR_THEME_MOD."admin/news/new-form.phtml", [
 			"PAGE" => $this->l10n->gettext('news_add_page_name'),
 			"TITLE" => $this->db->HSC($title),
 			"CATEGORIES" => $categories,
@@ -533,7 +533,7 @@ class submodule
 			"PREVIEW" => $preview,
 		];
 
-		return $this->core->sp(MCR_THEME_MOD."admin/news/new-add.phtml", $result);
+		return $this->core->sp(MCR_THEME_MOD."admin/news/new-form.phtml", $result);
 	}
 
 	private function delete()

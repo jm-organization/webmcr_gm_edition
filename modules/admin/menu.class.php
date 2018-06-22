@@ -227,7 +227,7 @@ class submodule
 			"BUTTON" => $this->l10n->gettext('save')
 		];
 
-		return $this->core->sp(MCR_THEME_MOD."admin/menu/menu-add.phtml", $data);
+		return $this->core->sp(MCR_THEME_MOD."admin/menu/menu-form.phtml", $data);
 	}
 
 	private function edit()
@@ -307,7 +307,7 @@ class submodule
 			"BUTTON" => $this->l10n->gettext('save')
 		];
 
-		return $this->core->sp(MCR_THEME_MOD."admin/menu/menu-add.phtml", $data);
+		return $this->core->sp(MCR_THEME_MOD."admin/menu/menu-form.phtml", $data);
 	}
 
 	private function parents($select = 0, $not = false)

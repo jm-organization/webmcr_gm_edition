@@ -129,7 +129,7 @@ class submodule {
 				"LOCALE" => $language['language']
 			);
 
-			echo $this->core->sp(MCR_THEME_MOD."admin/l10n/languages/language.phtml", $data);
+			echo $this->core->sp(MCR_THEME_MOD."admin/l10n/languages/language-id.phtml", $data);
 		}
 
 		return ob_get_clean();
@@ -143,7 +143,7 @@ class submodule {
 			"LANGUAGES_LIST" => $languages_list,
 		);
 
-		return $this->core->sp(MCR_THEME_MOD."admin/l10n/languages/languages.phtml", $data);
+		return $this->core->sp(MCR_THEME_MOD."admin/l10n/languages/language-list.phtml", $data);
 	}
     
     protected function show_phrases() {
@@ -274,7 +274,7 @@ class submodule {
             'TEXT_DIRECTION' => ''
         );
         
-        return $this->core->sp(MCR_THEME_MOD."admin/l10n/languages/form-languages.phtml", $data);
+        return $this->core->sp(MCR_THEME_MOD."admin/l10n/languages/language-form.phtml", $data);
 	}
 
 	protected function edit() {
@@ -391,7 +391,7 @@ class submodule {
             'TEXT_DIRECTION' => $text_direction
         );
         
-        return $this->core->sp(MCR_THEME_MOD."admin/l10n/languages/form-languages.phtml", $data);
+        return $this->core->sp(MCR_THEME_MOD."admin/l10n/languages/language-form.phtml", $data);
 	}
 
 	protected function delete() {

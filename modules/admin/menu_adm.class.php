@@ -130,7 +130,7 @@ class submodule
 			"EDIT" => false
 		];
 
-		return $this->core->sp(MCR_THEME_MOD."admin/menu_adm/menu-add.phtml", $data);
+		return $this->core->sp(MCR_THEME_MOD."admin/menu_adm/menu-form.phtml", $data);
 	}
 
 	private function edit()
@@ -240,7 +240,7 @@ class submodule
 			"EDIT" => true
 		];
 
-		return $this->core->sp(MCR_THEME_MOD."admin/menu_adm/menu-add.phtml", $data);
+		return $this->core->sp(MCR_THEME_MOD."admin/menu_adm/menu-form.phtml", $data);
 	}
 
 	private function delete()
