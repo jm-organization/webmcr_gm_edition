@@ -1,21 +1,40 @@
-<div class="ui top attached tabular menu">
-	<a class="item" href="<?= ADMIN_URL; ?>&do=settings&op=main"><?= $this->l10n->gettext('set_main'); ?></a>
-	<a class="item" href="<?= ADMIN_URL; ?>&do=settings&op=pagin"><?= $this->l10n->gettext('set_pagin'); ?></a>
-	<a class="active item" href="<?= ADMIN_URL; ?>&do=settings&op=mail"><?= $this->l10n->gettext('set_mail'); ?></a>
-	<a class="item" href="<?= ADMIN_URL; ?>&do=settings&op=search"><?= $this->l10n->gettext('set_search'); ?></a>
-	<a class="item" href="<?= ADMIN_URL; ?>&do=settings&op=functions"><?= $this->l10n->gettext('set_func'); ?></a>
-	<a class="item" href="<?= ADMIN_URL; ?>&do=settings&op=base"><?= $this->l10n->gettext('set_base'); ?></a>
-</div>
-
-<div class="ui bottom attached segment">
-	<form method="post"></form>
-
-	<div class="tab-content">
+<div class="row">
+	<div class="column">
+		
+		<div class="ui six item labeled icon menu">
+			<a class="item" href="<?= ADMIN_URL; ?>&do=settings&op=main">
+				<i class="cogs icon"></i>
+				<?= $this->l10n->gettext('set_main'); ?>
+			</a>
+			<a class="item" href="<?= ADMIN_URL; ?>&do=settings&op=pagin">
+				<i class="ellipsis horizontal icon"></i>
+				<?= $this->l10n->gettext('set_pagin'); ?>
+			</a>
+			<a class="active item" href="<?= ADMIN_URL; ?>&do=settings&op=mail">
+				<i class="envelope icon"></i>
+				<?= $this->l10n->gettext('set_mail'); ?>
+			</a>
+			<a class="item" href="<?= ADMIN_URL; ?>&do=settings&op=search">
+				<i class="search icon"></i>
+				<?= $this->l10n->gettext('set_search'); ?>
+			</a>
+			<a class="item" href="<?= ADMIN_URL; ?>&do=settings&op=functions">
+				<i class="lightbulb icon"></i>
+				<?= $this->l10n->gettext('set_func'); ?>
+			</a>
+			<a class="item" href="<?= ADMIN_URL; ?>&do=settings&op=base">
+				<i class="database icon"></i>
+				<?= $this->l10n->gettext('set_base'); ?>
+			</a>
+		</div>
+		
+		<form method="post"></form>
+		
 		<form class="ui form" method="post">
-
+			
 			<table class="ui definition table">
 				<tbody>
-
+					
 					<tr>
 						<td class="collapsing">
 							<label class="control-label" for="input_from"><?= $this->l10n->gettext('set_mail_from'); ?></label>
@@ -24,7 +43,7 @@
 							<input type="text" name="from" id="input_from" value="<?= $data['CFG']['from']; ?>" placeholder="<?= $this->l10n->gettext('set_mail_from_ph'); ?>">
 						</td>
 					</tr>
-
+					
 					<tr>
 						<td class="collapsing">
 							<label class="control-label" for="input_from_name"><?= $this->l10n->gettext('set_mail_from_name'); ?></label>
@@ -33,7 +52,7 @@
 							<input type="text" name="from_name" value="<?= $data['CFG']['from_name']; ?>" id="input_from_name" placeholder="<?= $this->l10n->gettext('set_mail_from_name_ph'); ?>">
 						</td>
 					</tr>
-
+					
 					<tr>
 						<td class="collapsing">
 							<label class="control-label" for="input_reply"><?= $this->l10n->gettext('set_mail_reply'); ?></label>
@@ -42,7 +61,7 @@
 							<input type="text" name="reply" value="<?= $data['CFG']['reply']; ?>" id="input_reply" placeholder="<?= $this->l10n->gettext('set_mail_reply_ph'); ?>">
 						</td>
 					</tr>
-
+					
 					<tr>
 						<td class="collapsing">
 							<label class="control-label" for="input_reply_name"><?= $this->l10n->gettext('set_mail_reply_name'); ?></label>
@@ -51,13 +70,13 @@
 							<input type="text" name="reply_name" value="<?= $data['CFG']['reply_name']; ?>" id="input_reply_name" placeholder="<?= $this->l10n->gettext('set_mail_reply_name_ph'); ?>">
 						</td>
 					</tr>
-
+					
 					<tr>
 						<td class="center aligned disabled" colspan="2">
 							<h4><?= $this->l10n->gettext('set_mail_smtp'); ?></h4>
 						</td>
 					</tr>
-
+					
 					<tr>
 						<td class="collapsing">
 							<label class="control-label" for="input_smtp"><?= $this->l10n->gettext('set_mail_smtp_use'); ?></label>
@@ -70,7 +89,7 @@
 							</select>
 						</td>
 					</tr>
-
+					
 					<tr>
 						<td class="collapsing">
 							<label class="control-label" for="input_smtp_host"><?= $this->l10n->gettext('set_mail_smtp_host'); ?></label>
@@ -79,7 +98,7 @@
 							<input type="text" name="smtp_host" value="<?= $data['CFG']['smtp_host']; ?>" id="input_smtp_host" placeholder="<?= $this->l10n->gettext('set_mail_smtp_host_ph'); ?>">
 						</td>
 					</tr>
-
+					
 					<tr>
 						<td class="collapsing">
 							<label class="control-label" for="input_smtp_user"><?= $this->l10n->gettext('set_mail_smtp_user'); ?></label>
@@ -88,7 +107,7 @@
 							<input type="text" name="smtp_user" value="<?= $data['CFG']['smtp_user']; ?>" id="input_smtp_user" placeholder="<?= $this->l10n->gettext('set_mail_smtp_user_ph'); ?>">
 						</td>
 					</tr>
-
+					
 					<tr>
 						<td class="collapsing">
 							<label class="control-label" for="input_smtp_pass"><?= $this->l10n->gettext('set_mail_smtp_pass'); ?></label>
@@ -97,7 +116,7 @@
 							<input type="password" name="smtp_pass" value="<?= $data['CFG']['smtp_pass']; ?>" id="input_smtp_pass" placeholder="<?= $this->l10n->gettext('set_mail_smtp_pass_ph'); ?>">
 						</td>
 					</tr>
-
+					
 					<tr>
 						<td class="collapsing">
 							<label class="control-label" for="input_smtp_tls"><?= $this->l10n->gettext('set_mail_smtp_tls'); ?></label>
@@ -110,11 +129,12 @@
 							</select>
 						</td>
 					</tr>
-
+					
 				</tbody>
 			</table>
-
+			
 			<button type="submit" name="submit" class="ui huge primary fluid button"><?= $this->l10n->gettext('save'); ?></button>
 		</form>
+		
 	</div>
 </div>

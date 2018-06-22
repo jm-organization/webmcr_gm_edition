@@ -1,16 +1,34 @@
-<div class="ui top attached tabular menu">
-	<a class="item" href="<?= ADMIN_URL; ?>&do=settings&op=main"><?= $this->l10n->gettext('set_main'); ?></a>
-	<a class="item" href="<?= ADMIN_URL; ?>&do=settings&op=pagin"><?= $this->l10n->gettext('set_pagin'); ?></a>
-	<a class="item" href="<?= ADMIN_URL; ?>&do=settings&op=mail"><?= $this->l10n->gettext('set_mail'); ?></a>
-	<a class="active item" href="<?= ADMIN_URL; ?>&do=settings&op=search"><?= $this->l10n->gettext('set_search'); ?></a>
-	<a class="item" href="<?= ADMIN_URL; ?>&do=settings&op=functions"><?= $this->l10n->gettext('set_func'); ?></a>
-	<a class="item" href="<?= ADMIN_URL; ?>&do=settings&op=base"><?= $this->l10n->gettext('set_base'); ?></a>
-</div>
+<div class="row">
+	<div class="column">
+		
+		<div class="ui six item labeled icon menu">
+			<a class="item" href="<?= ADMIN_URL; ?>&do=settings&op=main">
+				<i class="cogs icon"></i>
+				<?= $this->l10n->gettext('set_main'); ?>
+			</a>
+			<a class="item" href="<?= ADMIN_URL; ?>&do=settings&op=pagin">
+				<i class="ellipsis horizontal icon"></i>
+				<?= $this->l10n->gettext('set_pagin'); ?>
+			</a>
+			<a class="item" href="<?= ADMIN_URL; ?>&do=settings&op=mail">
+				<i class="envelope icon"></i>
+				<?= $this->l10n->gettext('set_mail'); ?>
+			</a>
+			<a class="active item" href="<?= ADMIN_URL; ?>&do=settings&op=search">
+				<i class="search icon"></i>
+				<?= $this->l10n->gettext('set_search'); ?>
+			</a>
+			<a class="item" href="<?= ADMIN_URL; ?>&do=settings&op=functions">
+				<i class="lightbulb icon"></i>
+				<?= $this->l10n->gettext('set_func'); ?>
+			</a>
+			<a class="item" href="<?= ADMIN_URL; ?>&do=settings&op=base">
+				<i class="database icon"></i>
+				<?= $this->l10n->gettext('set_base'); ?>
+			</a>
+		</div>
 
-<div class="ui bottom attached segment">
-	<form method="post"></form>
-
-	<div class="tab-content">
+		<form method="post"></form>
 
 		<?= $data['ITEMS']; ?>
 

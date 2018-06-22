@@ -94,15 +94,11 @@ body {
 .sort-trigger[data-order="desc"]:after {
 	display: inline-block;
 	vertical-align: middle;
-	width: 15px;
-	height: 15px;
 	margin-left: 5px;
-	font: normal normal normal 14px/1 FontAwesome;
-	font-size: inherit;
-	text-rendering: auto;
-	-webkit-font-smoothing: antialiased;
-	-moz-osx-font-smoothing: grayscale;
-	/*float: right;*/
+	font-family: Icons;
+	font-style: normal;
+	font-weight: 400;
+	text-align: center;
 }
 
 .sort-trigger[data-order="asc"]:after {

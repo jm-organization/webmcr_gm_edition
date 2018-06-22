@@ -3,5 +3,10 @@
 	<td><a href="<?= $data['URL']; ?>" target="<?= $data['TARGET']; ?>"><?= $data['TITLE']; ?></a>
 	</td>
 	<td><?= $data['PARENT']; ?></td>
-	<td class="action"><input type="checkbox" name="id[]" class="check-input" value="<?= $data['ID']; ?>"></td>
+	<td class="action">
+		<div class="ui checkbox">
+			<input type="checkbox" name="id[]" class="check-input" value="<?= $data['ID']; ?>">
+			<label></label>
+		</div>
+	</td>
 </tr>

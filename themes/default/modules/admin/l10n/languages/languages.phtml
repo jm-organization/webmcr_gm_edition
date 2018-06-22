@@ -1,11 +1,8 @@
-<div class="ui segments">
+<div class="row">
+	<div class="column">
 
-	<div class="ui segment">
-		<?= $this->l10n->gettext('languages'); ?>
-	</div>
-	<div class="ui segment">
 		<form class="ui form" method="post" action="<?= ADMIN_URL; ?>&do=l10n_languages&op=delete">
-
+			
 			<table class="ui selectable celled table" id="languages">
 				<thead>
 					<tr>
@@ -17,15 +14,15 @@
 					<?= $data['LANGUAGES_LIST']?>
 				</tbody>
 			</table>
-
+			
 			<div id="actions" class="ui fluid buttons" role="group">
 				<a class="ui primary button" role="button" href="<?= ADMIN_URL.'&do=l10n_languages&op=add'; ?>">
 					<?= $this->l10n->gettext('language_add'); ?>
 				</a>
 				<button type="submit" class="ui negative button"><i class="icon trash" aria-hidden="true"></i></button>
 			</div>
-
+			
 		</form>
+
 	</div>
 </div>
-

@@ -1,56 +1,92 @@
-<div class="form-block">
-
-	<div class="block-header">
-		<div class="block-name"><?= $data['PAGE']; ?></div>
+<div class="row">
+	<div class="column">
+		
+		<form class="ui form" method="post">
+			
+			<table class="ui definition table">
+				<tbody>
+					
+					<tr>
+						<td class="collapsing">
+							<label for="inputLogin"><?= $this->l10n->gettext('login'); ?></label>
+						</td>
+						<td>
+							<input id="inputLogin" name="login" type="text" value="<?= $data['LOGIN']; ?>" placeholder="<?= $this->l10n->gettext('login'); ?>" required>
+						</td>
+					</tr>
+					
+					<tr>
+						<td class="collapsing">
+							<label for="inputPassword"><?= $this->l10n->gettext('password'); ?></label>
+						</td>
+						<td>
+							<input id="inputPassword" name="password" type="text" placeholder="<?= $this->l10n->gettext('password'); ?>" required>
+						</td>
+					</tr>
+					
+					<tr>
+						<td class="collapsing">
+							<label for="inputEmail"><?= $this->l10n->gettext('email'); ?></label>							
+						</td>
+						<td>
+							<input id="inputEmail" name="email" type="text" value="<?= $data['EMAIL']; ?>" placeholder="<?= $this->l10n->gettext('email'); ?>">
+						</td>
+					</tr>
+					
+					<tr>
+						<td class="collapsing">
+							<label for="selectGid"><?= $this->l10n->gettext('group'); ?></label>					
+						</td>
+						<td>
+							<select class="ui fluid selection dropdown" name="gid" id="selectGid" required>
+								<?= $data['GROUPS']; ?>
+							</select>
+						</td>
+					</tr>
+					
+					<tr>
+						<td class="collapsing">
+							<label for="selectGender"><?= $this->l10n->gettext('gender'); ?></label>			
+						</td>
+						<td>
+							<select class="ui fluid selection dropdown" name="gender" id="selectGender">
+								<option value="0">
+									<?= $this->l10n->gettext('gender_n'); ?>
+								</option>
+								<option value="1" <?= $data['GENDER']; ?>>
+									<?= $this->l10n->gettext('gender_m'); ?>
+								</option>
+								<option value="2" <?= $data['GENDER']; ?>>
+									<?= $this->l10n->gettext('gender_w'); ?>
+								</option>
+							</select>
+						</td>
+					</tr>
+					
+					<tr>
+						<td class="collapsing">
+							<label for="inputMoney"><?= $this->l10n->gettext('money'); ?></label>			
+						</td>
+						<td>
+							<input id="inputMoney" name="money" type="number" step="0.01" value="<?= $data['MONEY']; ?>" placeholder="<?= $this->l10n->gettext('money'); ?>">
+						</td>
+					</tr>
+					
+					<tr>
+						<td class="collapsing">
+							<label for="inputRMoney"><?= $this->l10n->gettext('real_money'); ?></label>	
+						</td>
+						<td>
+							<input id="inputRMoney" name="realmoney" type="number" step="0.01" value="<?= $data['REALMONEY']; ?>" placeholder="<?= $this->l10n->gettext('realmoney'); ?>">
+						</td>
+					</tr>
+					
+				</tbody>
+			</table>
+			
+			<button type="submit" class="ui huge fluid primary button" name="submit"><?= $data['BUTTON']; ?></button>
+			
+		</form>
+		
 	</div>
-
-	<div class="block-line"></div>
-
-	<form method="post">
-		<div class="form-group">
-			<label for="inputLogin"><?= $this->l10n->gettext('login'); ?></label>
-			<input type="text" class="form-control" name="login" value="<?= $data['LOGIN']; ?>" id="inputLogin" placeholder="<?= $this->l10n->gettext('login'); ?>">
-		</div>
-
-		<div class="form-group">
-			<label for="inputPassword"><?= $this->l10n->gettext('password'); ?></label>
-			<input type="text" class="form-control" name="password" id="inputPassword" placeholder="<?= $this->l10n->gettext('pass'); ?>">
-		</div>
-
-		<div class="form-group">
-			<label for="inputEmail"><?= $this->l10n->gettext('email'); ?></label>
-			<input type="text" class="form-control" name="email" value="<?= $data['EMAIL']; ?>" id="inputEmail" placeholder="<?= $this->l10n->gettext('email'); ?>">
-		</div>
-
-		<div class="form-group">
-			<label for="selectGid"><?= $this->l10n->gettext('group'); ?></label>
-			<select name="gid" class="form-control" id="selectGid">
-				<?= $data['GROUPS']; ?>
-			</select>
-		</div>
-
-		<div class="form-group">
-			<label for="selectGender"><?= $this->l10n->gettext('gender'); ?></label>
-			<select name="gender" class="form-control" id="selectGender">
-				<option value="0"><?= $this->l10n->gettext('gender_n'); ?></option>
-				<option value="1"
-				<?= $data['GENDER']; ?>><?= $this->l10n->gettext('gender_m'); ?></option>
-				<option value="2"
-				<?= $data['GENDER']; ?>><?= $this->l10n->gettext('gender_w'); ?></option>
-			</select>
-		</div>
-
-		<div class="form-group">
-			<label for="inputMoney"><?= $this->l10n->gettext('money'); ?></label>
-			<input type="text" class="form-control" name="money" value="<?= $data['MONEY']; ?>" id="inputMoney" placeholder="<?= $this->l10n->gettext('money'); ?>">
-		</div>
-
-		<div class="form-group">
-			<label for="inputRMoney"><?= $this->l10n->gettext('real_money'); ?></label>
-			<input type="text" class="form-control" name="realmoney" value="<?= $data['REALMONEY']; ?>" id="inputRMoney" placeholder="<?= $this->l10n->gettext('realmoney'); ?>">
-		</div>
-
-		<button type="submit" class="btn btn-block btn-primary" name="submit"><?= $data['BUTTON']; ?></button>
-	</form>
-
 </div>

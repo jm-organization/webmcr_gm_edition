@@ -1,93 +1,98 @@
-<div class="ui top attached tabular menu">
-	<a class="item" href="<?= ADMIN_URL; ?>&do=info&op=main">
-		<?= $this->l10n->gettext('system_log'); ?>
-	</a>
-	<a class="item" href="<?= ADMIN_URL; ?>&do=info&op=update_center">
-		<?= $this->l10n->gettext('update_center'); ?>
-	</a>
-	<a class="active item" href="<?= ADMIN_URL; ?>&do=info&op=stats">
-		<?= $this->l10n->gettext('info_stats'); ?>
-	</a>
+<div class="row">
+	<div class="column">
+		
+		<div class="ui three item labeled icon menu">
+			<a class="item" href="<?= ADMIN_URL; ?>&do=info&op=main">
+				<i class="list alternate icon"></i>
+				<?= $this->l10n->gettext('system_log'); ?>
+			</a>
+			<a class="item" href="<?= ADMIN_URL; ?>&do=info&op=update_center">
+				<i class="sync alternate icon"></i>
+				<?= $this->l10n->gettext('update_center'); ?>
+			</a>
+			<a class="active item" href="<?= ADMIN_URL; ?>&do=info&op=stats">
+				<i class="chart bar icon"></i>
+				<?= $this->l10n->gettext('info_stats'); ?>
+			</a>
+		</div>
+		
+		<form method="post"></form>
+		
+		<table class="ui selectable celled table">
+			<thead>
+				<tr>
+					<th colspan="2"><h3><?= $this->l10n->gettext('info_news_stats'); ?></h3></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td><?= $this->l10n->gettext('info_count_news'); ?></td>
+					<td class="text-right"><?= $data['COUNT_NEWS']; ?></td>
+				</tr>
+				
+				<tr>
+					<td><?= $this->l10n->gettext('info_count_views'); ?></td>
+					<td class="text-right"><?= $data['COUNT_VIEWS']; ?></td>
+				</tr>
+				
+				<tr>
+					<td><?= $this->l10n->gettext('info_count_votes'); ?></td>
+					<td class="text-right"><?= $data['COUNT_VOTES']; ?></td>
+				</tr>
+				
+				<tr>
+					<td><?= $this->l10n->gettext('info_count_cats'); ?></td>
+					<td class="text-right"><?= $data['COUNT_CATEGORIES']; ?></td>
+				</tr>
+				
+				<tr>
+					<td><?= $this->l10n->gettext('info_count_coms'); ?></td>
+					<td class="text-right"><?= $data['COUNT_COMMENTS']; ?></td>
+				</tr>
+			</tbody>
+		</table>
+		
+		<table class="ui selectable celled table">
+			<thead>
+				<tr>
+					<th colspan="2"><h3><?= $this->l10n->gettext('info_users_stats'); ?></h3></th>
+				</tr>
+			</thead>
+			<tbody>
+				<?= $data['USERS_STATS']; ?>
+				
+				<tr>
+					<td><b><?= $this->l10n->gettext('info_count_users'); ?></b></td>
+					<td class="text-right"><?= $data['COUNT_USERS']; ?></td>
+				</tr>
+				
+				<tr>
+					<td><b><?= $this->l10n->gettext('info_count_groups'); ?></b></td>
+					<td class="text-right"><?= $data['COUNT_GROUPS']; ?></td>
+				</tr>
+			</tbody>
+		</table>
+		
+		<table class="ui selectable celled table">
+			<thead>
+				<tr>
+					<th colspan="2"><h3><?= $this->l10n->gettext('info_other'); ?></h3></th>
+				</tr>
+			</thead>
+			<tbody>
+				
+				<tr>
+					<td><?= $this->l10n->gettext('info_count_statics'); ?></td>
+					<td class="text-right"><?= $data['COUNT_STATICS']; ?></td>
+				</tr>
+				
+				<tr>
+					<td><?= $this->l10n->gettext('info_count_perms'); ?></td>
+					<td class="text-right"><?= $data['COUNT_PERMISSIONS']; ?></td>
+				</tr>
+				
+			</tbody>
+		</table>
+		
+	</div>
 </div>
-
-<div class="ui bottom attached segment">
-	<form method="post"></form>
-
-
-	<table class="ui selectable celled table">
-		<thead>
-			<tr>
-				<th colspan="2"><h3><?= $this->l10n->gettext('info_news_stats'); ?></h3></th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr>
-				<td><?= $this->l10n->gettext('info_count_news'); ?></td>
-				<td class="text-right"><?= $data['COUNT_NEWS']; ?></td>
-			</tr>
-
-			<tr>
-				<td><?= $this->l10n->gettext('info_count_views'); ?></td>
-				<td class="text-right"><?= $data['COUNT_VIEWS']; ?></td>
-			</tr>
-
-			<tr>
-				<td><?= $this->l10n->gettext('info_count_votes'); ?></td>
-				<td class="text-right"><?= $data['COUNT_VOTES']; ?></td>
-			</tr>
-
-			<tr>
-				<td><?= $this->l10n->gettext('info_count_cats'); ?></td>
-				<td class="text-right"><?= $data['COUNT_CATEGORIES']; ?></td>
-			</tr>
-
-			<tr>
-				<td><?= $this->l10n->gettext('info_count_coms'); ?></td>
-				<td class="text-right"><?= $data['COUNT_COMMENTS']; ?></td>
-			</tr>
-		</tbody>
-	</table>
-
-	<table class="ui selectable celled table">
-		<thead>
-			<tr>
-				<th colspan="2"><h3><?= $this->l10n->gettext('info_users_stats'); ?></h3></th>
-			</tr>
-		</thead>
-		<tbody>
-			<?= $data['USERS_STATS']; ?>
-
-			<tr>
-				<td><b><?= $this->l10n->gettext('info_count_users'); ?></b></td>
-				<td class="text-right"><?= $data['COUNT_USERS']; ?></td>
-			</tr>
-
-			<tr>
-				<td><b><?= $this->l10n->gettext('info_count_groups'); ?></b></td>
-				<td class="text-right"><?= $data['COUNT_GROUPS']; ?></td>
-			</tr>
-		</tbody>
-	</table>
-
-	<table class="ui selectable celled table">
-		<thead>
-			<tr>
-				<th colspan="2"><h3><?= $this->l10n->gettext('info_other'); ?></h3></th>
-			</tr>
-		</thead>
-		<tbody>
-
-			<tr>
-				<td><?= $this->l10n->gettext('info_count_statics'); ?></td>
-				<td class="text-right"><?= $data['COUNT_STATICS']; ?></td>
-			</tr>
-
-			<tr>
-				<td><?= $this->l10n->gettext('info_count_perms'); ?></td>
-				<td class="text-right"><?= $data['COUNT_PERMISSIONS']; ?></td>
-			</tr>
-
-		</tbody>
-	</table>
-</div>
-

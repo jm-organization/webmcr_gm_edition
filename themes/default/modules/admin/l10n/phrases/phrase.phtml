@@ -6,10 +6,10 @@
 		<a id="edit" href="<?= ADMIN_URL.'&do=l10n_phrases&op=edit&language='.$data['LANGUAGE'].'&phrase='.$data['PHRASE']; ?>"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
 		<a id="delete" href="<?= ADMIN_URL.'&do=l10n_phrases&op=delete&language='.$data['LANGUAGE'].'&phrase='.$data['PHRASE']; ?>"><i class="fa fa-trash" aria-hidden="true"></i></a>
 
-		<label class="custom-control custom-checkbox">
-			<input type="checkbox" class="custom-control-input" name="phrases_id[]" value="<?= $data['PHRASE']; ?>">
-			<span class="custom-control-indicator"></span>
-		</label>
+		<div class="ui checkbox">
+			<input type="checkbox" name="phrases_id[]" class="check-input" value="<?= $data['PHRASE']; ?>">
+			<label></label>
+		</div>
+
 	</td>
 </tr>
-

@@ -1,43 +1,66 @@
-<div class="form-block menu-permissions-change">
+<div class="row">
+	<div class="column">
+		
+		<form class="ui form menu-permissions-change" method="post">
+			
+			<table class="ui definition table">
+				<tbody>
+					
+					<tr>
+						<td class="collapsing">
+							<label for="inputTitle"><?= $this->l10n->gettext('perm_field_name'); ?></label>
+						</td>
+						<td>
+							<input type="text" name="title" value="<?= $data['TITLE']; ?>" id="inputTitle" placeholder="<?= $this->l10n->gettext('perm_field_name'); ?>" required>
+						</td>
+					</tr>
+					
+					<tr>
+						<td class="collapsing">
+							<label for="textareaText"><?= $this->l10n->gettext('perm_field_desc'); ?></label>
+						</td>
+						<td>
+							<textarea name="text" placeholder="<?= $this->l10n->gettext('perm_field_desc'); ?>" rows="8" maxlength="255" id="textareaText"><?= $data['TEXT']; ?></textarea>
+						</td>
+					</tr>
+					
+					<tr>
+						<td class="collapsing">
+							<label for="inputPerm"><?= $this->l10n->gettext('perm_field_value'); ?></label>
+						</td>
+						<td>
+							<input type="text" name="value" value="<?= $data['VALUE']; ?>" id="inputPerm" placeholder="<?= $this->l10n->gettext('perm_field_value'); ?>">
+						</td>
+					</tr>
+					
+					<tr>
+						<td class="collapsing">
+							<label for="inputPerm"><?= $this->l10n->gettext('perm_field_type'); ?></label>
+						</td>
+						<td>
+							<select class="ui fluid selection dropdown" name="type" id="perm-type">
+								<?= $data['TYPES']; ?>
+							</select>
+						</td>
+					</tr>
+					
+					<tr>
+						<td class="collapsing">
+							<label for="inputDefault"><?= $this->l10n->gettext('perm_field_default'); ?></label>
+						</td>
+						<td>
+							<div id="perm-default">
+								<?= $data['DEFAULT']; ?>
+							</div>
+						</td>
+					</tr>
 
-	<div class="block-header">
-		<div class="block-name"><?= $data['PAGE']; ?></div>
+				</tbody>
+			</table>
+			
+			<button type="submit" class="ui huge fluid primary button" name="submit"><?= $data['BUTTON']; ?></button>
+			
+		</form>
+		
 	</div>
-
-	<div class="block-line"></div>
-
-	<form method="post">
-
-		<div class="form-group">
-			<label for="inputTitle"><?= $this->l10n->gettext('perm_field_name'); ?></label>
-			<input type="text" class="form-control" name="title" value="<?= $data['TITLE']; ?>" id="inputTitle" placeholder="<?= $this->l10n->gettext('perm_field_name'); ?>" required>
-		</div>
-
-		<div class="form-group">
-			<label for="textareaText"><?= $this->l10n->gettext('perm_field_desc'); ?></label>
-			<textarea name="text" class="form-control" placeholder="<?= $this->l10n->gettext('perm_field_desc'); ?>" rows="8" maxlength="255" id="textareaText"><?= $data['TEXT']; ?></textarea>
-		</div>
-
-		<div class="form-group">
-			<label for="inputPerm"><?= $this->l10n->gettext('perm_field_value'); ?></label>
-			<input type="text" class="form-control" name="value" value="<?= $data['VALUE']; ?>" id="inputPerm" placeholder="<?= $this->l10n->gettext('perm_field_value'); ?>">
-		</div>
-
-		<div class="form-group">
-			<label for="inputPerm"><?= $this->l10n->gettext('perm_field_type'); ?></label>
-			<select name="type" class="form-control" id="perm-type">
-				<?= $data['TYPES']; ?>
-			</select>
-		</div>
-
-		<div class="form-group">
-			<label for="inputDefault"><?= $this->l10n->gettext('perm_field_default'); ?></label>
-			<div id="perm-default">
-				<?= $data['DEFAULT']; ?>
-			</div>
-		</div>
-
-		<button type="submit" class="btn btn-primary btn-block" name="submit"><?= $data['BUTTON']; ?></button>
-	</form>
-
 </div>

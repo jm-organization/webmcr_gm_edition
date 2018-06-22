@@ -7,19 +7,19 @@
 				<?= $data['USER_AVATARS']; ?>
 			</p>
 		</div>
-
+		
 		<div id="right">
 			<div class="top">
 				<p id="title"><a href="<?= BASE_URL; ?>?mode=news&id=<?= $data['ID']; ?>" target="_blank">
 					<b><?= $data['TITLE']; ?></b> <i class="fa fa-share"></i>
 				</a></p>
-
+				
 				<p id="information" style="padding-right: 10px;" class="float-right text-right"><?= $data['INFORMATION']?></p>
 			</div>
-
+			
 			<div class="bottom text-muted">
 				<p id="author"><?= $data['AUTHORS']; ?></p>
-
+				
 				<span id="date" class="float-right"><?= $data['DATE']; ?></span>
 			</div>
 		</div>
@@ -30,7 +30,7 @@
 				<?= $data['CATEGORY']; ?> <i class="fa fa-share"></i>
 			</a>
 		</div>
-
+		
 		<div class="bottom text-muted" data-toggle="tooltip" data-placement="left" title="<?= $data['DESCRIPTION']; ?>">
 			<p><?= $data['DESCRIPTION']; ?></p>
 		</div>
@@ -38,7 +38,7 @@
 	<td class="news-action">
 		<a id="edit" href="<?= ADMIN_URL.'&do=news&op=edit&id='.$data['ID']; ?>"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
 		<a id="delete" href="<?= ADMIN_URL.'&do=news&op=delete&id='.$data['ID']; ?>"><i class="fa fa-trash" aria-hidden="true"></i></a>
-
+		
 		<label class="custom-control custom-checkbox">
 			<input type="checkbox" class="custom-control-input" name="news_id[]" value="<?= $data['ID']; ?>">
 			<span class="custom-control-indicator"></span>

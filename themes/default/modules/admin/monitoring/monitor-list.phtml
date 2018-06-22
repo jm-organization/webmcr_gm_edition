@@ -1,30 +1,28 @@
-<div class="ui segments">
-
-	<div class="ui segment">
-		<?= $this->l10n->gettext('monitoring'); ?>
-	</div>
-
-	<div class="ui segment">
-		<form method="post" class="panel-categories" action="<?= ADMIN_URL; ?>&do=monitoring&op=delete">
-
+<div class="row">
+	<div class="column">
+		
+		<form class="ui form panel-categories" method="post" action="<?= ADMIN_URL; ?>&do=monitoring&op=delete">
+			
 			<div class="ui fluid action input">
 				<input type="text" id="adm-search-id" placeholder="<?= $this->l10n->gettext('search_placeholder'); ?>">
-				<button class="ui button" data-for="#adm-search-id" type="button" rel="tooltip" title="<?= $this->l10n->gettext('search'); ?>">
+				<button class="ui basic button" data-for="#adm-search-id" type="button" rel="tooltip" title="<?= $this->l10n->gettext('search'); ?>">
 					<i class="search fitted icon"></i>
 				</button>
 			</div>
-
+			
 			<table class="ui celled striped table">
 				<thead>
 					<tr>
-						<th><a href="#" class="sort-trigger" data-field="id" data-order="desc">#</a></th>
+						<th class="collapsing">
+							<a href="#" class="sort-trigger" data-field="id" data-order="desc">#</a>
+						</th>
 						<th>
 							<a href="#" class="sort-trigger" data-field="title" data-order="desc"><?= $this->l10n->gettext('mon_field_name'); ?></a>
 						</th>
 						<th>
 							<a href="#" class="sort-trigger" data-field="address" data-order="desc"><?= $this->l10n->gettext('mon_field_addr'); ?></a>
 						</th>
-						<th class="right aligned collapsing action">
+						<th class="center aligned collapsing action">
 							<div class="ui checkbox">
 								<input class="check-all" type="checkbox" data-for="check-input">
 								<label></label>
@@ -32,30 +30,33 @@
 						</th>
 					</tr>
 				</thead>
-
+				
 				<tbody>
 					<?= $data['SERVERS']; ?>
 				</tbody>
 			</table>
-
+			
 			<div class="ui one column stackable center aligned page grid">
 				<div class="column wide">
 					<?= $data['PAGINATION']; ?>
 				</div>
 			</div>
-
-			<div id="actions">
-				<div class="ui fluid buttons">
-					<a href="#" class="ui primary button edit" data-for="check-input" data-link="<?= ADMIN_URL; ?>&do=monitoring&op=edit&id=">
-						<i class="icon pencil"></i>
+			
+			<div class="field">
+				<div id="actions" class="ui fluid buttons">
+					<a class="ui primary button" href="<?= ADMIN_URL; ?>&do=monitoring&op=add">
+						<i class="icon plus"></i> <?= $this->l10n->gettext('add'); ?>
 					</a>
-					<button class="ui primary button remove" data-for="check-input" data-text="<?= $this->l10n->gettext('remove_accept'); ?>" type="submit" name="delete">
-						<i class="icon times"></i>
+					<a class="ui primary button edit" data-for="check-input" data-link="<?= ADMIN_URL; ?>&do=monitoring&op=edit&id=">
+						<i class="icon pencil"></i> <?= $this->l10n->gettext('edit'); ?>
+					</a>
+					<button class="ui negative button remove" data-for="check-input" name="delete" type="submit">
+						<i class="icon times"></i> <?= $this->l10n->gettext('delete'); ?>
 					</button>
-					<a class="ui primary button" role="button" href="<?= ADMIN_URL; ?>&do=monitoring&op=add"><?= $this->l10n->gettext('add'); ?></a>
 				</div>
 			</div>
-
+			
 		</form>
+		
 	</div>
 </div>

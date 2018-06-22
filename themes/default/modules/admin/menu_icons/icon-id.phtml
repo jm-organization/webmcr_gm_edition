@@ -1,8 +1,13 @@
 <tr>
-	<td style="width: 5%"><?= $data['ID']; ?></td>
-	<td style="width: 5%">
-		<div class="element-icon"><img src="<?= UPLOAD_URL; ?>panel-icons/<?= $data['IMG']; ?>"/></div>
+	<td class="collapsing"><?= $data['ID']; ?></td>
+	<td class="collapsing">
+		<img class="ui mini image" src="<?= UPLOAD_URL; ?>panel-icons/<?= $data['IMG']; ?>"/>
 	</td>
 	<td><?= $data['TITLE']; ?></td>
-	<td class="action"><input type="checkbox" name="id[]" class="check-input" value="<?= $data['ID']; ?>"></td>
+	<td class="action">
+		<div class="ui checkbox">
+			<input type="checkbox" name="id[]" class="check-input" value="<?= $data['ID']; ?>">
+			<label></label>
+		</div>
+	</td>
 </tr>

@@ -27,7 +27,7 @@ $(function () {
 		}
 
 		mcr.changeUrlParam({search: val, pid: false});
-		
+
 		return false;
 	});
 
@@ -56,6 +56,15 @@ $(function () {
 		context: $('.bottom.attached.segment')
 	})
 		.sidebar('attach events', '#mcr-sidebar-toggle')
+	;
+
+	$('.message .close')
+		.on('click', function () {
+			$(this)
+				.closest('.message')
+				.transition('fade')
+			;
+		})
 	;
 
 	$('.ui.dropdown').dropdown();

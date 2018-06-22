@@ -1,23 +1,35 @@
-<div class="form-block">
+<div class="row">
+	<div class="column">
+		
+		<form class="ui form" method="post">
+			
+			<table class="ui definition table">
+				<tbody>
+					
+					<tr>
+						<td class="collapsing">
+							<label for="inputTitle"><?= $this->l10n->gettext('cn_field_name'); ?></label>
+						</td>
+						<td>
+							<input type="text" name="title" value="<?= $data['TITLE']; ?>" id="inputTitle" placeholder="<?= $this->l10n->gettext('cn_field_name'); ?>">
+						</td>
+					</tr>
+					
+					<tr>
+						<td class="collapsing">
+							<label for="inputText"><?= $this->l10n->gettext('cn_field_desc'); ?></label>
+						</td>
+						<td>
+							<textarea id="inputText" placeholder="<?= $this->l10n->gettext('cn_field_desc'); ?>" name="text" maxlength="255" rows="5"><?= $data['TEXT']; ?></textarea>
+						</td>
+					</tr>
 
-	<div class="block-header">
-		<div class="block-name"><?= $data['PAGE']; ?></div>
+				</tbody>
+			</table>
+			
+			<button type="submit" class="ui huge fluid primary button" name="submit"><?= $data['BUTTON']; ?></button>
+			
+		</form>
+		
 	</div>
-
-	<div class="block-line"></div>
-
-	<form method="post">
-		<div class="form-group">
-			<label class="control-label" for="inputTitle"><?= $this->l10n->gettext('cn_field_name'); ?></label>
-			<input type="text" class="form-control" name="title" value="<?= $data['TITLE']; ?>" id="inputTitle" placeholder="<?= $this->l10n->gettext('cn_field_name'); ?>">
-		</div>
-
-		<div class="form-group">
-			<label class="control-label" for="inputText"><?= $this->l10n->gettext('cn_field_desc'); ?></label>
-			<textarea id="inputText" class="form-control" placeholder="<?= $this->l10n->gettext('cn_field_desc'); ?>" name="text" maxlength="255" rows="5"><?= $data['TEXT']; ?></textarea>
-		</div>
-
-		<button type="submit" class="btn btn-block btn-primary" name="submit"><?= $data['BUTTON']; ?></button>
-	</form>
-
 </div>
