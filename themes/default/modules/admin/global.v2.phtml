@@ -55,14 +55,7 @@
 							$error = "[{$type}] {$error['message']} in file: {$error['file']} on line: {$error['line']}";
 							
 						?>
-						<span class="badge badge-danger ml-1"
-						title="Last PHP error:"
-						data-container="body"
-						data-toggle="popover"
-						data-placement="bottom"
-						data-content="<?= $error ?>"
-						style="cursor:pointer;"
-						>!</span>
+						<span class="ui mini horizontal yellow left pointing label" title="Last PHP error:" data-tooltip="<?= $error ?>" data-position="bottom center">!</span>
 						<?
 						}
 						
@@ -108,7 +101,7 @@
 					<?= $data['CONTENT']; ?>
 					
 					<div class="notifys">
-						<div id="js-notify" class="alert alert-warning">
+						<div id="js-notify" class="ui message warning">
 							<a href="#" id="close">&times;</a>
 							<div id="title"></div>
 							<div id="message"></div>

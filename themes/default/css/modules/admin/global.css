@@ -1123,16 +1123,8 @@ tr:hover td.l10n-action > label.custom-checkbox .custom-control-input:not(:check
 	width: 25% !important;
 }
 
-.news-action {
-	width: 15% !important;
-}
-
-.news-id, .news-action {
+.news-id {
 	text-align: right;
-}
-
-td.news-action {
-	border-left: 1px solid #ddd;
 }
 
 td.news-id {
@@ -1221,38 +1213,6 @@ td.news-title p#img > img.user_a-news_avatar {
 	opacity: 0.85;
 	box-shadow: none;
 	border-color: transparent;
-}
-
-.news-action > a#edit {
-	color: #72b748
-}
-
-.news-action > a#delete {
-	color: #d9534f
-}
-
-.news-action > a:hover {
-	color: #636c72 !important;
-	text-shadow: 3px 2px 5px #d2d2d2;
-}
-
-td.news-action {
-	padding: 0 !important;
-	line-height: 24px;
-	font-size: 20px;
-	border-left: 1px solid #ddd;
-	text-align: center;
-}
-
-td.news-action > a {
-	display: inline-block;
-	margin: 11px 10px;
-}
-
-td.news-action > label.custom-checkbox {
-	display: inline;
-	margin: 9px;
-	vertical-align: middle;
 }
 
 /* debatable's design adaptation */

@@ -2,35 +2,33 @@
 	<div class="column">
 		
 		<form class="ui form panel-news" method="post" action="<?= ADMIN_URL; ?>&do=news&op=delete">
-			<div class="form-block">
+
+			<table class="ui celled striped table magic-datatables" id="news_list">
+				<thead>
+					<tr>
+						<th class="news-id">#</th>
+						<th class="news-title"><?= $this->l10n->gettext('news_field_name'); ?></th>
+						<th class="news-category"><?= $this->l10n->gettext('news_field_cat'); ?></th>
+						<th class="right aligned collapsing news-action sorting_disabled">
+							<div class="ui checkbox">
+								<input class="check-all" type="checkbox" data-for="check-input">
+								<label></label>
+							</div>
+						</th>
+					</tr>
+				</thead>
 				
-				<table class="ui celled striped table magic-datatables" id="news_list">
-					<thead>
-						<tr>
-							<th class="news-id">#</th>
-							<th class="news-title"><?= $this->l10n->gettext('news_field_name'); ?></th>
-							<th class="news-category"><?= $this->l10n->gettext('news_field_cat'); ?></th>
-							<th class="news-action sorting_disabled">
-								<div class="ui checkbox">
-									<input class="check-all" type="checkbox" data-for="check-input">
-									<label></label>
-								</div>
-							</th>
-						</tr>
-					</thead>
-					
-					<tbody>
-						<?= $data['NEWS']; ?>
-					</tbody>
-				</table>
-			</div>
+				<tbody>
+					<?= $data['NEWS']; ?>
+				</tbody>
+			</table>
 			
 			<div class="field">
 				<div id="actions" class="ui fluid buttons">
 					<a class="ui primary button" href="<?= ADMIN_URL; ?>&do=news&op=add">
-						<i class="icon plus"></i> <?= $this->l10n->gettext('news_add'); ?>
+						<i class="icon plus"></i> <?= $this->l10n->gettext('add'); ?>
 					</a>
-					<a class="ui primary button edit" data-for="check-input" data-link="<?= ADMIN_URL; ?>&do=monitoring&op=edit&id=">
+					<a class="ui primary button edit" data-for="check-input" data-link="<?= ADMIN_URL; ?>&do=news&op=edit&id=">
 						<i class="icon pencil"></i> <?= $this->l10n->gettext('edit'); ?>
 					</a>
 					<button class="ui negative button remove" data-for="check-input" name="delete" type="submit">

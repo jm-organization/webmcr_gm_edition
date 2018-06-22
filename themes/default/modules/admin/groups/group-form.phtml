@@ -37,13 +37,13 @@
 			</table>
 			
 			<div id="permissions-container">
-				<table id="permissions" class="ui striped table table-sm hide">
+				<table id="permissions" class="ui striped table very compact table-sm hide">
 					<tbody>
 						<?= $data['PERMISSIONS']; ?>
 					</tbody>
 				</table>
 				
-				<span><?= $this->l10n->gettext('grp_field_perm'); ?> <i class="fa"></i></span>
+				<span><?= $this->l10n->gettext('grp_field_perm'); ?> <i class="caret down icon"></i></span>
 			</div>
 			
 			<button type="submit" class="ui huge fluid primary button" name="submit"><?= $data['BUTTON']; ?></button>
