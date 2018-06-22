@@ -262,7 +262,7 @@ class submodule
 			var_dump($nid);
 			if (!$this->db->query(
 				"INSERT INTO `mcr_news_comments` (nid, text_bb, text_html, uid, `data`)
-				VALUES ('$nid', '$text_bb', '$text_html', '{$this->user->id}', '$new_data')"
+				VALUES ('$nid', '$text_bb', '$safe_text_html', '{$this->user->id}', '$new_data')"
 			)) {
 				$this->core->notify($this->l10n->gettext('error_message'), $this->l10n->gettext('error_sql_critical'), 2, '?mode=admin&do=comments&op=add');
 			}
@@ -294,7 +294,7 @@ class submodule
 			$this->core->notify($this->l10n->gettext('error_message'), $this->l10n->gettext('error_403'), 2, '?mode=admin&do=comments');
 		}
 
-		$id = intval($_GET['id']);
+		$id = intval(@$_GET['id']);
 		$query = $this->db->query("SELECT nid, text_bb, `data` FROM `mcr_news_comments` WHERE id='$id'");
 
 		if (!$query || $this->db->num_rows($query) <= 0) {
