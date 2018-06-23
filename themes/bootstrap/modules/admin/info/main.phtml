@@ -1,0 +1,41 @@
+<div class="form-block">
+
+	<div class="block-header">
+		<div class="block-name">
+			<p id="title">
+				<span class="title"><?php echo $this->l10n->gettext('info_and_stats'); ?></span>
+			</p>
+		</div>
+	</div>
+
+	<div class="adm-info adm-info-main modern">
+		<form method="post"></form>
+		<ul class="nav nav-tabs" id="myTab">
+			<li class="nav-item"><a class="nav-link active" href="<?php echo ADMIN_URL; ?>&do=info&op=main"><?php echo $this->l10n->gettext('system_log'); ?></a></li>
+			<li class="nav-item"><a class="nav-link" href="<?php echo ADMIN_URL; ?>&do=info&op=update_center"><?php echo $this->l10n->gettext('update_center'); ?></a></li>
+		</ul>
+		 
+		<div class="tab-content" id="log-viewer">
+            <div class="row">
+                <div class="col-md-2"></div>
+                <div class="col-md-10"><h5 id="log-title" class="text-muted"><?=$this->l10n->gettext('select_file');?></h5><span id="update-file" class="update" title="<?=$this->l10n->gettext('update_file');?>"><i class="fa fa-refresh"></i></span></div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-2">
+                    <ul id="logs-list">
+						<?php foreach($data['LOGS'] as $LOG) { ?>
+                            <li data-file-name="<?=$LOG?>"
+                                data-delete="<?php echo ADMIN_URL; ?>&do=info&op=delete"
+                                data-download="<?php echo ADMIN_URL; ?>&do=info&op=download"
+                                data-archivate="<?php echo ADMIN_URL; ?>&do=info&op=archivate"
+                            ><i class="fa fa-file-text"></i> <?=$LOG?></li>
+						<?php }?>
+                    </ul>
+                </div>
+                <div class="col-md-10"><pre id="log-content"></pre></div>
+            </div>
+		</div>
+	</div>
+		
+</div>

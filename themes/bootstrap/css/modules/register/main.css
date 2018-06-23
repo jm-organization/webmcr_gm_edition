@@ -1,0 +1,15 @@
+.g-recaptcha {
+	margin-bottom: 15px;
+	width: 100%;
+}
+
+@media (max-width: 380px){
+	.g-recaptcha,
+	#div_for_keycaptcha {
+		transform:scale(0.67);
+		-webkit-transform:scale(0.67);
+		transform-origin:0 0;
+		-webkit-transform-origin:0 0;
+		margin-bottom: 0px;
+	}
+}

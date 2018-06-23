@@ -1,0 +1,54 @@
+<div class="form-block">
+
+	<div class="block-header">
+		<div class="block-name"><?php echo $data['PAGE']; ?></div>
+	</div>
+
+	<div class="block-line"></div>
+
+	<form method="post">
+		<h3><?php echo $data['TITLE']; ?></h3>
+		<small>- <?php echo $data['DESC']; ?></small>
+		<hr>
+		<address>
+			<dl>
+
+				<dt><?php echo $this->l10n->gettext('author'); ?>:</dt>
+				<dd><?php echo $data['AUTHOR']; ?></dd>
+
+				<dt><?php echo $this->l10n->gettext('mod_field_site'); ?>:</dt>
+				<dd><a href="<?php echo $data['SITE']; ?>" target="_blank"><?php echo $data['SITE']; ?></a></dd>
+
+				<dt><?php echo $this->l10n->gettext('mod_field_email'); ?>:</dt>
+				<dd><a href="mailto:<?php echo $data['EMAIL']; ?>"><?php echo $data['EMAIL']; ?></a></dd>
+
+				<dt><?php echo $this->l10n->gettext('version'); ?>:</dt>
+				<dd><?php echo $data['VERSION']; ?> <?php echo $data['UPDATE_RESULT']; ?></dd>
+			</dl>
+		</address>
+
+		<div class="form-group">
+			<label for="inputStatus"><?php echo $this->l10n->gettext('mod_field_status'); ?></label>
+			<select name="status" class="form-control" id="inputStatus">
+				<option value="0"><?php echo $this->l10n->gettext('mod_off'); ?></option>
+				<option value="1" <?php echo $data['STATUS']; ?>><?php echo $this->l10n->gettext('mod_on'); ?></option>
+			</select>
+		</div>
+
+		<div class="form-group">
+			<label for="inputUpdate"><?php echo $this->l10n->gettext('mod_field_upd'); ?></label>
+			<select name="updates" class="form-control" id="inputUpdate">
+				<option value="0"><?php echo $this->l10n->gettext('mod_off1'); ?></option>
+				<option value="1" <?php echo $data['UPDATE_CHECK']; ?>><?php echo $this->l10n->gettext('mod_on1'); ?></option>
+			</select>
+		</div>
+
+		<div class="form-group">
+			<label for="inputUrl"><?php echo $this->l10n->gettext('mod_field_url'); ?></label>
+			<input type="text" class="form-control" id="inputUrl" name="update_url" value="<?php echo $data['UPDATE_URL']; ?>">
+		</div>
+
+		<button type="submit" class="btn btn-primary btn-block" name="submit"><?php echo $data['BUTTON']; ?></button>
+	</form>
+		
+</div>

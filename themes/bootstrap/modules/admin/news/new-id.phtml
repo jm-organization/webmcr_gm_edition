@@ -1,0 +1,47 @@
+<tr>
+	<td class="news-id"><?php echo $data['ID']; ?></td>
+	<td class="news-title">
+		<div id="left">
+			<p id="img">
+				<img src="<?php echo $data['IMG']; ?>" class="img-polaroid img-thumbnail" alt="<?php echo str_replace(' ', '_', $data['TITLE']).'.'.$data['ID']; ?>" width="32px">
+				<?php echo $data['USER_AVATARS']; ?>
+			</p>
+		</div>
+
+		<div id="right">
+			<div class="top">
+				<p id="title"><a href="<?php echo BASE_URL; ?>?mode=news&id=<?php echo $data['ID']; ?>" target="_blank">
+					<b><?php echo $data['TITLE']; ?></b> <i class="fa fa-share"></i>
+				</a></p>
+
+				<p id="information" style="padding-right: 10px;" class="float-right text-right"><?php echo $data['INFORMATION']?></p>
+			</div>
+
+			<div class="bottom text-muted">
+				<p id="author"><?php echo $data['AUTHORS']; ?></p>
+
+				<span id="date" class="float-right"><?php echo $data['DATE']; ?></span>
+			</div>
+		</div>
+	</td>
+	<td class="news-category">
+		<div class="top">
+			<a href="<?php echo BASE_URL; ?>?mode=news&cid=<?php echo $data['CID']; ?>" target="_blank">
+				<?php echo $data['CATEGORY']; ?> <i class="fa fa-share"></i>
+			</a>
+		</div>
+
+		<div class="bottom text-muted" data-toggle="tooltip" data-placement="left" title="<?php echo $data['DESCRIPTION']; ?>">
+			<p><?php echo $data['DESCRIPTION']; ?></p>
+		</div>
+	</td>
+	<td class="news-action">
+		<a id="edit" href="<?php echo ADMIN_URL.'&do=news&op=edit&id='.$data['ID']; ?>"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+		<a id="delete" href="<?php echo ADMIN_URL.'&do=news&op=delete&id='.$data['ID']; ?>"><i class="fa fa-trash" aria-hidden="true"></i></a>
+
+		<label class="custom-control custom-checkbox">
+			<input type="checkbox" class="custom-control-input" name="news_id[]" value="<?php echo $data['ID']; ?>">
+			<span class="custom-control-indicator"></span>
+		</label>
+	</td>
+</tr>
