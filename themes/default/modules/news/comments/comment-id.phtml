@@ -1,4 +1,4 @@
-<div class="comment" class="comment-id" id="<?= $data['ID']; ?>">
+<div class="comment mcr-comment-id" id="<?= $data['ID']; ?>">
 	<div class="content">
 		<a class="author"><?= $data['LOGIN']; ?></a>
 		<div class="metadata">
@@ -6,7 +6,7 @@
 				<?= $this->l10n->parse_date($data['DATA']['time_create']); ?>
 			</span>
 		</div>
-		<div class="text">
+		<div class="text mcr-comment-id-content">
 			<?= $data['TEXT']; ?>
 		</div>
 		<div class="actions">

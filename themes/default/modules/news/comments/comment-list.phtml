@@ -1,19 +1,32 @@
-<div class="ui segments comment-list">
+<script type="text/plain" id="mcr-comment-edt-tmpl">
+	<div class="ui form" id="mcr-edit-form-{{= variables.id }}">
+		<div class="field">
+			<textarea>
+				{{= variables.text }}
+			</textarea>
+		</div>
+		<div class="field">
+			<a href="#" class="ui primary button mcr-edt-save" id="{{= variables.id }}">
+				<?= $this->l10n->gettext('save'); ?>
+			</a>
+		</div>
+	</div>
+</script>
 
+<div class="ui segments comment-list">
+	
 	<div class="ui segment">
 		<?= $this->l10n->gettext('comments'); ?> (<span id="comment-count"><?= $data['COUNT']; ?></span>)
 	</div>
-
+	
 	<div class="ui segment">
-		<div class="comment-list-content">
-			<div class="ui comments">
-				<?= $data['COMMENTS']; ?>
-			</div>
+		<div class="ui comments comment-list-content">
+			<?= $data['COMMENTS']; ?>
 		</div>
 	</div>
-
+	
 	<?= $data['PAGINATION']; ?>
-
+	
 </div>
 
 <?= $data['COMMENTS_FORM']; ?>

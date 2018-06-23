@@ -55,7 +55,7 @@ $(function () {
 		return false;
 	});
 
-	$("body").on("click", ".del_comment", function () {
+	$("body").on("click", ".mcr-del-comment", function () {
 
 		var that = $(this);
 
@@ -90,7 +90,7 @@ $(function () {
 					return mcr.notify(data._title, data._message);
 				}
 
-				that.closest('.comment-id').fadeOut(400, function () {
+				that.closest('.mcr-comment-id').fadeOut(400, function () {
 
 					$(this).remove();
 
@@ -105,7 +105,7 @@ $(function () {
 		return false;
 	});
 
-	$("body").on("click", ".get_comment", function () {
+	$("body").on("click", ".mcr-get-comment", function () {
 
 		mcr.loading();
 
@@ -134,9 +134,13 @@ $(function () {
 					return mcr.notify(data._title, data._message);
 				}
 
-				$('textarea[name="message"]')[0].value += '[quote="' + data._data.login + ' | ' + data._data.create + '"]' + data._data.text + '[/quote]';
+				var bb_value = '[quote]' + '[b]' + data._data.login + ':[/b] ' + data._data.text + '[/quote]'
+				var bb_current = $("#wysibb-editor").bbcode();
+				$("#wysibb-editor").bbcode(bb_current + bb_value);
 
-				$("#wysibb-editor").sync();
+				var html_value = '<blockquote>' + '<b>' + data._data.text + ':</b> ' + data._data.text + '</blockquote>'
+				var html_current = $("#wysibb-editor").htmlcode();
+				$("#wysibb-editor").htmlcode(html_current + html_value);
 
 				mcr.loading(false);
 			}
@@ -146,7 +150,7 @@ $(function () {
 
 	});
 
-	$("body").on("click", ".edt_comment", function () {
+	$("body").on("click", ".mcr-edt-comment", function () {
 
 		mcr.loading();
 
@@ -175,7 +179,14 @@ $(function () {
 					return mcr.notify(data._title, data._message);
 				}
 
-				$(".comment-id#" + id + " .comment-id-content").html('<textarea class="form-control" id="edit-from-' + id + '">' + data._data.text + '</textarea><a href="#" class="btn btn-primary edt-save" id="' + id + '">' + lng.save + '</a>');
+				variables = {
+					id: id,
+					create: data._data.create,
+					login: data._data.login,
+					text: data._data.text,
+				};
+
+				$('.mcr-comment-id#' + id).tmpl('mcr-comment-edt-tmpl', variables);
 
 				mcr.loading(false);
 			}
@@ -185,13 +196,13 @@ $(function () {
 
 	});
 
-	$("body").on("click", ".edt-save", function () {
+	$("body").on("click", ".mcr-edt-save", function () {
 
 		mcr.loading();
 
 		var id = $(this).attr("id");
 
-		var message = $('#edit-from-' + id)[0], nid = parseInt(mcr.getUrlParam('id'));
+		var message = $('#mcr-edit-form-' + id + ' textarea')[0], nid = parseInt(mcr.getUrlParam('id'));
 
 		var formdata = new FormData();
 
@@ -217,10 +228,9 @@ $(function () {
 					return mcr.notify(data._title, data._message);
 				}
 
-				$("#edit-from-" + id).next().remove();
-				$("#edit-from-" + id).remove();
+				$("#mcr-edit-form-" + id).remove();
 
-				$(".comment-id#" + id + " .comment-id-content").hide().prepend(data._data).fadeIn(400, function () {
+				$(".mcr-comment-id#" + id + " .mcr-comment-id-content").hide().prepend(data._data).fadeIn(400, function () {
 					$(this).html(data._data);
 					mcr.notify(data._title, data._message, 3);
 				});
