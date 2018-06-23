@@ -94,15 +94,15 @@ class submodule
 		];
 
 		if ($this->core->is_access('sys_comment_del') || $this->core->is_access('sys_comment_del_all')) {
-			$act_del = $this->core->sp(MCR_THEME_MOD . "news/comments/comment-act-del.html", $data);
+			$act_del = $this->core->sp(MCR_THEME_MOD . "news/comments/comment-act-del.phtml", $data);
 		}
 
 		if ($this->core->is_access('sys_comment_edt') || $this->core->is_access('sys_comment_edt_all')) {
-			$act_edt = $this->core->sp(MCR_THEME_MOD . "news/comments/comment-act-edt.html", $data);
+			$act_edt = $this->core->sp(MCR_THEME_MOD . "news/comments/comment-act-edt.phtml", $data);
 		}
 
 		if ($this->user->is_auth) {
-			$act_get = $this->core->sp(MCR_THEME_MOD . "news/comments/comment-act-get.html", $data);
+			$act_get = $this->core->sp(MCR_THEME_MOD . "news/comments/comment-act-get.phtml", $data);
 		}
 
 		$com_data = [
@@ -117,7 +117,7 @@ class submodule
 			"ACTION_QUOTE" => $act_get
 		];
 
-		$content = $this->core->sp(MCR_THEME_MOD . "news/comments/comment-id.html", $com_data);
+		$content = $this->core->sp(MCR_THEME_MOD . "news/comments/comment-id.phtml", $com_data);
 
 		$this->core->js_notify($this->l10n->gettext('com_add_success'), $this->l10n->gettext('error_success'), true, $content);
 	}
