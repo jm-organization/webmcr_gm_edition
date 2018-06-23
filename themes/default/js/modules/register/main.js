@@ -1,11 +1,9 @@
-$(function () {
+$(function(){
 
-	$('body').on('click', '.mcr-register #postbut', function () {
+	$('body').on('click', '.mcr-register #postbut', function(){
 		mcr.loading();
 
-		if ($('.mcr-register input[name="accept"]:checked').length != 1) {
-			return mcr.notify(lng.error, lng_reg.required_fields);
-		}
+		if($('.mcr-register input[name="accept"]:checked').length!=1){ return mcr.notify(lng.error, lng_reg.required_fields); }
 
 		var login = $('.mcr-register #inputLogin').val();
 		var email = $('.mcr-register #inputEmail').val();
@@ -24,9 +22,9 @@ $(function () {
 		formData.append('rules', rules);
 		formData.append('gender', gender);
 
-		if ($('#capcode').length > 0) {
+		if($('#capcode').length>0){
 			formData.append('capcode', $('#capcode').val());
-		} else if ($('#g-recaptcha-response').length > 0) {
+		}else if($('#g-recaptcha-response').length>0){
 			formData.append('g-recaptcha-response', $('#g-recaptcha-response').val());
 		}
 
@@ -40,19 +38,17 @@ $(function () {
 			processData: false,
 			data: formData,
 
-			error: function (data) {
+			error: function(data){
 				mcr.logger(data);
 				mcr.notify(lng.error, lng_reg.e_check_form);
 			},
 
-			success: function (data) {
+			success: function(data){
 
-				if (!data._type) {
-					return mcr.notify(data._title, data._message);
-				}
+				if(!data._type){ return mcr.notify(data._title, data._message); }
 
-				setTimeout(function () {
-					location.search = "";
+				setTimeout(function(){
+					location.search="";
 				}, 4000);
 
 				return mcr.notify(data._title, data._message);
@@ -62,7 +58,3 @@ $(function () {
 		return false;
 	});
 });
-
-$(document).ready(function () {
-	$('.ui.dropdown').dropdown();
-})

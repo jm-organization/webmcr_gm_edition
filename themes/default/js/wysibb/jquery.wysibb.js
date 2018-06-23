@@ -215,8 +215,9 @@ wbbdebug=true;
 					buttonHTML: '<span class="fonticon ve-tlb-list1">\uE009</span>',
 					excmd: 'insertUnorderedList',
 					transform : {
-						'<ul>{SELTEXT}</ul>':" {SELTEXT} ",
-						'<li>{SELTEXT}</li>':"[*]{SELTEXT} "
+						// TODO WebMCR: Remove unsupported closing tags
+						'<ul>{SELTEXT}</ul>':"{SELTEXT}",
+						'<li>{SELTEXT}</li>':"[*]{SELTEXT}"
 					}
 				},
 				numlist : {

@@ -1,0 +1,35 @@
+<div class="ui segments">
+
+	<div class="ui segment">
+		<div class="header"><i class="icon user"></i> <?= $this->l10n->gettext('miniprofile'); ?></div>
+	</div>
+	<div class="ui secondary segment">
+		<form class="ui form" method="post" action="<?= BASE_URL; ?>?mode=logout">
+
+			<div class="two fields">
+				<div class="field">
+					<div class="avatar">
+						<img class="ui centered image" src="<?= SKIN_URL; ?>interface/<?= $this->user->skin; ?>_mini.png?<?= mt_rand(1000,9999); ?>"/>
+					</div>
+				</div>
+				<div class="field">
+					<div class="content">
+						<div class="ui list">
+							<span class="item"><b><?= $this->l10n->gettext('login'); ?>:</b> <?= $this->user->login_v2; ?></span>
+							<span class="item"><b><?= $this->l10n->gettext('group'); ?>:</b> <?= $this->user->group_v2; ?></span>
+							<span class="item"><b><?= $this->l10n->gettext('balance'); ?>:</b> <?= $this->user->money; ?> <?= $this->l10n->gettext('cur_game'); ?></span>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="field">
+				<div class="ui fluid primary buttons">
+					<a href="<?= BASE_URL; ?>?mode=profile" class="ui button"><?= $this->l10n->gettext('settings'); ?></a>
+					<button class="ui button" type="submit" name="logout" value="1"><?= $this->l10n->gettext('logout'); ?></button>
+				</div>
+			</div>
+		</form>
+	</div>
+
+</div>

@@ -1,0 +1,49 @@
+<div class="row">
+	<div class="column">
+		
+		<div class="ui three item labeled icon menu">
+			<a class="item" href="<?= ADMIN_URL; ?>&do=info&op=main">
+				<i class="list alternate icon"></i>
+				<?= $this->l10n->gettext('system_log'); ?>
+			</a>
+			<a class="active item" href="<?= ADMIN_URL; ?>&do=info&op=update_center">
+				<i class="sync alternate icon"></i>
+				<?= $this->l10n->gettext('update_center'); ?>
+			</a>
+			<a class="item" href="<?= ADMIN_URL; ?>&do=info&op=stats">
+				<i class="chart bar icon"></i>
+				<?= $this->l10n->gettext('info_stats'); ?>
+			</a>
+		</div>
+		
+		<div class="adm-info adm-info-main">
+			<form method="post"></form>
+			
+			<div id="update-info-panel" data-version="<?=VERSION?>" data-version-on-server="">
+				<h4><?=$this->l10n->gettext('magicmcr_update_center')?></h4>
+				
+				<hr>
+				
+				<div class="update-state">
+					<h5><?=$this->l10n->gettext('update_state')?></h5>
+					<p class="mt-3">
+						<img src="/themes/default/img/cacke.128_big.png" alt="cms_logotype">
+						<i class="fa fa-check-circle text-success" id="update-status"></i>
+						<span id="update-message"><?=$this->l10n->gettext('you_are_updated')?> <small style="display:block;font-size: 65%;line-height: 6px;" id="version-current" class="text-muted"><?=VERSION?></small></span>
+					</p>
+					<button type="button" class="btn btn-outline-secondary" id="re-check" style="margin-left:103px;cursor:pointer">Проверить наличия обновлений</button>
+					<a role="button" href="/install/?do=reinstall" class="btn btn-link">Переустановить MagicMCR</a>
+				</div>
+				
+				<div class="versions row mt-4">
+					<div class="col-md-12 pr-0" style="padding-left: 118px">
+						<?=$this->l10n->gettext('info_eng_ver_git')?>: <span id="version-on-server"></span><br>
+						<!--<?=$this->l10n->gettext('info_eng_ver_last')?>: <span id="version-stable"></span><br>-->
+						<?=$this->l10n->gettext('info_eng_ver_dev')?>: <span id="version-dev"></span>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+	</div>
+</div>

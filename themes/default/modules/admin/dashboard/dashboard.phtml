@@ -1,46 +1,70 @@
-<div class="row">
-	<div class="column">
-		<div id="mcr-dashboard" class="ui segment">
+<div class="form-block">
 
-			<h3 class="ui inverted header">
-				О MagicMCR
-				<div class="content">
-					<h5 class="ui grey header">Спасибо за установку MagicMCR</h5>
-					<div class="sub header">
-						<p>
-							MagicMCR является отдельным и независимым продуктом.
-							Использование исходного кода регламентируется, согласно
-							<a href="https://github.com/jm-organization/webmcr_gm_edition/blob/master/LICENSE" class="card-link custom">GNU General Public License v3.0</a>.
-							MagicMCR не является копией оригинального движка WebMCR, а лишь его подверсией. Разработка MagicMCR производится исключительно в частных интересах.
-							Разработчики, а также лица, участвующие в разработке и поддержке, не несут ответственности за проблемы, возникшие с движком.<br>
-						</p>
-					</div>
-				</div>
-			</h3>
+	<div class="row mb-4">
 
-			<div class="ui section divider"></div>
+		<div class="col-md-12">
+			<div class="card bg-dark text-white" style="height:268px">
+				<img class="card-img" src="/themes/default/img/admin-header-bg.png" alt="Card image" style="height:266px">
+				<div class="card-img-overlay" style="background:#00000070;border-radius:.25rem;">
+					<h5 class="card-title">О MagicMCR</h5>
+					<h6 class="card-subtitle mb-2 text-muted">Спасибо за установку MagicMCR</h6>
+					<p class="card-text w-75">
+						MagicMCR является отдельным и независимым продуктом.
+						Использование исходного кода регламентируется, согласно <a href="https://github.com/jm-organization/webmcr_gm_edition/blob/master/LICENSE" class="card-link custom">GNU General Public License v3.0</a>.
+						MagicMCR не является копией оригинального движка WebMCR, а лишь его подверсией. Разработка MagicMCR производится исключительно в частных интересах.
+						Разработчики, а также лица, участвующие в разработке и поддержке, не несут ответственности за проблемы, возникшие с движком.<br>
+					</p>
 
-			<h5 class="ui inverted header">Состояние системы</h5>
-			<div class="ui secondary segment" style="background:#ffffff1a;border-radius:4px;">
-				<div class="ui small horizontal labels">
-					<span style="color: red;"><?= $this->l10n->gettext('system_errors') ?>: <span class="ui red label"><?= $this->log->get_logs_num('error') ?></span></span>
-					<span style="color: orange;"><?= $this->l10n->gettext('system_warnings') ?>: <span class="ui orange label"><?= $this->log->get_logs_num('warning') ?></span></span>
-					<span style="color: blue;"><?= $this->l10n->gettext('system_noties') ?>: <span class="ui blue label"><?= $this->log->get_logs_num('notice') ?></span></span>
+					<hr>
+
+					<h5 class="card-title">Состояние системы</h5>
+					<p class="card-text p-4" style="background:#ffffff1a;border-radius:4px;">
+						<span class="row">
+							<span class="col-md-3 text-danger"><?=$this->l10n->gettext('system_errors')?>: <span class="badge badge-danger ml-4"><?=$this->log->get_logs_num('error')?></span></span>
+							<span class="col-md-3 text-warning"><?=$this->l10n->gettext('system_warnings')?>: <span class="badge badge-warning ml-4"><?=$this->log->get_logs_num('warning')?></span></span>
+							<span class="col-md-3 text-info"><?=$this->l10n->gettext('system_noties')?>: <span class="badge badge-info ml-4"><?=$this->log->get_logs_num('notice')?></span></span>
+							<span class="col-md-3"></span>
+						</span>
+					</p>
 				</div>
 			</div>
-
 		</div>
-	</div>
-</div>
 
-<div class="two column row">
-	<div class="column">
-		<? if (!empty($data['MODULES'])) { ?>
-		<?= $data['MODULES'] ?>
-		<? } ?>
-		<?= $data['THEMES'] ?>
 	</div>
-	<div class="column">
-		<?= $data['USERS'] ?>
+
+	<div class="row">
+
+		<div class="col-md-7">
+			<div class="row">
+				<?php
+
+                if (!empty($data['MODULES'])) {
+                    ?>
+
+                    <div class="col-md-12 mb-4">
+						<?=$data['MODULES']?>
+                    </div>
+
+                    <?php
+                }
+
+                ?>
+
+				<div class="col-md-12">
+					<?=$data['THEMES']?>
+                </div>
+			</div>
+		</div>
+
+		<div class="col-md-5">
+			<div class="row">
+				<div class="col-md-12">
+					<!-- useres-statistic -->
+					<?=$data['USERS']?>
+				</div>
+			</div>
+		</div>
+
 	</div>
+
 </div>

@@ -1,12 +1,11 @@
-<div class="monitor-id" id="<?= $data['ID']; ?>">
-	<div class="title"><?= $data['TITLE']; ?>
-		<i class="fa fa-info-circle" data-placement="right" rel="tooltip" title="<?= $data['TEXT']; ?>"></i></div>
+<div class="monitor-id" id="<?php echo $data['ID']; ?>">
+	<div class="title"><?php echo $data['TITLE']; ?> <i class="fa fa-info-circle" data-placement="right" rel="tooltip" title="<?php echo $data['TEXT']; ?>"></i></div>
 	<div class="progress">
-		<div class="progress-bar <?= $data['STATUS'] ?> progress-bar-striped progress-bar-animated active" style="width: <?= $data['PROGRESS']; ?>%; height: 24px;" aria-valuenow="<?= $data['PROGRESS']; ?>" aria-valuemin="0" aria-valuemax="100"></div>
+		<div class="progress-bar <?php echo $data['STATUS'] ?> progress-bar-striped progress-bar-animated active" style="width: <?php echo $data['PROGRESS']; ?>%; height: 24px;" aria-valuenow="<?php echo $data['PROGRESS']; ?>" aria-valuemin="0" aria-valuemax="100"></div>
 		<div class="indicator"><span class="badge badge-default" style="
 			line-height: 14px;
 			height: 18px;
 			margin: 3px auto;
-		"><?= $data['STATS']; ?></span></div>
+		"><?php echo $data['STATS']; ?></span></div>
 	</div>
 </div>

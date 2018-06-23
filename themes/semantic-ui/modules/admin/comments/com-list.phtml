@@ -1,0 +1,57 @@
+<div class="row">
+	<div class="column">
+
+		<form class="ui form panel-comments" method="post" action="<?= ADMIN_URL; ?>&do=comments&op=delete">
+			
+			<div class="ui fluid action input">
+				<input class="adm-search-input" id="adm-search-id" placeholder="<?= $this->l10n->gettext('search_placeholder'); ?>" type="text">
+				<button class="ui basic button adm-search" data-for="#adm-search-id"><?= $this->l10n->gettext('search'); ?></button>
+			</div>
+			
+			<table class="ui celled table" data-name="comments">
+				<thead>
+					<tr>
+						<th class="collapsing"><?= $this->l10n->gettext('block_field_status'); ?></th>
+						<th><a class="sort-trigger" data-field="user" data-order="desc"><?= $this->l10n->gettext('comment_col_user'); ?></a></th>
+						<th><a class="sort-trigger" data-field="comment" data-order="desc"><?= $this->l10n->gettext('comment_col_comment'); ?></a></th>
+						<th><a class="sort-trigger" data-field="news" data-order="desc"><?= $this->l10n->gettext('comment_col_news'); ?></a></th>
+						<th class="right aligned collapsing action">
+							<div class="ui checkbox">
+								<input type="checkbox" class="check-all" data-for="check-input">
+								<label></label>
+							</div>
+						</th>
+					</tr>
+				</thead>
+				
+				<tbody>
+					<?= $data['COMMENTS']; ?>
+				</tbody>
+			</table>
+			
+			<div class="field">
+				<div id="actions" class="ui fluid buttons">
+					<a class="ui primary button" href="<?= ADMIN_URL; ?>&do=comments&op=add">
+						<i class="icon plus"></i> <?= $this->l10n->gettext('add'); ?>
+					</a>
+					<a class="ui primary button edit" data-for="check-input" data-link="<?= ADMIN_URL; ?>&do=comments&op=edit&id=">
+						<i class="icon pencil"></i> <?= $this->l10n->gettext('edit'); ?>
+					</a>
+					<button class="ui negative button remove" data-for="check-input" name="delete" type="submit">
+						<i class="icon times"></i> <?= $this->l10n->gettext('delete'); ?>
+					</button>
+				</div>
+			</div>
+			
+			<? if (!empty($data['PAGINATION'])) {?>
+				<div class="ui one column stackable center aligned page grid">
+					<div class="column wide">
+						<?= $data['PAGINATION']; ?>
+					</div>
+				</div>
+			<? } ?>
+			
+		</form>
+		
+	</div>
+</div>

@@ -1,13 +1,11 @@
-function load_online() {
+function load_online(){
 
-	if (location.pathname == mcr.meta_data.base_url + 'install/') {
-		return;
-	}
+	if(location.pathname == mcr.meta_data.base_url+'install/'){ return; }
 
 	mcr.loading();
 
 	var formdata = new FormData();
-
+	
 	formdata.append('mcr_secure', mcr.meta_data.secure);
 
 	$.ajax({
@@ -18,22 +16,20 @@ function load_online() {
 		processData: false,
 		data: formdata,
 		// timeout: 2000,
-		error: function (data) {
+		error: function(data){
 			mcr.logger(data);
 			mcr.notify(lng.error, 'error');
 		},
 
-		success: function (data) {
+		success: function(data){
 
 			$('.block-online #onl_list').text('');
 
-			if (!data._type) {
-				return mcr.notify(data._title, data._message);
-			}
+			if(!data._type){ return mcr.notify(data._title, data._message); }
 
-			if (data._data.list.length > 0 && typeof data._data.list == 'object') {
+			if(data._data.list.length>0 && typeof data._data.list == 'object'){
 				$('.block-online #onl_list').append(data._data.list.join(', '));
-			} else {
+			}else{
 				$('.block-online #onl_list').append(data._data.list);
 			}
 
@@ -43,20 +39,18 @@ function load_online() {
 
 			mcr.loading(false);
 		}
-
+		
 	});
 }
 
-function update_online() {
+function update_online(){
 
-	if (location.pathname == mcr.meta_data.base_url + 'install/') {
-		return;
-	}
-
+	if(location.pathname == mcr.meta_data.base_url+'install/'){ return; }
+	
 	mcr.loading();
 
 	var formdata = new FormData();
-
+	
 	formdata.append('mcr_secure', mcr.meta_data.secure);
 
 	$.ajax({
@@ -67,26 +61,24 @@ function update_online() {
 		processData: false,
 		data: formdata,
 		// timeout: 2000,
-		error: function (data) {
+		error: function(data){
 			mcr.logger(data);
 			mcr.notify(lng.error, lng.error);
 		},
 
-		success: function () {
-			mcr.loading(false);
-		}
+		success: function(){ mcr.loading(false); }
 	});
 }
 
-$(function () {
+$(function(){
 	setTimeout(update_online, 300);
 	setTimeout(load_online, 700);
 });
 /*
 
- $(document).ready(function () {
+$(document).ready(function () {
 
- update_online();
- load_online();
+	update_online();
+	load_online();
 
- });*/
+});*/

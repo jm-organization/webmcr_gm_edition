@@ -1,200 +1,129 @@
-<div class="bb-panel" id="<?= $data['PANEL_ID']; ?>">
+<div class="bb-panel" id="<?php echo $data['PANEL_ID']; ?>">
 
 	<ul class="bb-right">
-		<li>
-			<a href="#" rel="tooltip" class="bb-clear" title="<?= $this->l10n->gettext('bb_c_remove'); ?>"><i class="fa fa-trash"></i></a>
-		</li>
+		<li><a href="#" rel="tooltip" class="bb-clear" title="<?php echo $this->l10n->gettext('bb_c_remove'); ?>"><i class="fa fa-trash"></i></a></li>
 	</ul><!--
 
-	-->
-	<ul>
-		<li>
-			<a href="#" rel="tooltip" class="bb" title="<?= $this->l10n->gettext('bb_c_strong'); ?>" data-left="[b]" data-right="[/b]"><i class="fa fa-bold"></i></a>
-		</li><!--
+	--><ul>
+		<li><a href="#" rel="tooltip" class="bb" title="<?php echo $this->l10n->gettext('bb_c_strong'); ?>" data-left="[b]" data-right="[/b]"><i class="fa fa-bold"></i></a></li><!--
 
-		-->
-		<li>
-			<a href="#" rel="tooltip" class="bb" title="<?= $this->l10n->gettext('bb_c_italic'); ?>" data-left="[i]" data-right="[/i]"><i class="fa fa-italic"></i></a>
-		</li><!--
+		--><li><a href="#" rel="tooltip" class="bb" title="<?php echo $this->l10n->gettext('bb_c_italic'); ?>" data-left="[i]" data-right="[/i]"><i class="fa fa-italic"></i></a></li><!--
 
-		-->
-		<li>
-			<a href="#" rel="tooltip" class="bb" title="<?= $this->l10n->gettext('bb_c_strike'); ?>" data-left="[s]" data-right="[/s]"><i class="fa fa-strikethrough"></i></a>
-		</li><!--
+		--><li><a href="#" rel="tooltip" class="bb" title="<?php echo $this->l10n->gettext('bb_c_strike'); ?>" data-left="[s]" data-right="[/s]"><i class="fa fa-strikethrough"></i></a></li><!--
 
-		-->
-		<li>
-			<a href="#" rel="tooltip" class="bb" title="<?= $this->l10n->gettext('bb_c_underl'); ?>" data-left="[u]" data-right="[/u]"><u class="fa fa-underline"></u></a>
-		</li>
+		--><li><a href="#" rel="tooltip" class="bb" title="<?php echo $this->l10n->gettext('bb_c_underl'); ?>" data-left="[u]" data-right="[/u]"><u class="fa fa-underline"></u></a></li>
 	</ul><!--
 
-	-->
-	<ul>
-		<li>
-			<a href="#" rel="tooltip" class="bb" title="<?= $this->l10n->gettext('bb_c_left'); ?>" data-left="[left]" data-right="[/left]"><i class="fa fa-align-left"></i></a>
-		</li><!--
+	--><ul>
+		<li><a href="#" rel="tooltip" class="bb" title="<?php echo $this->l10n->gettext('bb_c_left'); ?>" data-left="[left]" data-right="[/left]"><i class="fa fa-align-left"></i></a></li><!--
 
-		-->
-		<li>
-			<a href="#" rel="tooltip" class="bb" title="<?= $this->l10n->gettext('bb_c_center'); ?>" data-left="[center]" data-right="[/center]"><i class="fa fa-align-center"></i></a>
-		</li><!--
+		--><li><a href="#" rel="tooltip" class="bb" title="<?php echo $this->l10n->gettext('bb_c_center'); ?>" data-left="[center]" data-right="[/center]"><i class="fa fa-align-center"></i></a></li><!--
 
-		-->
-		<li>
-			<a href="#" rel="tooltip" class="bb" title="<?= $this->l10n->gettext('bb_c_right'); ?>" data-left="[right]" data-right="[/right]"><i class="fa fa-align-right"></i></a>
-		</li>
+		--><li><a href="#" rel="tooltip" class="bb" title="<?php echo $this->l10n->gettext('bb_c_right'); ?>" data-left="[right]" data-right="[/right]"><i class="fa fa-align-right"></i></a></li>
 	</ul><!--
 	
-	-->
-	<ul>
-		<li>
-			<a href="#modal-size-<?= $data['PANEL_ID']; ?>" rel="tooltip" data-paste="1" data-toggle="modal" class="bb bb-modal" title="<?= $this->l10n->gettext('bb_c_font_size'); ?>" data-left="[size=&quot;*0*&quot;]" data-center="*1*" data-right="[/size]"><i class="fa fa-text-height"></i></a>
-		</li><!--
+	--><ul>
+		<li><a href="#modal-size-<?php echo $data['PANEL_ID']; ?>" rel="tooltip" data-paste="1" data-toggle="modal" class="bb bb-modal" title="<?php echo $this->l10n->gettext('bb_c_font_size'); ?>" data-left="[size=&quot;*0*&quot;]" data-center="*1*" data-right="[/size]"><i class="fa fa-text-height"></i></a></li><!--
 
-		-->
-		<li>
-			<a href="#modal-font-<?= $data['PANEL_ID']; ?>" rel="tooltip" data-paste="1" data-toggle="modal" class="bb bb-modal" title="<?= $this->l10n->gettext('bb_c_font'); ?>" data-left="[font=&quot;*0*&quot;]" data-center="*1*" data-right="[/font]"><i class="fa fa-font"></i></a>
-		</li><!--
+		--><li><a href="#modal-font-<?php echo $data['PANEL_ID']; ?>" rel="tooltip" data-paste="1" data-toggle="modal" class="bb bb-modal" title="<?php echo $this->l10n->gettext('bb_c_font'); ?>" data-left="[font=&quot;*0*&quot;]" data-center="*1*" data-right="[/font]"><i class="fa fa-font"></i></a></li><!--
 
-		-->
-		<li>
-			<a href="#modal-color-<?= $data['PANEL_ID']; ?>" rel="tooltip" data-paste="1" data-toggle="modal" class="bb bb-modal" title="<?= $this->l10n->gettext('bb_c_color'); ?>" data-left="[color=&quot;*0*&quot;]" data-center="*1*" data-right="[/color]"><i class="fa fa-tint"></i></a>
-		</li><!--
+		--><li><a href="#modal-color-<?php echo $data['PANEL_ID']; ?>" rel="tooltip" data-paste="1" data-toggle="modal" class="bb bb-modal" title="<?php echo $this->l10n->gettext('bb_c_color'); ?>" data-left="[color=&quot;*0*&quot;]" data-center="*1*" data-right="[/color]"><i class="fa fa-tint"></i></a></li><!--
 
-		-->
-		<li>
-			<a href="#modal-bgc-<?= $data['PANEL_ID']; ?>" rel="tooltip" title="<?= $this->l10n->gettext('bb_c_bgcolor'); ?>" data-paste="1" data-toggle="modal" class="bb bb-modal" data-left="[background=&quot;*0*&quot;]" data-center="*1*" data-right="[/background]"><i class="fa fa-adjust"></i></a>
-		</li><!--
+		--><li><a href="#modal-bgc-<?php echo $data['PANEL_ID']; ?>" rel="tooltip" title="<?php echo $this->l10n->gettext('bb_c_bgcolor'); ?>" data-paste="1" data-toggle="modal" class="bb bb-modal" data-left="[background=&quot;*0*&quot;]" data-center="*1*" data-right="[/background]"><i class="fa fa-adjust"></i></a></li><!--
 
-		-->
-		<li>
-			<a href="#" rel="tooltip" class="bb" title="<?= $this->l10n->gettext('bb_c_reverse'); ?>" data-left="[reverse]" data-right="[/reverse]"><i class="fa fa-repeat"></i></a>
-		</li>
+		--><li><a href="#" rel="tooltip" class="bb"	title="<?php echo $this->l10n->gettext('bb_c_reverse'); ?>" data-left="[reverse]" data-right="[/reverse]"><i class="fa fa-repeat"></i></a></li>
 	</ul><!--
 
-	-->
-	<ul>
-		<li>
-			<a href="#modal-url-<?= $data['PANEL_ID']; ?>" rel="tooltip" data-paste="1" data-toggle="modal" class="bb bb-modal" title="<?= $this->l10n->gettext('bb_c_link'); ?>" data-left="[url=&quot;*0*&quot;]" data-center="*1*" data-right="[/url]"><i class="fa fa-link"></i></a>
-		</li><!--
+	--><ul>
+		<li><a href="#modal-url-<?php echo $data['PANEL_ID']; ?>" rel="tooltip" data-paste="1" data-toggle="modal" class="bb bb-modal" title="<?php echo $this->l10n->gettext('bb_c_link'); ?>" data-left="[url=&quot;*0*&quot;]" data-center="*1*" data-right="[/url]"><i class="fa fa-link"></i></a></li><!--
 
-		-->
-		<li>
-			<a href="#modal-email-<?= $data['PANEL_ID']; ?>" rel="tooltip" data-paste="0" data-toggle="modal" class="bb bb-modal" title="<?= $this->l10n->gettext('bb_c_email'); ?>" data-left="[email]" data-center="*0*" data-right="[/email]"><i class="fa fa-envelope"></i></a>
-		</li>
+		--><li><a href="#modal-email-<?php echo $data['PANEL_ID']; ?>" rel="tooltip" data-paste="0" data-toggle="modal" class="bb bb-modal" title="<?php echo $this->l10n->gettext('bb_c_email'); ?>" data-left="[email]" data-center="*0*" data-right="[/email]"><i class="fa fa-envelope"></i></a></li>
 	</ul><!--
 
-	-->
-	<ul>
-		<li>
-			<a href="#modal-list-<?= $data['PANEL_ID']; ?>" rel="tooltip" data-paste="1" data-toggle="modal" class="bb bb-modal" title="<?= $this->l10n->gettext('bb_c_list'); ?>" data-left="[list=&quot;*0*&quot;]" data-center="*1*" data-right="[/list]"><i class="fa fa-list"></i></a>
-		</li><!--
+	--><ul>
+		<li><a href="#modal-list-<?php echo $data['PANEL_ID']; ?>" rel="tooltip" data-paste="1" data-toggle="modal" class="bb bb-modal" title="<?php echo $this->l10n->gettext('bb_c_list'); ?>" data-left="[list=&quot;*0*&quot;]" data-center="*1*" data-right="[/list]"><i class="fa fa-list"></i></a></li><!--
 		
-		-->
-		<li>
-			<a href="#" rel="tooltip" class="bb" title="<?= $this->l10n->gettext('bb_c_line'); ?>" data-left="[line]" data-right="[/line]"><i class="fa fa-minus"></i></a>
-		</li>
+		--><li><a href="#" rel="tooltip" class="bb" title="<?php echo $this->l10n->gettext('bb_c_line'); ?>" data-left="[line]" data-right="[/line]"><i class="fa fa-minus"></i></a></li>
 	</ul><!--
 
-	-->
-	<ul>
-		<li>
-			<a href="#modal-code-<?= $data['PANEL_ID']; ?>" rel="tooltip" title="<?= $this->l10n->gettext('bb_c_code'); ?>" data-paste="1" data-toggle="modal" class="bb bb-modal" data-left="[code=&quot;*0*&quot;]" data-center="*1*" data-right="[/code]"><i class="fa fa-code"></i></a>
-		</li><!--
+	--><ul>
+		<li><a href="#modal-code-<?php echo $data['PANEL_ID']; ?>" rel="tooltip" title="<?php echo $this->l10n->gettext('bb_c_code'); ?>" data-paste="1" data-toggle="modal" class="bb bb-modal" data-left="[code=&quot;*0*&quot;]" data-center="*1*" data-right="[/code]"><i class="fa fa-code"></i></a></li><!--
 	
-		-->
-		<li>
-			<a href="#" rel="tooltip" class="bb" title="<?= $this->l10n->gettext('bb_c_quote'); ?>" data-left="[quote]" data-right="[/quote]"><i class="fa fa-comment"></i></a>
-		</li><!--
+		--><li><a href="#" rel="tooltip" class="bb"	title="<?php echo $this->l10n->gettext('bb_c_quote'); ?>" data-left="[quote]" data-right="[/quote]"><i class="fa fa-comment"></i></a></li><!--
 
-		-->
-		<li>
-			<a href="#modal-spoiler-<?= $data['PANEL_ID']; ?>" rel="tooltip" data-paste="1" data-toggle="modal" class="bb bb-modal" title="<?= $this->l10n->gettext('bb_c_spoiler'); ?>" data-left="[spoiler=&quot;*0*&quot;]" data-center="*1*" data-right="[/spoiler]"><i class="fa fa-eye"></i></a>
-		</li><!--
+		--><li><a href="#modal-spoiler-<?php echo $data['PANEL_ID']; ?>" rel="tooltip" data-paste="1" data-toggle="modal" class="bb bb-modal" title="<?php echo $this->l10n->gettext('bb_c_spoiler'); ?>" data-left="[spoiler=&quot;*0*&quot;]" data-center="*1*" data-right="[/spoiler]"><i class="fa fa-eye"></i></a></li><!--
 
-		-->
-		<li>
-			<a href="#" rel="tooltip" class="bb" title="<?= $this->l10n->gettext('bb_c_offtop'); ?>" data-left="[offtop]" data-right="[/offtop]"><i class="fa fa-asterisk"></i></a>
-		</li><!--
+		--><li><a href="#" rel="tooltip" class="bb"	title="<?php echo $this->l10n->gettext('bb_c_offtop'); ?>" data-left="[offtop]" data-right="[/offtop]"><i class="fa fa-asterisk"></i></a></li><!--
 
-		-->
-		<li>
-			<a href="#modal-img-<?= $data['PANEL_ID']; ?>" rel="tooltip" data-paste="0" data-toggle="modal" class="bb bb-modal" title="<?= $this->l10n->gettext('bb_c_img'); ?>" data-left="[img]" data-center="*0*" data-right="[/img]"><i class="fa fa-picture-o"></i></a>
-		</li><!--
+		--><li><a href="#modal-img-<?php echo $data['PANEL_ID']; ?>" rel="tooltip" data-paste="0" data-toggle="modal" class="bb bb-modal" title="<?php echo $this->l10n->gettext('bb_c_img'); ?>" data-left="[img]" data-center="*0*" data-right="[/img]"><i class="fa fa-picture-o"></i></a></li><!--
 
-		-->
-		<li>
-			<a href="#modal-video-<?= $data['PANEL_ID']; ?>" rel="tooltip" data-paste="1" data-toggle="modal" class="bb bb-modal" title="<?= $this->l10n->gettext('bb_c_video'); ?>" data-left="[video=&quot;*0*&quot;]" data-center="*1*" data-right="[/video]"><i class="fa fa-film"></i></a>
-		</li><!--
+		--><li><a href="#modal-video-<?php echo $data['PANEL_ID']; ?>" rel="tooltip" data-paste="1" data-toggle="modal" class="bb bb-modal" title="<?php echo $this->l10n->gettext('bb_c_video'); ?>" data-left="[video=&quot;*0*&quot;]" data-center="*1*" data-right="[/video]"><i class="fa fa-film"></i></a></li><!--
 
-		-->
-		<li>
-			<a href="#" rel="tooltip" class="spl-btn closed" data-for="spl-<?= $data['PANEL_ID']; ?>" title="<?= $this->l10n->gettext('bb_c_smiles'); ?>"><i class="fa fa-smile-o"></i></a>
-		</li>
+		--><li><a href="#" rel="tooltip" class="spl-btn closed" data-for="spl-<?php echo $data['PANEL_ID']; ?>" title="<?php echo $this->l10n->gettext('bb_c_smiles'); ?>"><i class="fa fa-smile-o"></i></a></li>
 	</ul>
 
-	<div class="spl-body bb-smiles closed" id="spl-<?= $data['PANEL_ID']; ?>">
-		<?= $data['SMILES']; ?>
+	<div class="spl-body bb-smiles closed" id="spl-<?php echo $data['PANEL_ID']; ?>">
+		<?php echo $data['SMILES']; ?>
 	</div>
 
-	<div class="modal fade" id="modal-url-<?= $data['PANEL_ID']; ?>" tabindex="-1" role="dialog" aria-labelledby="label-url-<?= $data['PANEL_ID']; ?>">
+	<div class="modal fade" id="modal-url-<?php echo $data['PANEL_ID']; ?>" tabindex="-1" role="dialog" aria-labelledby="label-url-<?php echo $data['PANEL_ID']; ?>">
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-					<h3 id="label-url-<?= $data['PANEL_ID']; ?>"><?= $this->l10n->gettext('bb_insert_link'); ?></h3>
+					<h3 id="label-url-<?php echo $data['PANEL_ID']; ?>"><?php echo $this->l10n->gettext('bb_insert_link'); ?></h3>
 				</div>
 
 				<div class="modal-body">
 					<div class="form-group">
-						<input class="form-control bb-input" type="text" value="http://" placeholder="<?= $this->l10n->gettext('bb_ph_url'); ?>">
+						<input class="form-control bb-input" type="text" value="http://" placeholder="<?php echo $this->l10n->gettext('bb_ph_url'); ?>">
 					</div>
 
 					<div class="form-group">
-						<input class="form-control bb-input" type="text" placeholder="<?= $this->l10n->gettext('bb_ph_text'); ?>">
+						<input class="form-control bb-input" type="text" placeholder="<?php echo $this->l10n->gettext('bb_ph_text'); ?>">
 					</div>
-
+					
 					<input type="hidden" class="data-code" data-left="[url=&quot;*0*&quot;]" data-center="*1*" data-right="[/url]">
 				</div>
 
 				<div class="modal-footer">
-					<button class="btn btn-primary bb-insert-input"><?= $this->l10n->gettext('insert'); ?></button>
-					<button class="btn btn-default" data-dismiss="modal" aria-hidden="true"><?= $this->l10n->gettext('cancel'); ?></button>
+					<button class="btn btn-primary bb-insert-input"><?php echo $this->l10n->gettext('insert'); ?></button>
+					<button class="btn btn-default" data-dismiss="modal" aria-hidden="true"><?php echo $this->l10n->gettext('cancel'); ?></button>
 				</div>
 			</div>
 		</div>
 	</div>
 
-	<div class="modal fade" id="modal-email-<?= $data['PANEL_ID']; ?>" tabindex="-1" role="dialog" aria-labelledby="label-email-<?= $data['PANEL_ID']; ?>">
+	<div class="modal fade" id="modal-email-<?php echo $data['PANEL_ID']; ?>" tabindex="-1" role="dialog" aria-labelledby="label-email-<?php echo $data['PANEL_ID']; ?>">
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-					<h3 id="label-email-<?= $data['PANEL_ID']; ?>"><?= $this->l10n->gettext('bb_insert_email'); ?></h3>
+					<h3 id="label-email-<?php echo $data['PANEL_ID']; ?>"><?php echo $this->l10n->gettext('bb_insert_email'); ?></h3>
 				</div>
 
 				<div class="modal-body">
 					<div class="form-group">
-						<input class="form-control bb-input" type="text" placeholder="<?= $this->l10n->gettext('bb_ph_email'); ?>">
+						<input class="form-control bb-input" type="text" placeholder="<?php echo $this->l10n->gettext('bb_ph_email'); ?>">
 					</div>
-
+					
 					<input type="hidden" class="data-code" data-left="[email]" data-center="*0*" data-right="[/email]">
 				</div>
 
 				<div class="modal-footer">
-					<button class="btn btn-primary bb-insert-input"><?= $this->l10n->gettext('insert'); ?></button>
-					<button class="btn btn-default" data-dismiss="modal" aria-hidden="true"><?= $this->l10n->gettext('cancel'); ?></button>
+					<button class="btn btn-primary bb-insert-input"><?php echo $this->l10n->gettext('insert'); ?></button>
+					<button class="btn btn-default" data-dismiss="modal" aria-hidden="true"><?php echo $this->l10n->gettext('cancel'); ?></button>
 				</div>
 			</div>
 		</div>
 	</div>
 
-	<div class="modal fade" id="modal-size-<?= $data['PANEL_ID']; ?>" tabindex="-1" role="dialog" aria-labelledby="label-size-<?= $data['PANEL_ID']; ?>">
+	<div class="modal fade" id="modal-size-<?php echo $data['PANEL_ID']; ?>" tabindex="-1" role="dialog" aria-labelledby="label-size-<?php echo $data['PANEL_ID']; ?>">
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-					<h3 id="label-size-<?= $data['PANEL_ID']; ?>"><?= $this->l10n->gettext('bb_insert_size'); ?></h3>
+					<h3 id="label-size-<?php echo $data['PANEL_ID']; ?>"><?php echo $this->l10n->gettext('bb_insert_size'); ?></h3>
 				</div>
 
 				<div class="modal-body">
@@ -211,26 +140,26 @@
 					</div>
 
 					<div class="form-group">
-						<input class="form-control bb-input" type="text" placeholder="<?= $this->l10n->gettext('bb_ph_text'); ?>">
+						<input class="form-control bb-input" type="text" placeholder="<?php echo $this->l10n->gettext('bb_ph_text'); ?>">
 					</div>
-
+					
 					<input type="hidden" class="data-code" data-left="[size=&quot;*0*&quot;]" data-center="*1*" data-right="[/size]">
 				</div>
 
 				<div class="modal-footer">
-					<button class="btn btn-primary bb-insert-input"><?= $this->l10n->gettext('insert'); ?></button>
-					<button class="btn btn-default" data-dismiss="modal" aria-hidden="true"><?= $this->l10n->gettext('cancel'); ?></button>
+					<button class="btn btn-primary bb-insert-input"><?php echo $this->l10n->gettext('insert'); ?></button>
+					<button class="btn btn-default" data-dismiss="modal" aria-hidden="true"><?php echo $this->l10n->gettext('cancel'); ?></button>
 				</div>
 			</div>
 		</div>
 	</div>
 
-	<div class="modal fade" id="modal-font-<?= $data['PANEL_ID']; ?>" tabindex="-1" role="dialog" aria-labelledby="label-font-<?= $data['PANEL_ID']; ?>">
+	<div class="modal fade" id="modal-font-<?php echo $data['PANEL_ID']; ?>" tabindex="-1" role="dialog" aria-labelledby="label-font-<?php echo $data['PANEL_ID']; ?>">
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-					<h3 id="label-font-<?= $data['PANEL_ID']; ?>"><?= $this->l10n->gettext('bb_insert_font'); ?></h3>
+					<h3 id="label-font-<?php echo $data['PANEL_ID']; ?>"><?php echo $this->l10n->gettext('bb_insert_font'); ?></h3>
 				</div>
 
 				<div class="modal-body">
@@ -250,26 +179,26 @@
 					</div>
 
 					<div class="form-group">
-						<input class="form-control bb-input" type="text" placeholder="<?= $this->l10n->gettext('bb_ph_text'); ?>">
+						<input class="form-control bb-input" type="text" placeholder="<?php echo $this->l10n->gettext('bb_ph_text'); ?>">
 					</div>
-
+					
 					<input type="hidden" class="data-code" data-left="[font=&quot;*0*&quot;]" data-center="*1*" data-right="[/font]">
 				</div>
 
 				<div class="modal-footer">
-					<button class="btn btn-primary bb-insert-input"><?= $this->l10n->gettext('insert'); ?></button>
-					<button class="btn btn-default" data-dismiss="modal" aria-hidden="true"><?= $this->l10n->gettext('cancel'); ?></button>
+					<button class="btn btn-primary bb-insert-input"><?php echo $this->l10n->gettext('insert'); ?></button>
+					<button class="btn btn-default" data-dismiss="modal" aria-hidden="true"><?php echo $this->l10n->gettext('cancel'); ?></button>
 				</div>
 			</div>
 		</div>
 	</div>
 
-	<div class="modal fade cpp-modal" id="modal-color-<?= $data['PANEL_ID']; ?>" tabindex="-1" role="dialog" aria-labelledby="label-color-<?= $data['PANEL_ID']; ?>">
+	<div class="modal fade cpp-modal" id="modal-color-<?php echo $data['PANEL_ID']; ?>" tabindex="-1" role="dialog" aria-labelledby="label-color-<?php echo $data['PANEL_ID']; ?>">
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-					<h3 id="label-color-<?= $data['PANEL_ID']; ?>"><?= $this->l10n->gettext('bb_insert_color'); ?></h3>
+					<h3 id="label-color-<?php echo $data['PANEL_ID']; ?>"><?php echo $this->l10n->gettext('bb_insert_color'); ?></h3>
 				</div>
 
 				<div class="modal-body">
@@ -278,85 +207,85 @@
 					</div>
 
 					<div class="form-group">
-						<input class="form-control bb-input" type="text" placeholder="<?= $this->l10n->gettext('bb_ph_text'); ?>">
+						<input class="form-control bb-input" type="text" placeholder="<?php echo $this->l10n->gettext('bb_ph_text'); ?>">
 					</div>
-
+					
 					<input type="hidden" class="data-code" data-left="[color=&quot;*0*&quot;]" data-center="*1*" data-right="[/color]">
 				</div>
 
 				<div class="modal-footer">
-					<button class="btn btn-primary bb-insert-input"><?= $this->l10n->gettext('insert'); ?></button>
-					<button class="btn btn-default" data-dismiss="modal" aria-hidden="true"><?= $this->l10n->gettext('cancel'); ?></button>
+					<button class="btn btn-primary bb-insert-input"><?php echo $this->l10n->gettext('insert'); ?></button>
+					<button class="btn btn-default" data-dismiss="modal" aria-hidden="true"><?php echo $this->l10n->gettext('cancel'); ?></button>
 				</div>
 			</div>
 		</div>
 	</div>
 
-	<div class="modal fade cpp-modal" id="modal-bgc-<?= $data['PANEL_ID']; ?>" tabindex="-1" role="dialog" aria-labelledby="label-bgc-<?= $data['PANEL_ID']; ?>">
+	<div class="modal fade cpp-modal" id="modal-bgc-<?php echo $data['PANEL_ID']; ?>" tabindex="-1" role="dialog" aria-labelledby="label-bgc-<?php echo $data['PANEL_ID']; ?>">
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-					<h3 id="label-bgc-<?= $data['PANEL_ID']; ?>"><?= $this->l10n->gettext('bb_ingert_bg'); ?></h3>
+					<h3 id="label-bgc-<?php echo $data['PANEL_ID']; ?>"><?php echo $this->l10n->gettext('bb_ingert_bg'); ?></h3>
 				</div>
 
 				<div class="modal-body">
 					<div class="form-group">
 						<input class="form-control bb-input cpp" type="text" value="#000" placeholder="#ffffff | #fff">
 					</div>
-
+					
 					<div class="form-group">
-						<input class="form-control bb-input" type="text" placeholder="<?= $this->l10n->gettext('bb_ph_text'); ?>">
+						<input class="form-control bb-input" type="text" placeholder="<?php echo $this->l10n->gettext('bb_ph_text'); ?>">
 					</div>
-
+					
 					<input type="hidden" class="data-code" data-left="[background=&quot;*0*&quot;]" data-center="*1*" data-right="[/background]">
 				</div>
 
 				<div class="modal-footer">
-					<button class="btn btn-primary bb-insert-input"><?= $this->l10n->gettext('insert'); ?></button>
-					<button class="btn btn-default" data-dismiss="modal" aria-hidden="true"><?= $this->l10n->gettext('cancel'); ?></button>
+					<button class="btn btn-primary bb-insert-input"><?php echo $this->l10n->gettext('insert'); ?></button>
+					<button class="btn btn-default" data-dismiss="modal" aria-hidden="true"><?php echo $this->l10n->gettext('cancel'); ?></button>
 				</div>
 			</div>
 		</div>
 	</div>
 
-	<div class="modal fade" id="modal-list-<?= $data['PANEL_ID']; ?>" tabindex="-1" role="dialog" aria-labelledby="label-list-<?= $data['PANEL_ID']; ?>">
+	<div class="modal fade" id="modal-list-<?php echo $data['PANEL_ID']; ?>" tabindex="-1" role="dialog" aria-labelledby="label-list-<?php echo $data['PANEL_ID']; ?>">
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-					<h3 id="label-list-<?= $data['PANEL_ID']; ?>"><?= $this->l10n->gettext('bb_insert_list'); ?></h3>
+					<h3 id="label-list-<?php echo $data['PANEL_ID']; ?>"><?php echo $this->l10n->gettext('bb_insert_list'); ?></h3>
 				</div>
 
 				<div class="modal-body">
 					<div class="form-group">
 						<select class="form-control bb-input">
-							<option value="markers" selected><?= $this->l10n->gettext('bb_list_mark'); ?></option>
-							<option value="numbers"><?= $this->l10n->gettext('bb_list_num'); ?></option>
+							<option value="markers" selected><?php echo $this->l10n->gettext('bb_list_mark'); ?></option>
+							<option value="numbers"><?php echo $this->l10n->gettext('bb_list_num'); ?></option>
 						</select>
 					</div>
-
+					
 					<div class="form-group">
-						<textarea class="form-control bb-input" placeholder="<?= $this->l10n->gettext('bb_ph_text'); ?>" rows="4"></textarea>
+						<textarea class="form-control bb-input" placeholder="<?php echo $this->l10n->gettext('bb_ph_text'); ?>" rows="4"></textarea>
 					</div>
-
+					
 					<input type="hidden" class="data-code" data-left="[list=&quot;*0*&quot;]" data-center="*1*" data-right="[/list]">
 				</div>
 
 				<div class="modal-footer">
-					<button class="btn btn-primary bb-insert-input"><?= $this->l10n->gettext('insert'); ?></button>
-					<button class="btn btn-default" data-dismiss="modal" aria-hidden="true"><?= $this->l10n->gettext('cancel'); ?></button>
+					<button class="btn btn-primary bb-insert-input"><?php echo $this->l10n->gettext('insert'); ?></button>
+					<button class="btn btn-default" data-dismiss="modal" aria-hidden="true"><?php echo $this->l10n->gettext('cancel'); ?></button>
 				</div>
 			</div>
 		</div>
 	</div>
 
-	<div class="modal fade" id="modal-code-<?= $data['PANEL_ID']; ?>" tabindex="-1" role="dialog" aria-labelledby="label-code-<?= $data['PANEL_ID']; ?>">
+	<div class="modal fade" id="modal-code-<?php echo $data['PANEL_ID']; ?>" tabindex="-1" role="dialog" aria-labelledby="label-code-<?php echo $data['PANEL_ID']; ?>">
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-					<h3 id="label-code-<?= $data['PANEL_ID']; ?>"><?= $this->l10n->gettext('bb_insert_code'); ?></h3>
+					<h3 id="label-code-<?php echo $data['PANEL_ID']; ?>"><?php echo $this->l10n->gettext('bb_insert_code'); ?></h3>
 				</div>
 
 				<div class="modal-body">
@@ -368,104 +297,104 @@
 							<option value="javascript">Javascript</option>
 						</select>
 					</div>
-
+					
 					<div class="form-group">
-						<textarea class="form-control bb-input" placeholder="<?= $this->l10n->gettext('bb_ph_text'); ?>" rows="4"></textarea>
+						<textarea class="form-control bb-input" placeholder="<?php echo $this->l10n->gettext('bb_ph_text'); ?>" rows="4"></textarea>
 					</div>
-
+					
 					<input type="hidden" class="data-code" data-left="[code=&quot;*0*&quot;]" data-center="*1*" data-right="[/code]">
 				</div>
 
 				<div class="modal-footer">
-					<button class="btn btn-primary bb-insert-input"><?= $this->l10n->gettext('insert'); ?></button>
-					<button class="btn btn-default" data-dismiss="modal" aria-hidden="true"><?= $this->l10n->gettext('cancel'); ?></button>
+					<button class="btn btn-primary bb-insert-input"><?php echo $this->l10n->gettext('insert'); ?></button>
+					<button class="btn btn-default" data-dismiss="modal" aria-hidden="true"><?php echo $this->l10n->gettext('cancel'); ?></button>
 				</div>
 			</div>
 		</div>
 	</div>
 
-	<div class="modal fade" id="modal-spoiler-<?= $data['PANEL_ID']; ?>" tabindex="-1" role="dialog" aria-labelledby="label-spoiler-<?= $data['PANEL_ID']; ?>">
+	<div class="modal fade" id="modal-spoiler-<?php echo $data['PANEL_ID']; ?>" tabindex="-1" role="dialog" aria-labelledby="label-spoiler-<?php echo $data['PANEL_ID']; ?>">
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-					<h3 id="label-spoiler-<?= $data['PANEL_ID']; ?>"><?= $this->l10n->gettext('bb_insert_spoiler'); ?></h3>
+					<h3 id="label-spoiler-<?php echo $data['PANEL_ID']; ?>"><?php echo $this->l10n->gettext('bb_insert_spoiler'); ?></h3>
 				</div>
 
 				<div class="modal-body">
 					<div class="form-group">
-						<input class="form-control bb-input" type="text" value="<?= $this->l10n->gettext('bb_spoiler'); ?>" placeholder="<?= $this->l10n->gettext('bb_ph_spoiler'); ?>">
+						<input class="form-control bb-input" type="text" value="<?php echo $this->l10n->gettext('bb_spoiler'); ?>" placeholder="<?php echo $this->l10n->gettext('bb_ph_spoiler'); ?>">
 					</div>
-
+					
 					<div class="form-group">
-						<textarea class="form-control bb-input" placeholder="<?= $this->l10n->gettext('bb_ph_text'); ?>" rows="4"></textarea>
+						<textarea class="form-control bb-input" placeholder="<?php echo $this->l10n->gettext('bb_ph_text'); ?>" rows="4"></textarea>
 					</div>
-
+					
 					<input type="hidden" class="data-code" data-left="[spoiler=&quot;*0*&quot;]" data-center="*1*" data-right="[/spoiler]">
 				</div>
 
 				<div class="modal-footer">
-					<button class="btn btn-primary bb-insert-input"><?= $this->l10n->gettext('insert'); ?></button>
-					<button class="btn btn-default" data-dismiss="modal" aria-hidden="true"><?= $this->l10n->gettext('cancel'); ?></button>
+					<button class="btn btn-primary bb-insert-input"><?php echo $this->l10n->gettext('insert'); ?></button>
+					<button class="btn btn-default" data-dismiss="modal" aria-hidden="true"><?php echo $this->l10n->gettext('cancel'); ?></button>
 				</div>
 			</div>
 		</div>
 	</div>
 
-	<div class="modal fade" id="modal-img-<?= $data['PANEL_ID']; ?>" tabindex="-1" role="dialog" aria-labelledby="label-img-<?= $data['PANEL_ID']; ?>">
+	<div class="modal fade" id="modal-img-<?php echo $data['PANEL_ID']; ?>" tabindex="-1" role="dialog" aria-labelledby="label-img-<?php echo $data['PANEL_ID']; ?>">
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-					<h3 id="label-img-<?= $data['PANEL_ID']; ?>"><?= $this->l10n->gettext('bb_insert_img'); ?></h3>
+					<h3 id="label-img-<?php echo $data['PANEL_ID']; ?>"><?php echo $this->l10n->gettext('bb_insert_img'); ?></h3>
 				</div>
 
 				<div class="modal-body">
 					<div class="form-group">
-						<input class="form-control bb-input" type="text" placeholder="<?= $this->l10n->gettext('bb_ph_img'); ?>">
+						<input class="form-control bb-input" type="text" placeholder="<?php echo $this->l10n->gettext('bb_ph_img'); ?>">
 					</div>
-
+					
 					<input type="hidden" class="data-code" data-left="[img]" data-center="*0*" data-right="[/img]">
 				</div>
 
 				<div class="modal-footer">
-					<button class="btn btn-primary bb-insert-input"><?= $this->l10n->gettext('insert'); ?></button>
-					<button class="btn btn-default" data-dismiss="modal" aria-hidden="true"><?= $this->l10n->gettext('cancel'); ?></button>
+					<button class="btn btn-primary bb-insert-input"><?php echo $this->l10n->gettext('insert'); ?></button>
+					<button class="btn btn-default" data-dismiss="modal" aria-hidden="true"><?php echo $this->l10n->gettext('cancel'); ?></button>
 				</div>
 			</div>
 		</div>
 	</div>
 
-	<div class="modal fade" id="modal-video-<?= $data['PANEL_ID']; ?>" tabindex="-1" role="dialog" aria-labelledby="label-video-<?= $data['PANEL_ID']; ?>">
+	<div class="modal fade" id="modal-video-<?php echo $data['PANEL_ID']; ?>" tabindex="-1" role="dialog" aria-labelledby="label-video-<?php echo $data['PANEL_ID']; ?>">
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-					<h3 id="label-video-<?= $data['PANEL_ID']; ?>"><?= $this->l10n->gettext('bb_insert_video'); ?></h3>
+					<h3 id="label-video-<?php echo $data['PANEL_ID']; ?>"><?php echo $this->l10n->gettext('bb_insert_video'); ?></h3>
 				</div>
 
 				<div class="modal-body">
 					<div class="form-group">
 						<select class="form-control bb-input">
-							<option value="youtube" selected><?= $this->l10n->gettext('bb_v_youtube'); ?></option>
-							<option value="vine"><?= $this->l10n->gettext('bb_v_vine'); ?></option>
-							<option value="vk"><?= $this->l10n->gettext('bb_v_vk'); ?></option>
-							<option value="vimeo"><?= $this->l10n->gettext('bb_v_vimeo'); ?></option>
-							<option value="coub"><?= $this->l10n->gettext('bb_v_coub'); ?></option>
-							<option value="twitch"><?= $this->l10n->gettext('bb_v_twitch'); ?></option>
+							<option value="youtube" selected><?php echo $this->l10n->gettext('bb_v_youtube'); ?></option>
+							<option value="vine"><?php echo $this->l10n->gettext('bb_v_vine'); ?></option>
+							<option value="vk"><?php echo $this->l10n->gettext('bb_v_vk'); ?></option>
+							<option value="vimeo"><?php echo $this->l10n->gettext('bb_v_vimeo'); ?></option>
+							<option value="coub"><?php echo $this->l10n->gettext('bb_v_coub'); ?></option>
+							<option value="twitch"><?php echo $this->l10n->gettext('bb_v_twitch'); ?></option>
 						</select>
 					</div>
-
+					
 					<div class="form-group">
-						<input class="form-control bb-input" type="text" placeholder="<?= $this->l10n->gettext('bb_ph_video'); ?>">
+						<input class="form-control bb-input" type="text" placeholder="<?php echo $this->l10n->gettext('bb_ph_video'); ?>">
 					</div>
-
+					
 					<input type="hidden" class="data-code" data-left="[video=&quot;*0*&quot;]" data-center="*1*" data-right="[/video]">
 				</div>
 
 				<div class="modal-footer">
-					<button class="btn btn-primary bb-insert-input"><?= $this->l10n->gettext('insert'); ?></button>
-					<button class="btn btn-default" data-dismiss="modal" aria-hidden="true"><?= $this->l10n->gettext('cancel'); ?></button>
+					<button class="btn btn-primary bb-insert-input"><?php echo $this->l10n->gettext('insert'); ?></button>
+					<button class="btn btn-default" data-dismiss="modal" aria-hidden="true"><?php echo $this->l10n->gettext('cancel'); ?></button>
 				</div>
 			</div>
 		</div>

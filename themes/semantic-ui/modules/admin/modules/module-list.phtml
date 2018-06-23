@@ -1,0 +1,42 @@
+<div class="row">
+	<div class="column">
+		
+		<form class="ui form" method="post" action="<?= ADMIN_URL; ?>&do=modules&op=delete">
+
+				<table class="ui celled table">
+					<thead>
+						<tr>
+							<th class="collapsing"><?= $this->l10n->gettext('mod_field_status'); ?></th>
+							<th><?= $this->l10n->gettext('mod_field_name'); ?></th>
+							<th><?= $this->l10n->gettext('author'); ?></th>
+							<th><?= $this->l10n->gettext('version'); ?></th>
+							<th class="right aligned collapsing action">
+								<div class="ui checkbox">
+									<input class="check-all" type="checkbox" data-for="check-input">
+									<label></label>
+								</div>
+							</th>
+						</tr>
+					</thead>
+					
+					<tbody>
+						<?= $data['MODULES']; ?>
+					</tbody>
+				</table>
+				
+				<div class="ui fluid buttons" role="group" id="actions">
+					<button class="ui primary button" id="enable" data-for="check-input">
+						<i class="icon play fitted"></i>
+					</button>
+					<button class="ui primary button" id="disable" data-for="check-input">
+						<i class="icon pause fitted"></i>
+					</button>
+					<a role="button" href="#" class="ui primary button edit" data-for="check-input" data-link="<?= ADMIN_URL; ?>&do=modules&op=edit&id=">
+						<?= $this->l10n->gettext('edit'); ?>
+					</a>
+				</div>
+				
+		</form>
+
+	</div>
+</div>

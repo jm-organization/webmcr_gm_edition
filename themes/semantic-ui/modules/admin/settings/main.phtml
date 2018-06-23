@@ -1,0 +1,196 @@
+<div class="row">
+	<div class="column">
+		
+		<div class="ui six item labeled icon menu">
+			<a class="active item" href="<?= ADMIN_URL; ?>&do=settings&op=main">
+				<i class="cogs icon"></i>
+				<?= $this->l10n->gettext('set_main'); ?>
+			</a>
+			<a class="item" href="<?= ADMIN_URL; ?>&do=settings&op=pagin">
+				<i class="ellipsis horizontal icon"></i>
+				<?= $this->l10n->gettext('set_pagin'); ?>
+			</a>
+			<a class="item" href="<?= ADMIN_URL; ?>&do=settings&op=mail">
+				<i class="envelope icon"></i>
+				<?= $this->l10n->gettext('set_mail'); ?>
+			</a>
+			<a class="item" href="<?= ADMIN_URL; ?>&do=settings&op=search">
+				<i class="search icon"></i>
+				<?= $this->l10n->gettext('set_search'); ?>
+			</a>
+			<a class="item" href="<?= ADMIN_URL; ?>&do=settings&op=functions">
+				<i class="lightbulb icon"></i>
+				<?= $this->l10n->gettext('set_func'); ?>
+			</a>
+			<a class="item" href="<?= ADMIN_URL; ?>&do=settings&op=base">
+				<i class="database icon"></i>
+				<?= $this->l10n->gettext('set_base'); ?>
+			</a>
+		</div>
+		
+		<form method="post"></form>
+		
+		<form class="ui form" method="post">
+			
+			<table class="ui definition table">
+				<tbody>
+					<tr>
+						<td class="collapsing">
+							<label for="input_s_name"><?= $this->l10n->gettext('set_main_sitename'); ?></label>
+						</td>
+						<td>
+							<input name="s_name" id="input_s_name" value="<?= $data['CFG']['s_name']; ?>" placeholder="<?= $this->l10n->gettext('set_main_sitename'); ?>" type="text">
+						</td>
+					</tr>
+					
+					<tr>
+						<td class="collapsing">
+							<label for="input_s_about"><?= $this->l10n->gettext('set_main_sitedesc'); ?></label>
+						</td>
+						<td>
+							<input name="s_about" value="<?= $data['CFG']['s_about']; ?>" id="input_s_about" placeholder="<?= $this->l10n->gettext('set_main_sitedesc'); ?>" type="text">
+						</td>
+					</tr>
+					
+					<tr>
+						<td class="collapsing">
+							<label for="input_s_keywords"><?= $this->l10n->gettext('set_main_sitekeys'); ?></label>
+						</td>
+						<td>
+							<input name="s_keywords" value="<?= $data['CFG']['s_keywords']; ?>" id="input_s_keywords" placeholder="<?= $this->l10n->gettext('set_main_sitekeys'); ?>" type="text">
+						</td>
+					</tr>
+					
+					<tr>
+						<td class="collapsing">
+							<label for="input_s_keywords"><?= $this->l10n->gettext('set_main_sitekeys'); ?></label>
+						</td>
+						<td>
+							<input name="s_keywords" value="<?= $data['CFG']['s_keywords']; ?>" id="input_s_keywords" placeholder="<?= $this->l10n->gettext('set_main_sitekeys'); ?>" type="text">
+						</td>
+					</tr>
+					
+					<tr>
+						<td class="collapsing">
+							<label for="input_s_dpage"><?= $this->l10n->gettext('set_main_start'); ?></label>
+						</td>
+						<td>
+							<input name="s_dpage" value="<?= $data['CFG']['s_dpage']; ?>" id="input_s_dpage" placeholder="<?= $this->l10n->gettext('set_main_start'); ?>" type="text">
+						</td>
+					</tr>
+					
+					<tr>
+						<td class="collapsing">
+							<label for="input_s_theme"><?= $this->l10n->gettext('set_main_theme'); ?></label>
+						</td>
+						<td>
+							<select name="s_theme" class="ui fluid selection dropdown" id="input_s_theme">
+								<?= $data['THEMES']; ?>
+							</select>
+						</td>
+					</tr>
+					
+					<tr>
+						<td class="collapsing">
+							<label for="input_log"><?= $this->l10n->gettext('set_main_log'); ?></label>
+						</td>
+						<td>
+							<select name="log" class="ui fluid selection dropdown" id="log">
+								<option value="0"><?= $this->l10n->gettext('no'); ?></option>
+								<option value="1"
+								<?= $data['LOG']; ?>><?= $this->l10n->gettext('yes'); ?></option>
+							</select>
+						</td>
+					</tr>
+					
+					<tr>
+						<td class="collapsing">
+							<label for="input_debug"><?= $this->l10n->gettext('set_main_debug'); ?></label>
+						</td>
+						<td>
+							<select name="debug" class="ui fluid selection dropdown" id="debug">
+								<option value="0"><?= $this->l10n->gettext('no'); ?></option>
+								<option value="1"
+								<?= $data['DEBUG']; ?>><?= $this->l10n->gettext('yes'); ?></option>
+							</select>
+						</td>
+					</tr>
+					
+					<tr>
+						<td class="collapsing">
+							<label for="input_reg_accept"><?= $this->l10n->gettext('set_main_reg'); ?></label>
+						</td>
+						<td>
+							<select name="reg_accept" class="ui fluid selection dropdown" id="input_reg_accept">
+								<option value="0"><?= $this->l10n->gettext('no'); ?></option>
+								<option value="1"
+								<?= $data['REG_ACCEPT']; ?>><?= $this->l10n->gettext('yes'); ?></option>
+							</select>
+						</td>
+					</tr>
+					
+					<tr>
+						<td class="collapsing">
+							<label for="input_captch"><?= $this->l10n->gettext('set_main_captcha'); ?></label>
+						</td>
+						<td>
+							<select name="captcha" class="ui fluid selection dropdown" id="input_captch">
+								<?= $data['CAPTHA']; ?>
+							</select>
+						</td>
+					</tr>
+					
+					<tr>
+						<td class="center aligned disabled" colspan="2"><h4>ReCaptcha</h4></td>
+					</tr>
+					
+					<tr>
+						<td class="collapsing">
+							<label for="input_rc_public"><?= $this->l10n->gettext('set_main_key_public'); ?></label>
+						</td>
+						<td>
+							<input name="rc_public" value="<?= $data['CFG']['rc_public']; ?>" id="input_rc_public" placeholder="<?= $this->l10n->gettext('set_main_key_public'); ?>" type="text">
+						</td>
+					</tr>
+					
+					<tr>
+						<td class="collapsing">
+							<label for="input_rc_private"><?= $this->l10n->gettext('set_main_key_private'); ?></label>
+						</td>
+						<td>
+							<input name="rc_private" value="<?= $data['CFG']['rc_private']; ?>" id="input_rc_private" placeholder="<?= $this->l10n->gettext('set_main_key_private'); ?>" type="text">
+						</td>
+					</tr>
+					
+					<tr>
+						<td class="center aligned disabled" colspan="2"><h4>KeyCaptcha</h4></td>
+					</tr>
+					
+					<tr>
+						<td class="collapsing">
+							<label for="input_kc_public"><?= $this->l10n->gettext('set_main_key_public'); ?></label>
+						</td>
+						<td>
+							<input name="kc_public" value="<?= $data['CFG']['kc_public']; ?>" id="input_kc_public" placeholder="<?= $this->l10n->gettext('set_main_key_public'); ?> " type="text">
+						</td>
+					</tr>
+					
+					<tr>
+						<td class="collapsing">
+							<label for="input_kc_private"><?= $this->l10n->gettext('set_main_key_private'); ?></label>
+						</td>
+						<td>
+							<input name="kc_private" value="<?= $data['CFG']['kc_private']; ?>" id="input_kc_private" placeholder="<?= $this->l10n->gettext('set_main_key_private'); ?>" type="text">
+						</td>
+					</tr>
+					
+				</tbody>
+			</table>
+			
+			<div class="field">
+				<button type="submit" name="submit" class="ui huge primary fluid button"><?= $this->l10n->gettext('save'); ?></button>
+			</div>
+			
+		</form>
+	</div>
+</div>

@@ -1,13 +1,11 @@
-<div class="ui segments">
+<div class="form-block">
 
-	<div class="ui segment">
-		<div class="header"><i class="icon chart area"></i>
-			<?= $this->l10n->gettext('monitoring'); ?>
-		</div>
-	</div>
+	<div class="block-header"><?php echo $this->l10n->gettext('monitoring'); ?></div>
 
-	<div class="ui secondary segment">
-		<?= $data['CONTENT']; ?>
+	<div class="block-line"></div>
+
+	<div class="block-content">
+		<?php echo $data['CONTENT']; ?>
 	</div>
 
 </div>

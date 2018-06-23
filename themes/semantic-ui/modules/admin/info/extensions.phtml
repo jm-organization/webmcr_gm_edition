@@ -1,0 +1,26 @@
+<div class="ui segments">
+
+	<div class="ui segment">
+		<?= $this->l10n->gettext('info_ext'); ?>
+	</div>
+
+
+	<div class="ui segment">
+		<form method="post"></form>
+		<ul class="nav nav-tabs" id="myTab">
+			<li class="nav-item">
+				<a class="nav-link" href="<?= ADMIN_URL; ?>&do=info&op=main"><?= $this->l10n->gettext('info'); ?></a>
+			</li>
+			<!--<li class="nav-item"><a class="nav-link active" href="<?= ADMIN_URL; ?>&do=info&op=extensions"><?= $this->l10n->gettext('info_ext'); ?></a></li>-->
+			<li class="nav-item">
+				<a class="nav-link" href="<?= ADMIN_URL; ?>&do=info&op=stats"><?= $this->l10n->gettext('info_stats'); ?></a>
+			</li>
+		</ul>
+
+		<div class="tab-content">
+			<!--<ul class="thumbnails"></ul>-->
+			<iframe src="http://webmcr.com/?do=extensions" height="720" style="width: 100%; border: 0;"></iframe>
+		</div>
+	</div>
+
+</div>

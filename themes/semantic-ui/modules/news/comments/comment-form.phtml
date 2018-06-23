@@ -1,0 +1,20 @@
+<div class="ui segments comment-form">
+
+	<div class="ui segment">
+		<?= $this->l10n->gettext('add_comment'); ?>
+	</div>
+
+	<div class="ui segment comment-form-content">
+		<form class="ui form" method="post">
+
+			<div class="field">
+				<textarea name="message" id="wysibb-editor" class="wysibb-texarea" data-for="bb-comments" placeholder="<?= $this->l10n->gettext('message'); ?>" required></textarea>
+			</div>
+
+			<div class="field">
+				<button type="submit" class="ui fluid huge primary button" name="comment" id="add_comment" value="add"><?= $this->l10n->gettext('add'); ?></button>
+			</div>
+
+		</form>
+	</div>
+</div>

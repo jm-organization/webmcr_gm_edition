@@ -1,12 +1,6 @@
 <tr>
-	<td><?= $data['ID']; ?></td>
-	<td><i class="fa fa-info-circle" rel="tooltip" title="<?= $data['TEXT']; ?>"></i> <?= $data['TITLE']; ?>
-	</td>
-	<td><a href="#"><?= $data['PERMISSIONS']; ?></a> <!-- (Edit permissions link) Coming soon --></td>
-	<td class="action">
-		<div class="ui checkbox">
-			<input type="checkbox" name="id[]" class="check-input" value="<?= $data['ID']; ?>">
-			<label></label>
-		</div>
-	</td>
+	<td><?php echo $data['ID']; ?></td>
+	<td><i class="fa fa-info-circle" rel="tooltip" title="<?php echo $data['TEXT']; ?>"></i> <?php echo $data['TITLE']; ?></td>
+	<td><a href="#"><?php echo $data['PERMISSIONS']; ?></a> <!-- (Edit permissions link) Coming soon --></td>
+	<td class="action"><input type="checkbox"  name="id[]" class="check-input" value="<?php echo $data['ID']; ?>"></td>
 </tr>

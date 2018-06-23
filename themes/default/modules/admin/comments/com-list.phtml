@@ -1,57 +1,53 @@
-<div class="row">
-	<div class="column">
+<form method="post" class="panel-comments" action="<?php echo ADMIN_URL; ?>&do=comments&op=delete">
+	<div class="form-block">
 
-		<form class="ui form panel-comments" method="post" action="<?= ADMIN_URL; ?>&do=comments&op=delete">
-			
-			<div class="ui fluid action input">
-				<input class="adm-search-input" id="adm-search-id" placeholder="<?= $this->l10n->gettext('search_placeholder'); ?>" type="text">
-				<button class="ui basic button adm-search" data-for="#adm-search-id"><?= $this->l10n->gettext('search'); ?></button>
+		<div class="block-header">
+			<div class="block-name">
+				<p id="title">
+					<span class="title"><?php echo $this->l10n->gettext('comments'); ?></span>
+				</p>
+				<p id="actions">
+					<span class="btn-group">
+						<a href="#" class="btn btn-secondary edit" data-for="check-input" data-link="<?php echo ADMIN_URL; ?>&do=comments&op=edit&id="><i class="fa fa-pencil"></i></a>
+						<button class="btn btn-secondary remove" data-for="check-input" data-text="<?php echo $this->l10n->gettext('comment_accept'); ?>" type="submit" name="delete"><i class="fa fa-times"></i></button>
+					</span>
+
+					<span class="btn-group" role="group">
+						<input type="text" class="adm-search-input form-control" id="adm-search-id" placeholder="<?php echo $this->l10n->gettext('search_placeholder'); ?>">
+						<span class="input-group-prepend">
+							<button class="btn btn-secondary adm-search" data-for="#adm-search-id" type="button" rel="tooltip" title="<?php echo $this->l10n->gettext('search'); ?>"><i class="fa fa-search"></i></button>
+						</span>
+                    </span>
+
+					<span class="btn-group" role="group">
+                    	<a role="button" href="<?php echo ADMIN_URL; ?>&do=comments&op=add" class="btn btn-primary"><?php echo $this->l10n->gettext('add'); ?></a>
+                    </span>
+				</p>
 			</div>
-			
-			<table class="ui celled table" data-name="comments">
+		</div>
+
+		<?php if (!empty($data['PAGINATION'])) {?>
+		<div class="block-line"></div>
+
+		<div class="left-act"><?php echo $data['PAGINATION']; ?></div>
+		<?php } ?>
+
+		<div class="table-responsive" data-name="comments">
+			<table class="table">
 				<thead>
 					<tr>
-						<th class="collapsing"><?= $this->l10n->gettext('block_field_status'); ?></th>
-						<th><a class="sort-trigger" data-field="user" data-order="desc"><?= $this->l10n->gettext('comment_col_user'); ?></a></th>
-						<th><a class="sort-trigger" data-field="comment" data-order="desc"><?= $this->l10n->gettext('comment_col_comment'); ?></a></th>
-						<th><a class="sort-trigger" data-field="news" data-order="desc"><?= $this->l10n->gettext('comment_col_news'); ?></a></th>
-						<th class="right aligned collapsing action">
-							<div class="ui checkbox">
-								<input type="checkbox" class="check-all" data-for="check-input">
-								<label></label>
-							</div>
-						</th>
+						<th><a class="sort-trigger" data-field="id" data-order="desc">#</a></th>
+						<th><a class="sort-trigger" data-field="user" data-order="desc"><?php echo $this->l10n->gettext('comment_col_user'); ?></a></th>
+						<th><a class="sort-trigger" data-field="comment" data-order="desc"><?php echo $this->l10n->gettext('comment_col_comment'); ?></a></th>
+						<th><a class="sort-trigger" data-field="news" data-order="desc"><?php echo $this->l10n->gettext('comment_col_news'); ?></a></th>
+						<th class="action"><?php echo $this->l10n->gettext('action'); ?> <input type="checkbox" class="check-all" data-for="check-input"></th>
 					</tr>
 				</thead>
-				
+
 				<tbody>
-					<?= $data['COMMENTS']; ?>
+					<?php echo $data['COMMENTS']; ?>
 				</tbody>
 			</table>
-			
-			<div class="field">
-				<div id="actions" class="ui fluid buttons">
-					<a class="ui primary button" href="<?= ADMIN_URL; ?>&do=comments&op=add">
-						<i class="icon plus"></i> <?= $this->l10n->gettext('add'); ?>
-					</a>
-					<a class="ui primary button edit" data-for="check-input" data-link="<?= ADMIN_URL; ?>&do=comments&op=edit&id=">
-						<i class="icon pencil"></i> <?= $this->l10n->gettext('edit'); ?>
-					</a>
-					<button class="ui negative button remove" data-for="check-input" name="delete" type="submit">
-						<i class="icon times"></i> <?= $this->l10n->gettext('delete'); ?>
-					</button>
-				</div>
-			</div>
-			
-			<? if (!empty($data['PAGINATION'])) {?>
-				<div class="ui one column stackable center aligned page grid">
-					<div class="column wide">
-						<?= $data['PAGINATION']; ?>
-					</div>
-				</div>
-			<? } ?>
-			
-		</form>
-		
+		</div>
 	</div>
-</div>
+</form>

@@ -1,12 +1,7 @@
 <tr>
-	<td class="center aligned status"><i class="<?= $data['STATUS']; ?>"></i></td>
-	<td><?= $data['TITLE']; ?></td>
-	<td><?= $data['AUTHOR']; ?></td>
-	<td><?= $data['VERSION']; ?></td>
-	<td class="action">
-		<div class="ui checkbox">
-			<input type="checkbox" name="id[]" class="check-input" value="<?= $data['NAME']; ?>">
-			<label></label>
-		</div>
-	</td>
+	<td class="status"><i class="<?php echo $data['STATUS']; ?>"></i></td>
+	<td><?php echo $data['TITLE']; ?></td>
+	<td><?php echo $data['AUTHOR']; ?></td>
+	<td><?php echo $data['VERSION']; ?></td>
+	<td class="action"><input type="checkbox"  name="id[]" class="check-input" value="<?php echo $data['NAME']; ?>"></td>
 </tr>

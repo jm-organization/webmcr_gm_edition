@@ -1,0 +1,19 @@
+<div class="item">
+	<img class="i-icon" src="<?='themes/' . $data['CODE'] . '/' . $data['SCREENSHOT'] ?>">
+
+	<div class="theme-about">
+		<h3 class="theme-name"><?= $data['NAME']; ?></h3>
+		<p class="theme-description"><?= $data['ABOUT']; ?></p>
+	</div>
+
+	<? if($data['ACTIVE']) { ?>
+	<span class="theme-active fa fa-check-square-o"></span>
+	<? } ?>
+
+	<div class="item-footer" style="text-align:left;">
+		<span class="version"><?=$data['VERSION'];?></span>
+		<span class="ui primary right floated mini button get_more_theme_info" role="button" data-theme-cod="<?= $data['CODE']; ?>">
+			<?= $this->l10n->gettext('more') ?>
+		</span>
+	</div>
+</div>

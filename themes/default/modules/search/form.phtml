@@ -1,26 +1,21 @@
-<div class="item">
-	<form class="ui form" method="get" action="<?= BASE_URL; ?>">
-		<input type="hidden" name="mode" value="search">
-		<input type="hidden" name="type" id="mcr-search-hidden" value="news">
+<form class="form-inline pull-xs-right" method="get" action="<?php echo BASE_URL; ?>">
+	<input type="hidden" name="mode" value="search">
+	<input type="hidden" name="type" id="search-hidden" value="news">
 
-		<div class="ui icon transparent input">
-			<input id="mcr-search" type="text" name="value" placeholder="<?= $this->l10n->gettext('search'); ?>" autocomplete="off" required>
-			<i class="search icon"></i>
+
+	<div class="input-group">
+		<div class="input-group-btn">
+			<button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="caret"></span></button>
+
+			<ul class="dropdown-menu" id="search-selector">
+				<?php echo $data['SEARCH_ELEMENTS']; ?>
+			</ul>
 		</div>
 
-		<div class="ui mcr-search fluid popup">
-			<div class="field">
-				<select class="ui fluid selection dropdown" id="mcr-search-selector">
-					<div class="menu">
-						<?= $data['SEARCH_ELEMENTS']; ?>
-					</div>
-				</select>
-			</div>
+		<input type="text" class="form-control" required name="value" placeholder="<?php echo $this->l10n->gettext('search'); ?>">
 
-			<div class="field">
-				<button type="submit" class="ui fluid basic button"><?= $this->l10n->gettext('search'); ?></button>
-			</div>
+		<div class="input-group-btn">
+			<button type="submit" class="btn btn-secondary"><i class="fa fa-search"></i></button>
 		</div>
-
-	</form>
-</div>
+	</div>
+</form>

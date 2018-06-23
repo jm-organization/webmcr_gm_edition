@@ -1,105 +1,64 @@
-<div class="row">
-	<div class="column">
-		
-		<div class="ui six item labeled icon menu">
-			<a class="item" href="<?= ADMIN_URL; ?>&do=settings&op=main">
-				<i class="cogs icon"></i>
-				<?= $this->l10n->gettext('set_main'); ?>
-			</a>
-			<a class="item" href="<?= ADMIN_URL; ?>&do=settings&op=pagin">
-				<i class="ellipsis horizontal icon"></i>
-				<?= $this->l10n->gettext('set_pagin'); ?>
-			</a>
-			<a class="item" href="<?= ADMIN_URL; ?>&do=settings&op=mail">
-				<i class="envelope icon"></i>
-				<?= $this->l10n->gettext('set_mail'); ?>
-			</a>
-			<a class="item" href="<?= ADMIN_URL; ?>&do=settings&op=search">
-				<i class="search icon"></i>
-				<?= $this->l10n->gettext('set_search'); ?>
-			</a>
-			<a class="item" href="<?= ADMIN_URL; ?>&do=settings&op=functions">
-				<i class="lightbulb icon"></i>
-				<?= $this->l10n->gettext('set_func'); ?>
-			</a>
-			<a class="active item" href="<?= ADMIN_URL; ?>&do=settings&op=base">
-				<i class="database icon"></i>
-				<?= $this->l10n->gettext('set_base'); ?>
-			</a>
-		</div>
-		
-		<form method="post"></form>
-		
-		<form class="ui form" method="post">
-			<table class="ui definition table">
-				<tbody>
-					
-					<tr>
-						<td class="collapsing">
-							<label for="input_host"><?= $this->l10n->gettext('set_base_host'); ?></label>
-						</td>
-						<td>
-							<input type="text" name="host" id="input_host" value="<?= $data['HOST']; ?>" placeholder="<?= $this->l10n->gettext('set_base_host_ph'); ?>">
-						</td>
-					</tr>
-					
-					<tr>
-						<td class="collapsing">
-							<label for="input_port"><?= $this->l10n->gettext('set_base_port'); ?></label>
-						</td>
-						<td>
-							<input type="text" name="port" id="input_port" value="<?= $data['PORT']; ?>" placeholder="<?= $this->l10n->gettext('set_base_port_ph'); ?>">
-						</td>
-					</tr>
-					
-					<tr>
-						<td class="collapsing">
-							<label for="input_name"><?= $this->l10n->gettext('set_base_base'); ?></label>
-						</td>
-						<td>
-							<input type="text" name="name" value="<?= $data['BASE']; ?>" id="input_name" placeholder="<?= $this->l10n->gettext('set_base_base_ph'); ?>">
-						</td>
-					</tr>
-					
-					<tr>
-						<td class="collapsing">
-							<label for="input_user"><?= $this->l10n->gettext('set_base_user'); ?></label>
-						</td>
-						<td>
-							<input type="text" name="user" value="<?= $data['USER']; ?>" id="input_user" placeholder="<?= $this->l10n->gettext('set_base_user_ph'); ?>">
-						</td>
-					</tr>
-					
-					<tr>
-						<td class="collapsing">
-							<label for="input_pass"><?= $this->l10n->gettext('set_base_pass'); ?></label>
-						</td>
-						<td>
-							<input type="password" name="pass" value="<?= $data['PASS']; ?>" id="input_pass" placeholder="<?= $this->l10n->gettext('set_base_pass_ph'); ?>">
-						</td>
-					</tr>
-					
-					<tr>
-						<td class="collapsing">
-							<label for="input_backend"><?= $this->l10n->gettext('set_base_type'); ?></label>
-						</td>
-						<td>
-							<select name="backend" id="input_backend" class="ui fluid selection dropdown">
-								<option value="mysql"><?= $this->l10n->gettext('set_base_type_mysql'); ?></option>
-								<option value="mysqli"
-								<?= $data['MYSQLI']; ?>><?= $this->l10n->gettext('set_base_type_mysqli'); ?></option>
-								<option value="pdo"
-								<?= $data['PDO']; ?> disabled><?= $this->l10n->gettext('set_base_type_pdo'); ?></option>
-							</select>
-						</td>
-					</tr>
-					
-				</tbody>
-			</table>
-			
-			<button type="submit" name="submit" class="ui huge primary fluid button"><?= $this->l10n->gettext('save'); ?></button>
-			
-		</form>
-		
+<div class="form-block">
+
+	<div class="block-header">
+		<div class="block-name"><?php echo $this->l10n->gettext('settings'); ?></div>
 	</div>
+
+	<div class="block-line"></div>
+
+	<div class="adm-settings">
+		<form method="post"></form>
+
+		<ul class="nav nav-tabs">
+			<li class="nav-item"><a class="nav-link" href="<?php echo ADMIN_URL; ?>&do=settings&op=main"><?php echo $this->l10n->gettext('set_main'); ?></a></li>
+			<li class="nav-item"><a class="nav-link" href="<?php echo ADMIN_URL; ?>&do=settings&op=pagin"><?php echo $this->l10n->gettext('set_pagin'); ?></a></li>
+			<li class="nav-item"><a class="nav-link" href="<?php echo ADMIN_URL; ?>&do=settings&op=mail"><?php echo $this->l10n->gettext('set_mail'); ?></a></li>
+			<li class="nav-item"><a class="nav-link" href="<?php echo ADMIN_URL; ?>&do=settings&op=search"><?php echo $this->l10n->gettext('set_search'); ?></a></li>
+			<li class="nav-item"><a class="nav-link" href="<?php echo ADMIN_URL; ?>&do=settings&op=functions"><?php echo $this->l10n->gettext('set_func'); ?></a></li>
+			<li class="nav-item"><a class="nav-link active" href="<?php echo ADMIN_URL; ?>&do=settings&op=base"><?php echo $this->l10n->gettext('set_base'); ?></a></li>
+		</ul>
+		 
+		<div class="tab-content">
+			<form method="post">
+
+				<div class="form-group">
+					<label for="input_host"><?php echo $this->l10n->gettext('set_base_host'); ?></label>
+					<input type="text" class="form-control" name="host" id="input_host" value="<?php echo $data['HOST']; ?>" placeholder="<?php echo $this->l10n->gettext('set_base_host_ph'); ?>">
+				</div>
+
+				<div class="form-group">
+					<label for="input_port"><?php echo $this->l10n->gettext('set_base_port'); ?></label>
+					<input type="text" class="form-control" name="port" id="input_port" value="<?php echo $data['PORT']; ?>" placeholder="<?php echo $this->l10n->gettext('set_base_port_ph'); ?>">
+				</div>
+
+				<div class="form-group">
+					<label for="input_name"><?php echo $this->l10n->gettext('set_base_base'); ?></label>
+					<input type="text" class="form-control" name="name" value="<?php echo $data['BASE']; ?>" id="input_name" placeholder="<?php echo $this->l10n->gettext('set_base_base_ph'); ?>">
+				</div>
+
+				<div class="form-group">
+					<label for="input_user"><?php echo $this->l10n->gettext('set_base_user'); ?></label>
+					<input type="text" class="form-control" name="user" value="<?php echo $data['USER']; ?>" id="input_user" placeholder="<?php echo $this->l10n->gettext('set_base_user_ph'); ?>">
+				</div>
+
+				<div class="form-group">
+					<label for="input_pass"><?php echo $this->l10n->gettext('set_base_pass'); ?></label>
+					<input type="password" class="form-control" name="pass" value="<?php echo $data['PASS']; ?>" id="input_pass" placeholder="<?php echo $this->l10n->gettext('set_base_pass_ph'); ?>">
+				</div>
+
+				<div class="form-group">
+					<label for="input_backend"><?php echo $this->l10n->gettext('set_base_type'); ?></label>
+					<select name="backend" class="form-control" id="input_backend">
+						<option value="mysql"><?php echo $this->l10n->gettext('set_base_type_mysql'); ?></option>
+						<option value="mysqli" <?php echo $data['MYSQLI']; ?>><?php echo $this->l10n->gettext('set_base_type_mysqli'); ?></option>
+						<option value="pdo" <?php echo $data['PDO']; ?> disabled><?php echo $this->l10n->gettext('set_base_type_pdo'); ?></option>
+					</select>
+				</div>
+
+				<button type="submit" name="submit" class="btn btn-primary btn-block"><?php echo $this->l10n->gettext('save'); ?></button>
+
+			</form>
+		</div>
+	</div>
+		
 </div>

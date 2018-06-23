@@ -1,0 +1,14 @@
+<tr class="<?= $data['STATUS_CLASS']; ?>">
+	<td><?= $data['ID']; ?></td>
+	<td>
+		<a href="<?= BASE_URL; ?>?mode=news&id=<?= $data['NID']; ?>" target="_blank"><i class="fa fa-share"></i></a> <?= $data['NEW']; ?>
+	</td>
+	<td><?= $data['LOGIN']; ?></td>
+	<td><?= $data['TIME_CREATE']; ?></td>
+	<td class="collapsing action">
+		<div class="ui checkbox">
+			<input type="checkbox" name="id[]" class="check-input" value="<?= $data['ID']; ?>">
+			<label></label>
+		</div>
+	</td>
+</tr>

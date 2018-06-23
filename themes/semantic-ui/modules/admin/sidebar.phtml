@@ -1,0 +1,26 @@
+<a class="title item <?= $data['ACTIVE'] ?>">
+	<i class="<?= $data['ICON'] ?> mcr-sidebar-icon icon"></i>
+	<i class="dropdown icon"></i>
+	<?= $data['TITLE'] ?>
+</a>
+<div class="content <?= $data['ACTIVE'] ?>">
+	<? foreach($data["SUB_MENU"] as $href) {
+		$active = '';
+		
+		if (isset($_GET['do'])) {
+			$do_in_mode = $_GET['do'];
+			$url_part = explode('do=', $href['url'])[1];
+			
+			if (preg_match("/^$do_in_mode$/", $url_part) === 1) {
+				$active = 'active';
+			}
+		}
+		
+	?>
+
+	<div class="<?= $active ?> item">
+		<a href="<?= $href['url'] ?>" target="<?= $href['target'] ?>"><?= $href['title'] ?></a>
+	</div>
+
+	<? } ?>
+</div>

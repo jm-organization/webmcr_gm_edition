@@ -2,28 +2,10 @@
 	margin-top: 20px;
 }
 
-.profile-info {
-	display: block;
-	width: 100%;
-	text-align: left;
-	margin-top: 10px;
-}
-
-.profile-info .info-line {
-	padding: 5px 10px;
-	font-family: Hattori-Hanzo;
-	margin: 0px 20px;
-	border-bottom: 1px dotted #ccc;
-	font-size: 12px;
-}
-
-.profile-info .info-line b {
-	color: #888;
-}
-
-.profile-info .info-line span {
-	float: right;
-}
+.profile-info { display: block; width: 100%; text-align: left; margin-top: 10px; }
+.profile-info .info-line { padding: 5px 10px; font-family: Hattori-Hanzo; margin: 0px 20px; border-bottom: 1px dotted #ccc; font-size: 12px; }
+.profile-info .info-line b { color: #888; }
+.profile-info .info-line span { float: right; }
 
 .skin-block .profile-skin {
 	margin: auto;
@@ -70,7 +52,7 @@
 	white-space: normal;
 }
 
-@media (max-width: 979px) {
+@media (max-width: 979px){
 	.skin-uploader .file-inputs,
 	.cloak-uploader .file-inputs {
 		margin-top: 20px;
