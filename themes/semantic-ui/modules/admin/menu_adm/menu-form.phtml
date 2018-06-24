@@ -20,12 +20,23 @@
 					
 					<tr>
 						<td>
-							<label for="page_url"><?= $this->cfg->main['s_root_full']; ?>?mode=admin&do=</label>
+							<label for="page_url"></label>
 						</td>
 						<td>
-							<input type="text" class="form-control disabled" readonly id="page_url" value="<?= $data['PAGE_ID'] ?>">
+                            <?= $this->cfg->main['s_root_full']; ?>?mode=admin&do=<span id="page_url"><?=$data['PAGE_ID'] ?></span>
 							<input type="hidden" data-prefix="/?mode=admin&do=" id="page_main_url" name="url" value="/?mode=admin&do=<?= $data['PAGE_ID'] ?>">
-							<a href="#" id="copylink" title="Copy to clipboard" data-toggle="tooltip" class="btn btn-link" onclick="return false;" data-prefix="<?= $this->cfg->main['s_root_full']; ?>?mode=admin&do=" data-clipboard-text="<?= $this->cfg->main['s_root_full']; ?>?mode=admin&do=<?= $data['PAGE_ID'] ?>" style="margin-left:-15px"><i class="fa fa-link"></i></a>
+
+                            <a class="circular ui icon mini button"
+                               id="copylink"
+                               data-tooltip="Copy to clipboard"
+                               data-inverted data-mini
+                               onclick="return false;"
+                               data-prefix="<?= $this->cfg->main['s_root_full']; ?>?mode=admin&do="
+                               data-clipboard-text="<?= $this->cfg->main['s_root_full']; ?>?mode=admin&do=<?= $data['PAGE_ID'] ?>"
+                               style="margin-left: 15px"
+                            >
+                                <i class="clipboard icon"></i>
+                            </a>
 						</td>
 					</tr>
 					
@@ -76,20 +87,19 @@
 							<label><?= $this->l10n->gettext('mcp_field_icon') ?></label>
 						</td>
 						<td>
-							<div class="btn-group w-100" role="group" aria-label="Button group with nested dropdown">
-								<img src="" width="33" height="33" class="img-thumbnail" id="menu_icon" style="height:33px">
+							<img src="" width="36" height="36" class="img-thumbnail" id="menu_icon" style="height:36px;float:left;margin-right:15px;">
 								
-								<div class="btn-group w-100" role="group">
-									<button id="btnGroupDrop1" type="button" data-target="#icons-list" class="btn btn-link"><?= $this->l10n->gettext('select_icon') ?></button>
-								</div>
-							</div>
-							<div class="menu-icons-select triangled" id="icons-list">
-								<h5 class="d-block mb-3"><?= $this->l10n->gettext('icons') ?></h5>
+                            <button id="select_menu_adm_icon" type="button" data-target="#icons-list" class="ui button"><?= $this->l10n->gettext('select_icon') ?></button>
+
+
+							<div class="ui grid menu-icons-select" id="icons-list">
+
+								<div class="ui header" style="margin-top: 10px;"><?= $this->l10n->gettext('icons') ?></div>
 								
 								<? foreach ($data['ICONS'] as $icons_chank) { ?>
 									<div class="row">
 										<? foreach ($icons_chank as $icon) {?>
-											<label class="menu-icon col-md-1" title="<?= $data['TITLE']; ?>">
+											<label class="menu-icon column" title="<?= $icon['TITLE']; ?>">
 												<input class="icon-input" type="radio" name="icon" data-icon="<?= UPLOAD_URL; ?>panel-icons/<?= $icon['IMG']; ?>" value="<?= $icon['ID']; ?>" <?= $icon['CHECKED']; ?>>
 												<div class="icon-img" style="background-image: url(<?= UPLOAD_URL; ?>panel-icons/<?= $icon['IMG']; ?>);"></div>
 											</label>
@@ -132,9 +142,19 @@
 					</tr>
 					
 				</tbody>
+
+                <tfoot class="full-width">
+
+                    <tr>
+                        <th></th>
+                        <th>
+                            <button type="submit" class="ui medium primary button"><?= $this->l10n->gettext('save'); ?></button>
+                        </th>
+                    </tr>
+
+                </tfoot>
+
 			</table>
-			
-			<button type="submit" class="ui huge primary fluid button"><?= $this->l10n->gettext('save'); ?></button>
 			
 		</form>
 		

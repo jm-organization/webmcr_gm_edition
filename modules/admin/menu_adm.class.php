@@ -427,9 +427,22 @@ class submodule
 		$query = $this->db->query($sql);
 		$ar = @$this->db->fetch_array($query);
 
+		/*$query = $this->db->query(
+			"SELECT 
+				`i`.img
+			FROM `mcr_menu_adm` AS `m`
+			
+			LEFT JOIN `mcr_menu_adm_icons` AS `i`
+				ON `i`.id=`m`.icon
+				
+			WHERE `page_id`='menu_adm'"
+		);
+		$image = @$this->db->fetch_array($query)['img'];*/
+
 		$data = [
 			"PAGINATION" => $this->core->pagination($this->cfg->pagin['adm_menu_adm'], $page . '&pid=', $ar[0]),
-			"MENU" => $this->menu_array()
+			"MENU" => $this->menu_array(),
+			//"MODULE_IMAGE" => $image
 		];
 
 		return $this->core->sp(MCR_THEME_MOD . "admin/menu_adm/menu-list.phtml", $data);

@@ -7,7 +7,7 @@ $(document).ready(function () {
 
 			$('[name="url"]').val(page_prefix + page_id);
 			$('#copylink').attr('data-clipboard-text', $('#copylink').data('prefix') + page_id);
-			$('#page_url').val(page_id);
+			$('#page_url').text(page_id);
 		});
 
 		var image = $('.menu-adm-change .menu-icon > .icon-input:checked + .icon-img').css('background-image').replace(/url\("(.*?)"\)/ig, '$1');
@@ -39,5 +39,12 @@ $(document).ready(function () {
 				mcr.notify(data.responseJSON._title, data.responseJSON._message, data.responseJSON._type);
 			}
 		});
-	})
+	});
+
+	$('#select_menu_adm_icon').popup({
+        on: 'click',
+        hoverable: false,
+		popup: '#icons-list',
+		position: 'bottom left'
+    });
 });
