@@ -216,7 +216,17 @@ class submodule
 			$grouped_groups = array_group_by($groups, 'title');
 
 			$grouped_groups = array_map(function ($users) {
-				return count($users);
+				$counted = [];
+
+				// если за день не было пользователей (id => null), не учитываем их при подсчёте
+				foreach ($users as $user) {
+					if (!empty($user['id'])) {
+						$counted[] = $user['id'];
+					}
+				}
+				// в итоге получаем пустой масив в тот день, когда не было регистраций
+
+				return count($counted);
 			}, $grouped_groups);
 
 			//var_dump($grouped_groups);
