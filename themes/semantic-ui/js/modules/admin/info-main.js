@@ -71,15 +71,15 @@ $(function () {
 			let current_version = $('#update-info-panel').data('version').replace('webmcr_gm_edition_', '');
 			let version_on_server = $('#update-info-panel').attr('data-version-on-server').replace('webmcr_gm_edition_', '');
 
-			if (current_version !== version_on_server) {
-				$('#update-status').removeClass('check circle green').addClass('times circle red');
+			if (current_version < version_on_server) {
+				$('#update-status').show();
 				$('#update-message').html(
-					lng.you_are_can_update + ' <small style="display:block;font-size: 65%;line-height: 6px;" id="version-current" class="text-muted">webmcr_gm_edition_' + current_version + '</small>'
+					lng.you_are_can_update + ' <div class="sub header" style="display:block;font-size: 65%;line-height: 6px;" id="version-current">webmcr_gm_edition_' + current_version + '</div>'
 				);
 			} else {
-				$('#update-status').removeClass('times circle red').addClass('check circle green');
+				$('#update-status').hide();
 				$('#update-message').html(
-					lng.you_are_updated + ' <small style="display:block;font-size: 65%;line-height: 6px;" id="version-current" class="text-muted">webmcr_gm_edition_' + current_version + '</small>'
+					lng.you_are_updated  + ' <div class="sub header" style="display:block;font-size: 65%;line-height: 6px;" id="version-current">webmcr_gm_edition_' + current_version + '</div>'
 				);
 			}
 

@@ -16,30 +16,39 @@
 			</a>-->
 		</div>
 		
-		<div class="ui bottom attached active tab segment grid">
-			<div id="update-info-panel" data-version="<?=VERSION?>" data-version-on-server="">
-				<h4 class="ui dividing header"><?=$this->l10n->gettext('magicmcr_update_center')?></h4>
-				
-				<div class="update-state">
-					<h5><?=$this->l10n->gettext('update_state')?></h5>
-					<p class="mt-3">
-						<img src="/themes/default/img/cacke.128_big.png" alt="cms_logotype">
-						<i class="check circle green icon" id="update-status"></i>
-						<span id="update-message"><?=$this->l10n->gettext('you_are_updated')?> <small style="display:block;font-size: 65%;line-height: 6px;" id="version-current" class="text-muted"><?=VERSION?></small></span>
-					</p>
-					<button type="button" class="btn btn-outline-secondary" id="re-check" style="margin-left:103px;cursor:pointer">Проверить наличия обновлений</button>
-					<a role="button" href="/install/?do=reinstall" class="btn btn-link">Переустановить MagicMCR</a>
-				</div>
-				
-				<div class="versions row mt-4">
-					<div class="col-md-12 pr-0" style="padding-left: 118px">
-						<?=$this->l10n->gettext('info_eng_ver_git')?>: <span id="version-on-server"></span><br>
-						<!--<?=$this->l10n->gettext('info_eng_ver_last')?>: <span id="version-stable"></span><br>-->
-						<?=$this->l10n->gettext('info_eng_ver_dev')?>: <span id="version-dev"></span>
-					</div>
-				</div>
-			</div>
+		<div class="ui bottom attached active tab segment">
+
+            <div class="ui items">
+                <div class="item" id="update-info-panel" data-version="<?=VERSION?>" data-version-on-server="">
+                    <div class="content">
+                        <a class="header"><?=$this->l10n->gettext('update_state')?></a>
+                        <div class="description">
+                            <h2 class="ui header">
+                                <i class="times circle red icon" id="update-status" style="display:none"></i>
+                                <img src="/themes/semantic-ui/img/update.svg">
+                                <div class="content" id="update-message">
+                                    <?=$this->l10n->gettext('you_are_updated')?>
+                                    <div class="sub header" style="display:block;font-size: 65%;line-height: 6px;" id="version-current"><?=VERSION?></div>
+                                </div>
+                            </h2>
+                            <div style="padding-left: 76px">
+								<?=$this->l10n->gettext('info_eng_ver_git')?>: <span id="version-on-server"></span><br>
+                                <!--<?=$this->l10n->gettext('info_eng_ver_last')?>: <span id="version-stable"></span><br>-->
+								<?=$this->l10n->gettext('info_eng_ver_dev')?>: <span id="version-dev"></span>
+                            </div>
+                        </div>
+                        <div class="extra">
+                            <a class="ui label" id="re-check">Проверить наличия обновлений</a>
+                            <a class="ui label" href="/install/?do=reinstall"><i class="globe icon"></i> Переустановить MagicMCR</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
 		</div>
 		
 	</div>
 </div>
+
+
+

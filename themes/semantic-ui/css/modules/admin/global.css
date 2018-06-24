@@ -1328,32 +1328,34 @@ td.news-title p#img > img.user_a-news_avatar {
 	position: relative;
 }
 
-.update-state {
-	display: block;
-	width: 100%;
+#update-info-panel .description p {
+	width: calc(100% - 96px);
+	float: right;
+	margin-left: 24px;
 }
 
-.update-state p {
-	position: relative;
-}
-
-.update-state .icon {
+#update-info-panel #update-status {
 	position: absolute;
-	bottom: -8px;
-	left: 45px;
-	font-size: 28px;
-	background: white;
-	border-radius: 50%;
-	height: 28px;
-	width: 28px;
-}
-
-.update-state p > span {
-	display: inline-block;
-	vertical-align: top;
-	margin-top: 10px;
+	width: 24px;
+	height: 24px;
+	top: 72px;
+	left: 46px;
 	font-size: 24px;
-	margin-left: 35px;
+	z-index: 0;
+}
+#update-info-panel #update-status:before {
+	z-index: 1;
+}
+#update-info-panel #update-status:after {
+	position: absolute;
+	background: #e6e6e6;
+	border-radius: 50%;
+	width: 20px;
+	height: 20px;
+	content: '';
+	z-index: -1;
+	top: 4px;
+	left: 2px;
 }
 
 #log-viewer #log-content {
