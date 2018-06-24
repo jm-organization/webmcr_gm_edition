@@ -26,7 +26,7 @@ class submodule
 		];
 		$this->core->bc = $this->core->gen_bc($bc);
 
-		$this->core->header .= $this->core->sp(MCR_THEME_MOD . "admin/info/header.phtml");
+		//$this->core->header .= $this->core->sp(MCR_THEME_MOD . "admin/info/header.phtml");
 	}
 
 	public function content()

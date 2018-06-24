@@ -1,7 +1,7 @@
 <div class="row">
 	<div class="column">
 		
-		<div class="ui three item labeled icon menu">
+		<div class="ui top attached tabular menu">
 			<a class="active item" href="<?= ADMIN_URL; ?>&do=info&op=main">
 				<i class="list alternate icon"></i>
 				<?= $this->l10n->gettext('system_log'); ?>
@@ -10,34 +10,48 @@
 				<i class="sync alternate icon"></i>
 				<?= $this->l10n->gettext('update_center'); ?>
 			</a>
-			<a class="item" href="<?= ADMIN_URL; ?>&do=info&op=stats">
+			<!--<a class="item" href="<?/*= ADMIN_URL; */?>&do=info&op=stats">
 				<i class="chart bar icon"></i>
-				<?= $this->l10n->gettext('info_stats'); ?>
-			</a>
+				<?/*= $this->l10n->gettext('info_stats'); */?>
+			</a>-->
 		</div>
 		
-		<form method="post"></form>
-		
-		<div id="log-viewer">
-			<h5 id="log-title" class="text-muted"><?= $this->l10n->gettext('select_file'); ?></h5>
-			<div class="ui grid">
-				<div class="four wide column">
-					<div class="ui vertical fluid menu" id="logs-list">
+		<div class="ui bottom attached active tab segment grid" id="log-viewer">
+
+            <div class="row">
+                <div class="two wide column"></div>
+                <div class="fourteen wide column">
+                    <h5 id="log-title" class="text-muted"><?= $this->l10n->gettext('select_file'); ?></h5>
+                    <span id="update-file" class="update" title="<?= $this->l10n->gettext('update_file'); ?>"><i class="refresh icon"></i></span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="two wide column">
+                    <div class="ui list" id="logs-list">
 						<? foreach ($data['LOGS'] as $LOG) { ?>
-							<a class="item" data-file-name="<?= $LOG ?>"
-							data-delete="<?= ADMIN_URL; ?>&do=info&op=delete"
-							data-download="<?= ADMIN_URL; ?>&do=info&op=download"
-							data-archivate="<?= ADMIN_URL; ?>&do=info&op=archivate">
-								<i class="fa fa-file-text"></i> <?= $LOG ?>
-							</a>
+                            <div class="item" data-file-name="<?= $LOG ?>"
+                               data-delete="<?= ADMIN_URL; ?>&do=info&op=delete&file=<?= $LOG ?>"
+                               data-download="<?= ADMIN_URL; ?>&do=info&op=download&file=<?= $LOG ?>"
+                               data-archivate="<?= ADMIN_URL; ?>&do=info&op=archivate&file=<?= $LOG ?>"
+                            >
+                                <i class="file icon"></i>
+                                <div class="content">
+                                    <div class="description">
+                                        <?= $LOG ?>
+                                        <div class="actions">
+                                            <a href="<?= ADMIN_URL; ?>&do=info&op=delete&file=<?= $LOG ?>"><i class="trash icon"></i></a>
+                                            <a href="<?= ADMIN_URL; ?>&do=info&op=download&file=<?= $LOG ?>"><i class="download icon"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 						<? } ?>
-					</div>
-				</div>
-				<div class="twelve wide stretched column">
-					<span id="update-file" class="update" title="<?= $this->l10n->gettext('update_file'); ?>"><i class="fa fa-refresh"></i></span>
-					<pre id="log-content"></pre>
-				</div>
-			</div>
+                    </div>
+                </div>
+                <div class="fourteen wide column">
+                    <pre id="log-content"></pre>
+                </div>
+            </div>
 			
 		</div>
 		

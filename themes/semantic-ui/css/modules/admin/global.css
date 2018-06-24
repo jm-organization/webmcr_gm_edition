@@ -1371,14 +1371,35 @@ td.news-title p#img > img.user_a-news_avatar {
 	padding: 0;
 }
 
-#log-viewer #logs-list li {
+#log-viewer #logs-list .item {
 	padding-left: 20px;
 	cursor: pointer;
 	list-style: none;
+	position: relative;
+	height: 19px;
 }
 
-#log-viewer #logs-list li:hover {
+#log-viewer #logs-list .item .actions {
+	/*display: inline;*/
+	position: absolute;
+	right: 0;
+	top: 2px;
+	display: none;
+	padding-left: 15px;
+
+}
+
+#log-viewer #logs-list .item .actions a { color: unset; }
+#log-viewer #logs-list .item .actions .trash:hover { color: #ef7c7c; }
+#log-viewer #logs-list .item .actions .download:hover { color: #7cb9ef; }
+
+#log-viewer #logs-list .item:hover {
 	background: #e8e8ff;
+}
+
+#log-viewer #logs-list .item:hover .actions {
+	display: inline;
+	background: linear-gradient(to right, transparent, #e8e8ff 20px);
 }
 
 #log-viewer #update-file {
