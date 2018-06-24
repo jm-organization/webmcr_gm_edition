@@ -72,12 +72,12 @@ $(function () {
 			let version_on_server = $('#update-info-panel').attr('data-version-on-server').replace('webmcr_gm_edition_', '');
 
 			if (current_version !== version_on_server) {
-				$('#update-status').removeClass('fa-check-circle text-success').addClass('fa-times-circle text-danger');
+				$('#update-status').removeClass('check circle green').addClass('times circle red');
 				$('#update-message').html(
 					lng.you_are_can_update + ' <small style="display:block;font-size: 65%;line-height: 6px;" id="version-current" class="text-muted">webmcr_gm_edition_' + current_version + '</small>'
 				);
 			} else {
-				$('#update-status').removeClass('fa-times-circle text-danger').addClass('fa-check-circle text-success');
+				$('#update-status').removeClass('times circle red').addClass('check circle green');
 				$('#update-message').html(
 					lng.you_are_updated + ' <small style="display:block;font-size: 65%;line-height: 6px;" id="version-current" class="text-muted">webmcr_gm_edition_' + current_version + '</small>'
 				);

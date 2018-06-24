@@ -1337,13 +1337,15 @@ td.news-title p#img > img.user_a-news_avatar {
 	position: relative;
 }
 
-.update-state .fa {
+.update-state .icon {
 	position: absolute;
 	bottom: -8px;
 	left: 45px;
 	font-size: 28px;
 	background: white;
 	border-radius: 50%;
+	height: 28px;
+	width: 28px;
 }
 
 .update-state p > span {
