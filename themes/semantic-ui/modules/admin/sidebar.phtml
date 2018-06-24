@@ -1,8 +1,8 @@
-<a class="title item <?= $data['ACTIVE'] ?>">
+<div class="title item <?= $data['ACTIVE'] ?>">
 	<i class="<?= $data['ICON'] ?> mcr-sidebar-icon icon"></i>
-	<i class="dropdown icon"></i>
-	<?= $data['TITLE'] ?>
-</a>
+	<span><?= $data['TITLE'] ?></span>
+    <i class="dropdown icon"></i>
+</div>
 <div class="content <?= $data['ACTIVE'] ?>">
 	<? foreach($data["SUB_MENU"] as $href) {
 		$active = '';

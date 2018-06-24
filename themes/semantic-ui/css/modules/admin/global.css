@@ -79,7 +79,7 @@ body {
 }
 
 #mcr-dashboard {
-	background-image: url(/themes/default/img/admin-header-bg.png);
+	background-image: url(/themes/semantic-ui/img/admin-header-bg.png);
 }
 
 #mcr-dashboard .ui.header {
@@ -436,13 +436,16 @@ header .brand {
 header .global-menu {
 	width: calc(100% - 200px);
 	float: right;
+	margin: 0;
+	padding: 0;
 	padding-right: 25px;
 }
 
 header .global-menu li {
 	display: inline-block;
 	color: white;
-	line-height: 10px;
+	font-size: 11px;
+	line-height: 12px;
 	float: left;
 }
 
@@ -460,8 +463,25 @@ header .global-menu li a.icons {
 	display: flow-root;
 }
 
+header .global-menu li .label {
+	padding: 2px 5px;
+	font-size: 9px;
+}
+
+header .global-menu li a.icons .icon {
+	font-size: 12px;
+	display: inline;
+	height: 24px;
+	line-height: 9px;
+}
+
 header .global-menu li:not(:last-child) a.icons {
 	padding-right: 0;
+}
+
+header .global-menu li a.nav-link {
+	display: block;
+	padding: .5em 1em;
 }
 
 header .global-menu li > span {
@@ -504,6 +524,7 @@ header .global-menu li.divider {
 }
 
 .admin-wrapper > aside .sidebar-toggler {
+
 	height: 42px;
 	width: 48px;
 	background: #c5c5c5;
@@ -512,17 +533,18 @@ header .global-menu li.divider {
 	color: black;
 	font-size: 21px;
 	text-align: center;
-	padding: 10.5px 15px;
+	/*padding: 10.5px 15px;*/
 	cursor: pointer;
 	position: absolute;
 	top: 0;
 	right: 0px;
 }
+.admin-wrapper > aside .sidebar-toggler .icon { margin: 0; }
 
 .admin-wrapper > aside .sidebar-toggler:hover,
 .admin-wrapper > aside .sidebar-toggler:active {
 	font-size: 23px;
-	padding: 9.5px 12px;
+	/*padding: 9.5px 12px;*/
 	background: #b1b1b1;
 }
 
@@ -541,31 +563,45 @@ header .global-menu li.divider {
 	font-weight: bold;
 }
 
-.admin-wrapper > aside a {
-	color: #abb4be;
+.admin-wrapper > aside a,
+.admin-wrapper > aside .title {
+	color: #abb4be!important;
 }
 
-.admin-wrapper > aside .nav-list > .nav-item {
+.admin-wrapper > aside .nav-list {
+	margin: 0;
+	padding: 0;
+}
+
+.admin-wrapper > aside .nav-list > .title {
 	font-size: 15px;
+	position: relative;
+	padding: 0!important;
 }
 
-.admin-wrapper > aside .nav-list > .nav-item.open > span,
-.admin-wrapper > aside .nav-list > .nav-item:hover span {
+.admin-wrapper > aside .nav-list > .title.open > span,
+.admin-wrapper > aside .nav-list > .title:hover > span {
 	background: #21262d;
 }
 
-.admin-wrapper > aside .nav-list > .nav-item > .child-nav-list {
-	padding: 5px 0 5px 38px;
+.admin-wrapper > aside .nav-list > .title > .dropdown {
+	right: 10px;
+	left: unset!important;
+	top: 9px;
+}
+
+.admin-wrapper > aside .nav-list > .content {
+	padding: 5px 0 5px 38px!important;
 	background: #191c21;
 	box-shadow: 0px -3px 3px -3px rgba(0, 0, 0, 0.7) inset;
 }
 
-.admin-wrapper > aside .nav-list > .nav-item > .child-nav-list li:hover > a,
-.admin-wrapper > aside .nav-list > .nav-item > .child-nav-list li.active > a {
-	color: #0275d8;
+.admin-wrapper > aside .nav-list > .content .item:hover > a,
+.admin-wrapper > aside .nav-list > .content .item.active > a {
+	color: #0275d8!important;
 }
 
-.admin-wrapper > aside .nav-list > .nav-item > span {
+.admin-wrapper > aside .nav-list > .title > span {
 	display: inline-block;
 	width: 100%;
 	z-index: 0;
@@ -574,12 +610,13 @@ header .global-menu li.divider {
 	height: 35px;
 }
 
-.admin-wrapper > aside .nav-list > .nav-item.active > span {
+.admin-wrapper > aside .nav-list > .title.active > span {
 	border-left: 2px solid #eaeaea;
 	padding-left: 36px;
 }
 
-.admin-wrapper > aside .nav-list > .nav-item i.fa {
+.admin-wrapper > aside .nav-list > .title i.fa,
+.admin-wrapper > aside .nav-list > .title i.icon {
 	width: 14px;
 	text-align: center;
 	z-index: 1;
@@ -588,7 +625,7 @@ header .global-menu li.divider {
 	left: 12px;
 }
 
-.admin-wrapper > aside .nav-list > .nav-item .caret {
+.admin-wrapper > aside .nav-list > .title .caret {
 	text-align: right;
 	float: right;
 	margin-right: 12px;
@@ -611,25 +648,25 @@ header .global-menu li.divider {
 	right: 0;
 	top: 0;
 	width: 42px !important;
-	padding: 10.5px 8px !important;
+	/*padding: 10.5px 8px !important;*/
 	border-radius: 0 !important;
 }
 
-.sidebar-hide .admin-wrapper > aside:not(:hover) .nav-list > .nav-item > span {
+.sidebar-hide .admin-wrapper > aside:not(:hover) .nav-list > .title > span {
 	padding: 0 0 0 42px;
 	line-height: 29px;
 }
 
-.sidebar-hide .admin-wrapper > aside:not(:hover) .nav-list > .nav-item {
+.sidebar-hide .admin-wrapper > aside:not(:hover) .nav-list > .title {
 	display: flex;
 }
 
-.sidebar-hide .admin-wrapper > aside:not(:hover) .nav-list > .nav-item .caret,
-.sidebar-hide .admin-wrapper > aside:not(:hover) .nav-list > .nav-item .child-nav-list {
+.sidebar-hide .admin-wrapper > aside:not(:hover) .nav-list > .title .dropdown,
+.sidebar-hide .admin-wrapper > aside:not(:hover) .nav-list > .content {
 	display: none;
 }
 
-.sidebar-hide .admin-wrapper > aside:not(:hover) .nav-list > .nav-item .caret {
+.sidebar-hide .admin-wrapper > aside:not(:hover) .nav-list > .title .dropdown {
 	line-height: 35px;
 }
 
@@ -655,9 +692,21 @@ header .global-menu li.divider {
 	float: right;
 	margin: 0;
 	overflow-y: auto;
-	background-image: url(/themes/default/img/admin-bg.png);
+	background-image: url(/themes/semantic-ui/img/admin-bg.png);
 	padding-top: 62px;
 	border-left: 1px solid #3A3A3A;
+}
+.admin-wrapper > .admin-container .breadcrumbs-container {
+	height: 42px;
+	width: 100%;
+	background: #c5c5c5;
+	margin: -62px 0 0;
+}
+.admin-wrapper > .admin-container .breadcrumbs-container > .breadcrumb {
+	background: transparent;
+	margin: 0;
+	line-height: 42px;
+	padding-left: 24px;
 }
 
 .sidebar-hide .admin-wrapper > .admin-container {
@@ -1311,18 +1360,21 @@ td.news-title p#img > img.user_a-news_avatar {
 	background: #f2f2f2;
 	margin-bottom: 0;
 	overflow: scroll;
+	margin: 0;
 }
 
 #log-viewer #logs-list {
 	margin-top: 0;
-	margin: 0 -20px;
+	margin: 0 -14px;
 	overflow-y: auto;
 	height: 520px;
+	padding: 0;
 }
 
 #log-viewer #logs-list li {
 	padding-left: 20px;
-	cursor: pointer
+	cursor: pointer;
+	list-style: none;
 }
 
 #log-viewer #logs-list li:hover {
@@ -1344,6 +1396,8 @@ td.news-title p#img > img.user_a-news_avatar {
 	height: 24px;
 	line-height: 24px;
 }
+#log-viewer #update-file .refresh {
+	margin: 0; }
 
 #log-viewer #update-file:hover {
 	background: #d2d2d2;
