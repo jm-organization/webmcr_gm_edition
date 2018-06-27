@@ -10,6 +10,8 @@
  *
  **/
 
+namespace mcr;
+
 if (!defined("MCR")) {
 	exit("Hacking Attempt!");
 }

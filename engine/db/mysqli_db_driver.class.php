@@ -1,24 +1,32 @@
 <?php
 
+namespace mcr\db;
+
+use mcr\core_v2;
+use mcr\log;
+use mysqli;
+
 if (!defined("MCR")) {
 	exit("Hacking Attempt!");
 }
 
-class db
+class mysqli_db_driver
 {
 	public $obj = false;
 
 	public $result = false;
 
 	private $cfg;
+	private $core = null;
 
 	public $count_queries = 0;
 	public $count_queries_real = 0;
 
-	public function __construct($host = '127.0.0.1', $user = 'root', $pass = '', $base = 'base', $port = 3306, $core = array())
+	public function __construct($host = '127.0.0.1', $user = 'root', $pass = '', $base = 'base', $port = 3306, core_v2 $core = null)
 	{
 		if (!empty($core)) {
-			$this->cfg = $core->cfg;
+			$this->core = $core;
+			$this->cfg = $this->core->configs;
 		}
 
 		$connect = $this->connect($host, $user, $pass, $base, $port);
@@ -30,22 +38,19 @@ class db
 
 	public function connect($host = '127.0.0.1', $user = 'root', $pass = '', $base = 'base', $port = 3306)
 	{
+		$this->obj = new mysqli($host, $user, $pass, $base, $port);
 
-		if (!function_exists('mysql_connect')) {
+		if (mb_strlen($this->obj->connect_error, 'UTF-8') > 0) {
 			return false;
 		}
 
-		$this->obj = @mysql_connect($host . ':' . $port, $user, $pass);
-
-		if (!$this->obj) {
+		if ($this->obj->connect_errno) {
 			return false;
 		}
 
-		if (!@mysql_select_db($base, $this->obj)) {
+		if (!$this->obj->set_charset("utf8")) {
 			return false;
 		}
-
-		@mysql_set_charset("UTF8", $this->obj);
 
 		$this->count_queries_real = 2;
 	}
@@ -55,61 +60,63 @@ class db
 		$this->count_queries += 1;
 		$this->count_queries_real += 1;
 
-		$this->result = @mysql_query($string, $this->obj);
+		$this->result = @$this->obj->query($string);
+
+		if (!$this->result) {
+			$this->core->log->write(mysqli_error($this->obj) . " in query: " . $string . ".", log::MYSQL_ERROR);
+		}
 
 		return $this->result;
 	}
 
 	public function affected_rows()
 	{
-		return mysql_affected_rows();
+		return $this->obj->affected_rows;
 	}
 
 	public function fetch_array($query = false)
 	{
-		return mysql_fetch_array($query);
+		return $this->result->fetch_array();
 	}
 
 	public function fetch_assoc($query = false)
 	{
-		return mysql_fetch_assoc($query);
+		return $this->result->fetch_assoc();
 	}
 
-	public function free($query = false)
+	public function free()
 	{
-		return mysql_free_result($query);
+		return $this->result->free();
 	}
 
 	public function num_rows($query = false)
 	{
-		return mysql_num_rows($query);
+		return $this->result->num_rows;
 	}
 
 	public function insert_id()
 	{
-		return mysql_insert_id();
+		return $this->obj->insert_id;
 	}
 
 	public function safesql($string)
 	{
-		return mysql_real_escape_string($string);
+		return $this->obj->real_escape_string($string);
 	}
 
-	public function HSC($string)
+	public function HSC($string = '')
 	{
 		return htmlspecialchars($string);
 	}
 
 	public function error()
 	{
-		if (!function_exists('mysql_error')) {
-			return 'MySQL is deprecated. Use MySQLi';
+
+		if (!is_null(mysqli_connect_error())) {
+			return mysqli_connect_error();
 		}
-
-		$error = mysql_error();
-
-		if (!empty($error)) {
-			return $error;
+		if (!empty($this->obj->error)) {
+			return $this->obj->error;
 		}
 
 		return;
@@ -140,16 +147,16 @@ class db
 
 			$uid = intval($uid);
 			$msg = $this->safesql($msg);
-			$date = time();
 
 			$ctables = $this->cfg->db['tables'];
 			$logs_f = $ctables['logs']['fields'];
+			$date = time();
 
 			$insert = $this->query("
 				INSERT INTO `{$this->cfg->tabname('logs')}`
 					(`{$logs_f['uid']}`, `{$logs_f['msg']}`, `{$logs_f['date']}`)
 				VALUES
-			  		('$uid', '$msg', '$date')
+					('$uid', '$msg', $date)
 			");
 
 			if (!$insert) {
@@ -169,14 +176,12 @@ class db
 			return false;
 		}
 
-		$time = time();
-
 		$ctables = $this->cfg->db['tables'];
 		$us_f = $ctables['users']['fields'];
 
 		$update = $this->query("
 			UPDATE `{$this->cfg->tabname('users')}`
-			SET `{$us_f['ip_last']}`='{$user->ip}', `{$us_f['date_last']}`='$time'
+			SET `{$us_f['ip_last']}`='{$user->ip}', `{$us_f['date_last']}`=NOW()
 			WHERE `{$us_f['id']}`='{$user->id}'
 		");
 

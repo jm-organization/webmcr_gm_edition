@@ -96,7 +96,7 @@
 
 					if (!empty(error_get_last())) {
 						$error = error_get_last();
-						$type = $this->log->get_log_type($error['type']);
+						$type = \mcr\log::get_log_type($error['type']);
 						$error = "[{$type}] {$error['message']} in file: {$error['file']} on line: {$error['line']}";
 
 						?>
