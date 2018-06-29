@@ -11,6 +11,8 @@
  * @Documentation:
  */
 
+use mcr\document;
+
 if (!function_exists('config')) {
 	/**
 	 * Возвращает значение конфига по указанному неймспейсу
@@ -58,7 +60,7 @@ if (!function_exists('config')) {
 	}
 }
 
-if (!function_exists('translate')) {
+/*if (!function_exists('translate')) {
 	/**
 	 * Возвращает значение фразы $phrase
 	 *
@@ -66,11 +68,43 @@ if (!function_exists('translate')) {
 	 * @param $locale
 	 *
 	 * @return mixed
-	 */
+
 	function translate($phrase, $locale = null)
 	{
 		global $application;
 
 		return $application->gettext($phrase, $locale);
+	}
+}*/
+
+if (!function_exists('tmpl')) {
+	/**
+	 * Возвращает собранные шаблон эллемента документа
+	 *
+	 * @param       $tmpl - путь к шаблону,
+	 *                    который будет использован для
+	 *                    построения элемента документа
+	 * @param array $data - данные, которые
+	 *                    используются в эллементе
+	 *
+	 * @return mixed
+	 */
+	function tmpl($tmpl, array $data = [])
+	{
+		return document::template($tmpl, $data);
+	}
+}
+
+if (!function_exists('ie')) {
+	/**
+	 * Проверяет переменную на наличие и её заполненость.
+	 *
+	 * @param $key
+	 *
+	 * @return mixed
+	 */
+	function ie($key)
+	{
+		return isset($key) && !empty($key);
 	}
 }
