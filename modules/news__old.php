@@ -1,10 +1,12 @@
 <?php
 
+namespace modules;
+
 if (!defined("MCR")) {
 	exit("Hacking Attempt!");
 }
 
-class module
+class news__old
 {
 	private $core, $db, $cfg, $user, $l10n;
 
@@ -406,7 +408,7 @@ class module
 		}
 
 		if ($cid !== false) {
-			/** @var module $new_data */
+			/** @var interface $new_data */
 			$bc = [
 				$this->l10n->gettext('mod_name') => BASE_URL . "?mode=news",
 				$new_data['CATEGORY'] => BASE_URL . "?mode=news&cid=$cid"

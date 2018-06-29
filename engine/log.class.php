@@ -21,29 +21,22 @@ if (!defined("MCR_ROOT")) {
 class log
 {
 	const L_ALL = 9;
-
-	// Debug levels
 	const L_WARNING = 10;
-
 	const L_NOTICE = 11;
 
+	// MySQL codes.
 	const MYSQL_ERROR = 111;
-
+	const MYSQL_WARNING = 116;
 	const MYSQL_QUERY = 112;
-
-	// MySQL log-codes 1..5
 	const MYSQL_DELETE = 113;
-
 	const MYSQL_INSERT = 114;
-
 	const MYSQL_UPDATE = 115;
 
+
 	const FATAL_ERROR = 1;
-
 	const WARNING = 2;
-
-	// Other log-codes 6..8
 	const NOTICE = 8;
+
 
 	public $debug = false;
 
@@ -62,23 +55,6 @@ class log
 		$today = date('d_m_Y', time());
 
 		$this->file_name = sprintf($this->file_name, $today);
-	}
-
-	public static function info($message, $_file = null, $line = null)
-	{
-		self::make_log('', '', $message, 8, $_file, $line, true);
-	}
-
-	public static function warning($message, $_file = null, $line = null)
-	{
-
-		self::make_log('', '', $message, 2, $_file, $line, true);
-	}
-
-	public static function error($message, $_file = null, $line = null)
-	{
-
-		self::make_log('', '', $message, 1, $_file, $line, true);
 	}
 
 	public function write($message, $code, $_file = null, $line = null)
@@ -140,6 +116,7 @@ class log
 	{
 		$types = [
 			111 => 'MYSQL_ERROR',
+			116 => 'MYSQL_WARNING',
 			112 => 'MYSQL_QUERY',
 			113 => 'MYSQL_DELETE',
 			114 => 'MYSQL_INSERT',

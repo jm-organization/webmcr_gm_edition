@@ -40,7 +40,10 @@ function __autoload($classname) {
 
 function load_if_exist($file) {
 
+	$file = str_replace('\\', '/', $file);
+
 	if (file_exists($file)) {
+		//echo $file . '<br>';
 		include_once $file;
 	}
 
@@ -67,4 +70,4 @@ register_shutdown_function(function () use ($log) {
 
 });
 
-$application = new core_v2($configs, $log);
+$application = new core_v2($configs);

@@ -34,6 +34,7 @@ if (!session_start()) { session_start(); }
 
 
 // Загружаем ядро
+require ENGINE_ROOT_NAME . '/filter.php';
 require 'bootstrap/core.php';
 
 require 'bootstrap/helpers.php';
