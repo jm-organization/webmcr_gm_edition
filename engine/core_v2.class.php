@@ -66,6 +66,11 @@ class core_v2
 	 */
 	public function __construct(config $configs)
 	{
+		// Если приложение не установленно, то перенаправляем на скрипт установки
+		/*if (!INSTALLED) {
+			header("Location: /install/index.php");
+		}*/
+
 		// Сохранение конфигураций в локальную среду ядра.
 		$this->configs = $configs;
 
@@ -164,6 +169,11 @@ class core_v2
 
 			// Создаём запись в лог файле
 			$log->write($e->getMessage(), $e->getCode(), $e->getFile(), $e->getLine());
+			?>
+
+			Fatal Error
+
+			<?php
 
 		}
 
@@ -192,7 +202,7 @@ class core_v2
 	}
 
 	/**
-	 * @param $module
+	 * @param string $module
 	 *
 	 * @return module|bool
 	 */

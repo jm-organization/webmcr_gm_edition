@@ -1,5 +1,5 @@
 <?php
-$func = array(
+$functions = array(
 	'advice' => true,
 	'breadcrumbs' => true,
 	'close' => false,
