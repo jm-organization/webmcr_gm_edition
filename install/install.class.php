@@ -1,48 +1,38 @@
 <?php
 
+namespace install;
+
+
+use mcr\log;
+
 if (!defined('MCR')) {
 	exit('Hacking Attempt!');
 }
 
 class install
 {
-	public $cfg = array();
-	public $log = array();
-	public $lng = array();
+	public $log = [];
+
+	public $lng = [];
 
 	public $title = '';
+
 	public $header = '';
 
 	public function __construct()
 	{
 		$https = (@$_SERVER['HTTPS'] == 'on' || (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https')) ? 'https' : 'http';
 
-		define('PROGNAME', 'WebMCR Reloaded');
-		define('VERSION', 'WebMCR Beta 1.4.1');
-		define('FEEDBACK', '<a href="http://webmcr.com" target="_blank">' . PROGNAME . '</a> &copy; 2013-' . date("Y") . ' Qexy');
 		define('URL_ROOT', str_replace('\\', '/', dirname(dirname($_SERVER['PHP_SELF']))));
-		define('URL_ROOT_FULL', $https . '://' . $_SERVER['SERVER_NAME'] . '/');
-		define('URL_INSTALL', $https . '://' . $_SERVER['SERVER_NAME'] . '/install/');
-		define('DIR_ROOT', dirname(dirname(__FILE__)) . '/');
-		define('DIR_INSTALL', dirname(__FILE__) . '/');
-		define('DIR_INSTALL_THEME', DIR_INSTALL . 'theme/');
+		define('URL_ROOT_FULL', $https.'://'.$_SERVER['SERVER_NAME'].'/');
+		define('URL_INSTALL', $https.'://'.$_SERVER['SERVER_NAME'].'/install/');
+		define('DIR_ROOT', dirname(dirname(__FILE__)).'/');
+		define('DIR_INSTALL', dirname(__FILE__).'/');
+		define('DIR_INSTALL_THEME', DIR_INSTALL.'theme/');
 
-		require_once(DIR_ROOT . 'configs/main.php');
-		$this->cfg['main'] = $main;
+		$this->log = new log(config('main::debug'), log::L_ALL);
 
-		require_once(DIR_ROOT . 'engine/log.class.php');
-		$this->log = new log($this->cfg['main']['debug'], log::L_ALL);
-
-		require_once(DIR_ROOT . 'configs/db.php');
-		$this->cfg['db'] = $db;
-
-		require_once(DIR_ROOT . 'configs/mail.php');
-		$this->cfg['mail'] = $mail;
-
-		require_once(DIR_ROOT . 'configs/modules/users.php');
-		$this->cfg['modules']['users'] = $cfg;
-
-		require_once(DIR_ROOT . 'language/' . $main['s_lang'] . '/install.php');
+		require DIR_ROOT.'language/' . config('main::s_lang') . '/install.php';
 		$this->lng = $lng;
 
 		$this->title = $lng['mod_name'];
@@ -53,11 +43,11 @@ class install
 		return htmlspecialchars($string);
 	}
 
-	public function sp($page, $data = array())
+	public function sp($page, $data = [])
 	{
 		ob_start();
 
-		include(DIR_INSTALL_THEME . $page);
+		include(DIR_INSTALL_THEME.$page);
 
 		return ob_get_clean();
 	}
@@ -70,22 +60,20 @@ class install
 			return 'Hacking Attempt';
 		}
 
-		$modpath = DIR_INSTALL . 'modules/' . $do . '.php';
+		$module = "\install\modules\\$do";
+		if (class_exists($module)) {
+			/** @var \install\modules\install_step $module */
+			$module = new $module();
 
-		if (!file_exists($modpath)) {
-			return 'Module not found';
+			return $module->content();
 		}
 
-		require_once($modpath);
-
-		$module = new module($this);
-
-		return $module->content();
+		return 'Module not found';
 	}
 
 	public function notify($text = '', $title = '', $url = '')
 	{
-		$url = URL_ROOT . $url;
+		$url = URL_ROOT.$url;
 
 		$_SESSION['notify_title'] = $title;
 		$_SESSION['notify_text'] = $text;
@@ -104,13 +92,14 @@ class install
 		if (empty($_SESSION['notify_title']) && empty($_SESSION['notify_text'])) {
 			unset($_SESSION['notify_title']);
 			unset($_SESSION['notify_text']);
+
 			return;
 		}
 
-		$data = array(
+		$data = [
 			'TITLE' => $_SESSION['notify_title'],
 			'TEXT' => $_SESSION['notify_text'],
-		);
+		];
 
 		unset($_SESSION['notify_title']);
 		unset($_SESSION['notify_text']);
@@ -118,31 +107,10 @@ class install
 		return $this->sp('notify.phtml', $data);
 	}
 
-	public function savecfg($cfg = array(), $file = 'main.php', $var = 'main')
-	{
-		if (!is_array($cfg) || empty($cfg)) {
-			return false;
-		}
-
-		$filename = DIR_ROOT . 'configs/' . $file;
-
-		$txt = '<?php' . PHP_EOL;
-		$txt .= '$' . $var . ' = ' . var_export($cfg, true) . ';' . PHP_EOL;
-		$txt .= '?>';
-
-		$result = file_put_contents($filename, $txt);
-
-		if ($result === false) {
-			return false;
-		}
-
-		return true;
-	}
-
 	public function gen_password($string = '', $salt = '', $crypt = false)
 	{
 		if ($crypt === false) {
-			$crypt = $this->cfg['main']['crypt'];
+			$crypt = config('main::crypt');
 		}
 
 		switch ($crypt) {
@@ -163,47 +131,47 @@ class install
 				break;
 
 			case 5:
-				return md5($string . $salt);
+				return md5($string.$salt);
 				break; // Joomla
 
 			case 6:
-				return md5($salt . $string);
+				return md5($salt.$string);
 				break; // osCommerce, TBDev
 
 			case 7:
-				return md5(md5($salt) . $string);
+				return md5(md5($salt).$string);
 				break; // vBulletin, IceBB, Discuz
 
 			case 8:
-				return md5(md5($string) . $salt);
+				return md5(md5($string).$salt);
 				break;
 
 			case 9:
-				return md5($string . md5($salt));
+				return md5($string.md5($salt));
 				break;
 
 			case 10:
-				return md5($salt . md5($string));
+				return md5($salt.md5($string));
 				break;
 
 			case 11:
-				return sha1($string . $salt);
+				return sha1($string.$salt);
 				break;
 
 			case 12:
-				return sha1($salt . $string);
+				return sha1($salt.$string);
 				break;
 
 			case 13:
-				return md5(md5($salt) . md5($string));
+				return md5(md5($salt).md5($string));
 				break; // ipb, MyBB
 
 			case 14:
-				return hash('sha256', $string . $salt);
+				return hash('sha256', $string.$salt);
 				break;
 
 			case 15:
-				return hash('sha512', $string . $salt);
+				return hash('sha512', $string.$salt);
 				break;
 
 			default:
@@ -214,7 +182,7 @@ class install
 
 	public function logintouuid($string)
 	{
-		$string = "OfflinePlayer:" . $string;
+		$string = "OfflinePlayer:".$string;
 		$val = md5($string, true);
 		$byte = array_values(unpack('C16', $val));
 
@@ -233,11 +201,8 @@ class install
 		$tHi &= 0x0fff;
 		$tHi |= (3 << 12);
 
-		$uuid = sprintf(
-			'%08x-%04x-%04x-%02x%02x-%02x%02x%02x%02x%02x%02x',
-			$tLo, $tMi, $tHi, $csHi, $csLo,
-			$byte[10], $byte[11], $byte[12], $byte[13], $byte[14], $byte[15]
-		);
+		$uuid = sprintf('%08x-%04x-%04x-%02x%02x-%02x%02x%02x%02x%02x%02x', $tLo, $tMi, $tHi, $csHi, $csLo, $byte[10], $byte[11], $byte[12], $byte[13], $byte[14], $byte[15]);
+
 		return $uuid;
 	}
 
@@ -275,6 +240,5 @@ class install
 		return $string;
 	}
 }
-
 
 ?>

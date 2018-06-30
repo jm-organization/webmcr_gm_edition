@@ -15,6 +15,7 @@ namespace modules;
 
 
 use mcr\database\db;
+use mcr\database\db_result;
 use mcr\http\request;
 
 class news extends base_module implements module
@@ -26,6 +27,6 @@ class news extends base_module implements module
 	 */
 	public function content(request $request)
 	{
-
+		echo '<h1>Hello World!</h1>';
 	}
 }

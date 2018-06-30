@@ -17,14 +17,14 @@
         <div class="table-row">
             <div class="table-cell"><?php echo $this->lng['users_on_page']; ?></div>
             <div class="table-cell">
-                <input type="text" name="rop_users" id="inputUOP" value="<?php echo $this->cfg['modules']['users']['users_on_page']; ?>" placeholder="<?php echo $this->lng['users_on_page']; ?>" required>
+                <input type="text" name="rop_users" id="inputUOP" value="<?php echo config('modules::users.users_on_page'); ?>" placeholder="<?php echo $this->lng['users_on_page']; ?>" required>
             </div>
         </div>
 
         <div class="table-row">
             <div class="table-cell"><?php echo $this->lng['comments_on_page']; ?></div>
             <div class="table-cell">
-                <input type="text" name="rop_comments" id="inputCOP" value="<?php echo $this->cfg['modules']['users']['comments_on_page']; ?>" placeholder="<?php echo $this->lng['comments_on_page']; ?>" required>
+                <input type="text" name="rop_comments" id="inputCOP" value="<?php echo config('modules::users.comments_on_page'); ?>" placeholder="<?php echo $this->lng['comments_on_page']; ?>" required>
             </div>
         </div>
 
