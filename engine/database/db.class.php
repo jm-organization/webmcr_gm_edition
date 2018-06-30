@@ -14,7 +14,6 @@
 namespace mcr\database;
 
 
-use Closure;
 use mcr\core_v2;
 use mcr\log;
 
@@ -43,7 +42,7 @@ class db extends core_v2
 	 *
 	 * @param $query
 	 *
-	 * @return bool|db_result
+	 * @return db_result
 	 * @throws db_exception
 	 */
 	public static function query($query)
@@ -53,31 +52,31 @@ class db extends core_v2
 		$query = trim($query);
 
 		if (!empty($query)) {
-			self::$count_queries += 1;
-			self::$count_queries_real += 1;
 
 			$connection = self::$db_connection->connection;
 
-			if (empty($connection)) {
-				throw new db_exception(self::$db_connection->connect_error, log::MYSQL_ERROR);
-			}
+			if (!empty($connection)) {
+				self::$count_queries += 1;
+				self::$count_queries_real += 1;
 
-			$result = $connection->query($query);
+				$result = $connection->query($query);
 
-			if (is_bool($result)) {
 				if (!$result) {
 					$log->write(mysqli_error($connection)." in query: \"".$query."\".", log::MYSQL_ERROR);
 				}
 
-				return true;
+				return new db_result($connection, $result);
+			} else {
+				throw new db_exception(self::$db_connection->connect_error, log::MYSQL_ERROR);
 			}
-
-			return new db_result($connection, $result);
 		} else {
 			throw new db_exception('db::query(): Empty query', log::MYSQL_WARNING);
 		}
 	}
 
+	/**
+	 * @return \stdClass
+	 */
 	public static function get_queries_count()
 	{
 		$queries_count = new \stdClass();
@@ -87,4 +86,31 @@ class db extends core_v2
 
 		return $queries_count;
 	}
+
+	/**
+	 * @return int
+	 */
+	public static function affected_rows()
+	{
+		return self::$db_connection->connection->affected_rows;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public static function inserted()
+	{
+		return self::$db_connection->connection->insert_id;
+	}
+
+	/**
+	 * @param $string
+	 *
+	 * @return string
+	 */
+	public static function escape_string($string)
+	{
+		return self::$db_connection->connection->real_escape_string($string);
+	}
+
 }

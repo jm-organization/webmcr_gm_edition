@@ -2,13 +2,25 @@
 /**
  * Created in JM Organization.
  *
- * @e-mail       : admin@jm-org.net
- * @Author       : Magicmen
+ * @e-mail       : 	admin@jm-org.net
+ * @Author       : 	Magicmen
  *
- * @Date         : 29.06.2018
- * @Time         : 0:36
+ * @Date         : 	29.06.2018
+ * @Time         : 	0:36
  *
- * @Documentation:
+ * @Documentation: 	Класс-расширение класса \mysqli_result
+ * Используетс, как стандартные методы mysqli_result,
+ * так и свои собственные.
+ *
+ *                	Необходим для испоьзования
+ * при вызове sql таких запросов:
+ * 		- SELECT,
+ *		- SHOW
+ *      - DESCRIBE
+ *      - EXPLAIN
+ *
+ * Обработка DML запросов данным классом не предусмотренна
+ *
  */
 
 namespace mcr\database;
@@ -16,39 +28,42 @@ namespace mcr\database;
 
 use mcr\core_v2;
 use mcr\log;
-use mysqli_result;
 
 /**
  * Class db_result
  *
  * @package mcr\database
  *
+ * @property 	int 	$current_field;
+ * @property 	int 	$field_count;
+ * @property 	array 	$lengths;
+ * @property 	int 	$num_rows;
  *
- * @method 	bool 	data_seek(int $offset)
- * @method 	mixed 	fetch_all(int $resulttype = MYSQLI_NUM)
- * @method 	mixed 	fetch_array(int $resulttype = MYSQLI_BOTH)
- * @method 	array 	fetch_assoc()
- * @method 	object 	fetch_field_direct(int $fieldnr)
- * @method 	object 	fetch_field()
- * @method 	array 	fetch_fields()
- * @method 	object 	fetch_object(string $class_name = "stdClass", array $params)
- * @method 	mixed 	fetch_row()
- * @method 	bool 	field_seek(int $fieldnr)
- * @method 	void 	free()
+ * @method 		bool 	data_seek(int $offset)
+ * @method 		mixed 	fetch_all(int $resulttype = MYSQLI_NUM)
+ * @method 		mixed 	fetch_array(int $resulttype = MYSQLI_BOTH)
+ * @method 		array 	fetch_assoc()
+ * @method 		object 	fetch_field_direct(int $fieldnr)
+ * @method 		object 	fetch_field()
+ * @method 		array 	fetch_fields()
+ * @method 		object 	fetch_object(string $class_name = "stdClass", array $params)
+ * @method 		mixed 	fetch_row()
+ * @method 		bool 	field_seek(int $fieldnr)
+ * @method 		void 	free()
  *
- * @see 	mysqli_result
+ * @see 		\mysqli_result
  */
 class db_result extends core_v2
 {
 	/**
-	 * @var null
+	 * @var \mysqli|null
 	 */
 	private $connection = null;
 
 	/**
-	 * @var null
+	 * @var \mysqli_result|null
 	 */
-	public $result = null;
+	private $result = null;
 
 	/**
 	 * db_result constructor.
@@ -83,8 +98,12 @@ class db_result extends core_v2
 	 */
 	public function __call($name, $arguments)
 	{
-		/** @var mysqli_result $result */
+		/** @var \mysqli_result $result */
 		$result = $this->result;
+
+		if (is_bool($result)) {
+			throw new db_exception("db::$name(): result is boolean. See logs.", log::WARNING);
+		}
 
 		// Проверяем наличие вызываемого метода в классе mysqli_result
 		if (method_exists($result, $name)) {
@@ -95,5 +114,33 @@ class db_result extends core_v2
 			// Если не нашли, то выбрасываем исключение
 			throw new db_exception("Unexpected method `$name`", log::WARNING);
 		}
+	}
+
+	/**
+	 * @function     : __get
+	 *
+	 * @documentation: Возвращает значение
+	 * параметров класса \mysqli_result.
+	 *
+	 * @param $key
+	 *
+	 * @return null
+	 */
+	public function __get($key)
+	{
+		if (is_null($key)) {
+			return null;
+		}
+
+		if (property_exists($this->result, $key)) {
+			return $this->result->$key;
+		}
+
+		return null;
+	}
+
+	public function result()
+	{
+		return $this->result;
 	}
 }

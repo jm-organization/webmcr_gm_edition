@@ -13,6 +13,7 @@
 
 use mcr\document;
 
+
 if (!function_exists('config')) {
 	/**
 	 * Возвращает значение конфига по указанному неймспейсу
@@ -25,6 +26,7 @@ if (!function_exists('config')) {
 	 * во влож масиве, то необходимо использовать точку.
 	 *
 	 * Пример: 'search::news.sys_search_news'
+	 * или: 'modules::close.MOD_TITLE'
 	 *
 	 *
 	 * @param  string 	$namespace
@@ -54,9 +56,27 @@ if (!function_exists('config')) {
 
 				return $config;
 			}
+		} else {
+			$property = $namespace[0];
+
+			return @$configs->$property;
 		}
 
 		return null;
+	}
+}
+
+if (!function_exists('configs')) {
+	/**
+	 * Возвращает все конфиги
+	 *
+	 * @return stdClass
+	 */
+	function configs()
+	{
+		global $configs;
+
+		return $configs->all();
 	}
 }
 

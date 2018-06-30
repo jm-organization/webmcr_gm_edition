@@ -9,41 +9,72 @@ if (!defined("MCR")) {
 
 class config
 {
-	public $main = [];
+	/**
+	 * @var array
+	 */
+	public $blocks = [];
 
-	public $db = [];
+	/**
+	 * @var array
+	 */
+	public $modules = [];
 
-	public $func = [];
+	/**
+	 * @var array|null
+	 */
+	public $db = null;
 
-	public $pagin = [];
+	/**
+	 * @var array|null
+	 */
+	public $functions = null;
 
-	public $mail = [];
+	/**
+	 * @var array|null
+	 */
+	public $mail = null;
 
-	public $search = [];
+	/**
+	 * @var array|null
+	 */
+	public $main = null;
 
+	/**
+	 * @var array|null
+	 */
+	public $pagin = null;
+
+	/**
+	 * @var array|null
+	 */
+	public $search = null;
+
+	/**
+	 * config constructor.
+	 */
 	public function __construct()
 	{
-		// Load main config
-		require_once(MCR_CONF_PATH.'main.php');
-		require_once(MCR_CONF_PATH.'mail.php');
-		require_once(MCR_CONF_PATH.'db.php');
-		require_once(MCR_CONF_PATH.'functions.php');
-		require_once(MCR_CONF_PATH.'pagin.php');
-		require_once(MCR_CONF_PATH.'search.php');
+		// Подгружаем основные конфиги
+		$this->set_configs();
 
-		$this->main = $main;
-		$this->mail = $mail;
-		$this->db = $db;
-		$this->func = $func;
-		$this->pagin = $pagin;
-		$this->search = $search;
+		// подгружаем конфиги блоков
+		$this->set_configs(MCR_CONF_PATH . 'blocks/', 'blocks');
+
+		// подгружаем конфиги модулей
+		$this->set_configs(MCR_CONF_PATH . 'modules/', 'modules');
 	}
 
-	public function tabname($name)
-	{
-		return $this->db['tables'][$name]['name'];
-	}
-
+	/**
+	 * @function     : savecfg
+	 *
+	 * @documentation:
+	 *
+	 * @param array  $cfg
+	 * @param string $file
+	 * @param string $var
+	 *
+	 * @return bool
+	 */
 	public function savecfg($cfg = [], $file = 'main.php', $var = 'main')
 	{
 		if (!is_array($cfg) || empty($cfg)) {
@@ -63,5 +94,31 @@ class config
 		}
 
 		return true;
+	}
+
+	private function set_configs($dir = MCR_CONF_PATH, $container = null)
+	{
+		$configs = scandir($dir);
+
+		foreach ($configs as $config_file) {
+			if ($config_file == '.' || $config_file == '..' || is_dir(MCR_CONF_PATH . $config_file)) continue;
+
+			$config_root_namespace = pathinfo(MCR_CONF_PATH . $config_file, PATHINFO_FILENAME);
+
+			require_once $dir . $config_file;
+
+			if (empty($container)) {
+				if (property_exists($this, $config_root_namespace)) {
+					$this->$config_root_namespace = $$config_root_namespace;
+				}
+			} else {
+				$this->$container = array_merge($this->$container, [ $config_root_namespace => $cfg ]);
+			}
+		}
+	}
+
+	public function all()
+	{
+		return get_object_vars($this);
 	}
 }
