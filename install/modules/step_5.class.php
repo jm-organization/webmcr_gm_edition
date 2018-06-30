@@ -10,79 +10,69 @@
  *
  **/
 
+namespace install\modules;
+
+
 if (!defined("MCR")) {
 	exit("Hacking Attempt!");
 }
 
-class module
+class step_5 extends install_step
 {
-	private $install, $cfg, $lng, $db;
-
-	public function __construct($install)
-	{
-		$this->install = $install;
-		$this->cfg = $install->cfg;
-		$this->lng = $install->lng;
-
-		$db = $this->cfg['db'];
-
-		require_once DIR_ROOT . 'engine/db/' . $db['backend'] . '.class.php';
-
-		$this->db = new db($db['host'], $db['user'], $db['pass'], $db['base'], $db['port']);
-
-		$error = $this->db->error();
-
-		if (!empty($error)) {
-			$this->install->notify($this->lng['e_connection'] . ' | ' . $error, $this->lng['e_msg'], 'install/?do=step_5');
-		}
-
-		$this->install->title = $this->lng['mod_name'] . ' — ' . $this->lng['step_5'];
-	}
-
 	public function content()
 	{
+		global $configs;
+		$this->title = $this->lng['mod_name'] . ' — ' . $this->lng['step_5'];
+		
 		if (!isset($_SESSION['step_4'])) {
-			$this->install->notify('', '', 'install/?do=step_4');
+			$this->notify('', '', 'install/?do=step_4');
 		}
 		if (isset($_SESSION['step_5'])) {
-			$this->install->notify('', '', 'install/?do=finish');
+			$this->notify('', '', 'install/?do=finish');
 		}
 
 		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-			if (!$this->db->query("
+			$db = @new \mysqli(config('db::host'), config('db::user'), config('db::pass'), config('db::base'), config('db::port'));
+			$error = $db->connect_error;
+
+			if (!empty($error)) {
+				$this->notify($this->lng['e_connection'] . ' | ' . $error, $this->lng['e_msg'], 'install/?do=step_2');
+			}
+			
+			if (!$db->query("
 				INSERT INTO `mcr_menu` (`title`, `parent`, `url`, `target`, `permissions`) 
 				VALUES ('Пользователи', 0, '/?mode=users', '_self', 'mod_users_list');
 			")
 			) {
-				$this->install->notify($this->lng['e_msg'], $this->lng['e_add_menu'], '?mode=step_5');
+				$this->notify($this->lng['e_msg'], $this->lng['e_add_menu'], '?mode=step_5');
 			}
 
-			if (!$this->db->query("
+			if (!$db->query("
 				INSERT INTO `mcr_menu_adm_icons` (`title`, `img`)
 				VALUES ('Модуль пользователей', 'us.png');
 			")
 			) {
-				$this->install->notify($this->lng['e_msg'], $this->lng['e_add_icon'], '?mode=step_5');
+				$this->notify($this->lng['e_msg'], $this->lng['e_add_icon'], '?mode=step_5');
 			}
 
-			$icon_id = $this->db->insert_id();
+			$icon_id = $db->insert_id;
 
-			if (!$this->db->query("
+			if (!$db->query("
 				INSERT INTO `mcr_menu_adm` (`page_id`, `gid`, `title`, `text`, `url`, `target`, `access`, `priority`, `icon`)
 				VALUES ('us', 5, 'Модуль пользователей', 'Управление модулем пользователей', '/?mode=admin&do=us', '_self', 'mod_adm_m_i_us', 4, '$icon_id');
 			")
 			) {
-				$this->install->notify($this->lng['e_msg'], $this->lng['e_add_menu_adm'], '?mode=step_5');
+				$this->notify($this->lng['e_msg'], $this->lng['e_add_menu_adm'], '?mode=step_5');
 			}
 
 			$groups = array();
 
-			$query = $this->db->query("SELECT `id`, `permissions` FROM `mcr_groups`");
-			if (!$query || $this->db->num_rows($query) <= 0) {
-				$this->install->notify($this->lng['e_msg'], $this->lng['e_msg'], '?mode=step_5');
+			$query = $db->query("SELECT `id`, `permissions` FROM `mcr_groups`");
+			if (!$query || $query->num_rows <= 0) {
+				$this->notify($this->lng['e_msg'], $this->lng['e_msg'], '?mode=step_5');
 			}
 
-			while ($ar = $this->db->fetch_assoc($query)) {
+			while ($ar = $query->fetch_assoc()) {
 				$groups[] = array(
 					'id' => intval($ar['id']),
 					'permissions' => json_decode($ar['permissions'], true),
@@ -101,25 +91,26 @@ class module
 				$group['permissions']['mod_adm_m_i_us'] = ($gid == 3) ? true : false;
 				$group['permissions']['mod_users_adm_settings'] = ($gid == 3) ? true : false;
 
-				$newperm = $this->db->safesql(json_encode($group['permissions']));
+				$newperm = $db->real_escape_string(json_encode($group['permissions']));
 
-				$this->db->query("UPDATE `mcr_groups` SET `permissions`='$newperm' WHERE id='$gid'");
+				$db->query("UPDATE `mcr_groups` SET `permissions`='$newperm' WHERE id='$gid'");
 			}
 
-			$this->cfg['modules']['users']['install'] = false;
+			$_modules_users = config('modules::users');
+			$_modules_users['install'] = false;
 
-			if (!$this->install->savecfg($this->cfg['modules']['users'], 'modules/users.php', 'cfg')) {
-				$this->install->notify($this->lng['e_msg'], $this->lng['e_settings'], '?mode=step_5');
+			if (!$configs->savecfg($_modules_users, 'modules/users.php', 'cfg')) {
+				$this->notify($this->lng['e_msg'], $this->lng['e_settings'], '?mode=step_5');
 			}
 
 			$_SESSION['step_5'] = true;
 
-			$this->install->notify($this->lng['mod_name'], $this->lng['finish'], 'install/?mode=finish');
+			$this->notify($this->lng['mod_name'], $this->lng['finish'], 'install/?mode=finish');
 
 		}
 
 		$data = array();
 
-		return $this->install->sp('step_5.phtml', $data);
+		return $this->sp('step_5.phtml', $data);
 	}
 }

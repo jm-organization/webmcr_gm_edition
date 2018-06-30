@@ -8,7 +8,7 @@
  * @Date         : 26.06.2018
  * @Time         : 19:27
  *
- * @Documentation: Главный автозагрузжик приложения.
+ * @Documentation: Скрипт запуска ядра приложения
  */
 
 //use mcr\core;
@@ -16,43 +16,15 @@ use mcr\config;
 use mcr\core_v2;
 use mcr\log;
 
-function __autoload($classname) {
-	// Извлекаем эллементы пространства имён загружаемого класса.
-	$class_paths = explode('\\', $classname);
+include 'autoloader.php';
 
-	// Определяем родительское мастер пространство имён загружаемого класса.
-	$root_class_path = $class_paths[0];
-
-	$class = $classname;
-
-	if ($root_class_path == 'mcr') {
-
-		$class = preg_replace('/mcr|engine/', ENGINE_ROOT_NAME, $classname);
-	}
-
-	// Определяем полный путь к классу
-	$class = __DIR__ . '/../' . $class . '.class.php';
-
-	// Иначе загружаем по методу
-	// __NAMESPACE__ => __PATH__ .php
-	load_if_exist($class);
-}
-
-function load_if_exist($file) {
-
-	$file = str_replace('\\', '/', $file);
-
-	if (file_exists($file)) {
-		//echo $file . '<br>';
-		include_once $file;
-	}
-
-}
-
+// Загружаем конфиги
 $configs = new config();
 
+// Запускаем логирование
 $log = new log($configs->main['debug'], log::L_ALL);
-
+// Регистрируем функцию, которая будет отслеживать события,
+// которые прекращаюит работу скрипта
 register_shutdown_function(function () use ($log) {
 
 	$error = error_get_last();
@@ -70,4 +42,5 @@ register_shutdown_function(function () use ($log) {
 
 });
 
+// Создаём приложение по конфигам.
 $application = new core_v2($configs);

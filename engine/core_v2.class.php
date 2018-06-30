@@ -67,9 +67,9 @@ class core_v2
 	public function __construct(config $configs)
 	{
 		// Если приложение не установленно, то перенаправляем на скрипт установки
-		/*if (!INSTALLED) {
+		if (!INSTALLED) {
 			header("Location: /install/index.php");
-		}*/
+		}
 
 		// Сохранение конфигураций в локальную среду ядра.
 		$this->configs = $configs;
