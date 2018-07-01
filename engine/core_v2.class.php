@@ -162,14 +162,13 @@ class core_v2
 
             $module = $this->initialize($router->controller);
 
-			$module->content($request);
+			//$module->content($request);
 
 			//dd($module instanceof module);
-			/*$document = @$module->content($request);
+			//$template = @$module->content($request);
+			$document = new document($module, $request);
 
-			$document = new document($document);
-
-			$document->render();*/
+			$document->render();
 
 		} catch (\Exception $e) {
 

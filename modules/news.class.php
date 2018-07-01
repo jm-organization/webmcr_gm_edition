@@ -14,6 +14,7 @@
 namespace modules;
 
 
+use mcr\database\db;
 use mcr\http\redirect;
 use mcr\http\request;
 
@@ -25,9 +26,11 @@ class news extends base_module implements module
 {
 	/**
 	 * @param request $request
+	 *
+	 * @throws \mcr\database\db_exception
 	 */
 	public function content(request $request)
 	{
-		//
+		//return tmpl('modules.news.news-list');
 	}
 }

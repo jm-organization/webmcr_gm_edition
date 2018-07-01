@@ -3,6 +3,8 @@
 namespace install;
 
 
+use mcr\hashing\bcrypt_hasher;
+use mcr\hashing\hashing_exception;
 use mcr\log;
 
 if (!defined('MCR')) {
@@ -19,6 +21,8 @@ class install
 
 	public $header = '';
 
+	public $hasher = null;
+
 	public function __construct()
 	{
 		$https = (@$_SERVER['HTTPS'] == 'on' || (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https')) ? 'https' : 'http';
@@ -34,6 +38,8 @@ class install
 
 		require DIR_ROOT.'language/' . config('main::s_lang') . '/install.php';
 		$this->lng = $lng;
+
+		$this->hasher = new bcrypt_hasher();
 
 		$this->title = $lng['mod_name'];
 	}
@@ -107,76 +113,22 @@ class install
 		return $this->sp('notify.phtml', $data);
 	}
 
-	public function gen_password($string = '', $salt = '', $crypt = false)
+	/**
+	 * @function     : gen_password
+	 *
+	 * @documentation:
+	 *
+	 * @param string $string
+	 * @param string $salt
+	 *
+	 * @return string
+	 */
+	public function gen_password($string, $salt = '')
 	{
-		if ($crypt === false) {
-			$crypt = config('main::crypt');
-		}
-
-		switch ($crypt) {
-			case 1:
-				return sha1($string);
-				break;
-
-			case 2:
-				return hash('sha256', $string);
-				break;
-
-			case 3:
-				return hash('sha512', $string);
-				break;
-
-			case 4:
-				return md5(md5($string));
-				break;
-
-			case 5:
-				return md5($string.$salt);
-				break; // Joomla
-
-			case 6:
-				return md5($salt.$string);
-				break; // osCommerce, TBDev
-
-			case 7:
-				return md5(md5($salt).$string);
-				break; // vBulletin, IceBB, Discuz
-
-			case 8:
-				return md5(md5($string).$salt);
-				break;
-
-			case 9:
-				return md5($string.md5($salt));
-				break;
-
-			case 10:
-				return md5($salt.md5($string));
-				break;
-
-			case 11:
-				return sha1($string.$salt);
-				break;
-
-			case 12:
-				return sha1($salt.$string);
-				break;
-
-			case 13:
-				return md5(md5($salt).md5($string));
-				break; // ipb, MyBB
-
-			case 14:
-				return hash('sha256', $string.$salt);
-				break;
-
-			case 15:
-				return hash('sha512', $string.$salt);
-				break;
-
-			default:
-				return md5($string);
-				break;
+		try {
+			return $this->hasher->make($string.$salt);
+		} catch (hashing_exception $e) {
+			echo 'Error: [ '.$e->getMessage().' ]';
 		}
 	}
 
