@@ -14,9 +14,7 @@
 namespace modules;
 
 
-use mcr\auth\auth;
-use mcr\database\db;
-use mcr\database\db_result;
+use mcr\http\redirect;
 use mcr\http\request;
 
 if (!defined("MCR")) {
@@ -27,20 +25,9 @@ class news extends base_module implements module
 {
 	/**
 	 * @param request $request
-	 *
-	 * @throws \mcr\database\db_exception
 	 */
 	public function content(request $request)
 	{
-		echo '<h1>Hello World!</h1>';
-		echo '<hr>';
-		echo VERSION;
-		echo '<p>';
-
-		//dd(auth::user());
-
-		echo translate('2015-06-18', null, '%d %b %Y');
-
-		echo '</p>';
+		//
 	}
 }
