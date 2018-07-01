@@ -12,7 +12,7 @@
  */
 
 use mcr\document;
-
+use mcr\http\response;
 
 if (!function_exists('config')) {
 	/**
@@ -196,6 +196,25 @@ if (!function_exists('passwd_hash')) {
 		$password = $hasher->make($string . $salt);
 
 		return $password;
+	}
+}
+
+if (!function_exists('response')) {
+	/**
+	 * @function     : response
+	 *
+	 * @documentation:
+	 *
+	 * @param        $content
+	 * @param string $charset
+	 * @param int    $status
+	 * @param array  $headers
+	 *
+	 */
+	function response($content, $charset = 'UTF-8', $status = 200, array $headers = array()) {
+		$response = new response($content, $charset, $status, $headers);
+
+		$response->send();
 	}
 }
 
