@@ -2,46 +2,141 @@
 
 namespace mcr;
 
+
 if (!defined("MCR")) {
 	exit("Hacking Attempt!");
 }
 
-class user
+class user extends core_v2
 {
-	// Set default system vars
-	public $email, $login, $login_v2, $group, $group_v2, $uuid, $group_desc, $password, $salt, $tmp, $ip, $data, $permissions, $permissions_v2;
-
-	// Set default user vars
-	public $gender = 0;
-	public $time_create = 0;
-	public $time_last = 0;
+	/**
+	 * @var int
+	 */
 	public $id = 0;
+
+	/**
+	 * @var
+	 */
+	public $uuid;
+
+	/**
+	 * @var string
+	 */
+	public $email = '';
+
+	/**
+	 * @var string
+	 */
+	public $login = '';
+
+	/**
+	 * @var string
+	 */
+	private $password;
+
+	/**
+	 * @var string
+	 */
+	private $salt;
+
+	/**
+	 * @var string
+	 */
+	public $group = '';
+
+	/**
+	 * @var string
+	 */
+	public $group_desc = '';
+
+	/**
+	 * @var string|null
+	 */
+	private $tmp = null;
+
+	/**
+	 * @var string
+	 */
+	public $ip;
+
+	/**
+	 * @var mixed|null
+	 */
+	public $permissions = null;
+
+	/**
+	 * @var int|string
+	 */
+	public $gender = 0;
+
+	/**
+	 * @var int
+	 */
+	public $time_create = 0;
+
+	/**
+	 * @var int
+	 */
+	public $time_last = 0;
+
+	/**
+	 * @var bool
+	 */
 	public $is_auth = false;
+
+	/**
+	 * @var bool
+	 */
 	public $is_skin = false;
+
+	/**
+	 * @var bool
+	 */
 	public $is_cloak = false;
+
+	/**
+	 * @var string
+	 */
 	public $skin = 'default';
+
+	/**
+	 * @var string
+	 */
 	public $cloak = '';
+
+	/**
+	 * @var float|int
+	 */
 	public $money = 0;
+
+	/**
+	 * @var float|int
+	 */
 	public $realmoney = 0;
+
+	/**
+	 * @var float|int
+	 */
 	public $bank = 0;
+
+	/**
+	 * @var int
+	 */
 	public $gid = -1;
+
+	/**
+	 * @var auth
+	 */
 	public $auth;
-	private $core, $db, $cfg, $l10n;
 
 	/**
 	 * user constructor.
 	 *
-	 * @param core $core
-	 *
-	 *
 	 * @documentation:
 	 */
-	public function __construct(core $core)
+	public function __construct()
 	{
-		$this->core = $core;
-		$this->db = $core->db;
-		$this->cfg = $core->cfg;
-		$this->l10n = $core->l10n;
+		global $configs;
 
 		$this->group = 'user';
 		$this->group_desc = 'default group';
@@ -56,6 +151,7 @@ class user
 			$perm_ar = @$this->get_default_permissions();
 			$this->permissions = $perm_ar[0];
 			$this->permissions_v2 = $perm_ar[1];
+
 			return false;
 		}
 
@@ -63,7 +159,7 @@ class user
 
 		if (!isset($user_cookie[0], $user_cookie[1])) {
 			$this->set_unauth();
-			$this->core->notify();
+			$this->notify();
 		}
 
 		$uid = intval($user_cookie[0]);
@@ -107,9 +203,9 @@ class user
 		$tmp = $this->db->HSC($ar[$us_f['tmp']]);
 		$password = $this->db->HSC($ar[$us_f['pass']]);
 
-		$new_hash = $uid . $tmp . $this->ip . md5($this->cfg->main['mcr_secury']);
+		$new_hash = $uid.$tmp.$this->ip.md5($this->cfg->main['mcr_secury']);
 
-		$ar_hash = $uid . '_' . md5($new_hash);
+		$ar_hash = $uid.'_'.md5($new_hash);
 
 		// Check security auth
 		if ($_COOKIE['mcr_user'] !== $ar_hash) {
@@ -180,15 +276,7 @@ class user
 		$this->cloak = ($this->is_cloak) ? $this->login : '';
 
 		// Gender
-		$this->gender = ($ar[$us_f['gender']] == 'female')
-			? $this->l10n->gettext('gender_w')
-			: (($ar[$us_f['gender']] == 'male')
-				? $this->l10n->gettext('gender_m')
-				: (($ar[$us_f['gender']] == 'no_set')
-					? $this->l10n->gettext('gender_n')
-					: ''
-				)
-			);
+		$this->gender = ($ar[$us_f['gender']] == 'female') ? $this->l10n->gettext('gender_w') : (($ar[$us_f['gender']] == 'male') ? $this->l10n->gettext('gender_m') : (($ar[$us_f['gender']] == 'no_set') ? $this->l10n->gettext('gender_n') : ''));
 
 		//$format = $this->l10n->get_date_format().' '.$this->l10n->gettext('in').' '.$this->l10n->get_time_format();
 		//$this->time_create = $this->l10n->localize($ar[$us_f['date_reg']], 'datetime', $format);
@@ -205,6 +293,8 @@ class user
 
 		// Bank money balance (for plugins)
 		$this->bank = floatval($ar[$ic_f['bank']]);
+
+		parent::__construct($configs);
 
 		return $this;
 	}
@@ -228,28 +318,34 @@ class user
 
 	private function load_auth()
 	{
-		if (!file_exists(MCR_LIBS_PATH . 'auth/' . $this->cfg->main['p_logic'] . '.php')) {
+		if (!file_exists(MCR_LIBS_PATH.'auth/'.$this->cfg->main['p_logic'].'.php')) {
 			exit('Auth Type Error!');
 		}
 
-		require_once(MCR_LIBS_PATH . 'auth/' . $this->cfg->main['p_logic'] . '.php');
+		require_once(MCR_LIBS_PATH.'auth/'.$this->cfg->main['p_logic'].'.php');
 
 		return new auth($this->core);
 	}
 
 	public function get_default_permissions()
 	{
-		if (file_exists(MCR_CACHE_PATH . 'permissions')) {
-			$json = file_get_contents(MCR_CACHE_PATH . 'permissions');
+		if (file_exists(MCR_CACHE_PATH.'permissions')) {
+			$json = file_get_contents(MCR_CACHE_PATH.'permissions');
 			$array = json_decode($json, true);
 			$object = json_decode($json);
 
-			return array($object, $array);
+			return [
+				$object,
+				$array
+			];
 		}
 
 		$permissions = @$this->update_default_permissions();
 
-		return array(json_decode($permissions), json_decode($permissions, true));
+		return [
+			json_decode($permissions),
+			json_decode($permissions, true)
+		];
 	}
 
 	public function update_default_permissions()
@@ -260,7 +356,7 @@ class user
 			return null;
 		}
 
-		$array = array();
+		$array = [];
 
 		while ($ar = $this->db->fetch_assoc($query)) {
 
@@ -281,12 +377,11 @@ class user
 					$array[$ar['value']] = ($ar['default'] == 'true') ? true : false;
 					break;
 			}
-
 		}
 
 		$permissions = json_encode($array);
 
-		@file_put_contents(MCR_CACHE_PATH . 'permissions', $permissions);
+		@file_put_contents(MCR_CACHE_PATH.'permissions', $permissions);
 
 		return $permissions;
 	}
