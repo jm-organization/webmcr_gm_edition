@@ -97,6 +97,22 @@ if (!function_exists('configs')) {
 	}
 }*/
 
+if (!function_exists('colorize')) {
+	/**
+	 * Возвращает окрашенную строку $str в цвете $color
+	 *
+	 * @param        $str	 - строка, которую необходимо окрасить
+	 * @param        $color  - цвет, в который будет окрашена строка
+	 * @param string $format - формат, по которому будет окрашена строка
+	 *
+	 * @return mixed
+	 */
+	function colorize($str, $color, $format = '<span style="color: {COLOR};">{STRING}</span>')
+	{
+		return str_replace(['{COLOR}', '{STRING}'], [$color, $str], $format);
+	}
+}
+
 if (!function_exists('tmpl')) {
 	/**
 	 * Возвращает собранные шаблон эллемента документа
@@ -126,5 +142,53 @@ if (!function_exists('ie')) {
 	function ie($key)
 	{
 		return isset($key) && !empty($key);
+	}
+}
+
+if (!function_exists('passwd_hash')) {
+	/**
+	 * Системный генератор хэшей паролей пользователей
+	 *
+	 * @param string $string - исходный пароль
+	 * @param string $salt - соль
+	 *
+	 * @return string
+	 */
+	function passwd_hash($string, $salt = '')
+	{
+		global $application;
+
+		$hasher = $application::$hasher;
+
+		$password = $hasher->make($string . $salt);
+
+		return $password;
+	}
+}
+
+if (!function_exists('str_random')) {
+	/**
+	 * Генератор случайной строки
+	 *
+	 * @param 	$length - длина строки (integer)
+	 * @param 	$safe - По умолчанию строка будет состоять только из латинских букв и цифр (boolean)
+	 *
+	 * @return 	string
+	 */
+	function str_random($length = 10, $safe = true)
+	{
+		$chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPRQSTUVWXYZ0123456789";
+		if (!$safe) {
+			$chars .= '$()#@!';
+		}
+
+		$string = "";
+		$len = strlen($chars) - 1;
+
+		while (strlen($string) < $length) {
+			$string .= $chars[mt_rand(0, $len)];
+		}
+
+		return $string;
 	}
 }
