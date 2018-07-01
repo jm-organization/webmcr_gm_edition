@@ -12,6 +12,7 @@
  */
 
 use mcr\document;
+use mcr\http\redirect;
 use mcr\http\response;
 
 if (!function_exists('config')) {
@@ -215,6 +216,22 @@ if (!function_exists('response')) {
 		$response = new response($content, $charset, $status, $headers);
 
 		$response->send();
+	}
+}
+
+
+if (!function_exists('redirect')) {
+	/**
+	 * @function     : response
+	 *
+	 * @documentation:
+	 *
+	 * @param string $to
+	 *
+	 * @return redirect
+	 */
+	function redirect($to = '') {
+		return new redirect($to);
 	}
 }
 

@@ -14,6 +14,10 @@
 namespace mcr\http;
 
 
+if (!defined("MCR")) {
+	exit("Hacking Attempt!");
+}
+
 class router
 {
 	private $mode = '';

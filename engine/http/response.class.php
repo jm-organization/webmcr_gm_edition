@@ -20,8 +20,18 @@ if (!defined("MCR")) {
 
 class response
 {
+	/**
+	 * HTTP Заголовки
+	 *
+	 * @var array
+	 */
 	private $headers = array();
 
+	/**
+	 * HTTP status code
+	 *
+	 * @var int
+	 */
 	private $status_code = 200;
 
 	/**
@@ -100,12 +110,38 @@ class response
 		511 => 'Network Authentication Required',                             // RFC6585
 	);
 
+	/**
+	 * HTTP status text
+	 *
+	 * @var string
+	 */
 	private $status_text = 'OK';
 
+	/**
+	 * Содержимое, которое будет отправленно
+	 *
+	 * @var string
+	 */
 	private $content = '';
 
+	/**
+	 * Кодировка с которой будет отправленно содержимое
+	 *
+	 * @var string
+	 */
 	private $charset = 'utf8';
 
+	/**
+	 * response constructor.
+	 *
+	 * @param        $content
+	 * @param string $charset
+	 * @param int    $status
+	 * @param array  $headers
+	 *
+	 *
+	 * @documentation:
+	 */
 	public function __construct($content, $charset = 'UTF-8', $status = 200, array $headers = array())
 	{
 		$this->headers = $headers;
@@ -118,6 +154,15 @@ class response
 		$this->set_content($content);
 	}
 
+	/**
+	 * @function     : set_status_code
+	 *
+	 * @documentation: Устанавливает код http статуса
+	 * Если код входи в диапозон от 100 до 600
+	 *
+	 * @param $code
+	 *
+	 */
 	public function set_status_code($code)
 	{
 		if ($code < 100 || $code >= 600) {
@@ -127,6 +172,12 @@ class response
 		$this->status_code = $code;
 	}
 
+	/**
+	 * @function     : set_status_text
+	 *
+	 * @documentation: Устанавлвиает текст статуса,
+	 * в соотвтествии с таблицей $status_texts
+	 */
 	public function set_status_text()
 	{
 		if (array_key_exists($this->status_code, self::$status_texts)) {
@@ -136,6 +187,14 @@ class response
 		}
 	}
 
+	/**
+	 * @function     : set_content
+	 *
+	 * @documentation: Устанавливает отправляемое содержимое.
+	 * Может быть строковым, числом или объектом, который содержит метод  __toString
+	 *
+	 * @param $content
+	 */
 	public function set_content($content)
 	{
 		if (null !== $content && !is_string($content) && !is_numeric($content) && !is_callable(array($content, '__toString'))) {
@@ -144,6 +203,11 @@ class response
 		$this->content = (string) $content;
 	}
 
+	/**
+	 * @function     : prepare
+	 *
+	 * @documentation: Подготоавливает заголовки и содержимое к отправке.
+	 */
 	private function prepare()
 	{
 		if ($this->isInformational() || in_array($this->status_code, array(204, 304))) {
@@ -164,6 +228,11 @@ class response
 		}
 	}
 
+	/**
+	 * @function     : send_headers
+	 *
+	 * @documentation: Отправляет заголовки
+	 */
 	public function send_headers()
 	{
 		// headers have already been sent by the developer
@@ -182,6 +251,11 @@ class response
 		}
 	}
 
+	/**
+	 * @function     : send
+	 *
+	 * @documentation: Отправляет и заголовки и содержимое
+	 */
 	public function send()
 	{
 		$this->send_headers();
@@ -192,6 +266,14 @@ class response
 		}
 	}
 
+	/**
+	 * @function     : isInformational
+	 *
+	 * @documentation: Проверяет код статуса на
+	 * вхождение в диапозон информативных http кодов
+	 *
+	 * @return bool
+	 */
 	private function isInformational()
 	{
 		return $this->status_code >= 100 && $this->status_code < 200;

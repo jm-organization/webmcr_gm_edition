@@ -16,6 +16,10 @@ namespace modules;
 
 use mcr\http\request;
 
+if (!defined("MCR")) {
+	exit("Hacking Attempt!");
+}
+
 class auth extends base_module implements module
 {
 	public function content(request $request)
