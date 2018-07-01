@@ -66,7 +66,7 @@ class core
 		$this->db = new db($this->cfg->db['host'], $this->cfg->db['user'], $this->cfg->db['pass'], $this->cfg->db['base'], $this->cfg->db['port'], $this);
 
 		// Load class l10n - Localization
-		require(MCR_TOOL_PATH . 'l10n.class.php');
+		require(MCR_TOOL_PATH.'l10n.class.php');
 		$this->l10n = new l10n($this);
 		$this->title = $this->l10n->gettext('home');
 
