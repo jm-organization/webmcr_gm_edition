@@ -80,22 +80,55 @@ if (!function_exists('configs')) {
 	}
 }
 
-/*if (!function_exists('translate')) {
+if (!function_exists('translate')) {
 	/**
-	 * Возвращает значение фразы $phrase
+	 * Проверяет пришедший тип фразы, если указан формат даты.
+	 * Конвертирует фразу в
+	 * время в зависимости от типа фразы.
 	 *
-	 * @param $phrase
-	 * @param $locale
+	 * Возвращает перевелённое фремя.
+	 *
+	 *
+	 * Если формат даты не был указан, то возвращает
+	 * значение фразы, в зависимости от локали
+	 *
+	 * @param      $phrase
+	 * @param      $locale
+	 *
+	 * @param null $date_format
 	 *
 	 * @return mixed
-
-	function translate($phrase, $locale = null)
+	 */
+	function translate($phrase, $locale = null, $date_format = null)
 	{
 		global $application;
 
+		if (!empty($date_format)) {
+			$text_type = gettype($phrase);
+			$time = null;
+
+			switch ($text_type) {
+				case 'string': $time = @strtotime($phrase); break;
+				case 'integer': $time = $phrase; break;
+				case 'object':
+
+					if ($phrase instanceof \DateTime){
+						$time = $phrase->format('U');
+					} else {
+						return $phrase;
+					}
+
+					break;
+				default: return $phrase; break;
+			}
+
+			return $application->parse_date($time);
+
+		}
+
 		return $application->gettext($phrase, $locale);
 	}
-}*/
+}
 
 if (!function_exists('colorize')) {
 	/**

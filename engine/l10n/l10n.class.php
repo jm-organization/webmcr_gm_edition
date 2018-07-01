@@ -8,12 +8,17 @@
  * @Time    : 21:20
  */
 
-namespace mcr;
+namespace mcr\l10n;
 
 
 use Locale;
+use mcr\database\db;
 
-class l10n
+if (!defined("MCR")) {
+	exit("Hacking Attempt!");
+}
+
+trait l10n
 {
 	public $locales = ['af-ZA', 'am-ET', 'ar-AR', 'ay-BO', 'az-AZ', 'be-BY', 'bg-BG', 'bn-IN', 'bs-BA', 'ca-ES', 'cs-CZ', 'cy-GB', 'da-DK', 'de-DE', 'el-GR', 'en-GB', 'en-US', 'eo-EO', 'es-CL', 'es-CO', 'es-ES', 'es-LA', 'fr-CA', 'fr-FR', 'ga-IE', 'gl-ES', 'gu-IN', 'ha-NG', 'he-IL', 'hi-IN', 'hr-HR', 'ht-HT', 'hu-HU', 'hy-AM', 'id-ID', 'ig-NG', 'is-IS', 'it-IT', 'ja-JP', 'jv-ID', 'ka-GE', 'kk-KZ', 'km-KH', 'kn-IN', 'ko-KR', 'ku-TR', 'la-VA', 'li-NL', 'lo-LA', 'lt-LT', 'lv-LV', 'mg-MG', 'mk-MK', 'ml-IN', 'mn-MN', 'mr-IN', 'ms-MY', 'mt-MT', 'my-MM', 'nb-NO', 'ne-NP', 'nl-NL', 'nn-NO', 'or-IN', 'pa-IN', 'pl-PL', 'ps-AF', 'pt-BR', 'pt-PT', 'qu-PE', 'rm-CH', 'ro-RO', 'ru-RU', 'sa-IN', 'sk-SK', 'sl-SI', 'so-SO', 'sq-AL', 'sr-RS', 'sv-SE', 'sw-KE', 'ta-IN', 'te-IN', 'tg-TJ', 'th-TH', 'tl-PH', 'tl-ST', 'tr-TR', 'tt-RU', 'uk-UA', 'ur-PK', 'uz-UZ', 'vi-VN', 'xh-ZA', 'yi-DE', 'yo-NG', 'zh-CN', 'zh-HK', 'zh-TW', 'zu-ZA'];
 
@@ -34,8 +39,19 @@ class l10n
 
 	protected $locale;
 
-	public function __construct()
+	/**
+	 * @function     : init
+	 *
+	 * @documentation: Инициализирует систему локализации
+	 *
+	 *
+	 * @throws \mcr\database\db_exception
+	 * @throws l10n_exception
+	 */
+	public function init()
 	{
+		parent::init();
+
 		// Берём значение из конфига, как локаль сайта.
 		$this->locale = config('main::s_lang');
 
@@ -98,6 +114,8 @@ class l10n
 	 *
 	 * @param bool $locale
 	 *
+	 * @throws \mcr\database\db_exception
+	 * @throws l10n_exception
 	 */
 	public function set_cache($locale = false)
 	{
@@ -106,13 +124,13 @@ class l10n
 		// Иначе для той, которая установлена по умолчанию
 		$locale = ($locale) ? $locale : Locale::getDefault();
 		$locale_cache_path = MCR_CACHE_PATH.'l10n/'.$locale;
+
 		if (!file_exists($locale_cache_path)) {
 			mkdir(MCR_CACHE_PATH.'l10n/'.$locale);
 		}
 
 		// Получаем настройки и фразы локали из базы.
-		$languages = $this->get_languages($locale, false);
-		$languages = $this->db->fetch_assoc($languages);
+		$languages = $this->get_languages($locale, false)->fetch_assoc();
 
 		// Создаём соответствующий кеш.
 		file_put_contents($locale_cache_path.'/.info', $languages['settings']);
@@ -130,7 +148,9 @@ class l10n
 	 * @param string $language
 	 * @param bool   $is_all
 	 *
-	 * @return bool|resource
+	 * @return \mysqli_result|null
+	 * @throws \mcr\database\db_exception
+	 * @throws l10n_exception
 	 */
 	public function get_languages($language = 'ru-RU', $is_all = true)
 	{
@@ -147,13 +167,13 @@ class l10n
 			";
 		}
 
-		$results = $this->db->query($sql);
+		$query = db::query($sql);
 
-		if ($results || $this->db->num_rows($results) > 0) {
-			return $results;
+		if ($query->result() && $query->num_rows > 0) {
+			return $query->result();
+		} else {
+			throw new l10n_exception("l10n::get_languages(): Unable to get result from db. See logs.");
 		}
-
-		return null;
 	}
 
 	/**
@@ -178,20 +198,22 @@ class l10n
 	 * @param        $locale
 	 * @param string $route
 	 *
+	 * @throws \mcr\database\db_exception
+	 * @throws l10n_exception
 	 */
 	public function update_cache($locale, $route = '')
 	{
 		$pattern = '/([a-z]{2})-([A-Z]{2})/';
-
 		$locale = (preg_match($pattern, $locale) == 1) ? $locale : false;
 
 		$locale_cache_path = MCR_CACHE_PATH.'l10n/'.$locale;
+
 		if (!$locale || !file_exists($locale_cache_path)) {
-			$this->core->notify($this->gettext('error_message'), $this->gettext('error_locale_not_found'), 2, $route);
+			header("Location: /");
+			//$this->core->notify($this->gettext('error_message'), $this->gettext('error_locale_not_found'), 2, $route);
 		}
 
-		$languages = $this->get_languages($locale, false);
-		$languages = $this->db->fetch_assoc($languages);
+		$languages = $this->get_languages($locale, false)->fetch_assoc();
 
 		file_put_contents($locale_cache_path.'/.info', $languages['settings']);
 		file_put_contents($locale_cache_path.'/.cache', $languages['phrases']);
@@ -287,6 +309,8 @@ class l10n
 	 * @param bool   $is_all
 	 *
 	 * @return null
+	 * @throws \mcr\database\db_exception
+	 * @throws l10n_exception
 	 */
 	public function get_phrases($phrase = '', $is_all = true)
 	{
@@ -312,18 +336,17 @@ class l10n
 			";
 		}
 
-		$results = $this->db->query($sql);
+		$query = db::query($sql);
 
-		if ($results || $this->db->num_rows($results) > 0) {
-			return $results;
+		if ($query->result() && $query->num_rows > 0) {
+			return $query->result();
+		} else {
+			throw new l10n_exception("l10n::get_phrases(): Unable to get result from db. See logs.");
 		}
-
-		return null;
 	}
 
 	public function parse_date($datetime, array $tooltips = [])
 	{
-
 		if ($datetime instanceof \DateTime) {
 			$type = 'datetime';
 		} else {
@@ -399,14 +422,18 @@ class l10n
 	 */
 	public function localize_detetime($format, $timestamp)
 	{
-		$locale = $this->get_locale();
-		$date_str = strftime($format, $timestamp);
+		if (!empty($timestamp)){
+			$locale = $this->get_locale();
+			$date_str = strftime($format, $timestamp);
 
-		if (strpos($locale, '1251') !== false) {
-			return iconv('cp1251', 'utf-8', $date_str);
-		} else {
-			return $date_str;
+			if (strpos($locale, '1251') !== false) {
+				return iconv('cp1251', 'utf-8', $date_str);
+			} else {
+				return $date_str;
+			}
 		}
+
+		return '';
 	}
 
 	/**

@@ -35,7 +35,12 @@ class news extends base_module implements module
 		echo '<h1>Hello World!</h1>';
 		echo '<hr>';
 		echo VERSION;
+		echo '<p>';
 
-		dd(auth::user());
+		//dd(auth::user());
+
+		echo translate('2015-06-18', null, '%d %b %Y');
+
+		echo '</p>';
 	}
 }

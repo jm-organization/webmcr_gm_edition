@@ -14,11 +14,9 @@
 namespace mcr;
 
 use mcr\auth\auth;
-use mcr\auth\auth_exception;
 use mcr\database\db_connection;
 use mcr\hashing\bcrypt_hasher;
 use mcr\hashing\hasher;
-use mcr\http\csrf;
 use mcr\http\request;
 use mcr\http\router;
 
@@ -34,7 +32,9 @@ define("INSTALLED", $configs->main['install']);
 
 class core_v2
 {
-    use csrf;
+    use \mcr\http\csrf,
+        \mcr\l10n\l10n
+    ;
 
 	/**
 	 * Содержит текущую конфигурацию приложения во время
@@ -88,6 +88,14 @@ class core_v2
 		self::$db_connection = new db_connection($configs);
 	}
 
+	/**
+     * Метод, который делает инициализацию ядра.
+     * Необходим для расширений ядра.
+     *
+	 * @return void
+	 */
+	public function init() { }
+
 	public function version()
 	{
 		echo VERSION;
@@ -98,6 +106,8 @@ class core_v2
 		global $log;
 
 		try {
+		    // Инициализируем расширения ядра
+		    $this->init();
 
             ////////////////////////////////////////////////////////////////////////////
             // Получение авторизированых пользователей.
