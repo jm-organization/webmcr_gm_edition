@@ -13,6 +13,7 @@
 
 namespace modules;
 
+use mcr\auth\auth as current_auth;
 
 use mcr\http\request;
 
@@ -24,6 +25,18 @@ class auth extends base_module implements module
 {
 	public function content(request $request)
 	{
-		// TODO: Implement content() method.
+		// Если метод запроса не POST возвращаем ошибку
+		if ($request::method() != 'POST') {
+			redirect()->with([
+				'messages' => [ ['text' => 'Hacking Attempt!'] ]
+			])->route('/');
+		}
+
+		// Если пользователь уже авторизован, сообщаем об этом.
+		if (!empty(current_auth::user()) && current_auth::user()->is_auth) {
+			redirect()->with([
+				'messages' => [ ['text' => translate('auth_already'), 'type' => 1] ]
+			])->route('/');
+		}
 	}
 }

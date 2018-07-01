@@ -19,6 +19,8 @@ use mcr\database\db;
 
 class base_module
 {
+	public $layout = 'global';
+
 	public function HSC($string)
 	{
 		return htmlspecialchars($string);

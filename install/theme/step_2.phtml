@@ -26,15 +26,6 @@
 		</div>
 
 		<div class="table-row">
-			<div class="table-cell"><?php echo $this->lng['encrypt_method']; ?></div>
-			<div class="table-cell">
-				<select name="method">
-					<?php echo $data['METHODS']; ?>
-				</select>
-			</div>
-		</div>
-
-		<div class="table-row">
 			<div class="table-cell"><?php echo $this->lng['adm_mail']; ?></div>
 			<div class="table-cell">
 				<input type="text" name="email" value="<?php echo @$_SESSION['f_email']; ?>" placeholder="<?php echo $this->lng['adm_mail']; ?>">

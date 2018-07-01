@@ -9,14 +9,6 @@ if (!defined("MCR")) {
 
 class step_2 extends install_step
 {
-	private $methods = [
-		'MD5', 'SHA1', 'SHA256', 'SHA512', 'Double MD5 [ md5(md5(PASS)) ]', 'Salted MD5 [ md5(PASS+SALT) ]',
-		'Salted MD5 [ md5(SALT+PASS) ]', 'Salted Double MD5 [ md5(md5(SALT)+PASS) ]', 'Salted Double MD5 [ md5(md5(PASS)+SALT) ]',
-		'Salted Double MD5 [ md5(PASS+md5(SALT)) ]', 'Salted Double MD5 [ md5(SALT+md5(PASS)) ]', 'Salted SHA1 [ sha1(PASS+SALT) ]',
-		'Salted SHA1 [ sha1(SALT+PASS) ]', 'Triple salted MD5 [ md5(md5(SALT)+md5(PASS)) ]', 'Salted SHA256 [ sha256(PASS+SALT) ]',
-		'Salted SHA512 [ sha512(PASS+SALT) ]'
-	];
-
 	public function content()
 	{
 		global  $configs;
@@ -54,12 +46,7 @@ class step_2 extends install_step
 				$this->notify($this->lng['e_email_format'], $this->lng['e_msg'], 'install/?do=step_2');
 			}
 
-			if (!isset($this->methods[$method])) {
-				$this->notify($this->lng['e_method'], $this->lng['e_msg'], 'install/?do=step_2');
-			}
-
 			$_main = config('main');
-			$_main['crypt'] = $method;
 
 			if (!$configs->savecfg($_main, 'main.php', 'main')) {
 				$this->notify($this->lng['e_settings'], $this->lng['e_msg'], 'install/?do=step_2');
@@ -76,7 +63,7 @@ class step_2 extends install_step
 			$email = $db->real_escape_string(@$_POST['email']);
 
 			$salt = $db->real_escape_string($this->random());
-			$password = $this->gen_password(@$_POST['password'], $salt, $method);
+			$password = $this->gen_password(@$_POST['password'], $salt);
 			$ip = $this->ip();
 
 			$ctables = config('db::tables');
@@ -112,11 +99,7 @@ class step_2 extends install_step
 
 		}
 
-		$data = array(
-			'METHODS' => $this->encrypt_methods($method),
-		);
-
-		return $this->sp('step_2.phtml', $data);
+		return $this->sp('step_2.phtml');
 	}
 
 	private function encrypt_methods($selected = 0)
