@@ -25,12 +25,14 @@ if (!defined("MCR")) {
 class news extends base_module implements module
 {
 	/**
+	 * Обрабатывает запрос к модулю.
+	 *
 	 * @param request $request
 	 *
-	 * @throws \mcr\database\db_exception
+	 * @return \mcr\http\response|\mcr\http\redirect|string
 	 */
 	public function content(request $request)
 	{
-		//return tmpl('modules.news.news-list');
+		// 
 	}
 }
