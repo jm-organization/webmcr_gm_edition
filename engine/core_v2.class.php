@@ -17,6 +17,7 @@ use mcr\auth\auth;
 use mcr\database\db_connection;
 use mcr\hashing\bcrypt_hasher;
 use mcr\hashing\hasher;
+use mcr\html\document;
 use mcr\http\request;
 use mcr\http\router;
 
@@ -162,13 +163,13 @@ class core_v2
 
             $module = $this->initialize($router->controller);
 
-			//$module->content($request);
+            if ($module) {
+				$document = new document($module, $request);
+				$document->render();
+			} else {
+				response('', 'utf8', 404)->send_headers();
+			}
 
-			//dd($module instanceof module);
-			//$template = @$module->content($request);
-			$document = new document($module, $request);
-
-			$document->render();
 
 		} catch (\Exception $e) {
 

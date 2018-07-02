@@ -11,7 +11,8 @@
  * @Documentation:
  */
 
-use mcr\document;
+
+use mcr\html\document;
 use mcr\http\redirect;
 use mcr\http\response;
 
@@ -211,11 +212,10 @@ if (!function_exists('response')) {
 	 * @param int    $status
 	 * @param array  $headers
 	 *
+	 * @return response
 	 */
 	function response($content, $charset = 'UTF-8', $status = 200, array $headers = array()) {
-		$response = new response($content, $charset, $status, $headers);
-
-		$response->send();
+		return new response($content, $charset, $status, $headers);
 	}
 }
 

@@ -18,5 +18,12 @@ use mcr\http\request;
 
 interface module
 {
+	/**
+	 * Обрабатывает запрос к модулю.
+	 *
+	 * @param request $request
+	 *
+	 * @return \mcr\http\response|\mcr\http\redirect|\mcr\html\template
+	 */
 	public function content(request $request);
 }

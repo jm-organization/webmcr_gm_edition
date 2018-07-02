@@ -23,6 +23,11 @@ class redirect
 	/**
 	 * @var string
 	 */
+	private $header = 'Location: /';
+
+	/**
+	 * @var string
+	 */
 	private $server_name;
 
 	/**
@@ -102,13 +107,11 @@ class redirect
 	}
 
 	/**
-	 * @function     : route
-	 *
-	 * @documentation: Перенаправляет на маршрут $to
+	 * Перенаправляет на маршрут $to
 	 *
 	 * @param $to
 	 *
-	 * @return bool
+	 * @return redirect
 	 */
 	public function route($to)
 	{
@@ -121,9 +124,14 @@ class redirect
 		}
 
 		if ($_SERVER['REQUEST_URI'] != $this->route) {
-			header('Location: ' . $this->route);
-		} else {
-			return true;
+			$this->header = 'Location: ' . $this->route;
 		}
+
+		return $this;
+	}
+
+	public function header()
+	{
+		return $this->header;
 	}
 }
