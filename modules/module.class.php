@@ -23,7 +23,7 @@ interface module
 	 *
 	 * @param request $request
 	 *
-	 * @return \mcr\http\response|\mcr\http\redirect|\mcr\html\template
+	 * @return \mcr\http\response|\mcr\http\redirect|string
 	 */
 	public function content(request $request);
 }

@@ -71,6 +71,13 @@ class document
 	 */
 	public $search = '';
 
+	public static $stylesheets = [];
+
+	public static $scripts = [
+		'body' => [],
+		'head' => [],
+	];
+
 	/**
 	 * document constructor.
 	 *
@@ -95,36 +102,33 @@ class document
 	{
 		$content = $this->content;
 
-		// Если пришёл ответ от сервера, то отправляем заголовки и содержимое ответа.
-		if ($content instanceof \mcr\http\response) self::response($content);
-		// Если было отправленно перенаправление, то перенаправляем
-		if ($content instanceof \mcr\http\redirect) self::redirect($content);
+		if (is_string($content)) {
+			// Иначе был отправлен шаблон данных.
+			// Перехваываем и оборачиваем его в layout,
+			// который установлен у модуля.
+			$title = $this->title;
+			$blocks = $this->blocks;
+			$header = $this->header;
+			$def_header = $this->def_header;
+			$advice = $this->advise;
+			$menu = $this->menu;
+			$breadcrumbs = $this->breadcrumbs;
+			$search = $this->search;
 
-		// Иначе был отправлен шаблон данных.
-		// Перехваываем и оборачиваем его в layout,
-		// который установлен у модуля.
-		$title = $this->title;
-		$blocks = $this->blocks;
-		$header = $this->header;
-		$def_header = $this->def_header;
-		$advise = $this->advise;
-		$menu = $this->menu;
-		$breadcrumbs = $this->breadcrumbs;
-		$search = $this->search;
+			$_content = self::template($this->layout, compact(
+				'content',
+				'title',
+				'blocks',
+				'header',
+				'def_header',
+				'advice',
+				'menu',
+				'breadcrumbs',
+				'search'
+			));
 
-		$_content = self::template($this->layout, compact(
-			'content',
-			'title',
-			'blocks',
-			'header',
-			'def_header',
-			'advise',
-			'menu',
-			'breadcrumbs',
-			'search'
-		));
-
-		response($_content, 'utf-8', 200)->send();
+			response($_content, 'utf-8', 200);
+		}
 	}
 
 	/**
@@ -151,36 +155,18 @@ class document
 
 		ob_start();
 
-		extract($data, EXTR_OVERWRITE);
+		// Переводим пришедший масив в переменные
+		// $$key = $value.
+		// Если переменная имеет схожее имя с ранее объявленной - пропускаем её.
+		extract($data, EXTR_SKIP);
 
 		include $file;
 
 		return ob_get_clean();
 	}
 
-	/**
-	 * @function     : response
-	 *
-	 * @documentation:
-	 *
-	 * @param \mcr\http\response $content
-	 *
-	 */
-	private static function response(\mcr\http\response $content)
+	public function instance()
 	{
-		$content->send();
-	}
-
-	/**
-	 * @function     : redirect
-	 *
-	 * @documentation:
-	 *
-	 * @param \mcr\http\redirect $content
-	 *
-	 */
-	private static function redirect(\mcr\http\redirect $content)
-	{
-		header($content->header());
+		return $this;
 	}
 }

@@ -51,19 +51,29 @@ class router
 	 *
 	 * @documentation: Возвращает базовый адрес сайта.
 	 *
-	 * TODO: Необходимо рассмотреть надобновть в переписании метода.
-	 *
+	 * @param bool $short
 	 *
 	 * @return string
 	 */
-	public function base_url()
+	public static function base_url($short = false)
 	{
-		$pos = strripos($_SERVER['PHP_SELF'], 'install/index.php');
+		if ($short) {
+			$pos = strripos($_SERVER['PHP_SELF'], 'install/index.php');
 
-		if ($pos === false) {
-			$pos = strripos($_SERVER['PHP_SELF'], 'index.php');
+			if ($pos === false) {
+				$pos = strripos($_SERVER['PHP_SELF'], 'index.php');
+			}
+
+			$_base_url =  mb_substr($_SERVER['PHP_SELF'], 0, $pos, 'UTF-8');
+		} else {
+			$_base_url = $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['SERVER_NAME'];
+
+			if ($_SERVER['SERVER_PORT'] != 80) {
+				$_base_url .= ':' . $_SERVER['SERVER_PORT'];
+			}
 		}
 
-		return mb_substr($_SERVER['PHP_SELF'], 0, $pos, 'UTF-8');
+		return $_base_url . '/';
+
 	}
 }

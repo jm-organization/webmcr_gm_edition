@@ -17,7 +17,7 @@ namespace modules;
 use mcr\config;
 use mcr\database\db;
 
-class base_module
+abstract class base_module
 {
 	public $layout = 'global';
 
