@@ -23,11 +23,6 @@ class redirect
 	/**
 	 * @var string
 	 */
-	private $header = 'Location: /';
-
-	/**
-	 * @var string
-	 */
 	private $server_name;
 
 	/**
@@ -124,14 +119,9 @@ class redirect
 		}
 
 		if ($_SERVER['REQUEST_URI'] != $this->route) {
-			$this->header = 'Location: ' . $this->route;
+			header('Location: ' . $this->route);
 		}
 
 		return $this;
-	}
-
-	public function header()
-	{
-		return $this->header;
 	}
 }

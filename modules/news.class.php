@@ -14,8 +14,6 @@
 namespace modules;
 
 
-use mcr\database\db;
-use mcr\http\redirect;
 use mcr\http\request;
 
 if (!defined("MCR")) {
@@ -33,6 +31,6 @@ class news extends base_module implements module
 	 */
 	public function content(request $request)
 	{
-		// 
+		//
 	}
 }

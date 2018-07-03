@@ -20,9 +20,110 @@ if (!defined("MCR")) {
 
 trait l10n
 {
-	public $locales = ['af-ZA', 'am-ET', 'ar-AR', 'ay-BO', 'az-AZ', 'be-BY', 'bg-BG', 'bn-IN', 'bs-BA', 'ca-ES', 'cs-CZ', 'cy-GB', 'da-DK', 'de-DE', 'el-GR', 'en-GB', 'en-US', 'eo-EO', 'es-CL', 'es-CO', 'es-ES', 'es-LA', 'fr-CA', 'fr-FR', 'ga-IE', 'gl-ES', 'gu-IN', 'ha-NG', 'he-IL', 'hi-IN', 'hr-HR', 'ht-HT', 'hu-HU', 'hy-AM', 'id-ID', 'ig-NG', 'is-IS', 'it-IT', 'ja-JP', 'jv-ID', 'ka-GE', 'kk-KZ', 'km-KH', 'kn-IN', 'ko-KR', 'ku-TR', 'la-VA', 'li-NL', 'lo-LA', 'lt-LT', 'lv-LV', 'mg-MG', 'mk-MK', 'ml-IN', 'mn-MN', 'mr-IN', 'ms-MY', 'mt-MT', 'my-MM', 'nb-NO', 'ne-NP', 'nl-NL', 'nn-NO', 'or-IN', 'pa-IN', 'pl-PL', 'ps-AF', 'pt-BR', 'pt-PT', 'qu-PE', 'rm-CH', 'ro-RO', 'ru-RU', 'sa-IN', 'sk-SK', 'sl-SI', 'so-SO', 'sq-AL', 'sr-RS', 'sv-SE', 'sw-KE', 'ta-IN', 'te-IN', 'tg-TJ', 'th-TH', 'tl-PH', 'tl-ST', 'tr-TR', 'tt-RU', 'uk-UA', 'ur-PK', 'uz-UZ', 'vi-VN', 'xh-ZA', 'yi-DE', 'yo-NG', 'zh-CN', 'zh-HK', 'zh-TW', 'zu-ZA'];
+	public static $locales = [
+		'af-ZA',
+		'am-ET',
+		'ar-AR',
+		'ay-BO',
+		'az-AZ',
+		'be-BY',
+		'bg-BG',
+		'bn-IN',
+		'bs-BA',
+		'ca-ES',
+		'cs-CZ',
+		'cy-GB',
+		'da-DK',
+		'de-DE',
+		'el-GR',
+		'en-GB',
+		'en-US',
+		'eo-EO',
+		'es-CL',
+		'es-CO',
+		'es-ES',
+		'es-LA',
+		'fr-CA',
+		'fr-FR',
+		'ga-IE',
+		'gl-ES',
+		'gu-IN',
+		'ha-NG',
+		'he-IL',
+		'hi-IN',
+		'hr-HR',
+		'ht-HT',
+		'hu-HU',
+		'hy-AM',
+		'id-ID',
+		'ig-NG',
+		'is-IS',
+		'it-IT',
+		'ja-JP',
+		'jv-ID',
+		'ka-GE',
+		'kk-KZ',
+		'km-KH',
+		'kn-IN',
+		'ko-KR',
+		'ku-TR',
+		'la-VA',
+		'li-NL',
+		'lo-LA',
+		'lt-LT',
+		'lv-LV',
+		'mg-MG',
+		'mk-MK',
+		'ml-IN',
+		'mn-MN',
+		'mr-IN',
+		'ms-MY',
+		'mt-MT',
+		'my-MM',
+		'nb-NO',
+		'ne-NP',
+		'nl-NL',
+		'nn-NO',
+		'or-IN',
+		'pa-IN',
+		'pl-PL',
+		'ps-AF',
+		'pt-BR',
+		'pt-PT',
+		'qu-PE',
+		'rm-CH',
+		'ro-RO',
+		'ru-RU',
+		'sa-IN',
+		'sk-SK',
+		'sl-SI',
+		'so-SO',
+		'sq-AL',
+		'sr-RS',
+		'sv-SE',
+		'sw-KE',
+		'ta-IN',
+		'te-IN',
+		'tg-TJ',
+		'th-TH',
+		'tl-PH',
+		'tl-ST',
+		'tr-TR',
+		'tt-RU',
+		'uk-UA',
+		'ur-PK',
+		'uz-UZ',
+		'vi-VN',
+		'xh-ZA',
+		'yi-DE',
+		'yo-NG',
+		'zh-CN',
+		'zh-HK',
+		'zh-TW',
+		'zu-ZA'
+	];
 
-	public $date_formats = [
+	public static $date_formats = [
 		'M j, Y' => '%b %d, %Y',
 		'F j, Y' => '%B %d, %Y',
 		'j M Y' => '%d %b %Y',
@@ -32,12 +133,12 @@ trait l10n
 		'd.m.Y' => '%d.%m.%Y'
 	];
 
-	public $time_formats = [
+	public static $time_formats = [
 		'g:i A' => '%I:%M %p',
 		'H:i' => '%H:%M'
 	];
 
-	protected $locale;
+	protected static $locale;
 
 	/**
 	 * @function     : init
@@ -53,7 +154,7 @@ trait l10n
 		parent::init();
 
 		// Берём значение из конфига, как локаль сайта.
-		$this->locale = config('main::s_lang');
+		self::$locale = config('main::s_lang');
 
 		if (INSTALLED) {
 			dd(1);
@@ -96,12 +197,12 @@ trait l10n
 	 *
 	 * @return string
 	 */
-	public function get_config_locale()
+	public static function get_config_locale()
 	{
 		$locale_pattern = "/([a-z]{2})-([A-Z]{2})/";
 
-		if (preg_match($locale_pattern, $this->locale) == 1) {
-			return $this->locale;
+		if (preg_match($locale_pattern, self::$locale) == 1) {
+			return self::$locale;
 		}
 
 		return 'ru-RU';
@@ -209,8 +310,8 @@ trait l10n
 		$locale_cache_path = MCR_CACHE_PATH.'l10n/'.$locale;
 
 		if (!$locale || !file_exists($locale_cache_path)) {
-			header("Location: /");
-			//$this->core->notify($this->gettext('error_message'), $this->gettext('error_locale_not_found'), 2, $route);
+			/*redirect($route);
+			//$this->core->notify($this->gettext('error_message'), $this->gettext('error_locale_not_found'), 2, $route);*/
 		}
 
 		$languages = $this->get_languages($locale, false)->fetch_assoc();
@@ -422,7 +523,7 @@ trait l10n
 	 */
 	public function localize_detetime($format, $timestamp)
 	{
-		if (!empty($timestamp)){
+		if (!empty($timestamp)) {
 			$locale = $this->get_locale();
 			$date_str = strftime($format, $timestamp);
 
@@ -472,12 +573,12 @@ trait l10n
 	 *
 	 * @return mixed|string
 	 */
-	public function get_date_format()
+	public static function get_date_format()
 	{
-		$date_format = $this->get_locale_info('date_format');
+		$date_format = self::get_locale_info('date_format');
 
-		if (array_key_exists($date_format, $this->date_formats)) {
-			return $this->date_formats[$date_format];
+		if (array_key_exists($date_format, self::$date_formats)) {
+			return self::$date_formats[$date_format];
 		}
 
 		return '%d %b %Y';
@@ -493,9 +594,9 @@ trait l10n
 	 *
 	 * @return null
 	 */
-	public function get_locale_info($key)
+	public static function get_locale_info($key)
 	{
-		$locale = $this->get_config_locale();
+		$locale = self::get_config_locale();
 		$locale_info_path = MCR_CACHE_PATH.'l10n/'.$locale;
 		$locale_info = file_get_contents($locale_info_path.'/.info');
 
@@ -508,12 +609,12 @@ trait l10n
 		return null;
 	}
 
-	public function get_time_format()
+	public static function get_time_format()
 	{
-		$time_format = $this->get_locale_info('time_format');
+		$time_format = self::get_locale_info('time_format');
 
-		if (array_key_exists($time_format, $this->time_formats)) {
-			return $this->time_formats[$time_format];
+		if (array_key_exists($time_format, self::$time_formats)) {
+			return self::$time_formats[$time_format];
 		}
 
 		return '%R';

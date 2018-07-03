@@ -18,8 +18,10 @@ use mcr\database\db_connection;
 use mcr\hashing\bcrypt_hasher;
 use mcr\hashing\hasher;
 use mcr\html\document;
+use mcr\http\csrf;
 use mcr\http\request;
 use mcr\http\router;
+use mcr\l10n\l10n;
 
 use modules\module;
 
@@ -33,8 +35,8 @@ define("INSTALLED", $configs->main['install']);
 
 class core_v2
 {
-    use \mcr\http\csrf,
-        \mcr\l10n\l10n
+    use csrf,
+        l10n
     ;
 
 	/**
@@ -97,7 +99,7 @@ class core_v2
 	 */
 	public function init() { }
 
-	public function version()
+	public static function version()
 	{
 		echo VERSION;
 	}
@@ -123,10 +125,6 @@ class core_v2
             // Определение системных констант приложения.
             ////////////////////////////////////////////////////////////////////////////
 
-            // CSRF ключ защиты  -------------------------------------------------------
-            define("MCR_SECURE_KEY", 	$this->gen_csrf_secure());
-
-
             // Системные константы  ----------------------------------------------------
             define('MCR_LANG', 			config('main::s_lang'));
             define('MCR_LANG_DIR', 		MCR_LANG_PATH . MCR_LANG . '/');
@@ -136,7 +134,7 @@ class core_v2
 
 
             // MCR ссылки, маршруты  ---------------------------------------------------
-            $base_url = (INSTALLED) ? config('main::s_root') : $router->base_url();
+            $base_url = (INSTALLED) ? config('main::s_root') : router::base_url();
             define('BASE_URL', 			$base_url);
             define('ADMIN_MOD', 		'mode=admin');
             define('ADMIN_URL', 		BASE_URL . '?' . ADMIN_MOD);
@@ -146,7 +144,6 @@ class core_v2
                 $mode_url =  BASE_URL . '?mode=' . filter($request->mode, 'chars');
             }
             define('MOD_URL', 			$mode_url);
-            define('STYLE_URL', 		BASE_URL . 'themes/' . config('main::s_theme') . '/');
             define('UPLOAD_URL', 		BASE_URL . 'uploads/');
             define('LANG_URL', 			BASE_URL . 'language/' . MCR_LANG . '/');
 
@@ -155,6 +152,18 @@ class core_v2
             define('MCR_SKIN_PATH', 	MCR_ROOT . config('main::skin_path'));
             define('CLOAK_URL', 		BASE_URL . config('main::cloak_path'));
             define('MCR_CLOAK_PATH', 	MCR_ROOT . config('main::cloak_path'));
+
+			// CSRF ключ защиты  -------------------------------------------------------
+			define("MCR_SECURE_KEY", 	$this->gen_csrf_secure());
+			define('META_JSON_DATA',	 json_encode(array(
+				'secure' => MCR_SECURE_KEY,
+				'lang' => MCR_LANG,
+				'base_url' => BASE_URL,
+				'theme_url' => asset(''),
+				'upload_url' => UPLOAD_URL,
+				'server_time' => time(),
+				//'is_auth' => $core->user->is_auth,
+			)));
 
 
             ////////////////////////////////////////////////////////////////////////////
@@ -167,9 +176,8 @@ class core_v2
 				$document = new document($module, $request);
 				$document->render();
 			} else {
-				response('', 'utf8', 404)->send_headers();
+				response('', 'utf8', 404, [], true);
 			}
-
 
 		} catch (\Exception $e) {
 
