@@ -71,11 +71,11 @@ class document
 	 */
 	public $search = '';
 
-	public static $stylesheets = [];
+	public static $stylesheets = '';
 
 	public static $scripts = [
-		'body' => [],
-		'head' => [],
+		'body' => '',
+		'head' => '',
 	];
 
 	/**
