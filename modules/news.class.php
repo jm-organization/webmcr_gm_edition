@@ -23,6 +23,8 @@ if (!defined("MCR")) {
 
 class news extends base_module implements module
 {
+	public $name = self::class;
+
 	/**
 	 * Обрабатывает запрос к модулю.
 	 *
@@ -32,7 +34,9 @@ class news extends base_module implements module
 	 */
 	public function content(request $request)
 	{
-		document::$stylesheets .= asset('modules.news.header-list', true);
+		// Подключаем чтили и скрипты для страници
+		document::$stylesheets .= asset('modules.news.header-styles-list', true);
+		document::$scripts['body'] .= asset('modules.news.header-bscripts-list', true);
 
 		return 'test';
 	}
