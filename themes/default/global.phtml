@@ -18,20 +18,17 @@ use mcr\l10n\l10n;
 
 	<base href="<?= BASE_URL ?>">
 
-    <?php
-    // Добавление стилей в регистр
-    stylesheet([
-        asset('css/global.css'),
-		asset('css/font-awesome.min.css'),
-		asset('css/bootstrap.min.css'),
-		asset('css/jquery.minicolors.css'),
-    ], true);
+    <!-- Base stylesheets -->
+    <link rel="stylesheet" href="<?= asset('css/font-awesome.min.css') ?>">
+    <link rel="stylesheet" href="<?= asset('css/bootstrap.min.css') ?>">
+    <link rel="stylesheet" href="<?= asset('css/jquery.minicolors.css') ?>">
+    <link rel="stylesheet" href="<?= asset('css/global.css') ?>">
 
-    // Подключаем стили
-    stylesheets();
-    // Подключае скрипты, которые требуют своего расположение в head
-	scripts('head');
-    ?>
+    <!-- User stylesheets -->
+    <?php stylesheets(); ?>
+
+    <!-- Head scripts -->
+    <?php scripts('head'); ?>
 
 </head>
 
@@ -110,22 +107,20 @@ use mcr\l10n\l10n;
         </div>
     </nav>
 
-	<?php
-    // Добавляем скрипты в регистр
-    script('body', asset('js/jquery.min.js'));
-    script('body', asset('js/jquery.easing.js'));
-    script('body', asset('js/popper.min.js'));
-    script('body', asset('js/tether.min.js'));
-    script('body', asset('js/bootstrap.min.js'));
-    script('body', asset('js/bootstrap.file-input.js'));
-    script('body', asset('js/jquery.minicolors.min.js'));
-    script('body', LANG_URL . 'js/global.js');
-    script('body', asset('js/cookie.js'));
-    script('body', asset('js/global.js'));
+    <!-- Base body scripts -->
+    <script type="application/javascript" src="<?= asset('js/jquery.min.js') ?>"></script>
+    <script type="application/javascript" src="<?= asset('js/jquery.easing.js') ?>"></script>
+    <script type="application/javascript" src="<?= asset('js/popper.min.js') ?>"></script>
+    <script type="application/javascript" src="<?= asset('js/tether.min.js') ?>"></script>
+    <script type="application/javascript" src="<?= asset('js/bootstrap.min.js') ?>"></script>
+    <script type="application/javascript" src="<?= asset('js/bootstrap.file-input.js') ?>"></script>
+    <script type="application/javascript" src="<?= asset('js/jquery.minicolors.min.js') ?>"></script>
+    <script type="application/javascript" src="<?= LANG_URL . 'js/global.js' ?>"></script>
+    <script type="application/javascript" src="<?= asset('js/cookie.js') ?>"></script>
+    <script type="application/javascript" src="<?= asset('js/global.js') ?>"></script>
 
-    // Подключаем скрипты, которые требуют своего расположение перед закрывающим тегом body.
-    scripts('body');
-    ?>
+    <!-- User body scripts -->
+	<?php scripts('body'); ?>
 
 </body>
 

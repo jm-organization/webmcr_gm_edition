@@ -18,15 +18,39 @@ use mcr\http\router;
 
 if (!function_exists('asset')) {
 	/**
-	 * @param $resorce
+	 * Возворащает путь к ресурсу, если не указано,
+	 * что ресурсы необходимо вставить из файла.
+	 *
+	 * @param        $resorce   - ссылка на ресурс или путь к файлу,
+	 *                          в котором прописаны необходимые ресурсы
+	 * @param bool   $from_file - указывает на то,
+	 *                          что необходимо вставить ресурсы из файла
+	 * @param string $extension - необходим для указания расширения
+	 *                          файла, с которого будут
+	 *                          загружены ресурсы
 	 *
 	 * @return mixed
 	 */
-	function asset($resorce)
+	function asset($resorce, $from_file = false, $extension = '.phtml')
 	{
-		$_base_url = router::base_url();
+		if ($from_file) {
 
-		return $_base_url . 'themes/' . config('main::s_theme') . '/' . $resorce;
+			ob_start();
+
+			if (preg_match('/^(\.[a-z]*)/', $extension) != 1) {
+				$extension = '.' . $extension;
+			}
+
+			$resorce = MCR_THEME_PATH . str_replace('.', '/', $resorce) . $extension;
+			load_if_exist($resorce);
+
+			return ob_get_clean();
+
+		} else {
+			$_base_url = router::base_url();
+
+			return $_base_url . 'themes/' . config('main::s_theme') . '/' . $resorce;
+		}
 	}
 }
 
@@ -202,63 +226,16 @@ if (!function_exists('response')) {
 	}
 }
 
-if (!function_exists('script')) {
-	/**
-	 * При вызове добавляет в глобальный
-	 * регистр скриптов документа указаный скрипт (ссылку на него).
-	 *
-	 * @param        $in	  - Определяет, где будет выведен скрипт
-	 * @param        $script  - адрес к скрипту.
-	 * @param string $type    - Указывает тип MIME для определенного языка.
-	 * @param null   $defer   - Откладывает выполнение скрипта до тех пор, пока вся страница не будет загружена полностью.
-	 * @param bool   $async   - Асинхронное выполнение скрипта.
-	 * @param bool   $prepend - Добавляет скрипт в начало списка.
-	 */
-	function script($in, $script, $type = 'text/javascript', $defer = null, $async = false, $prepend = false)
-	{
-		$_script = '<script type="' . $type . '"';
-
-		// Усли указао ожидание страници true, то добавляем соответсв. атрибут
-		if (is_bool($defer) && $defer) {
-			$_script .= ' defer';
-		}
-
-		// Если включено асинхронное выполнение -
-		// добавляем соотвевующий атрибут.
-		if ($async) {
-			$_script .= ' async';
-		}
-
-		// Если пришёл урл
-		if (preg_match("/^((https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6}))?([\/\w \.-]*)*\/?$/i", $script) == 1) {
-			$_script .= ' src="' . $script . '"></script>';
-		} else {
-			$_script .= '>' . $script . '</script>';
-		}
-
-		if (!array_key_exists($in, document::$scripts)) {
-			$in = 'body';
-		}
-
-		if ($prepend) {
-			array_unshift(document::$scripts[$in], $_script);
-		} else {
-			array_push(document::$scripts[$in], $_script);
-		}
-
-	}
-}
-
 if (!function_exists('scripts')) {
 	/**
-	 * Выводит прописанные скрипты из глобального регистра скриптов
+	 * Выводит набор скриптов для области $for
+	 *
+	 * @param $for
 	 */
 	function scripts($for)
 	{
 		if (array_key_exists($for, document::$scripts)) {
-			foreach (document::$scripts[$for] as $script) {
-				echo $script;
-			}
+			echo document::$scripts[$for];
 		}
 	}
 }
@@ -290,57 +267,13 @@ if (!function_exists('str_random')) {
 	}
 }
 
-if (!function_exists('stylesheet')) {
-	/**
-	 * При вызове добавляет в глобальный
-	 * регистр стилей документа указаный стиль, ссылку на него.
-	 *
-	 * @param      $stylesheets
-	 * @param bool $prepend
-	 */
-	function stylesheet($stylesheets, $prepend = false)
-	{
-		$array_add = 'array_';
-		if ($prepend) {
-			$array_add .= 'unshift';
-		} else {
-			$array_add .= 'push';
-		}
-
-		if (is_array($stylesheets)) {
-			array_map(function($stylesheet) use ($array_add) {
-
-				$array_add(document::$stylesheets, $stylesheet);
-
-			}, $stylesheets);
-		} else {
-			if (is_string($stylesheets)) $array_add(document::$stylesheets, $stylesheets);
-		}
-	}
-}
-
 if (!function_exists('stylesheets')) {
 	/**
-	 * Выводит стили, которые находятся в
-	 * глобальном регистре стилей.
-	 *
-	 * Глобальный регистр стилей находится по аддресу document::$stylesheets
+	 * Выводит стили набор стилей
 	 */
 	function stylesheets()
 	{
-		$stylesheets = document::$stylesheets;
-		$_stylesheets = '';
-
-		foreach ($stylesheets as $stylesheet) {
-			// Если пришёл урл
-			if (preg_match("/^((https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6}))?([\/\w \.-]*)*\/?$/i", $stylesheet) == 1) {
-				$_stylesheets .= '<link rel="stylesheet" href="' . $stylesheet . '">';
-			} else {
-				$_stylesheets .= '<style>' . $stylesheet . '</style>';
-			}
-		}
-
-		echo $_stylesheets;
+		echo document::$stylesheets;
 	}
 }
 

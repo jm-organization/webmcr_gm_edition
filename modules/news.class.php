@@ -14,6 +14,7 @@
 namespace modules;
 
 
+use mcr\html\document;
 use mcr\http\request;
 
 if (!defined("MCR")) {
@@ -31,6 +32,8 @@ class news extends base_module implements module
 	 */
 	public function content(request $request)
 	{
+		document::$stylesheets .= asset('modules.news.header-list', true);
+
 		return 'test';
 	}
 }
