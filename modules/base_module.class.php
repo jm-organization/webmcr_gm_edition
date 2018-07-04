@@ -14,22 +14,14 @@
 namespace modules;
 
 
-use mcr\config;
 use mcr\database\db;
 
 abstract class base_module
 {
 	public $layout = 'global';
 
-	public function HSC($string)
-	{
-		return htmlspecialchars($string);
-	}
-
 	/**
-	 * @function     : actlog
-	 *
-	 * @documentation:
+	 * Делает лог-запись в таблице действия пользователей.
 	 *
 	 * @param $msg
 	 * @param $uid

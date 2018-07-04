@@ -31,6 +31,6 @@ class news extends base_module implements module
 	 */
 	public function content(request $request)
 	{
-		//
+		return 'test';
 	}
 }

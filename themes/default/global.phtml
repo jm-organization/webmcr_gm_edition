@@ -49,7 +49,7 @@ use mcr\l10n\l10n;
 
             <div class="collapse navbar-collapse" id="navbar-header">
                 <ul class="navbar-nav mr-auto mt-2 mt-md-0">
-                    <?= $menu ?>
+                    <?php echo menu()->generate(); ?>
                 </ul>
                 <?= $search ?>
             </div>

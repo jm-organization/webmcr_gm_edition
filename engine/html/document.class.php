@@ -57,9 +57,9 @@ class document
 	public $advise = '';
 
 	/**
-	 * @var string
+	 * @var menu|null
 	 */
-	public $menu = '';
+	public static $menu = null;
 
 	/**
 	 * @var string
@@ -86,8 +86,12 @@ class document
 	 */
 	public function __construct(base_module $module, request $request)
 	{
-		$this->layout = $module->layout;
+		// Регистрируем меню
+		self::$menu = new menu($request);
 
+		// Определяем шаблон по каторому будет отабражена страница модуля.
+		$this->layout = $module->layout;
+		// Получаем содеримое отображаемой страници
 		$this->content = $module->content($request);
 	}
 
@@ -111,7 +115,6 @@ class document
 			$header = $this->header;
 			$def_header = $this->def_header;
 			$advice = $this->advise;
-			$menu = $this->menu;
 			$breadcrumbs = $this->breadcrumbs;
 			$search = $this->search;
 
@@ -122,7 +125,6 @@ class document
 				'header',
 				'def_header',
 				'advice',
-				'menu',
 				'breadcrumbs',
 				'search'
 			));
@@ -163,10 +165,5 @@ class document
 		include $file;
 
 		return ob_get_clean();
-	}
-
-	public function instance()
-	{
-		return $this;
 	}
 }
