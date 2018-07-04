@@ -63,4 +63,12 @@ class request
 	{
 		return $_SERVER['REQUEST_METHOD'];
 	}
+
+	public static function url()
+	{
+		$_base_url = router::base_url();
+		$_request_uri = $_SERVER['REQUEST_URI'];
+
+		return $_base_url . $_request_uri;
+	}
 }

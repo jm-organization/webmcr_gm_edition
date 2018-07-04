@@ -1,6 +1,6 @@
-<li class="dropdown-item dropdown-submenu <?php echo $data['ACTIVE']; ?>">
-	<a href="<?php echo $data['URL']; ?>" tabindex="-1"><?php echo $data['TITLE']; ?></a>
+<li class="dropdown-item dropdown-submenu <?= $active ?>">
+	<a href="<?= $url ?>" tabindex="-1"><?= $title ?></a>
 	<ul class="dropdown-menu">
-		<?php echo $data['SUB_MENU']; ?>
+		<?= $sub_menu ?>
 	</ul>
 </li>

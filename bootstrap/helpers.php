@@ -126,6 +126,24 @@ if (!function_exists('ie')) {
 	}
 }
 
+if (!function_exists('menu')) {
+	/**
+	 * Возвращает экзмепляр меню
+	 *
+	 * @return \mcr\html\menu
+	 */
+	function menu()
+	{
+		$menu = document::$menu;
+
+		if (empty($menu)) {
+			throw new RuntimeException('Can`t build menu.');
+		}
+
+		return $menu;
+	}
+}
+
 if (!function_exists('passwd_hash')) {
 	/**
 	 * Системный генератор хэшей паролей пользователей

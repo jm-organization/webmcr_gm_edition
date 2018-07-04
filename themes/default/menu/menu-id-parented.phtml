@@ -1,6 +1,7 @@
-<li class="nav-item <?php echo $data['ACTIVE']; ?> dropdown">
-	<a href="<?php echo $data['URL']; ?>" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><?php echo $data['TITLE']; ?> <b class="caret"></b></a>
+<li class="nav-item <?= $active ?> dropdown">
+	<a href="<?= $url ?>" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><?= $title ?> <b class="caret"></b></a>
+
 	<ul class="dropdown-menu">
-		<?php echo $data['SUB_MENU']; ?>
+		<?= $sub_menu ?>
 	</ul>
 </li>

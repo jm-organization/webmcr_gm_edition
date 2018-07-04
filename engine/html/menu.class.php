@@ -1,6 +1,9 @@
 <?php
 
-namespace mcr;
+namespace mcr\html;
+
+use mcr\database\db;
+use mcr\http\request;
 
 if (!defined("MCR")) {
 	exit("Hacking Attempt!");
@@ -8,158 +11,219 @@ if (!defined("MCR")) {
 
 class menu
 {
-	private $core, $db, $user, $cfg, $l10n;
+	/**
+	 * Содержит єкзмепляр класса поступившего запроса
+	 *
+	 * @var request|null
+	 */
+	private $request = null;
 
-	public function __construct(core $core)
+	public function __construct(request $request)
 	{
-		$this->core = $core;
-		$this->db = $core->db;
-		$this->user = $core->user;
-		$this->cfg = $core->cfg;
-		//$this->lng	= $core->lng;
-		$this->l10n = $core->l10n;
+		$this->request = $request;
 	}
 
-	public function admin_menu()
+	public static function is_active($url)
+	{
+		$request_url = request::url();
+
+		return strripos($request_url, $url);
+	}
+
+	/**
+	 * Возвращает админ меню в виде масива данных
+	 *
+	 * @return array|null
+	 * @throws \mcr\database\db_exception
+	 */
+	private function admin_menu()
 	{
 		$sub_menus = $this->admin_sub_menus();
 
-		$query = $this->db->query("
+		$query = db::query("
 			SELECT id, `page_ids`, `icon`, title, `text`, `access`
 			FROM `mcr_menu_adm_groups`
 			ORDER BY `priority` ASC
 		");
 
-		if ($query && $this->db->num_rows($query) > 0) {
-			ob_start();
+		if ($query->result() && $query->num_rows > 0) {
+			$admin_menu = [];
 
 			$counter = 0;
-			while ($ar = $this->db->fetch_assoc($query)) {
+			while ($menu_element = $query->fetch_assoc()) {
 				$counter++;
-				$id = intval($ar['id']);
-				$page_ids = array_flip(explode('|', $ar['page_ids']));
 
-				if (!$this->core->is_access($ar['access'])) continue;
+				$id = intval($menu_element['id']);
+				// Извлекаем айдишники страниц из группы админ меню.
+				// разворачиваем полученый масив, чтобы потом найти в нём необходимую траницу
+				$page_ids = array_flip(explode('|', $menu_element['page_ids']));
 
+				// Если нет прав доступа к меню, не выводим его.
+				// TODO: перенести метод проверки прав в класс user
+				// if (!$this->core->is_access($menu_element['access'])) continue;
+
+				// сортируем вложенные меню asc'ом
 				ksort($sub_menus[$id]);
 
-				$data = [
-					"ID" => $id,
-					"TITLE" => $this->db->HSC($ar['title']),
-					"ACTIVE" => isset($_GET['do']) && array_key_exists($_GET['do'], $page_ids) ? ' active open' : null,
-					"ICON" => trim(str_replace('fa-', '', $ar['icon'])),
-					"SUB_MENU" => $sub_menus[$id]
+				$admin_menu[] = [
+					"id" => $id,
+					"title" => htmlspecialchars($menu_element['title']),
+					"active" => isset($_GET['do']) && array_key_exists($_GET['do'], $page_ids) ? ' active open' : null,
+					"icon" => trim(str_replace('fa-', '', $menu_element['icon'])),
+					"sub_menu" => $sub_menus[$id]
 				];
-
-				echo $this->core->sp(MCR_THEME_MOD . "admin/sidebar.phtml", $data);
 			}
 
 			//echo $this->core->sp(MCR_THEME_MOD."admin/panel_menu/menu-groups/group-id.phtml", $data);
 
-			return ob_get_clean();
+			return $admin_menu;
 		}
 
-		return "<center>{$this->l10n->gettext('empty_panel_menu_group')}</center>";
+//		return "<center>{$this->l10n->gettext('empty_panel_menu_group')}</center>";
+		return null;
 	}
 
+	/**
+	 * @return array
+	 * @throws \mcr\database\db_exception
+	 */
 	private function admin_sub_menus()
 	{
 		$results = [];
 
-		$query = $this->db->query(
+		$query = db::query(
 			"SELECT `title`, `text`, `url`, `target`, `gid`, `priority` FROM `mcr_menu_adm`"
 		);
 
-		if ($query && $this->db->num_rows($query) > 0) {
-			while ($ar = $this->db->fetch_assoc($query)) {
-				$id = intval($ar['priority']);
+		if ($query->result() && $query->num_rows > 0) {
+			while ($sub_menu_element = $query->fetch_assoc()) {
+				$id = intval($sub_menu_element['priority']);
 
-				if (isset($results[$ar['gid']][$id])) {
+				if (isset($results[$sub_menu_element['gid']][$id])) {
 					$id++;
 				}
 
-				$results[$ar['gid']][$id] = $ar;
+				$results[$sub_menu_element['gid']][$id] = $sub_menu_element;
 			}
 		}
 
 		return $results;
 	}
 
-	public function _list()
+	/**
+	 *
+	 * @return array|null
+	 * @throws \mcr\database\db_exception
+	 */
+	private function public_menu()
 	{
-
-		return $this->menu_array();
-	}
-
-	private function menu_array()
-	{
-		$query = $this->db->query("
+		$query = db::query("
 			SELECT id, title, `parent`, `url`, `style`, `target`, `permissions`
 			FROM `mcr_menu`
 			ORDER BY `parent` DESC
 		");
 
-		if (!$query || $this->db->num_rows($query) <= 0) {
-			return;
-		}
+		if ($query->result() && $query->num_rows > 0) {
+			$array = [];
 
-		$array = array();
+			while ($public_menu_element = $query->fetch_assoc()) {
+				// TODO: перенести метод проверки прав в класс user
+				// if (!$this->core->is_access($public_menu_element['permissions'])) continue;
 
-		while ($ar = $this->db->fetch_assoc($query)) {
-
-			if (!$this->core->is_access($ar['permissions'])) {
-				continue;
+				$array[$public_menu_element['id']] = [
+					"id" => $public_menu_element['id'],
+					"title" => $public_menu_element['title'],
+					"parent" => $public_menu_element['parent'],
+					"url" => $public_menu_element['url'],
+					"style" => $public_menu_element['style'],
+					"target" => $public_menu_element['target'],
+					"permissions" => $public_menu_element['permissions']
+				];
 			}
 
-			$array[$ar['id']] = array(
-				"id" => $ar['id'],
-				"title" => $ar['title'],
-				"parent" => $ar['parent'],
-				"url" => $ar['url'],
-				"style" => $ar['style'],
-				"target" => $ar['target'],
-				"permissions" => $ar['permissions']
-			);
+			return $array;
 		}
 
-		return $this->generate_menu($array);
+		return null;
 	}
 
-	private function generate_menu($array)
+	/**
+	 * @param string $menu_name
+	 *
+	 * @uses menu::admin_menu()
+	 * @uses menu::public_menu()
+	 *
+	 * @return string
+	 */
+	public function generate($menu_name = 'public')
 	{
-		$this->request_url = $this->get_url();
+		$menu_controller = $menu_name . '_menu';
 
+		if (method_exists($this, $menu_controller)) {
+			// Извлекаем данные о меню
+			$menu = $this->$menu_controller();
+
+			if (is_array($menu)) {
+				ob_start();
+
+				$tree = $this->create_tree($menu);
+
+				foreach ($tree as $key => $ar) {
+					$data = array(
+						"title" => $ar['title'],
+						"url" => htmlspecialchars($ar['url']),
+						"style" => htmlspecialchars($ar['style']),
+						"target" => htmlspecialchars($ar['target']),
+
+						"active" => (self::is_active($ar['url'])) ? 'active' : '',
+
+						"sub_menu" => (!empty($ar['sons'])) ? $this->generate_sub_menu($ar['sons']) : "",
+					);
+
+					if (!empty($ar['sons'])) {
+						echo tmpl('menu.menu-id-parented', $data);
+
+						continue;
+					}
+
+					echo tmpl('menu.menu-id', $data);
+
+				}
+
+				return ob_get_clean();
+			}
+		}
+
+		return null;
+	}
+
+	private function generate_sub_menu($tree)
+	{
 		ob_start();
-
-		$tree = $this->create_tree($array);
 
 		foreach ($tree as $key => $ar) {
 
 			$data = array(
-				"TITLE" => $ar['title'],
-				"URL" => $this->db->HSC($ar['url']),
-				"STYLE" => $this->db->HSC($ar['style']),
-				"TARGET" => $this->db->HSC($ar['target']),
-				"ACTIVE" => ($this->is_active($ar['url'], $ar['sons'])) ? 'active' : '',
-				"SUB_MENU" => (!empty($ar['sons'])) ? $this->generate_sub_menu($ar['sons']) : "",
+				"title" => $ar['title'],
+				"url" => htmlspecialchars($ar['url']),
+				"style" => htmlspecialchars($ar['style']),
+				"target" => htmlspecialchars($ar['target']),
+
+				"active" => (self::is_active($ar['url'])) ? 'active' : '',
+
+				"sub_menu" => (!empty($ar['sons'])) ? $this->generate_sub_menu($ar['sons']) : "",
 			);
 
 			if (!empty($ar['sons'])) {
-				echo $this->core->sp(MCR_THEME_PATH . "menu/menu-id-parented.phtml", $data);
+				echo tmpl('menu.menu-id-sub-parented', $data);
+
 				continue;
 			}
 
-			echo $this->core->sp(MCR_THEME_PATH . "menu/menu-id.phtml", $data);
-
+			echo tmpl('menu.menu-id-sub', $data);
 		}
 
 		return ob_get_clean();
-	}
-
-	private function get_url()
-	{
-		$protocol = (isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] == 'on')) ? 'https://' : 'http://';
-		return $protocol . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
 	}
 
 	private function create_tree($categories)
@@ -173,14 +237,13 @@ class menu
 
 	private function new_tree_element(&$categories, &$tree, $parent)
 	{
-
 		foreach ($categories as $key => $ar) {
-
 			if (intval($ar['parent']) == $parent) {
 				$tree[$key] = $categories[$key];
 				$tree[$key]['sons'] = array();
 				$this->new_tree_element($categories, $tree[$key]['sons'], $key);
 			}
+
 			if (empty($tree['sons'])) {
 				unset ($tree['sons']);
 			}
@@ -188,48 +251,7 @@ class menu
 		}
 
 		unset($categories[$parent]);
+
 		return;
-	}
-
-	private function is_active($url)
-	{
-
-		if ($this->cfg->main['s_root'] == $url || $this->cfg->main['s_root_full'] == $url) {
-			if (!isset($_GET['mode']) || @$_GET['mode'] == $this->cfg->main['s_dpage']) {
-				return true;
-			}
-		} else {
-			if (strripos($this->request_url, $url) !== false) {
-				return true;
-			}
-		}
-
-		return false;
-	}
-
-	private function generate_sub_menu($tree)
-	{
-		ob_start();
-
-		foreach ($tree as $key => $ar) {
-
-			$data = array(
-				"TITLE" => $ar['title'],
-				"URL" => $this->db->HSC($ar['url']),
-				"STYLE" => $this->db->HSC($ar['style']),
-				"TARGET" => $this->db->HSC($ar['target']),
-				"ACTIVE" => ($this->is_active($ar['url'], $ar['sons'])) ? 'active' : '',
-				"SUB_MENU" => (!empty($ar['sons'])) ? $this->generate_sub_menu($ar['sons']) : "",
-			);
-
-			if (!empty($ar['sons'])) {
-				echo $this->core->sp(MCR_THEME_PATH . "menu/menu-id-sub-parented.phtml", $data);
-				continue;
-			}
-
-			echo $this->core->sp(MCR_THEME_PATH . "menu/menu-id-sub.phtml", $data);
-		}
-
-		return ob_get_clean();
 	}
 }
