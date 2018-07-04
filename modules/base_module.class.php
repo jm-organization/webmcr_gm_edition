@@ -20,6 +20,8 @@ abstract class base_module
 {
 	public $layout = 'global';
 
+	public $name = '';
+
 	/**
 	 * Делает лог-запись в таблице действия пользователей.
 	 *

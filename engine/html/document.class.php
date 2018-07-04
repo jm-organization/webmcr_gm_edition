@@ -73,10 +73,7 @@ class document
 
 	public static $stylesheets = '';
 
-	public static $scripts = [
-		'body' => '',
-		'head' => '',
-	];
+	public static $scripts = [ 'body' => '', 'head' => '' ];
 
 	/**
 	 * document constructor.
@@ -93,6 +90,8 @@ class document
 		$this->layout = $module->layout;
 		// Получаем содеримое отображаемой страници
 		$this->content = $module->content($request);
+
+		$this->load_module_assets($module->name);
 	}
 
 	/**
@@ -165,5 +164,20 @@ class document
 		include $file;
 
 		return ob_get_clean();
+	}
+
+	/**
+	 * Загружает стили и скрипты для страници модуля.
+	 * Дефолтный загрузчик для модуля, ищит файлы со специальным
+	 * названием и загружает стили с него.
+	 *
+	 * @param $module
+	 */
+	private function load_module_assets($module)
+	{
+		$module = str_replace('\\', '.', $module);
+
+		self::$stylesheets .= asset($module . '.header-styles', true);
+		self::$scripts['body'] .= asset($module . '.header-body-scripts', true);
 	}
 }
