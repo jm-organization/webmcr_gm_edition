@@ -20,12 +20,12 @@ function __autoload($classname) {
 	// Определяем родительское мастер пространство имён загружаемого класса.
 	$root_class_path = $class_paths[0];
 
-	$class = $classname;
+	$class = preg_replace('/mcr|engine/', ENGINE_ROOT_NAME, $classname);
 
-	if ($root_class_path == 'mcr') {
+	/*if ($root_class_path == 'mcr') {
 
 		$class = preg_replace('/mcr|engine/', ENGINE_ROOT_NAME, $classname);
-	}
+	}*/
 
 	// Определяем полный путь к классу
 	$class = __DIR__ . '/../' . $class . '.class.php';
