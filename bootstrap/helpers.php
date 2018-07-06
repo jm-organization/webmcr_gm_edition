@@ -11,6 +11,8 @@
  * @Documentation:
  */
 
+use mcr\html\blocks\blocks_manager;
+use mcr\html\blocks\blocks_manager_exception;
 use mcr\html\document;
 use mcr\http\redirect;
 use mcr\http\response;
@@ -51,6 +53,16 @@ if (!function_exists('asset')) {
 
 			return $_base_url . 'themes/' . config('main::s_theme') . '/' . $resorce;
 		}
+	}
+}
+
+if (!function_exists('blocks')) {
+	/**
+	 * @return blocks_manager|null
+	 */
+	function blocks()
+	{
+		return document::$blocks;
 	}
 }
 

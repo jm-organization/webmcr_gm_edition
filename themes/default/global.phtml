@@ -6,7 +6,7 @@ use mcr\l10n\l10n;
 <html lang="<?= explode('-', l10n::get_config_locale())[0] ?>">
 <head>
     <meta charset="utf-8">
-	<title><?= config('main::s_name') ?> — <?= $title ?></title>
+	<title><?= $title ?> — <?= config('main::s_name') ?></title>
 
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -48,7 +48,6 @@ use mcr\l10n\l10n;
                 <ul class="navbar-nav mr-auto mt-2 mt-md-0">
                     <?php echo menu()->generate(); ?>
                 </ul>
-                <?= $search ?>
             </div>
         </div>
 
@@ -74,8 +73,6 @@ use mcr\l10n\l10n;
         </div>
     </header>
 
-    <?= $advice ?>
-
     <div class="container">
         <div class="row">
             <div class="col-md-4">
@@ -85,12 +82,10 @@ use mcr\l10n\l10n;
                     <div id="message"></div>
                 </div>
 
-                <?= $blocks ?>
+                <?php blocks()->render('block_online'); ?>
             </div>
 
             <div class="col-md-8">
-                <?= $breadcrumbs ?>
-
                 <?= $content ?>
             </div>
         </div>
