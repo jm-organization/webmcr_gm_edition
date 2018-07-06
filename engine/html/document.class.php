@@ -14,6 +14,7 @@
 namespace mcr\html;
 
 
+use mcr\html\blocks\blocks_manager;
 use mcr\http\request;
 
 use modules\base_module;
@@ -24,12 +25,12 @@ class document
 	/**
 	 * @var string
 	 */
-	public $layout = '';
+	private $layout = '';
 
 	/**
 	 * @var string
 	 */
-	public $title = '';
+	public static $title = '';
 
 	/**
 	 * @var string
@@ -37,24 +38,9 @@ class document
 	public $content = '';
 
 	/**
-	 * @var string
+	 * @var blocks_manager|null
 	 */
-	public $blocks = '';
-
-	/**
-	 * @var string
-	 */
-	public $header = '';
-
-	/**
-	 * @var string
-	 */
-	public $def_header = '';
-
-	/**
-	 * @var string
-	 */
-	public $advise = '';
+	public static $blocks = null;
 
 	/**
 	 * @var menu|null
@@ -64,15 +50,11 @@ class document
 	/**
 	 * @var string
 	 */
-	public $breadcrumbs = '';
-
-	/**
-	 * @var string
-	 */
-	public $search = '';
-
 	public static $stylesheets = '';
 
+	/**
+	 * @var array
+	 */
 	public static $scripts = [ 'body' => '', 'head' => '' ];
 
 	/**
@@ -80,11 +62,17 @@ class document
 	 *
 	 * @param base_module|module $module
 	 * @param request            $request
+	 *
+	 * @throws blocks\blocks_manager_exception
 	 */
 	public function __construct(base_module $module, request $request)
 	{
 		// Регистрируем меню
 		self::$menu = new menu($request);
+		// Регистрируем менеджер блоков
+		self::$blocks = new blocks_manager();
+
+		self::$title = translate('home');
 
 		// Определяем шаблон по каторому будет отабражена страница модуля.
 		$this->layout = $module->layout;
@@ -95,11 +83,15 @@ class document
 	}
 
 	/**
-	 * @function     : render
-	 *
-	 * @documentation:
-	 *
-	 *
+	 * @param string $title
+	 */
+	public static function set_title($title)
+	{
+		self::$title = $title;
+	}
+
+	/**
+	 *	Возвращает ответ серсеру в виде документа
 	 */
 	public function render()
 	{
@@ -109,24 +101,9 @@ class document
 			// Иначе был отправлен шаблон данных.
 			// Перехваываем и оборачиваем его в layout,
 			// который установлен у модуля.
-			$title = $this->title;
-			$blocks = $this->blocks;
-			$header = $this->header;
-			$def_header = $this->def_header;
-			$advice = $this->advise;
-			$breadcrumbs = $this->breadcrumbs;
-			$search = $this->search;
+			$title = self::$title;
 
-			$_content = self::template($this->layout, compact(
-				'content',
-				'title',
-				'blocks',
-				'header',
-				'def_header',
-				'advice',
-				'breadcrumbs',
-				'search'
-			));
+			$_content = self::template($this->layout, compact('content', 'title'));
 
 			response($_content, 'utf-8', 200);
 		}
