@@ -140,7 +140,7 @@ class core_v2
             define('ADMIN_URL', 		BASE_URL . '?' . ADMIN_MOD);
 
             $mode_url = BASE_URL . '?mode=' . config('main::s_dpage');
-            if (ie($request->mode)) {
+            if (is_filled($request->mode)) {
                 $mode_url =  BASE_URL . '?mode=' . filter($request->mode, 'chars');
             }
             define('MOD_URL', 			$mode_url);

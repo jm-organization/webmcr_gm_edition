@@ -72,7 +72,7 @@ class redirect
 	{
 		$_messages = [];
 
-		if (ie($options['messages']) && is_array($options['messages'])) {
+		if (is_filled($options['messages']) && is_array($options['messages'])) {
 			foreach ($options['messages'] as $message) {
 				$title = $message['title'];
 				$text = $message['text'];
