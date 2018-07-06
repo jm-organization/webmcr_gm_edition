@@ -148,15 +148,15 @@ if (!function_exists('configs')) {
 	}
 }
 
-if (!function_exists('ie')) {
+if (!function_exists('is_filled')) {
 	/**
 	 * Проверяет переменную на наличие и её заполненость.
 	 *
 	 * @param $key
 	 *
-	 * @return mixed
+	 * @return boolean
 	 */
-	function ie($key)
+	function is_filled($key)
 	{
 		return isset($key) && !empty($key);
 	}
