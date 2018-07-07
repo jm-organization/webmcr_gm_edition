@@ -40,6 +40,8 @@ class redirect
 		4 => 'info'
 	];
 
+	public $messages = [];
+
 	/**
 	 * redirect constructor.
 	 *
@@ -64,39 +66,27 @@ class redirect
 	 *
 	 * @documentation: Перенаправляет на маршрут с параметрами, которые указаны
 	 *
+	 * @param       $key
 	 * @param array $options
 	 *
 	 * @return $this
 	 */
-	public function with(array $options)
+	public function with($key, array $options)
 	{
-		$_messages = [];
-
-		if (is_filled($options['messages']) && is_array($options['messages'])) {
-			foreach ($options['messages'] as $message) {
-				$title = $message['title'];
-				$text = $message['text'];
-				$type = $message['type'];
-
-				if (array_key_exists($type, self::$messages_types)) {
-					$type = self::$messages_types[$type];
+		if ($key == 'message') {
+			if (isset($options['type'])) {
+				if (array_key_exists($options['type'], self::$messages_types)) {
+					$options['type'] = self::$messages_types[@$options['type'] ];
 				} else {
-					$type = 'default';
+					$options['type'] = 'default';
 				}
-
-				$_messages[] = [
-					'message_type' => $type,
-					'message_title' => $title,
-					'message_content' => $text,
-				];
 			}
 
-			unset($options['messages']);
+			$options['text'] = isset($options['text']) ? htmlspecialchars($options['text']) : '';
+			$options['title'] = isset($options['title']) ? htmlspecialchars($options['title']) : '';
+
+			array_push($this->messages, $options);
 		}
-
-		$_SESSION['messages'] = $_messages;
-
-		// other
 
 		return $this;
 	}
@@ -110,6 +100,8 @@ class redirect
 	 */
 	public function route($to)
 	{
+		$_SESSION['messages'] = $this->messages;
+
 		if (empty(trim($this->route))) {
 			if (empty(trim($to))) {
 				throw new \UnexpectedValueException('The route can`t be empty');
