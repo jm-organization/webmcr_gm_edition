@@ -60,7 +60,7 @@ uploads/tmp/*
 !/uploads/skins/interface/default.png
 !/uploads/skins/default.png
 !/uploads/skins/default_female.png
-!/configs/
+/configs/
 /init-krumo.php
 /engine/libs/class.jbdump.php
 /data/logs/
