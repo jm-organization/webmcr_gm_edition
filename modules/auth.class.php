@@ -38,5 +38,9 @@ class auth extends base_module implements module
 				'messages' => [ ['text' => translate('auth_already'), 'type' => 1] ]
 			])->route('/');
 		}
+
+		redirect()->with([
+			'messages' => [ ['text' => translate('auth_already'), 'type' => 1] ]
+		])->route('/');
 	}
 }

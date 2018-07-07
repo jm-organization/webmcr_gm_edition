@@ -1,6 +1,7 @@
 <?php
 namespace blocks;
 
+use mcr\auth\auth;
 use mcr\html\blocks\base_block;
 use mcr\html\blocks\standard_block;
 
@@ -8,9 +9,9 @@ if (!defined("MCR")) {
 	exit("Hacking Attempt!");
 }
 
-class block_online implements base_block
+class block_profile implements base_block
 {
-	use standard_block;
+	public $tmpl = 'auth';
 
 	/**
 	 * base_block constructor.
@@ -27,10 +28,9 @@ class block_online implements base_block
 	 */
 	public function init(array $configs)
 	{
-		// TODO: Create is access in USER class
-		/*if (!$this->core->is_access(@$this->core->cfg_b['PERMISSIONS'])) {
-			return null;
-		}*/
+		if (!empty(auth::user())) {
+			$this->tmpl = 'mini-profile';
+		}
 
 		return $this;
 	}

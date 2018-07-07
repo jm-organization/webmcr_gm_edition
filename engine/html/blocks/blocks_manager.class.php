@@ -23,18 +23,15 @@ class blocks_manager
 	/**
 	 * blocks_manager constructor.
 	 *
-	 *
 	 * @throws blocks_manager_exception
-	 *
-	 * @documentation:
 	 */
 	public function __construct()
 	{
 		// регистрируем конфиги блоков локально
 		$this->configs = config('blocks');
 
-		//$blocks = array_keys($this->configs);
-		$this->set_blocks(['block_online']);
+		$blocks = array_keys($this->configs);
+		$this->set_blocks($blocks);
 	}
 
 	/**
@@ -69,7 +66,7 @@ class blocks_manager
 			$block = new block($block, $block_configs);
 
 			// добавляем блок в реестре менеджера блоков
-			$this->blocks[$block->name] = $block;
+			if (count($block->configs) > 0) $this->blocks[$block->name] = $block;
 		}
 	}
 
@@ -78,13 +75,32 @@ class blocks_manager
 		// Если пришёл масив блоков или вывести нужно все, то перебираем блоки и выводим их.
 		if (is_array($blocks) || $blocks == 'all') {
 
+			// Если выбраны все блоки, то берём блоки из реестра
 			if ($blocks == 'all') $blocks = $this->blocks;
 
+			// Сортируем блоки по их позиции -->
 			foreach ($blocks as $block) {
-				if (array_key_exists($block, $this->blocks)) $this->render_block($this->blocks[$block]);
+				// берём позицию блока, если такая есть, то инкрементим её.
+				$blocks_position = $block->configs['POSITION'];
+				if (array_key_exists($blocks_position, $blocks)) $blocks_position++;
+
+				// сохраняем в масиве блоков этот блок под новым ключём
+				$blocks[$blocks_position] = $block;
+				// удаляем старый ключ со значением
+				unset($blocks[$block->name]);
+			}
+
+			// сортируем по ключу asc
+			ksort($blocks);
+			// <-- конец сортировки
+
+			// рендерим каждый из блоков
+			foreach ($blocks as $block) {
+				if (array_key_exists($block->name, $this->blocks)) $this->render_block($this->blocks[$block->name]);
 			}
 
 		} elseif (is_string($blocks)) {
+			// иначе выводим только тот блок, который был укаан
 			if (array_key_exists($blocks, $this->blocks)) $this->render_block($this->blocks[$blocks]);
 		}
 	}

@@ -1,6 +1,6 @@
 <?php
 $cfg = array(
-	'ENABLE' => true,
+	'ENABLE' => false,
 	'POSITION' => 3,
 	'TITLE' => 'Мониторинг',
 	'DESC' => 'Блок вывода мониторинга',

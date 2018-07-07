@@ -1,0 +1,12 @@
+<div class="monitor-id" id="<?= $id ?>">
+	<div class="title"><?= $title ?> <i class="fa fa-info-circle" data-placement="right" rel="tooltip" title="<?= $text ?>"></i></div>
+
+	<div class="progress">
+		<div class="progress-bar <?= $status ?> progress-bar-striped progress-bar-animated active" style="width: <?= $progress ?>%; height: 24px;" aria-valuenow="<?= $progress ?>" aria-valuemin="0" aria-valuemax="100"></div>
+		<div class="indicator"><span class="badge badge-default" style="
+			line-height: 14px;
+			height: 18px;
+			margin: 3px auto;
+		"><?= $stats ?></span></div>
+	</div>
+</div>
