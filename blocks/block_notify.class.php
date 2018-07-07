@@ -2,15 +2,22 @@
 namespace blocks;
 
 use mcr\html\blocks\base_block;
-use mcr\html\blocks\standard_block;
 
 if (!defined("MCR")) {
 	exit("Hacking Attempt!");
 }
 
-class block_online implements base_block
+class block_notify implements base_block
 {
-	use standard_block;
+	/**
+	 * @var array|null
+	 */
+	public $data = null;
+
+	/**
+	 * @var string
+	 */
+	public $tmpl = 'alert';
 
 	/**
 	 * base_block constructor.
@@ -27,10 +34,13 @@ class block_online implements base_block
 	 */
 	public function init(array $configs)
 	{
-		// TODO: Create is access in USER class
-		/*if (!$this->core->is_access(@$this->core->cfg_b['PERMISSIONS'])) {
-			return null;
-		}*/
+		// Выходим из инициализации, если нету блока сообщений в сессии
+		if (!isset($_SESSION['messages'])) return null;
+
+		$messages = $_SESSION['messages'];
+		$this->data = [ 'messages' => $messages ];
+
+		unset($_SESSION['messages']);
 
 		return $this;
 	}

@@ -72,34 +72,36 @@ class block
 
 			$block_class = '\blocks\\' . $name;
 
-			$block = new $block_class();
+			if (class_exists($block_class)) {
+				$block = new $block_class();
 
-			// Если блок реализует базовый блок,
-			// то инициализируем его
-			if ($block instanceof base_block) {
+				// Если блок реализует базовый блок,
+				// то инициализируем его
+				if ($block instanceof base_block) {
 
-				$block = $block->init($this->configs);
+					$block = $block->init($this->configs);
 
-				if (is_object($block)) {
-					// данные и шаблон их вывода
-					$data = [];
-					$tmpl = '';
+					if (is_object($block)) {
+						// данные и шаблон их вывода
+						$data = [];
+						$tmpl = '';
 
-					// Берём данные сгенерированые блоком, если они указаны в блоке
-					if (property_exists($block, 'data')) $data = $block->data;
-					// Берём короткий путь к шаблону, если он указан
-					if (property_exists($block, 'tmpl')) $tmpl = $block->tmpl;
+						// Берём данные сгенерированые блоком, если они указаны в блоке
+						if (property_exists($block, 'data')) $data = $block->data;
+						// Берём короткий путь к шаблону, если он указан
+						if (property_exists($block, 'tmpl')) $tmpl = $block->tmpl;
 
-					$this->load_block_assets($block);
+						$this->load_block_assets($block);
 
-					if (!empty(trim($tmpl))) {
-						$this->view = tmpl("blocks.$name.$tmpl", $data);
+						if (!empty(trim($tmpl))) {
+							$this->view = tmpl("blocks.$name.$tmpl", $data);
+						}
 					}
-				}
 
-			} else {
-				// выбрасываем исключение
-				throw new blocks_manager_exception('Block ' . $block_class . '  not implement base_block.');
+				} else {
+					// выбрасываем исключение
+					throw new blocks_manager_exception('Block ' . $block_class . '  not implement base_block.');
+				}
 			}
 
 		}

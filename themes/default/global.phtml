@@ -28,6 +28,7 @@ use mcr\l10n\l10n;
     <?php stylesheets(); ?>
 
     <!-- Head scripts -->
+    <script type="application/javascript" src="<?= asset('js/jquery.min.js') ?>"></script>
     <?php scripts('head'); ?>
 
 </head>
@@ -82,7 +83,7 @@ use mcr\l10n\l10n;
                     <div id="message"></div>
                 </div>
 
-                <?php blocks()->render('block_online'); ?>
+                <?php blocks()->render(); ?>
             </div>
 
             <div class="col-md-8">
@@ -103,7 +104,6 @@ use mcr\l10n\l10n;
     </nav>
 
     <!-- Base body scripts -->
-    <script type="application/javascript" src="<?= asset('js/jquery.min.js') ?>"></script>
     <script type="application/javascript" src="<?= asset('js/jquery.easing.js') ?>"></script>
     <script type="application/javascript" src="<?= asset('js/popper.min.js') ?>"></script>
     <script type="application/javascript" src="<?= asset('js/tether.min.js') ?>"></script>
