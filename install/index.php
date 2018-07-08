@@ -4,7 +4,7 @@ if (file_exists(__DIR__ . "/../init-krumo.php")) require_once(__DIR__ . "/../ini
 
 define('MCR', '');
 
-session_save_path(dirname(dirname(__FILE__)) . '/uploads/tmp');
+session_save_path(dirname(dirname(__FILE__)) . '/data/tmp');
 if (!session_start()) {
 	session_start();
 }

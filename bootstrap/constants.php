@@ -47,7 +47,7 @@ define('MCR_LANG_PATH', 	MCR_ROOT . 'language/');
 define('MCR_CONF_PATH', 	MCR_ROOT . 'configs/');
 
 // Директория, в которую загружаются файлы загруженные через web-интерфейс.
-define('MCR_UPL_PATH', 		MCR_ROOT . 'uploads/');
+define('MCR_UPL_PATH', 		MCR_ROOT . 'data/uploads/');
 
 // Директория кеша.
 define('MCR_CACHE_PATH', 	MCR_ROOT . 'data/cache/');
@@ -55,6 +55,14 @@ define('MCR_CACHE_PATH', 	MCR_ROOT . 'data/cache/');
 
 //////////////////////////////////////////////////////////////////////////////
 // Константы для серверных настроек.
+
+/**
+ * Максимальное время жизни сесии и кукисов
+ *
+ * Рекомендуется отавлять их одинаковыми
+ */
+define('MAX_COOKIE_LIFETIME', 	3600 * 24 * 30); // 30 дней
+define('MAX_SESSION_LIFETIME', 	3600 * 24 * 30); // 30 дней
 
 /** Максимальный размер загружаемых файлов
  *

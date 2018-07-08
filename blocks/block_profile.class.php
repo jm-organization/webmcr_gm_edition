@@ -11,6 +11,8 @@ if (!defined("MCR")) {
 
 class block_profile implements base_block
 {
+	public $styles = 'styles';
+
 	public $tmpl = 'auth';
 
 	/**
