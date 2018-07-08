@@ -27,9 +27,15 @@
 			</label>
 			
 			<div class="row">
-				<div class="col-md-4"><input type="submit" class="btn btn-secondary btn-block" name="submit" value="<?= translate('sign_in') ?>"></div>
-				<div class="col-md-3"><a class="btn btn-secondary btn-block" rel="tooltip" title="<?= translate('restore') ?>" href="<?= BASE_URL ?>?mode=restore"><i class="fa fa-repeat"></i></a></div>
-				<div class="col-md-5"><a href="<?= BASE_URL ?>?mode=register" class="btn btn-secondary btn-block"><?= translate('register') ?></a></div>
+				<div class="col-md-4">
+                    <button type="submit" class="btn btn-secondary btn-block"><?= translate('sign_in') ?></button>
+                </div>
+				<div class="col-md-3">
+                    <a class="btn btn-secondary btn-block" rel="tooltip" title="<?= translate('restore') ?>" href="<?= BASE_URL ?>?mode=restore"><i class="fa fa-repeat"></i></a>
+                </div>
+				<div class="col-md-5">
+                    <a href="<?= BASE_URL ?>?mode=register" class="btn btn-secondary btn-block"><?= translate('register') ?></a>
+                </div>
 			</div>
 		</form>
 	</div>

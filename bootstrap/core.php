@@ -34,7 +34,8 @@ register_shutdown_function(function () use ($log) {
 
 		// TODO: Сделать обработчик критических ошибок с выводом на экран!!!
 		if ($error['type'] == log::FATAL_ERROR) {
-			echo 'fatal error';
+			echo '[fatal error] ';
+			echo $error['message'];
 		}
 	}
 

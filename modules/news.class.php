@@ -16,6 +16,7 @@ namespace modules;
 
 use mcr\html\document;
 use mcr\http\request;
+use mcr\validation\validator;
 
 if (!defined("MCR")) {
 	exit("Hacking Attempt!");
@@ -23,6 +24,8 @@ if (!defined("MCR")) {
 
 class news extends base_module implements module
 {
+	use validator;
+
 	public $name = self::class;
 
 	/**
@@ -34,10 +37,6 @@ class news extends base_module implements module
 	 */
 	public function content(request $request)
 	{
-		// Подключаем чтили и скрипты для страници
-		document::$stylesheets .= asset('modules.news.header-styles-list', true);
-		document::$scripts['body'] .= asset('modules.news.header-bscripts-list', true);
-
-		return 'test';
+		return '';
 	}
 }

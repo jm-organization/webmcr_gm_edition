@@ -80,6 +80,8 @@ class redirect
 				} else {
 					$options['type'] = 'default';
 				}
+			} else {
+				$options['type'] = 'default';
 			}
 
 			$options['text'] = isset($options['text']) ? htmlspecialchars($options['text']) : '';

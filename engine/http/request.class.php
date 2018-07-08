@@ -24,6 +24,10 @@ class request
 	public function __construct() {
 		$this->attributes = array_merge($this->attributes, $_POST, $_GET);
 
+		$this->attributes = array_map(function($attr) {
+			return trim($attr);
+		}, $this->attributes);
+
 		array_unique($this->attributes);
 	}
 
