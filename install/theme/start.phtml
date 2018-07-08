@@ -67,32 +67,32 @@
 		</div>
 
 		<div class="table-row">
-			<div class="table-cell"><?php echo $this->lng['read_write']; ?> | uploads/</div>
+			<div class="table-cell"><?php echo $this->lng['read_write']; ?> | data/uploads/</div>
 			<div class="table-cell"><?php echo $data["FOLDER_UPLOADS"]; ?></div>
 		</div>
 
 		<div class="table-row">
-			<div class="table-cell"><?php echo $this->lng['read_write']; ?> | <?php echo $this->cfg['main']['cloak_path']; ?></div>
+			<div class="table-cell"><?php echo $this->lng['read_write']; ?> | <?= config('main::cloak_path') ?></div>
 			<div class="table-cell"><?php echo $data["FOLDER_CLOAKS"]; ?></div>
 		</div>
 
 		<div class="table-row">
-			<div class="table-cell"><?php echo $this->lng['read_write']; ?> | uploads/panel-icons/</div>
+			<div class="table-cell"><?php echo $this->lng['read_write']; ?> | data/uploads/panel-icons/</div>
 			<div class="table-cell"><?php echo $data["FOLDER_ICONS"]; ?></div>
 		</div>
 
 		<div class="table-row">
-			<div class="table-cell"><?php echo $this->lng['read_write']; ?> | <?php echo $this->cfg['main']['skin_path']; ?></div>
+			<div class="table-cell"><?php echo $this->lng['read_write']; ?> | <?= config('main::skin_path') ?></div>
 			<div class="table-cell"><?php echo $data["FOLDER_SKINS"]; ?></div>
 		</div>
 
 		<div class="table-row">
-			<div class="table-cell"><?php echo $this->lng['read_write']; ?> | <?php echo $this->cfg['main']['skin_path']; ?>interface/</div>
+			<div class="table-cell"><?php echo $this->lng['read_write']; ?> | <?= config('main::skin_path') ?>interface/</div>
 			<div class="table-cell"><?php echo $data["FOLDER_INTERF"]; ?></div>
 		</div>
 
 		<div class="table-row">
-			<div class="table-cell"><?php echo $this->lng['read_write']; ?> | uploads/smiles/</div>
+			<div class="table-cell"><?php echo $this->lng['read_write']; ?> | data/uploads/smiles/</div>
 			<div class="table-cell"><?php echo $data["FOLDER_SMILES"]; ?></div>
 		</div>
 

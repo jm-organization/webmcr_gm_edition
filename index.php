@@ -28,8 +28,9 @@ ini_set("post_max_size", MAX_POST_REQUEST_DATA_SIZE);
 // Для адекватного логирования
 error_reporting(0);
 
-// TODO: Change tmp dir path.
-session_save_path(MCR_UPL_PATH . 'tmp');
+session_save_path(MCR_ROOT . 'data/tmp');
+ini_set('session.gc_maxlifetime', MAX_SESSION_LIFETIME);
+ini_set('session.cookie_lifetime', MAX_COOKIE_LIFETIME);
 if (!session_start()) { session_start(); }
 
 

@@ -22,7 +22,6 @@ use mcr\http\csrf;
 use mcr\http\request;
 use mcr\http\router;
 use mcr\l10n\l10n;
-
 use modules\module;
 
 if (!defined("MCR")) {
@@ -76,7 +75,7 @@ class core_v2
 	{
 		// Если приложение не установленно, то перенаправляем на скрипт установки
 		if (!INSTALLED) {
-			header("Location: /install/index.php");
+			return header("Location: /install/index.php");
 		}
 
 		// Сохранение конфигураций в локальную среду ядра.

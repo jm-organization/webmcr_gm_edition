@@ -18,6 +18,7 @@ use mcr\html\blocks\blocks_manager;
 use mcr\http\request;
 
 use modules\base_module;
+use modules\logout;
 use modules\module;
 
 class document
