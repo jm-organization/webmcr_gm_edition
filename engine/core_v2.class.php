@@ -22,7 +22,6 @@ use mcr\http\csrf;
 use mcr\http\request;
 use mcr\http\router;
 use mcr\l10n\l10n;
-use modules\module;
 
 if (!defined("MCR")) {
 	exit("Hacking Attempt!");
@@ -88,6 +87,8 @@ class core_v2
 
 		// Установка и сохранение соединения с базой данных.
 		self::$db_connection = new db_connection($configs);
+
+		return $this;
 	}
 
 	/**
@@ -103,10 +104,32 @@ class core_v2
 		echo VERSION;
 	}
 
+	/**
+	 * Запускает приложение.
+	 *
+	 * TODO: Разбить функционал функциии
+	 *
+	 * Проверяет csrf ключ на валидность
+	 * Определяет константы для работы приложения
+	 * Инициализирует модуль
+	 * Создаёт и отрисовывает документ
+	 *
+	 * @return bool|http\redirect
+	 */
 	public function run()
 	{
+		// Защищаемся от CSRF
+		// Проверяем пришедший ключ csrf.
+		// Если вовсе не пришёл, функция вернёт ложь - редиректим.
+		// Если всё ок, то продолжаем загрузку страници
+		// ---------------------------------------------------------
+		// Если ip юзера есть в белов списике,
+		// проверка ключа не будет произведена
+		if (!$this->csrf_check()) return redirect()->with('message', ['text' => translate('error_hack')])->route('/');
+
 		global $log;
 
+		// Пытаемся запустить приложение
 		try {
 		    // Инициализируем расширения ядра
 		    $this->init();
@@ -153,7 +176,7 @@ class core_v2
             define('MCR_CLOAK_PATH', 	MCR_ROOT . config('main::cloak_path'));
 
 			// CSRF ключ защиты  -------------------------------------------------------
-			define("MCR_SECURE_KEY", 	$this->gen_csrf_secure());
+			define("MCR_SECURE_KEY", 	$this->gen_csrf_key());
 			define('META_JSON_DATA',	 json_encode(array(
 				'secure' => MCR_SECURE_KEY,
 				'lang' => MCR_LANG,
@@ -161,7 +184,7 @@ class core_v2
 				'theme_url' => asset(''),
 				'upload_url' => UPLOAD_URL,
 				'server_time' => time(),
-				//'is_auth' => $core->user->is_auth,
+				'is_auth' => auth::user()->is_auth,
 			)));
 
 
@@ -172,7 +195,7 @@ class core_v2
             $module = $this->initialize($router->controller);
 
             if ($module) {
-				$document = new document($module, $request);
+				$document = new document($module, $request, $router);
 				$document->render();
 			} else {
 				response('', 'utf8', 404, [], true);
@@ -180,16 +203,21 @@ class core_v2
 
 		} catch (\Exception $e) {
 
+			// Если возникли исключения, запускаем обработчик исключений.
+			// TODO: Описать обработчик исключений
+
 			// Создаём запись в лог файле
 			$log->write($e->getMessage(), $e->getCode(), $e->getFile(), $e->getLine());
 
 		}
+
+		return true;
 	}
 
 	/**
 	 * @param string $module
 	 *
-	 * @return module|bool
+	 * @return \modules\module|bool
 	 */
 	private function initialize($module)
 	{

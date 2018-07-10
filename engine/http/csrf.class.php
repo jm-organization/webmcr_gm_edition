@@ -14,30 +14,119 @@
 namespace mcr\http;
 
 
+use mcr\auth\auth;
+
 trait csrf
 {
 	public $csrf_time = 3600;
 
-	public function gen_csrf_secure()
+	private $time = 0000000000;
+
+	/**
+	 * Генерирует CSRF ключ.
+	 *
+	 * @return string
+	 */
+	public function gen_csrf_key()
 	{
-		/*$time = time();
-		$new_key = $time . '_' . md5($this->user->ip . $this->cfg->main['mcr_secury'] . $time);
+		// фиксируем время.
+		$this->time = time();
+		//генерируем ключ в это время.
+		$csrf_key = $this->time . '_' . md5(auth::ip() . config('main::mcr_secury') . $this->time);
 
+		// если нет куки с ключём
 		if (!isset($_COOKIE['mcr_secure'])) {
-			setcookie("mcr_secure", $new_key, time() + $this->csrf_time, '/');
-			return $new_key;
+			// создаём куку, сохраняя с точным временем
+			setcookie("mcr_secure", $csrf_key, time() + $this->csrf_time, '/');
+
+			// возвращяем этот же ключ
+			return $csrf_key;
+		} else {
+			// иначе проверяем ту, что есть
+			$cookie = explode('_', $_COOKIE['mcr_secure']);
+			$old_time = intval($cookie[0]);
+			$old_key = md5(auth::ip() . config('main::mcr_secury') . $old_time);
+
+			// если csrf ключ другой, то обновляем куку
+			if (!isset($cookie[1]) || $cookie[1] !== $old_key || $this->csrf_is_old($old_time)) {
+				setcookie("mcr_secure", $csrf_key, time() + $this->csrf_time, '/');
+
+				return $csrf_key;
+			}
+
+			return $_COOKIE['mcr_secure'];
+		}
+	}
+
+	/**
+	 * Добавляет новый ip в белый список
+	 *
+	 * @param string $ip
+	 *
+	 * @return bool
+	 */
+	public function add_ip_to_csrf_whitelist($ip)
+	{
+		$whitelist = explode(',', config('functions::whitelist'));
+
+		// Если такой ip уже существует в белом списке, то не добавляем его.
+		// Выходим из функции.
+		if (!in_array($ip, $whitelist)) {
+			// Иначе проводим процедуру сохранения.
+			global $configs;
+
+			$_functions = config('functions');
+			$whitelist[] = $ip;
+
+			$_functions['whitelist'] = implode(',', $whitelist);
+
+			// сохраняем
+			if (!$configs->savecfg($_functions, 'functions.php', 'func')) return false;
+
+			return true;
 		}
 
-		$cookie = explode('_', $_COOKIE['mcr_secure']);
-		$old_time = intval($cookie[0]);
-		$old_key = md5($this->user->ip . $this->cfg->main['mcr_secury'] . $old_time);
+		return false;
+	}
 
-		if (!isset($cookie[1]) || $cookie[1] !== $old_key || ($old_time + $this->csrf_time) < $time) {
-			setcookie("mcr_secure", $new_key, time() + $this->csrf_time, '/');
-			return $new_key;
+	/**
+	 * Валидатор защиты от CSRF атаки
+	 * При ошибке возвращается на главную страницу с сообщение "Hacking Attempt!"
+	 */
+	public function csrf_check()
+	{
+		$ip_whitelist = explode(',', config('functions::whitelist'));
+		if (in_array(auth::ip(), $ip_whitelist)) return true;
+
+		$this->time = time();
+
+		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+			if (isset($_POST['mcr_secure'])) {
+				$secure_key = explode('_', $_POST['mcr_secure']);
+
+				if (isset($secure_key[1])) {
+
+					$secure_time = intval($secure_key[0]);
+					if ($this->csrf_is_old($secure_time)) return false;
+
+					$mcr_secure = $secure_time . '_' . md5(auth::ip() . config('main::mcr_secury') . $secure_time);
+					if ($mcr_secure !== $_POST['mcr_secure']) return false;
+
+				} else {
+					return false;
+				}
+			} else {
+				return false;
+			}
+
+
 		}
 
-		return $_COOKIE['mcr_secure'];*/
-		return '';
+		return true;
+	}
+
+	private function csrf_is_old($time)
+	{
+		return ($time + $this->csrf_time) < $this->time;
 	}
 }
