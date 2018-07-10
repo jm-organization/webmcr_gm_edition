@@ -37,6 +37,7 @@ class router
 	 		$this->mode = config('main::s_dpage');
 		}
 
+		if (isset($_GET['op'])) $this->action = $_GET['op'];
 
 		$this->controller = '\modules\\' . $this->mode;
 	 }

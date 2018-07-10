@@ -17,6 +17,7 @@ namespace mcr\html;
 use mcr\html\blocks\blocks_manager;
 use mcr\http\request;
 
+use mcr\http\router;
 use modules\base_module;
 use modules\logout;
 use modules\module;
@@ -66,7 +67,7 @@ class document
 	 *
 	 * @throws blocks\blocks_manager_exception
 	 */
-	public function __construct(base_module $module, request $request)
+	public function __construct(base_module $module, request $request, router $router)
 	{
 		// Регистрируем меню
 		self::$menu = new menu($request);
@@ -78,7 +79,7 @@ class document
 		// Определяем шаблон по каторому будет отабражена страница модуля.
 		$this->layout = $module->layout;
 		// Получаем содеримое отображаемой страници
-		$this->content = $module->content($request);
+		$this->content = $module->{$router->action}($request);
 
 		$this->load_module_assets($module->name);
 	}

@@ -14,7 +14,6 @@
 namespace modules;
 
 
-use mcr\html\document;
 use mcr\http\request;
 use mcr\validation\validator;
 

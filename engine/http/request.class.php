@@ -24,11 +24,16 @@ class request
 	public function __construct() {
 		$this->attributes = array_merge($this->attributes, $_POST, $_GET);
 
+		// Очишаем пришедшие данные от пробелов в начале и конце.
 		$this->attributes = array_map(function($attr) {
 			return trim($attr);
 		}, $this->attributes);
 
-		array_unique($this->attributes);
+		if (is_filled($_FILES)) {
+			$this->attributes['files'] = $_FILES;
+		}
+
+		//array_unique($this->attributes);
 	}
 
 	public function all()
