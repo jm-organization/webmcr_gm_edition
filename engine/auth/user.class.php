@@ -21,7 +21,9 @@ if (!defined("MCR")) {
 
 class user
 {
-	use authenticatable;
+	use authenticatable,
+		permissions
+	;
 
 	/**
 	 * @var int
@@ -56,7 +58,7 @@ class user
 	/**
 	 * @var mixed|null
 	 */
-	public $permissions = null;
+	//public $permissions = null;
 
 	/**
 	 * @var int|string
@@ -281,4 +283,6 @@ class user
 
 		return false;
 	}
+
+
 }
