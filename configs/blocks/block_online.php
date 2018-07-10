@@ -1,7 +1,7 @@
 <?php
 
 $cfg = array(
-	'ENABLE' => false,
+	'ENABLE' => true,
 	'POSITION' => 4,
 	'TITLE' => 'Онлайн статистика',
 	'DESC' => 'Блок вывода текущего онлайна на сайте',

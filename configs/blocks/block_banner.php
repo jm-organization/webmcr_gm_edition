@@ -1,6 +1,6 @@
 <?php
 $cfg = array(
-	'ENABLE' => false,
+	'ENABLE' => true,
 	'POSITION' => 5,
 	'TITLE' => 'Разработчик',
 	'DESC' => 'Блок вывода баннера',

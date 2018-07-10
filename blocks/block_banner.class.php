@@ -1,6 +1,7 @@
 <?php
 namespace blocks;
 
+use mcr\auth\auth;
 use mcr\html\blocks\base_block;
 
 if (!defined("MCR")) {
@@ -26,9 +27,7 @@ class block_banner implements base_block
 	 */
 	public function init(array $configs)
 	{
-		/*if (!$this->core->is_access(@$this->core->cfg_b['PERMISSIONS'])) {
-			return null;
-		}*/
+		if (empty(auth::user()) || auth::user()->cannot($configs['PERMISSIONS'])) return null;
 
 		return $this;
 	}

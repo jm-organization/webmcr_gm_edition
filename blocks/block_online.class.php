@@ -1,6 +1,7 @@
 <?php
 namespace blocks;
 
+use mcr\auth\auth;
 use mcr\html\blocks\base_block;
 use mcr\html\blocks\standard_block;
 
@@ -27,10 +28,7 @@ class block_online implements base_block
 	 */
 	public function init(array $configs)
 	{
-		// TODO: Create is access in USER class
-		/*if (!$this->core->is_access(@$this->core->cfg_b['PERMISSIONS'])) {
-			return null;
-		}*/
+		if (empty(auth::user()) || auth::user()->cannot($configs['PERMISSIONS'])) return null;
 
 		return $this;
 	}
