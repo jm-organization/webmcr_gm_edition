@@ -34,8 +34,8 @@ class news extends base_module implements module
 	 *
 	 * @return \mcr\http\response|\mcr\http\redirect|string
 	 */
-	public function content(request $request)
+	public function index(request $request)
 	{
-		return '';
+		return url('/news');
 	}
 }

@@ -66,3 +66,4 @@ data/uploads/skins/*
 /data/logs/
 !/data/logs/.gitignore
 !/data/logs/.htaccess
+forum/

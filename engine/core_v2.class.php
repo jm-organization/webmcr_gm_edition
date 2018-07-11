@@ -131,7 +131,10 @@ class core_v2
 
 		// Пытаемся запустить приложение
 		try {
-		    // Инициализируем расширения ядра
+			$request = new request();
+			$router = new router($request);
+
+			// Инициализируем расширения ядра
 		    $this->init();
 
             ////////////////////////////////////////////////////////////////////////////
@@ -139,9 +142,6 @@ class core_v2
             // Инициализация расширения ядра auth
             ////////////////////////////////////////////////////////////////////////////
             auth::init();
-
-            $router = new router();
-            $request = new request();
 
             ////////////////////////////////////////////////////////////////////////////
             // Определение системных констант приложения.
@@ -192,10 +192,13 @@ class core_v2
             // Инициализация текущего модуля приложения
             ////////////////////////////////////////////////////////////////////////////
 
-            $module = $this->initialize($router->controller);
+            $route = $router->dispatch();
+            $action = $route->action;
+
+			$module = $this->initialize($route->controller);
 
             if ($module) {
-				$document = new document($module, $request, $router);
+				$document = new document($module, $request, $action);
 				$document->render();
 			} else {
 				response('', 'utf8', 404, [], true);

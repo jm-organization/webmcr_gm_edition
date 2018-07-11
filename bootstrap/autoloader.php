@@ -24,14 +24,16 @@ function __autoload($classname) {
 	// Определяем родительское мастер пространство имён загружаемого класса.
 	// В стандарте PSR-4
 	$class_paths = explode('\\', $class);
-	$root_class_path = $class_paths[0] . '\\' . $class_paths[1] . '\\';
+	$root_class_path = $class_paths[0].'\\'.$class_paths[1].'\\';
 
 	// Определяем полный путь к классу
 	$class = __DIR__ . '/../' . $class . '.class.php';
 	// Если корневое пространство имён по стандарту PSR-4
 	// имеется в алиасах подгрузки, то определяем к нему путь
-	if (array_key_exists($root_class_path, $aliases)) {
+	if (array_key_exists($root_class_path, $aliases) || array_key_exists($class_paths[0].'\\', $aliases)) {
+		if (array_key_exists($class_paths[0].'\\', $aliases)) $root_class_path = $class_paths[0].'\\';
 		$classname = str_replace($root_class_path, '', $classname);
+
 		$class = __DIR__ . '/../' . ENGINE_ROOT_NAME . '/libs/' . $aliases[$root_class_path] . '/' . $classname . '.php';
 	}
 

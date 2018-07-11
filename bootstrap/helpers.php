@@ -238,6 +238,29 @@ if (!function_exists('response')) {
 	}
 }
 
+if (!function_exists('route')) {
+	/**
+	 * Строит url адрес, который понимает приложение
+	 *
+	 * @param $url
+	 *
+	 * @return string
+	 */
+	function url($url) {
+		$_url = trim($url, '/');
+		$_base_url = router::base_url();
+
+		$url = '?' . $_url . '/';
+		if (mb_strlen($_url) <= 0) {
+			$url = '';
+		}
+
+		$url = $_base_url . 'index.php' . $url;
+
+		return $url;
+	}
+}
+
 if (!function_exists('scripts')) {
 	/**
 	 * Выводит набор скриптов для области $for
