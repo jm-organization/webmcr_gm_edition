@@ -15,5 +15,7 @@
 
 return [
 	// Библиотечка для валидации данных
-	'Particle\\Validator\\' => 'particle-php/src'
+	'Particle\\Validator\\' => 'particle-php/src',
+	// Роутинг
+	'FastRoute\\' => 'fast-route/src'
 ];

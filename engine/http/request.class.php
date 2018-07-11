@@ -22,7 +22,7 @@ class request
 	 * Constructor for request
 	 */
 	public function __construct() {
-		$this->attributes = array_merge($this->attributes, $_POST, $_GET);
+		$this->attributes = array_merge($this->attributes, $_POST);
 
 		// Очишаем пришедшие данные от пробелов в начале и конце.
 		$this->attributes = array_map(function($attr) {
@@ -32,8 +32,11 @@ class request
 		if (is_filled($_FILES)) {
 			$this->attributes['files'] = $_FILES;
 		}
+	}
 
-		//array_unique($this->attributes);
+	public function merge(array $attributes)
+	{
+		$this->attributes = array_merge($this->attributes, $attributes);
 	}
 
 	public function all()
@@ -47,9 +50,7 @@ class request
 	}
 
 	/**
-	 * @function     : __get
-	 *
-	 * @documentation: Возвращает значение параметра $key в запросе.
+	 * Возвращает значение параметра $key в запросе.
 	 *
 	 * @param $key
 	 *
@@ -79,5 +80,10 @@ class request
 		$_request_uri = $_SERVER['REQUEST_URI'];
 
 		return $_base_url . $_request_uri;
+	}
+
+	public static function uri()
+	{
+		return $_SERVER['REQUEST_URI'];
 	}
 }

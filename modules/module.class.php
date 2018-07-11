@@ -25,5 +25,5 @@ interface module
 	 *
 	 * @return \mcr\http\response|\mcr\http\redirect|string
 	 */
-	public function content(request $request);
+	public function index(request $request);
 }

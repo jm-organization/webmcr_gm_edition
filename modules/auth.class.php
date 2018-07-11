@@ -35,7 +35,7 @@ class auth extends base_module implements module
 	 * @throws \mcr\database\db_exception
 	 * @throws \mcr\auth\auth_exception
 	 */
-	public function content(request $request)
+	public function index(request $request)
 	{
 		if ($request::method() == 'POST') {
 			// Если пользователь не авторизован, выполняем его авторизацию:

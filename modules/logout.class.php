@@ -19,7 +19,7 @@ class logout extends base_module implements module
 	 * @return \mcr\http\response|\mcr\http\redirect|string
 	 * @throws \mcr\database\db_exception
 	 */
-	public function content(request $request)
+	public function index(request $request)
 	{
 		if ($request::method() == 'POST') {
 			// Если пользователь не авторизован, выполняем его авторизацию:

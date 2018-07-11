@@ -67,7 +67,7 @@ class document
 	 *
 	 * @throws blocks\blocks_manager_exception
 	 */
-	public function __construct(base_module $module, request $request, router $router)
+	public function __construct(base_module $module, request $request, $action)
 	{
 		// Регистрируем меню
 		self::$menu = new menu($request);
@@ -79,7 +79,7 @@ class document
 		// Определяем шаблон по каторому будет отабражена страница модуля.
 		$this->layout = $module->layout;
 		// Получаем содеримое отображаемой страници
-		$this->content = $module->{$router->action}($request);
+		$this->content = $module->$action($request);
 
 		$this->load_module_assets($module->name);
 	}
