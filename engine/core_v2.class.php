@@ -17,7 +17,6 @@ use mcr\auth\auth;
 use mcr\database\db_connection;
 use mcr\hashing\bcrypt_hasher;
 use mcr\hashing\hasher;
-use mcr\html\document;
 use mcr\http\csrf;
 use mcr\http\request;
 use mcr\http\router;
@@ -34,7 +33,8 @@ define("INSTALLED", $configs->main['install']);
 class core_v2
 {
     use csrf,
-        l10n
+        l10n,
+		application_compiler
     ;
 
 	/**
@@ -99,15 +99,8 @@ class core_v2
 	 */
 	public function init() { }
 
-	public static function version()
-	{
-		echo VERSION;
-	}
-
 	/**
 	 * Запускает приложение.
-	 *
-	 * TODO: Разбить функционал функциии
 	 *
 	 * Проверяет csrf ключ на валидность
 	 * Определяет константы для работы приложения
@@ -127,12 +120,15 @@ class core_v2
 		// проверка ключа не будет произведена
 		if (!$this->csrf_check()) return redirect()->with('message', ['text' => translate('error_hack')])->route('/');
 
+		// Проверяем роут на наличие index.php
+		\mcr\http\router::route_validator(\mcr\http\request::uri());
+
 		global $log;
 
 		// Пытаемся запустить приложение
 		try {
-			$request = new request();
-			$router = new router($request);
+			$this->request = new request();
+			$this->router = new router($this->request);
 
 			// Инициализируем расширения ядра
 		    $this->init();
@@ -162,8 +158,8 @@ class core_v2
             define('ADMIN_URL', 		BASE_URL . '?' . ADMIN_MOD);
 
             $mode_url = BASE_URL . '?mode=' . config('main::s_dpage');
-            if (is_filled($request->mode)) {
-                $mode_url =  BASE_URL . '?mode=' . filter($request->mode, 'chars');
+            if (is_filled($this->request->mode)) {
+                $mode_url =  BASE_URL . '?mode=' . filter($this->request->mode, 'chars');
             }
             define('MOD_URL', 			$mode_url);
             define('UPLOAD_URL', 		BASE_URL . 'uploads/');
@@ -184,25 +180,11 @@ class core_v2
 				'theme_url' => asset(''),
 				'upload_url' => UPLOAD_URL,
 				'server_time' => time(),
-				'is_auth' => auth::user()->is_auth,
+				'is_auth' => empty(auth::user()) ? false : true,
 			)));
 
-
-            ////////////////////////////////////////////////////////////////////////////
-            // Инициализация текущего модуля приложения
-            ////////////////////////////////////////////////////////////////////////////
-
-            $route = $router->dispatch();
-            $action = $route->action;
-
-			$module = $this->initialize($route->controller);
-
-            if ($module) {
-				$document = new document($module, $request, $action);
-				$document->render();
-			} else {
-				response('', 'utf8', 404, [], true);
-			}
+			// Компилируем приложение
+            $this->compile();
 
 		} catch (\Exception $e) {
 
@@ -217,26 +199,8 @@ class core_v2
 		return true;
 	}
 
-	/**
-	 * @param string $module
-	 *
-	 * @return \modules\module|bool
-	 */
-	private function initialize($module)
+	public static function version()
 	{
-		$class = MCR_ROOT . $module . '.php';
-		// Если файл модуля найден, погружаем его.
-		load_if_exist($class);
-
-
-		// Если класс модуля доступен - инициализируем модуль
-		// и возвращаем экземпляр объекта модуля.
-		if (class_exists($module)) {
-
-			return new $module();
-
-		}
-
-		return false;
+		echo VERSION;
 	}
 }

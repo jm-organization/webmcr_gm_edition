@@ -16,10 +16,20 @@ namespace mcr\http;
 
 class request
 {
+	/**
+	 * @var array
+	 */
 	private $attributes = [];
 
 	/*
 	 * Constructor for request
+	 */
+	/**
+	 * request constructor.
+	 *
+	 *
+	 *
+	 * @documentation:
 	 */
 	public function __construct() {
 		$this->attributes = array_merge($this->attributes, $_POST);
@@ -34,16 +44,32 @@ class request
 		}
 	}
 
-	public function merge(array $attributes)
+	/**
+	 * Помещает данные в запрос.
+	 * Данные отдаёт роутер.
+	 *
+	 * @param array $attributes
+	 */
+	public function put(array $attributes)
 	{
 		$this->attributes = array_merge($this->attributes, $attributes);
 	}
 
+	/**
+	 * Возвращает все данные, которые пришли с запросом
+	 *
+	 * @return array
+	 */
 	public function all()
 	{
 		return $this->attributes;
 	}
 
+	/**
+	 * @param $key
+	 *
+	 * @return bool
+	 */
 	public function __isset($key)
 	{
 		return !is_null($this->__get($key));
@@ -69,11 +95,19 @@ class request
 		return null;
 	}
 
+	/**
+	 * Возвращает данные, о методе запроса
+	 *
+	 * @return mixed
+	 */
 	public static function method()
 	{
 		return $_SERVER['REQUEST_METHOD'];
 	}
 
+	/**
+	 * @return string
+	 */
 	public static function url()
 	{
 		$_base_url = router::base_url();
@@ -82,6 +116,9 @@ class request
 		return $_base_url . $_request_uri;
 	}
 
+	/**
+	 * @return mixed
+	 */
 	public static function uri()
 	{
 		return $_SERVER['REQUEST_URI'];

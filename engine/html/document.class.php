@@ -93,7 +93,7 @@ class document
 	}
 
 	/**
-	 *	Возвращает ответ серсеру в виде документа
+	 *	Возвращает ответ документ
 	 */
 	public function render()
 	{
@@ -107,8 +107,11 @@ class document
 
 			$_content = self::template($this->layout, compact('content', 'title'));
 
-			response($_content, 'utf-8', 200);
+			//response($_content, 'utf-8', 200);
+			return $_content;
 		}
+
+		return '';
 	}
 
 	/**

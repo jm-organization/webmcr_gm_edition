@@ -31,19 +31,25 @@ class router
 	 */
 	private $request = null;
 
+	/**
+	 * @var array
+	 */
 	public $route = [];
 
+	/**
+	 * @var string
+	 */
 	public $controller = '';
 
+	/**
+	 * @var string
+	 */
 	public $action = 'index';
 
 	/**
 	 * router constructor.
 	 *
 	 * @param request $request
-	 *
-	 *
-	 * @documentation:
 	 */
 	public function __construct(request $request)
 	{
@@ -63,38 +69,59 @@ class router
 	}
 
 	/**
+	 * Проверет URI маршрута, если в нём нет index.php,
+	 * то возвращает по маршруту /index.php
 	 *
+	 * @param $uri
+	 *
+	 * @return bool
+	 */
+	public static function route_validator($uri)
+	{
+		if (stristr($uri, 'index.php') == false) {
+			header('Location: /index.php');
+
+			exit;
+		}
+
+		return true;
+	}
+
+	/**
+	 * Сообщает компилатору информацию о маршруте.
+	 *
+	 * Возвращает данные в виде масива.
+	 * Первый эллемент масива - статус обработки маршрута.
+	 * Второй - информация о маршруте
+	 * Третий - дополнительная информация.
+	 *
+	 * @return array
 	 */
 	public function dispatch()
 	{
 		switch ($this->route[0]) {
-			case Dispatcher::NOT_FOUND:
-
-				response('', 'utf8', 404, [], true);
-
-				break;
-			case Dispatcher::METHOD_NOT_ALLOWED:
-				$allowedMethods = $this->route[1];
-
-				response('', 'utf8', 405, [], true);
-
-				break;
+			case Dispatcher::NOT_FOUND: 			return [ 404, [], [] ]; break;
+			case Dispatcher::METHOD_NOT_ALLOWED:	return [ 405, [], $this->route[1] ]; break;
 			case Dispatcher::FOUND:
 
-				$handler = $this->route[1];
-				$vars = $this->route[2];
+				list($dispatch_status, $handler, $vars) = $this->route;
+				// Помещаем извлечённые переменные из роута в реквест
+				$this->request->put($vars);
 
-				$this->request->merge($vars);
+				// Определяем контролер и экшин из обработчика маршрута
+				$controller = $action = null;
+				if (is_string($handler)) {
+					list($controller, $action) = explode('@', $handler);
 
-				list($controller, $action) = explode('@', $handler);
+					$this->controller = $controller;
+					$this->action = $action;
+				}
 
-				$this->controller = $controller;
-				$this->action = $action;
+				return [ 200, [ 'controller' => $controller, 'action' => $action ], $this ];
 
-				break;
+			break;
+			default: return [ 404, [], [] ]; break;
 		}
-
-		return $this;
 	}
 
 	/**

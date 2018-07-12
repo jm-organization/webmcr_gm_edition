@@ -203,10 +203,6 @@ if (!function_exists('passwd_hash')) {
 
 if (!function_exists('redirect')) {
 	/**
-	 * @function     : response
-	 *
-	 * @documentation:
-	 *
 	 * @param string $to
 	 *
 	 * @return redirect
@@ -218,10 +214,6 @@ if (!function_exists('redirect')) {
 
 if (!function_exists('response')) {
 	/**
-	 * @function     : response
-	 *
-	 * @documentation:
-	 *
 	 * @param        $content
 	 * @param string $charset
 	 * @param int    $status
