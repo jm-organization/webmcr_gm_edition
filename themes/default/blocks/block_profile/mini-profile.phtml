@@ -7,13 +7,13 @@
 	<div class="block-line"></div>
 	
 	<div class="block-content">
-		<form class="block-profile" method="post" action="<?= BASE_URL ?>?mode=logout">
+		<form class="block-profile" method="post" action="<?= url('auth/logout') ?>">
             <div class="avatar"><img src="<?= SKIN_URL ?>interface/<?= auth::user()->skin; ?>_mini.png?<?= mt_rand(1000,9999); ?>" class="img-polaroid"></div>
 			<ul class="info">
 				<li><i class="fa fa-user"></i> <b><?= translate('login') ?>:</b> <?= auth::user()->login ?></li>
 				<li><i class="fa fa-users"></i> <b><?= translate('group') ?>:</b> <?= auth::user()->group ?></li>
 				<li><i class="fa fa-money"></i> <b><?= translate('balance') ?>:</b> <?= auth::user()->money ?> <?= translate('cur_game') ?></li>
-				<li><a href="<?= BASE_URL ?>?mode=profile" class="btn btn-secondary btn-block btn-sm"><?= translate('settings') ?></a></li>
+				<li><a href="<?= url('profile') ?>" class="btn btn-secondary btn-block btn-sm"><?= translate('settings') ?></a></li>
 				<li><button type="submit" name="logout" value="1" class="btn btn-secondary btn-block btn-sm"><?= translate('logout') ?></button></li>
 			</ul>
 		</form>

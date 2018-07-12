@@ -112,9 +112,11 @@ class redirect
 			$this->route = str_replace($this->server_name, '', $to);
 		}
 
-		if ($_SERVER['REQUEST_URI'] != $this->route) {
-			header('Location: ' . $this->route);
-		}
+//		if ($_SERVER['REQUEST_URI'] != $this->route) {
+			$location = url($this->route);
+			header('Location: ' . $location);
+//		}
+
 
 		return $this;
 	}
