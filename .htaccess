@@ -1,4 +1,16 @@
-AddDefaultCharset UTF-8
-DefaultLanguage ru-RU
+#   Настройка веб сервера для веб-приложения на MagicMCR engine.
 
-Options -Indexes
+#   Установка кодировки и локали по умолчанию
+AddDefaultCharset   UTF-8
+#   DefaultLanguage     ru-RU
+
+#   Настройка перенаправления на единую точку входа
+<IfModule mod_rewrite.c>
+	RewriteEngine On
+
+	RewriteCond %{REQUEST_FILENAME} -f [OR]
+    RewriteCond %{REQUEST_FILENAME} -l [OR]
+    RewriteCond %{REQUEST_FILENAME} -d
+
+    RewriteRule ^ index.php [NC,L]
+</IfModule>

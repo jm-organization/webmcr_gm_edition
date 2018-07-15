@@ -120,9 +120,6 @@ class core_v2
 		// проверка ключа не будет произведена
 		if (!$this->csrf_check()) return redirect()->with('message', ['text' => translate('error_hack')])->route('/');
 
-		// Проверяем роут на наличие index.php
-		\mcr\http\router::route_validator(\mcr\http\request::uri());
-
 		global $log;
 
 		// Пытаемся запустить приложение
