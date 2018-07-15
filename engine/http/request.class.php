@@ -21,8 +21,14 @@ class request
 	 */
 	private $attributes = [];
 
+	/**
+	 * @var string
+	 */
 	public static $host = '';
 
+	/**
+	 * @var string
+	 */
 	public static $path = '';
 
 	/*
@@ -65,7 +71,7 @@ class request
 
 		$path = rawurldecode($uri);
 
-		self::$path = $path;
+		self::$path = trim($path, '/');
 	}
 
 	/**
