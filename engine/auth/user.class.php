@@ -254,6 +254,8 @@ class user
 			}
 		}
 
+		$this->id = $user_data['id'];
+
 		$this->login = $user_data['login'];
 		$this->password = $user_data['password'];
 		$this->salt = $user_data['salt'];
