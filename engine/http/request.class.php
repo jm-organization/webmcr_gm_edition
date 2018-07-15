@@ -71,7 +71,9 @@ class request
 
 		$path = rawurldecode($uri);
 
-		self::$path = trim($path, '/');
+		$path = preg_replace('/\/index\.[a-z]*/', '/', $path);
+
+		self::$path = $path == '/' ? $path : trim($path, '/');
 	}
 
 	/**

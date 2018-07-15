@@ -58,33 +58,11 @@ class router
 		// Загружаем маршруты
 		$dispatcher = simpleDispatcher('\router_builder\build');
 
-		$httpMethod = $this->request->method();
-		$uri = $this->request->uri();
-
-		$uri = trim(explode('?', $uri)[1], '/');
-		if (strlen($uri) < 1) $uri = '/';
+		$httpMethod = $request::method();
+		$uri = $request::$path;
 
 		// Определяем маршрут
 		$this->route = $dispatcher->dispatch($httpMethod, $uri);
-	}
-
-	/**
-	 * Проверет URI маршрута, если в нём нет index.php,
-	 * то возвращает по маршруту /index.php
-	 *
-	 * @param $uri
-	 *
-	 * @return bool
-	 */
-	public static function route_validator($uri)
-	{
-		if (stristr($uri, 'index.php') == false) {
-			header('Location: /index.php');
-
-			exit;
-		}
-
-		return true;
 	}
 
 	/**

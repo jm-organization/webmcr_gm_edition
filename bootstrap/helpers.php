@@ -242,12 +242,7 @@ if (!function_exists('route')) {
 		$_url = trim($url, '/');
 		$_base_url = router::base_url();
 
-		$url = '?' . $_url . '/';
-		if (mb_strlen($_url) <= 0) {
-			$url = '';
-		}
-
-		$url = $_base_url . 'index.php' . $url;
+		$url = $_base_url . $_url;
 
 		return $url;
 	}
