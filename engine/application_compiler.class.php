@@ -15,7 +15,7 @@ namespace mcr;
 
 
 use mcr\http\request;
-use mcr\http\router;
+use mcr\http\routing\router;
 use mcr\html\document;
 
 trait application_compiler
@@ -26,7 +26,7 @@ trait application_compiler
 	private $request;
 
 	/**
-	 * @var router
+	 * @var \mcr\http\routing\router
 	 */
 	private $router;
 

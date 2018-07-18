@@ -11,18 +11,19 @@
  * @Documentation:
  */
 
-namespace mcr\http;
+namespace mcr\http\routing;
 
 
 use FastRoute\Dispatcher;
 use function FastRoute\simpleDispatcher;
+use mcr\http\request;
 
 if (!defined("MCR")) {
 	exit("Hacking Attempt!");
 }
 
-include __DIR__ . '/../../bootstrap/config/routes.php';
-include __DIR__ . '/../libs/fast-route/src/functions.php';
+include __DIR__ . '/../../../bootstrap/config/routes.php';
+include __DIR__ . '/../../libs/fast-route/src/functions.php';
 
 class router
 {
@@ -56,7 +57,9 @@ class router
 		$this->request = $request;
 
 		// Загружаем маршруты
-		$dispatcher = simpleDispatcher('\router_builder\build');
+		$dispatcher = simpleDispatcher('\router_builder\build', [
+			'routeCollector' => route_collector::class
+		]);
 
 		$httpMethod = $request::method();
 		$uri = $request::$path;

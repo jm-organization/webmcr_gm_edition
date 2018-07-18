@@ -36,6 +36,7 @@ class auth extends base_module implements module
 	 * @throws \mcr\validation\validation_exception
 	 * @throws \mcr\database\db_exception
 	 * @throws \mcr\auth\auth_exception
+	 * @throws \engine\http\routing\url_builder_exception
 	 */
 	public function login(request $request)
 	{
@@ -59,7 +60,7 @@ class auth extends base_module implements module
 				return redirect()->with('message', [
 					'title' => translate('error_message'),
 					'text' => translate('wrong_pass'),
-				])->route('/#wrong_pass');
+				])->route('home', ['403']);
 			} else {
 				// если всё ок, делаем юзер лог-запись
 				$this->actlog(translate('log_auth'), current_auth::user()->id);
@@ -69,11 +70,11 @@ class auth extends base_module implements module
 					'title' => translate('auth_success'),
 					'text' => translate('error_success'),
 					'type' => 3
-				])->route('/');
+				])->route('home');
 			}
 
 		} else {
-			return redirect()->with('message', ['text' => translate('auth_already'), 'type' => 1])->route('/');
+			return redirect()->with('message', ['text' => translate('auth_already'), 'type' => 1])->route('home');
 		}
 	}
 
@@ -84,6 +85,7 @@ class auth extends base_module implements module
 	 *
 	 * @return \mcr\http\response|\mcr\http\redirect|string
 	 * @throws \mcr\database\db_exception
+	 * @throws \engine\http\routing\url_builder_exception
 	 */
 	public function logout(request $request)
 	{
@@ -115,14 +117,14 @@ class auth extends base_module implements module
 			// Лог действия
 			$this->actlog(translate('log_logout'), $user_id);
 
-			return redirect('/');
+			return redirect('home');
 
 		} else {
 			return redirect()->with('message', [
 				'text' => translate('not_auth_error'),
 				'title' => translate('error_403'),
 				'type' => 1
-			])->route('/');
+			])->route('home', ['403']);
 		}
 	}
 }

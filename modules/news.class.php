@@ -33,9 +33,10 @@ class news extends base_module implements module
 	 * @param request $request
 	 *
 	 * @return \mcr\http\response|\mcr\http\redirect|string
+	 * @throws \engine\http\routing\url_builder_exception
 	 */
 	public function index(request $request)
 	{
-		return url('/news');
+		return '<a href="' . url('home', ['test', 'foo' => 'bar', 'test' => 'привет']) . '">' . url('home', ['test', 'foo' => 'bar', 'test' => 'привет']) . '</a>';
 	}
 }

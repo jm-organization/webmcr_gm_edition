@@ -11,12 +11,14 @@
  * @Documentation:
  */
 
+use engine\http\routing\url_builder;
 use mcr\html\blocks\blocks_manager;
 use mcr\html\blocks\blocks_manager_exception;
 use mcr\html\document;
 use mcr\http\redirect;
 use mcr\http\response;
-use mcr\http\router;
+use mcr\http\routing\router;
+use mcr\http\routing\route_collector;
 
 if (!function_exists('asset')) {
 	/**
@@ -207,7 +209,8 @@ if (!function_exists('redirect')) {
 	 *
 	 * @return redirect
 	 */
-	function redirect($to = '') {
+	function redirect($to = '')
+	{
 		return new redirect($to);
 	}
 }
@@ -218,6 +221,7 @@ if (!function_exists('response')) {
 	 * @param string $charset
 	 * @param int    $status
 	 * @param array  $headers
+	 * @param bool   $only_headers
 	 */
 	function response($content, $charset = 'UTF-8', $status = 200, array $headers = array(), $only_headers = false) {
 		$response =  new response($content, $charset, $status, $headers);
@@ -232,17 +236,22 @@ if (!function_exists('response')) {
 
 if (!function_exists('route')) {
 	/**
-	 * Строит url адрес, который понимает приложение
+	 * Строит url адрес, который понимает приложение.
+	 * Подставляет необходимые перменные в адресс из масива переменных, где
+	 * ключ значения - имя переменной в маршруте, а значение -
+	 * данные, на которые будет изменена переменная в маршруте.
 	 *
-	 * @param $url
+	 * @param       $route
+	 * @param array $variables
 	 *
 	 * @return string
+	 * @throws \engine\http\routing\url_builder_exception
 	 */
-	function url($url) {
-		$_url = trim($url, '/');
-		$_base_url = router::base_url();
+	function url($route, array $variables = [])
+	{
+		$url_builder = new url_builder($route);
 
-		$url = $_base_url . $_url;
+		$url = $url_builder->build($variables);
 
 		return $url;
 	}

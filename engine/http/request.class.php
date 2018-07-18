@@ -14,6 +14,8 @@
 namespace mcr\http;
 
 
+use mcr\http\routing\router;
+
 class request
 {
 	/**

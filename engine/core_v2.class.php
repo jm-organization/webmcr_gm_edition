@@ -19,7 +19,7 @@ use mcr\hashing\bcrypt_hasher;
 use mcr\hashing\hasher;
 use mcr\http\csrf;
 use mcr\http\request;
-use mcr\http\router;
+use mcr\http\routing\router;
 use mcr\l10n\l10n;
 
 if (!defined("MCR")) {
