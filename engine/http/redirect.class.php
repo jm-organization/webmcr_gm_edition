@@ -46,6 +46,8 @@ class redirect
 	 * redirect constructor.
 	 *
 	 * @param string $route
+	 *
+	 * @throws \engine\http\routing\url_builder_exception
 	 */
 	public function __construct($route = '')
 	{
@@ -96,11 +98,14 @@ class redirect
 	/**
 	 * Перенаправляет на маршрут $to
 	 *
-	 * @param $to
+	 * @param       $to
+	 *
+	 * @param array $route_variables
 	 *
 	 * @return redirect
+	 * @throws \engine\http\routing\url_builder_exception
 	 */
-	public function route($to)
+	public function route($to, array $route_variables = [])
 	{
 		$_SESSION['messages'] = $this->messages;
 
@@ -113,7 +118,7 @@ class redirect
 		}
 
 //		if ($_SERVER['REQUEST_URI'] != $this->route) {
-			$location = url($this->route);
+			$location = url($this->route, $route_variables);
 			header('Location: ' . $location);
 //		}
 

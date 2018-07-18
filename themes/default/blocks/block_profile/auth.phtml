@@ -5,7 +5,7 @@
 	<div class="block-line"></div>
 	
 	<div class="block-content">
-		<form method="post" class="block-auth" action="<?= url('auth/login') ?>">
+		<form method="post" class="block-auth" action="<?= url('auth.login') ?>">
 			<div class="form-group">
 				<div class="input-group">
 					<span class="input-group-addon"><i class="fa fa-user"></i></span>
@@ -31,10 +31,10 @@
                     <button type="submit" class="btn btn-secondary btn-block"><?= translate('sign_in') ?></button>
                 </div>
 				<div class="col-md-3">
-                    <a class="btn btn-secondary btn-block" rel="tooltip" title="<?= translate('restore') ?>" href="<?= url('auth/restore') ?>"><i class="fa fa-repeat"></i></a>
+                    <a class="btn btn-secondary btn-block" rel="tooltip" title="<?= translate('restore') ?>" href="<?= url('auth.restore') ?>"><i class="fa fa-repeat"></i></a>
                 </div>
 				<div class="col-md-5">
-                    <a href="<?=  url('auth/register') ?>" class="btn btn-secondary btn-block"><?= translate('register') ?></a>
+                    <a href="<?= url('auth.register') ?>" class="btn btn-secondary btn-block"><?= translate('register') ?></a>
                 </div>
 			</div>
 		</form>

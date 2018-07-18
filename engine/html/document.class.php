@@ -17,7 +17,7 @@ namespace mcr\html;
 use mcr\html\blocks\blocks_manager;
 use mcr\http\request;
 
-use mcr\http\router;
+use mcr\http\routing\router;
 use modules\base_module;
 use modules\logout;
 use modules\module;

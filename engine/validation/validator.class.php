@@ -51,8 +51,9 @@ trait validator
 	 *
 	 * @return \Particle\Validator\ValidationResult
 	 * @throws validation_exception
+	 * @throws \engine\http\routing\url_builder_exception
 	 */
-	public function validate(array $value, array $rules, $route = '/')
+	public function validate(array $value, array $rules, $route = 'home')
 	{
 		$validator = new BaseValidator();
 

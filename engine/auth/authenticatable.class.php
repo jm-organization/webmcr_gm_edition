@@ -57,6 +57,7 @@ trait authenticatable
 	 * @return bool|int
 	 * @throws \mcr\database\db_exception
 	 * @throws auth_exception
+	 * @throws \engine\http\routing\url_builder_exception
 	 */
 	public function authenticate($auth_data)
 	{
@@ -74,7 +75,7 @@ trait authenticatable
 					return redirect()->with('message', [
 						'title' => translate('error_403'),
 						'text' => translate('auth_access'),
-					])->route('/?403');
+					])->route('home');
 				}
 
 				global $application;
@@ -97,7 +98,7 @@ trait authenticatable
 				return redirect()->with('message', [
 					'title' => translate('error_message'),
 					'text' => translate('wrong_pass'),
-				])->route('/?wrong_pass');
+				])->route('home');
 			}
 		}
 
