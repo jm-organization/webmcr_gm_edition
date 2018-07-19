@@ -61,9 +61,6 @@ class url_builder
 	 * Строит url аддрес относительно переменных,
 	 * которые были предоставленны для маршрута, route
 	 *
-	 * Авторство функции принадлежит https://github.com/nikic/
-	 * Адоптировано под MagicMCR by @Magicmen
-	 *
 	 * @param array $variables
 	 *
 	 * @return string
