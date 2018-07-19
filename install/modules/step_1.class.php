@@ -49,47 +49,9 @@ class step_1 extends install_step
 
 			$tables = file(DIR_INSTALL.'tables.sql');
 
-			$ctables = config('db::tables');
-
-			$ug_f = $ctables['ugroups']['fields'];
-			$ic_f = $ctables['iconomy']['fields'];
-			$logs_f = $ctables['logs']['fields'];
-			$us_f = $ctables['users']['fields'];
-
 			@$db->query("SET GLOBAL sql_mode='NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION'");
 
 			$string = "";
-			$search = array(
-				'~ug~',
-				'~ug_id~', '~ug_title~', '~ug_text~', '~ug_color~', '~ug_perm~',
-
-				'~ic~',
-				'~ic_id~', '~ic_login~', '~ic_money~', '~ic_rc~', '~ic_bank~',
-
-				'~logs~',
-				'~logs_id~', '~logs_uid~', '~logs_msg~', '~logs_date~',
-
-				'~us~',
-				'~us_id~', '~us_gid~', '~us_login~', '~us_email~', '~us_pass~', '~us_uuid~', '~us_salt~', '~us_tmp~', '~us_is_skin~', '~us_is_cloak~', '~us_ip_create~', '~us_ip_last~', '~us_date_reg~', '~us_date_last~', '~us_gender~', '~us_ban_server~',
-
-				'~base_url~',
-			);
-
-			$replace = array(
-				$ctables['ugroups']['name'],
-				$ug_f['id'], $ug_f['title'], $ug_f['text'], $ug_f['color'], $ug_f['perm'],
-
-				$ctables['iconomy']['name'],
-				$ic_f['id'], $ic_f['login'], $ic_f['money'], $ic_f['rm'], $ic_f['bank'],
-
-				$ctables['logs']['name'],
-				$logs_f['id'], $logs_f['uid'], $logs_f['msg'], $logs_f['date'],
-
-				$ctables['users']['name'],
-				$us_f['id'], $us_f['group'], $us_f['login'], $us_f['email'], $us_f['pass'], $us_f['uuid'], $us_f['salt'], $us_f['tmp'], $us_f['is_skin'], $us_f['is_cloak'], $us_f['ip_create'], $us_f['ip_last'], $us_f['date_reg'], $us_f['date_last'], $us_f['gender'], $us_f['ban_server'],
-
-				URL_ROOT,
-			);
 
 			foreach ($tables as $key => $value) {
 
@@ -104,19 +66,17 @@ class step_1 extends install_step
 					continue;
 				}
 
-				$value = str_replace($search, $replace, $value);
+				$value = str_replace('~base_url~', URL_ROOT, $value);
 
 				$string .= $value;
 			}
 
-			$query = $db->query("UPDATE `{$ctables['ugroups']['name']}` SET `{$ug_f['id']}`='0' WHERE `{$ug_f['id']}`='4'");
-
+			$query = $db->query("UPDATE `mcr_groups` SET `id`='0' WHERE `id`='4'");
 			if (!$query) {
 				$this->notify($this->lng['e_upd_group'], $this->lng['e_msg'], 'install/?do=step_1');
 			}
 
-			$query = $db->query("ALTER TABLE `{$ctables['ugroups']['name']}` AUTO_INCREMENT=0");
-
+			$query = $db->query("ALTER TABLE `mcr_groups` AUTO_INCREMENT=0");
 			if (!$query) {
 				$this->notify($this->lng['e_upd_group'], $this->lng['e_msg'], 'install/?do=step_1');
 			}
