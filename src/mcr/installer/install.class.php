@@ -1,6 +1,6 @@
 <?php
 
-namespace install;
+namespace mcr\installer;
 
 
 use mcr\hashing\bcrypt_hasher;
@@ -23,25 +23,24 @@ class install
 
 	public $hasher = null;
 
-	public function __construct()
+	public function __construct($dir = '')
 	{
 		$https = (@$_SERVER['HTTPS'] == 'on' || (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https')) ? 'https' : 'http';
 
 		define('URL_ROOT', str_replace('\\', '/', dirname(dirname($_SERVER['PHP_SELF']))));
 		define('URL_ROOT_FULL', $https.'://'.$_SERVER['SERVER_NAME'].'/');
 		define('URL_INSTALL', $https.'://'.$_SERVER['SERVER_NAME'].'/install/');
-		define('DIR_ROOT', dirname(dirname(__FILE__)).'/');
-		define('DIR_INSTALL', dirname(__FILE__).'/');
+		define('DIR_ROOT', __DIR__ . '/../../../');
+		define('DIR_INSTALL', $dir.'/');
 		define('DIR_INSTALL_THEME', DIR_INSTALL.'theme/');
 
 		$this->log = new log(config('main::debug'), log::L_ALL);
 
-		require DIR_ROOT.'language/' . config('main::s_lang') . '/install.php';
-		$this->lng = $lng;
+		$this->lng = include 'phrases.php';
 
 		$this->hasher = new bcrypt_hasher();
 
-		$this->title = $lng['mod_name'];
+		$this->title = $this->lng['mod_name'];
 	}
 
 	public function HSC($string)
@@ -66,9 +65,9 @@ class install
 			return 'Hacking Attempt';
 		}
 
-		$module = "\install\modules\\$do";
+		$module = "\mcr\installer\modules\\$do";
 		if (class_exists($module)) {
-			/** @var \install\modules\install_step $module */
+			/** @var \mcr\installer\modules\install_step $module */
 			$module = new $module();
 
 			return $module->content();

@@ -1,6 +1,6 @@
 <?php
 
-namespace install\modules;
+namespace mcr\installer\modules;
 
 
 if (!defined("MCR")) {
@@ -66,14 +66,9 @@ class step_2 extends install_step
 			$password = $this->gen_password(@$_POST['password'], $salt);
 			$ip = $this->ip();
 
-			$ctables = config('db::tables');
-
-			$ic_f = $ctables['iconomy']['fields'];
-			$us_f = $ctables['users']['fields'];
-
 			$query = $db->query("
-				INSERT INTO `{$ctables['users']['name']}`
-					(`{$us_f['group']}`, `{$us_f['login']}`, `{$us_f['email']}`, `{$us_f['pass']}`, `{$us_f['uuid']}`, `{$us_f['salt']}`, `{$us_f['ip_last']}`, `{$us_f['date_reg']}`)
+				INSERT INTO `mcr_users`
+					(`gid`, `login`, `email`, `password`, `uuid`, `salt`, `ip_last`, `time_create`)
 				VALUES
 					('3', '$login', '$email', '$password', UNHEX(REPLACE(UUID(), '-', '')), '$salt', '$ip', NOW())
 			");
@@ -83,8 +78,8 @@ class step_2 extends install_step
 			}
 
 			$query = $db->query("
-				INSERT INTO `{$ctables['iconomy']['name']}`
-					(`{$ic_f['login']}`, `{$ic_f['money']}`, `{$ic_f['rm']}`, `{$ic_f['bank']}`)
+				INSERT INTO `mcr_iconomy`
+					(`login`, `money`, `realmoney`, `bank`)
 				VALUES
 					('$login', 0, 0, 0)
 			");

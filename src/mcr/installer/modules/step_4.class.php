@@ -10,7 +10,7 @@
  *
  **/
 
-namespace install\modules;
+namespace mcr\installer\modules;
 
 
 if (!defined("MCR")) {
