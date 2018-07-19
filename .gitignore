@@ -1,70 +1,7 @@
-# Created by .ignore support plugin (hsz.mobi)
-### JetBrains template
-# Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion, Android Studio and Webstorm
-# Reference: https://intellij-support.jetbrains.com/hc/en-us/articles/206544839
+.idea
 
-# IntelliJ
-/out/
-
-# mpeltonen/sbt-idea plugin
-.idea_modules/
-
-# Idea:
-.idea/
-
-## File-based project format:
-*.iws
-
-## Plugin-specific files:
-
-# JIRA plugin
-atlassian-ide-plugin.xml
-
-# Crashlytics plugin (for Android Studio and IntelliJ)
-com_crashlytics_export_strings.xml
-crashlytics.properties
-crashlytics-build.properties
-fabric.properties
-
-# VCS
-vcs.xml
-
-# Eclipse
-/.settings/*
-/eclipse/*
-/.metadata/*
-*.classpath
-*.buildpath
-*.project
-
-# htmLawed
-/engine/libs/htmLawed/htmLawed_README.htm
-/engine/libs/htmLawed/htmLawed_TESTCASE.txt
-/engine/libs/htmLawed/htmLawed_README.txt
-
-### MagicMCR Template
-#uploads
-!.htaccess
-data/cache/*
-!data/cache/l10n/ru-RU/.cache
-data/tmp/*
-data/uploads/skins/*
-!/data/tmp/.htaccess
-!/data/uploads/skins/.htaccess
-!/data/uploads/skins/interface/.htaccess
-!/data/uploads/skins/index.php
-!/data/uploads/skins/interface/index.php
-!/data/uploads/skins/interface/default_female.png
-!/data/uploads/skins/interface/default_mini.png
-!/data/uploads/skins/interface/default_mini_female.png
-!/data/uploads/skins/interface/default.png
-!/data/uploads/skins/default.png
-!/data/uploads/skins/default_female.png
-/configs/
 /init-krumo.php
-/engine/libs/class.jbdump.php
-/data/logs/
-!/data/logs/.gitignore
-!/data/logs/.htaccess
+
 forum/
+
 language/
