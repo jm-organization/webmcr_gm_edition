@@ -67,3 +67,4 @@ data/uploads/skins/*
 !/data/logs/.gitignore
 !/data/logs/.htaccess
 forum/
+language/

@@ -50,7 +50,7 @@ function config($namespace)
 }
 
 
-$install = new \install\install();
+$install = new \mcr\installer\install(__DIR__);
 
 $step = $install->init_step();
 

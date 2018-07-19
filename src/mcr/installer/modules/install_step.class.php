@@ -11,10 +11,10 @@
  * @Documentation:
  */
 
-namespace install\modules;
+namespace mcr\installer\modules;
 
 
-use install\install;
+use mcr\installer\install;
 
 class install_step extends install
 {
