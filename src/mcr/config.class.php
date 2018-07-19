@@ -65,35 +65,18 @@ class config
 	}
 
 	/**
-	 * @function     : savecfg
-	 *
-	 * @documentation:
-	 *
-	 * @param array  $cfg
+	 * @param        $configs
 	 * @param string $file
-	 * @param string $var
 	 *
 	 * @return bool
 	 */
-	public function savecfg($cfg = [], $file = 'main.php', $var = 'main')
+	public static function save($configs, $file = 'main.php')
 	{
-		if (!is_array($cfg) || empty($cfg)) {
-			return false;
-		}
+		if (!is_array($configs) || empty($configs)) return false;
 
-		$filename = MCR_CONF_PATH.$file;
+		$filename = MCR_CONF_PATH . $file;
 
-		$txt = '<?php'.PHP_EOL;
-		$txt .= '$'.$var.' = '.var_export($cfg, true).';'.PHP_EOL;
-		$txt .= '?>';
-
-		$result = file_put_contents($filename, $txt);
-
-		if ($result === false) {
-			return false;
-		}
-
-		return true;
+		return file_put_contents($filename, "<?php\n\nreturn " . var_export($configs, true) . ";");
 	}
 
 	private function set_configs($dir = MCR_CONF_PATH, $container = null)
@@ -105,14 +88,14 @@ class config
 
 			$config_root_namespace = pathinfo(MCR_CONF_PATH . $config_file, PATHINFO_FILENAME);
 
-			require_once $dir . $config_file;
+			$configs = require_once $dir . $config_file;
 
 			if (empty($container)) {
 				if (property_exists($this, $config_root_namespace)) {
-					$this->$config_root_namespace = $$config_root_namespace;
+					$this->$config_root_namespace = $configs;
 				}
 			} else {
-				$this->$container = array_merge($this->$container, [ $config_root_namespace => $cfg ]);
+				$this->$container = array_merge($this->$container, [ $config_root_namespace => $configs ]);
 			}
 		}
 	}

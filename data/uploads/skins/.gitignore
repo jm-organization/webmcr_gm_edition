@@ -1,0 +1,14 @@
+*
+!.gitignore
+!.htaccess
+
+!index.php
+!default.png
+!default_female.png
+
+!interface/.htaccess
+!interface/index.php
+!interface/default_female.png
+!interface/default_mini.png
+!interface/default_mini_female.png
+!interface/default.png

@@ -22,7 +22,6 @@ if (!defined("MCR")) {
 	exit("Hacking Attempt!");
 }
 
-include __DIR__ . '/../../../../configs/routes/routes.php';
 include __DIR__ . '/../../../libs/fast-route/src/functions.php';
 
 class router
@@ -57,7 +56,7 @@ class router
 		$this->request = $request;
 
 		// Загружаем маршруты
-		$dispatcher = simpleDispatcher('\router_builder\build', [
+		$dispatcher = simpleDispatcher(['\mcr\http\routing\route_builder', 'build'], [
 			'routeCollector' => route_collector::class
 		]);
 

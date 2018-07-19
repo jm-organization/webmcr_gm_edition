@@ -1,18 +1,19 @@
 <?php
-$main = array (
+
+return array (
   's_name' => 'MagicMCR',
   's_about' => 'Система управления сайтом',
   's_keywords' => 'Minecraft, webmcr, Magicmen, magicmcr, сервер, Qexy',
   's_dpage' => 'news',
   's_theme' => 'default',
   'rewrite' => false,
-  'install' => false,
+  'install' => true,
   'p_logic' => 'usual',
   'debug' => true,
   's_lang' => 'ru-RU',
   's_root' => '/',
   's_root_full' => 'http://magicmcr.com/',
-  'mcr_secury' => '!oH4atJJkTMqTUje#fLY',
+  'mcr_secury' => '5crkvDxH)h@37w1wQ(Am',
   'crypt' => 0,
   'reg_accept' => true,
   'captcha' => 1,
@@ -25,4 +26,3 @@ $main = array (
   'hd_cloaks' => false,
   's_client' => 'index.php?mode=start',
 );
-?>
