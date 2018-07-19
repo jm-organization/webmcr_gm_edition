@@ -1,6 +1,6 @@
 <?php
 
-$aliases = require 'config/aliases.php';
+$aliases = require __DIR__ . '/../src/libraries.php';
 
 /**
  * Created in JM Organization.
@@ -16,25 +16,23 @@ $aliases = require 'config/aliases.php';
  * @param $classname
  */
 function __autoload($classname) {
-	$class = preg_replace('/mcr|engine/', ENGINE_ROOT_NAME, $classname);
-
 	global $aliases;
 
 	// Извлекаем эллементы пространства имён загружаемого класса.
 	// Определяем родительское мастер пространство имён загружаемого класса.
 	// В стандарте PSR-4
-	$class_paths = explode('\\', $class);
+	$class_paths = explode('\\', $classname);
 	$root_class_path = $class_paths[0].'\\'.$class_paths[1].'\\';
 
 	// Определяем полный путь к классу
-	$class = __DIR__ . '/../' . $class . '.class.php';
+	$class = __DIR__ . '/../src/' . $classname . '.class.php';
 	// Если корневое пространство имён по стандарту PSR-4
 	// имеется в алиасах подгрузки, то определяем к нему путь
 	if (array_key_exists($root_class_path, $aliases) || array_key_exists($class_paths[0].'\\', $aliases)) {
 		if (array_key_exists($class_paths[0].'\\', $aliases)) $root_class_path = $class_paths[0].'\\';
 		$classname = str_replace($root_class_path, '', $classname);
 
-		$class = __DIR__ . '/../' . ENGINE_ROOT_NAME . '/libs/' . $aliases[$root_class_path] . '/' . $classname . '.php';
+		$class = __DIR__ . '/../src/libs/' . $aliases[$root_class_path] . '/' . $classname . '.php';
 	}
 
 	// Иначе загружаем по методу

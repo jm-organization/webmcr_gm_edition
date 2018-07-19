@@ -22,8 +22,8 @@ if (!defined("MCR")) {
 	exit("Hacking Attempt!");
 }
 
-include __DIR__ . '/../../../bootstrap/config/routes.php';
-include __DIR__ . '/../../libs/fast-route/src/functions.php';
+include __DIR__ . '/../../../../configs/routes/routes.php';
+include __DIR__ . '/../../../libs/fast-route/src/functions.php';
 
 class router
 {

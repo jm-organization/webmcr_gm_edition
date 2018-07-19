@@ -11,21 +11,19 @@
  * @Documentation:
  */
 
-use engine\http\routing\url_builder;
+use mcr\http\routing\url_builder;
 use mcr\html\blocks\blocks_manager;
-use mcr\html\blocks\blocks_manager_exception;
 use mcr\html\document;
 use mcr\http\redirect;
 use mcr\http\response;
 use mcr\http\routing\router;
-use mcr\http\routing\route_collector;
 
 if (!function_exists('asset')) {
 	/**
 	 * Возворащает путь к ресурсу, если не указано,
 	 * что ресурсы необходимо вставить из файла.
 	 *
-	 * @param        $resorce   - ссылка на ресурс или путь к файлу,
+	 * @param        $resource   - ссылка на ресурс или путь к файлу,
 	 *                          в котором прописаны необходимые ресурсы
 	 * @param bool   $from_file - указывает на то,
 	 *                          что необходимо вставить ресурсы из файла
@@ -35,7 +33,7 @@ if (!function_exists('asset')) {
 	 *
 	 * @return mixed
 	 */
-	function asset($resorce, $from_file = false, $extension = '.phtml')
+	function asset($resource, $from_file = false, $extension = '.phtml')
 	{
 		if ($from_file) {
 
@@ -45,15 +43,15 @@ if (!function_exists('asset')) {
 				$extension = '.' . $extension;
 			}
 
-			$resorce = MCR_THEME_PATH . str_replace('.', '/', $resorce) . $extension;
-			load_if_exist($resorce);
+			$resource = MCR_THEME_PATH . str_replace('.', '/', $resource) . $extension;
+			load_if_exist($resource);
 
 			return ob_get_clean();
 
 		} else {
 			$_base_url = router::base_url();
 
-			return $_base_url . 'themes/' . config('main::s_theme') . '/' . $resorce;
+			return $_base_url . 'themes/' . config('main::s_theme') . '/' . $resource;
 		}
 	}
 }
@@ -245,7 +243,7 @@ if (!function_exists('route')) {
 	 * @param array $variables
 	 *
 	 * @return string
-	 * @throws \engine\http\routing\url_builder_exception
+	 * @throws \mcr\http\routing\url_builder_exception
 	 */
 	function url($route, array $variables = [])
 	{
