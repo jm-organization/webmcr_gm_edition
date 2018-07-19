@@ -1,7 +1,7 @@
 .idea
 
-/init-krumo.php
-
+configs/
 forum/
-
 language/
+
+/init-krumo.php
