@@ -206,6 +206,7 @@ if (!function_exists('redirect')) {
 	 * @param string $to
 	 *
 	 * @return redirect
+	 * @throws \mcr\http\routing\url_builder_exception
 	 */
 	function redirect($to = '')
 	{
@@ -220,14 +221,21 @@ if (!function_exists('response')) {
 	 * @param int    $status
 	 * @param array  $headers
 	 * @param bool   $only_headers
+	 *
+	 * @return response|null
 	 */
-	function response($content, $charset = 'UTF-8', $status = 200, array $headers = array(), $only_headers = false) {
-		$response =  new response($content, $charset, $status, $headers);
-
-		if ($only_headers) {
-			$response->send_headers();
+	function response($content = '', $charset = 'UTF-8', $status = 200, array $headers = array(), $only_headers = false)
+	{
+		if (empty(trim($content))) {
+			return new response();
 		} else {
-			$response->send();
+			$response = new response($content, $charset, $status, $headers);
+
+			if ($only_headers) {
+				$response->send_headers();
+			} else {
+				$response->send();
+			}
 		}
 	}
 }

@@ -62,7 +62,7 @@ trait application_compiler
 			}
 		}
 
-		if (request::method() == 'GET') return response($content, 'utf-8', $status); else exit;
+		if (request::method() == 'GET') return response()->status($status)->charset('utf-8')->content($content); else exit;
 	}
 
 	/**

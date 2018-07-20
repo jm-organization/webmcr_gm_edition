@@ -26,11 +26,6 @@ class redirect
 	private $server_name;
 
 	/**
-	 * @var mixed
-	 */
-	private $route;
-
-	/**
 	 * @var array
 	 */
 	public static $messages_types = [
@@ -47,19 +42,17 @@ class redirect
 	 *
 	 * @param string $route
 	 *
-	 * @throws \engine\http\routing\url_builder_exception
+	 * @throws \mcr\http\routing\url_builder_exception
 	 */
-	public function __construct($route = '')
+	public function __construct($route = '', array $route_variables = [])
 	{
 		$this->server_name = $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['SERVER_NAME'];
 		if ($_SERVER['SERVER_PORT'] != 80) {
 			$this->server_name .= ':' . $_SERVER['SERVER_PORT'];
 		}
 
-		$this->route = str_replace($this->server_name, '', $route);
-
 		if (!empty(trim($route))) {
-			$this->route($this->route);
+			$this->route($route, $route_variables);
 		}
 	}
 
@@ -102,27 +95,49 @@ class redirect
 	 *
 	 * @param array $route_variables
 	 *
-	 * @return redirect
-	 * @throws \engine\http\routing\url_builder_exception
+	 * @throws \mcr\http\routing\url_builder_exception
 	 */
 	public function route($to, array $route_variables = [])
 	{
+		if (empty(trim($to))) throw new \UnexpectedValueException('The route can`t be empty');
+
+		$this->url(
+			url($to, $route_variables)
+		);
+
+	}
+
+	/**
+	 * Перенаправляет по урлу.
+	 *
+	 * @param $url
+	 */
+	public function url($url)
+	{
+		if (empty(trim($url))) throw new \UnexpectedValueException('The url can`t be empty');
+
 		$_SESSION['messages'] = $this->messages;
 
-		if (empty(trim($this->route))) {
-			if (empty(trim($to))) {
-				throw new \UnexpectedValueException('The route can`t be empty');
-			}
+		$this->set_target_url($url);
+	}
 
-			$this->route = str_replace($this->server_name, '', $to);
-		}
-
-//		if ($_SERVER['REQUEST_URI'] != $this->route) {
-			$location = url($this->route, $route_variables);
-			header('Location: ' . $location);
-//		}
-
-
-		return $this;
+	/**
+	 * @param $url
+	 */
+	private function set_target_url($url)
+	{
+		response()->status(301)->header('Location', $url)->content(
+			sprintf('<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="refresh" content="0;url=%1$s" />
+        <title>Redirecting to %1$s</title>
+    </head>
+    <body>
+        Redirecting to <a href="%1$s">%1$s</a>.
+    </body>
+</html>', htmlspecialchars($url, ENT_QUOTES, 'UTF-8'))
+		);
 	}
 }

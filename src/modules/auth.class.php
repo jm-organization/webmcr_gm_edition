@@ -36,7 +36,7 @@ class auth extends base_module implements module
 	 * @throws \mcr\validation\validation_exception
 	 * @throws \mcr\database\db_exception
 	 * @throws \mcr\auth\auth_exception
-	 * @throws \engine\http\routing\url_builder_exception
+	 * @throws \mcr\http\routing\url_builder_exception
 	 */
 	public function login(request $request)
 	{
@@ -85,7 +85,7 @@ class auth extends base_module implements module
 	 *
 	 * @return \mcr\http\response|\mcr\http\redirect|string
 	 * @throws \mcr\database\db_exception
-	 * @throws \engine\http\routing\url_builder_exception
+	 * @throws \mcr\http\routing\url_builder_exception
 	 */
 	public function logout(request $request)
 	{
