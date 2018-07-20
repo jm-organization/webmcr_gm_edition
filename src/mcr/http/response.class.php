@@ -25,14 +25,14 @@ class response
 	 *
 	 * @var array
 	 */
-	private $headers = array();
+	private $headers;
 
 	/**
 	 * HTTP status code
 	 *
 	 * @var int
 	 */
-	private $status_code = 200;
+	private $status_code;
 
 	/**
 	 * Status codes translation table.
@@ -50,6 +50,7 @@ class response
 		101 => 'Switching Protocols',
 		102 => 'Processing',            // RFC2518
 		103 => 'Early Hints',
+
 		200 => 'OK',
 		201 => 'Created',
 		202 => 'Accepted',
@@ -60,6 +61,7 @@ class response
 		207 => 'Multi-Status',          // RFC4918
 		208 => 'Already Reported',      // RFC5842
 		226 => 'IM Used',               // RFC3229
+
 		300 => 'Multiple Choices',
 		301 => 'Moved Permanently',
 		302 => 'Found',
@@ -68,6 +70,7 @@ class response
 		305 => 'Use Proxy',
 		307 => 'Temporary Redirect',
 		308 => 'Permanent Redirect',    // RFC7238
+
 		400 => 'Bad Request',
 		401 => 'Unauthorized',
 		402 => 'Payment Required',
@@ -97,6 +100,7 @@ class response
 		429 => 'Too Many Requests',                                           // RFC6585
 		431 => 'Request Header Fields Too Large',                             // RFC6585
 		451 => 'Unavailable For Legal Reasons',                               // RFC7725
+
 		500 => 'Internal Server Error',
 		501 => 'Not Implemented',
 		502 => 'Bad Gateway',
@@ -115,21 +119,21 @@ class response
 	 *
 	 * @var string
 	 */
-	private $status_text = 'OK';
+	private $status_text;
 
 	/**
 	 * Содержимое, которое будет отправленно
 	 *
 	 * @var string
 	 */
-	private $content = '';
+	private $content;
 
 	/**
 	 * Кодировка с которой будет отправленно содержимое
 	 *
 	 * @var string
 	 */
-	private $charset = 'utf8';
+	private $charset;
 
 	/**
 	 * response constructor.
@@ -138,20 +142,15 @@ class response
 	 * @param string $charset
 	 * @param int    $status
 	 * @param array  $headers
-	 *
-	 *
-	 * @documentation:
 	 */
-	public function __construct($content, $charset = 'UTF-8', $status = 200, array $headers = array())
+	public function __construct($content = '', $charset = 'UTF-8', $status = 200, array $headers = [])
 	{
-		$this->headers = $headers;
-
-		$this->set_status_code($status);
-		$this->set_status_text();
-
-		$this->charset = $charset;
-
-		$this->set_content($content);
+		if (!empty(trim($content))) {
+			$this->charset($charset)
+				 ->headers($headers)
+				 ->status($status)
+				 ->set_content($content);
+		}
 	}
 
 	/**
@@ -277,5 +276,113 @@ class response
 	private function isInformational()
 	{
 		return $this->status_code >= 100 && $this->status_code < 200;
+	}
+
+	public function charset($charset)
+	{
+		$this->charset = $charset;
+
+		return $this;
+	}
+
+	/**
+	 * Утилитарный метод.
+	 *
+	 * Предназначен для отпревки json содержимого.
+	 *
+	 * Принимает статус отправки.
+	 * Не может быть информационным.
+	 *
+	 * @param array $array
+	 * @param int   $status
+	 */
+	public function json(array $array, $status = 200)
+	{
+		$content = json_encode($array);
+
+		$this->header('Content-Type', 'application/json');
+
+		$this->content($content, $status);
+	}
+
+	/**
+	 * Утилитарный метод.
+	 *
+	 * Отправляет содержимое, которое было передано.
+	 * Может принимать статус отправки.
+	 *
+	 * Если был передан информационный код,
+	 * то переданное содержимое
+	 * не будет отправленно.
+	 *
+	 * @param     $content
+	 * @param int $status
+	 */
+	public function content($content, $status = 200)
+	{
+		$this->set_content($content);
+
+		if (empty($this->status_code)) $this->status($status);
+
+		$this->send();
+	}
+
+	/**
+	 * Утилитарный метод.
+	 *
+	 * Устанавлвиает заголовки,
+	 * которые необходимо отправить.
+	 *
+	 * @param array $headers
+	 *
+	 * @return $this
+	 */
+	public function headers(array $headers)
+	{
+		if (!empty($headers) && count($headers) >= 1) {
+			foreach ($headers as $name => $value) {
+				$this->header($name, $value);
+			}
+		}
+
+		return $this;
+	}
+
+	/**
+	 * Утилитарный метод.
+	 *
+	 * Устанавливает отправляемый заголовок.
+	 * Имя заголовка не может быть пустым.
+	 *
+	 * @param $name
+	 * @param $value
+	 *
+	 * @return $this
+	 */
+	public function header($name, $value)
+	{
+		if (empty(trim($name))) throw new \UnexpectedValueException('Name of header can`t be empty.');
+
+		$this->headers[$name] = $value;
+
+		return $this;
+	}
+
+	/**
+	 * Утилитарный метод.
+	 *
+	 * Устанавливает статус,
+	 * с которым будет отправлен ответ.
+	 *
+	 * @param $status
+	 *
+	 * @return $this
+	 */
+	public function status($status)
+	{
+		$this->set_status_code($status);
+		$this->set_status_text();
+
+		return $this;
 	}
 }

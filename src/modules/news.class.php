@@ -31,8 +31,6 @@ class news extends base_module implements module
 	 * Обрабатывает запрос к модулю.
 	 *
 	 * @param request $request
-	 *
-	 * @return \mcr\http\response|\mcr\http\redirect|string
 	 */
 	public function index(request $request)
 	{
