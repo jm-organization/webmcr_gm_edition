@@ -32,11 +32,10 @@ class auth extends base_module implements module
 	/**
 	 * @param request $request
 	 *
-	 * @return \mcr\http\redirect|\mcr\http\response|string
+	 * @return \mcr\http\redirect_response|\mcr\http\response|string
 	 * @throws \mcr\validation\validation_exception
 	 * @throws \mcr\database\db_exception
 	 * @throws \mcr\auth\auth_exception
-	 * @throws \mcr\http\routing\url_builder_exception
 	 */
 	public function login(request $request)
 	{
@@ -63,7 +62,7 @@ class auth extends base_module implements module
 				])->route('home', ['403']);
 			} else {
 				// если всё ок, делаем юзер лог-запись
-				$this->actlog(translate('log_auth'), current_auth::user()->id);
+				$this->actlog(translate('log_auth'), current_auth::guest()->id);
 
 				// возвращаем саццесс
 				return redirect()->with('message', [
@@ -83,9 +82,8 @@ class auth extends base_module implements module
 	 *
 	 * @param request $request
 	 *
-	 * @return \mcr\http\response|\mcr\http\redirect|string
+	 * @return \mcr\http\response|\mcr\http\redirect_response|string
 	 * @throws \mcr\database\db_exception
-	 * @throws \mcr\http\routing\url_builder_exception
 	 */
 	public function logout(request $request)
 	{
@@ -117,7 +115,7 @@ class auth extends base_module implements module
 			// Лог действия
 			$this->actlog(translate('log_logout'), $user_id);
 
-			return redirect('home');
+			return redirect(url('home'));
 
 		} else {
 			return redirect()->with('message', [

@@ -107,7 +107,7 @@ class core_v2
 	 * Инициализирует модуль
 	 * Создаёт и отрисовывает документ
 	 *
-	 * @return bool|http\redirect
+	 * @return bool|http\redirect_response
 	 */
 	public function run()
 	{
@@ -118,7 +118,7 @@ class core_v2
 		// ---------------------------------------------------------
 		// Если ip юзера есть в белов списике,
 		// проверка ключа не будет произведена
-		if (!$this->csrf_check()) return redirect()->with('message', ['text' => translate('error_hack')])->route('/');
+		if (!$this->csrf_check()) return redirect()->with('message', ['text' => translate('error_hack')])->route('home');
 
 		global $log;
 

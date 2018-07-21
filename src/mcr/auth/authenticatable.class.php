@@ -57,7 +57,6 @@ trait authenticatable
 	 * @return bool|int
 	 * @throws \mcr\database\db_exception
 	 * @throws auth_exception
-	 * @throws \engine\http\routing\url_builder_exception
 	 */
 	public function authenticate($auth_data)
 	{

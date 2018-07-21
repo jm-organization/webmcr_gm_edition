@@ -14,9 +14,10 @@
 use mcr\http\routing\url_builder;
 use mcr\html\blocks\blocks_manager;
 use mcr\html\document;
-use mcr\http\redirect;
+use mcr\http\redirect_response;
 use mcr\http\response;
 use mcr\http\routing\router;
+use mcr\http\routing\url_builder_exception;
 
 if (!function_exists('asset')) {
 	/**
@@ -203,44 +204,57 @@ if (!function_exists('passwd_hash')) {
 
 if (!function_exists('redirect')) {
 	/**
+	 * Возвращает ответ в виде перенаправления на другой аддрес.
+	 *
+	 * Если аддрес перенаправления не был передан,
+	 * то вернёт экземпляр перенаправления.
+	 *
 	 * @param string $to
 	 *
-	 * @return redirect
-	 * @throws \mcr\http\routing\url_builder_exception
+	 * @param int    $status
+	 * @param array  $headers
+	 *
+	 * @return redirect_response
 	 */
-	function redirect($to = '')
+	function redirect($to = null, $status = 301, array $headers = [])
 	{
-		return new redirect($to);
+		if (empty($to)) return new redirect_response();
+
+		$redirect = new redirect_response($status, $headers);
+
+		$redirect->url($to);
+
+		exit;
 	}
 }
 
 if (!function_exists('response')) {
 	/**
-	 * @param        $content
-	 * @param string $charset
+	 * Генерирует ответ.
+	 *
+	 * Если не были переданы параметры,
+	 * то вернёт экземпляр ответа.
+	 * иначе отправит его.
+	 *
+	 * @param string $content
 	 * @param int    $status
 	 * @param array  $headers
-	 * @param bool   $only_headers
 	 *
-	 * @return response|null
+	 * @return response
 	 */
-	function response($content = '', $charset = 'UTF-8', $status = 200, array $headers = array(), $only_headers = false)
+	function response($content = '', $status = 200, array $headers = [])
 	{
-		if (empty(trim($content))) {
-			return new response();
-		} else {
-			$response = new response($content, $charset, $status, $headers);
+		if (func_num_args() === 0) return new response();
 
-			if ($only_headers) {
-				$response->send_headers();
-			} else {
-				$response->send();
-			}
-		}
+		$response = new response($content, 'UTF-8', $status, $headers);
+
+		$response->send();
+
+		exit;
 	}
 }
 
-if (!function_exists('route')) {
+if (!function_exists('url')) {
 	/**
 	 * Строит url адрес, который понимает приложение.
 	 * Подставляет необходимые перменные в адресс из масива переменных, где
@@ -251,13 +265,25 @@ if (!function_exists('route')) {
 	 * @param array $variables
 	 *
 	 * @return string
-	 * @throws \mcr\http\routing\url_builder_exception
 	 */
 	function url($route, array $variables = [])
 	{
-		$url_builder = new url_builder($route);
+		global $log;
+		$url = '/';
 
-		$url = $url_builder->build($variables);
+		try {
+			$url_builder = new url_builder($route);
+
+			$url = $url_builder->build($variables);
+		} catch (url_builder_exception $e) {
+
+			// Если возникли исключения, запускаем обработчик исключений.
+			// TODO: Описать обработчик исключений
+
+			// Создаём запись в лог файле
+			$log->write($e->getMessage(), $e->getCode(), $e->getFile(), $e->getLine());
+
+		}
 
 		return $url;
 	}

@@ -14,7 +14,7 @@
 namespace mcr\validation;
 
 
-use mcr\http\redirect;
+use mcr\http\redirect_response;
 use Particle\Validator\Chain;
 use Particle\Validator\Validator as BaseValidator;
 
