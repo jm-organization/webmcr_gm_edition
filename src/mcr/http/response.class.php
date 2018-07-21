@@ -25,14 +25,14 @@ class response
 	 *
 	 * @var array
 	 */
-	private $headers;
+	private $headers = [];
 
 	/**
 	 * HTTP status code
 	 *
 	 * @var int
 	 */
-	private $status_code;
+	public $status_code;
 
 	/**
 	 * Status codes translation table.
@@ -145,12 +145,35 @@ class response
 	 */
 	public function __construct($content = '', $charset = 'UTF-8', $status = 200, array $headers = [])
 	{
-		if (!empty(trim($content))) {
+		if (func_num_args() !== 0) {
 			$this->charset($charset)
 				 ->headers($headers)
 				 ->status($status)
 				 ->set_content($content);
 		}
+	}
+
+	/**
+	 * @function     : set_content
+	 *
+	 * @documentation: Устанавливает отправляемое содержимое.
+	 * Может быть строковым, числом или объектом, который содержит метод  __toString
+	 *
+	 * @param $content
+	 */
+	public function set_content($content)
+	{
+		if (null !== $content && !is_string($content) && !is_numeric($content) && !is_callable(array($content, '__toString'))) {
+			throw new \UnexpectedValueException('The Response content must be a string or object implementing __toString(), "'.gettype($content).'" given.');
+		}
+		$this->content = (string) $content;
+	}
+
+	public function charset($charset)
+	{
+		$this->charset = $charset;
+
+		return $this;
 	}
 
 	/**
@@ -187,19 +210,21 @@ class response
 	}
 
 	/**
-	 * @function     : set_content
+	 * @function     : isInformational
 	 *
-	 * @documentation: Устанавливает отправляемое содержимое.
-	 * Может быть строковым, числом или объектом, который содержит метод  __toString
+	 * @documentation: Проверяет код статуса на
+	 * вхождение в диапозон информативных http кодов
 	 *
-	 * @param $content
+	 * @return bool
 	 */
-	public function set_content($content)
+	private function is_informational()
 	{
-		if (null !== $content && !is_string($content) && !is_numeric($content) && !is_callable(array($content, '__toString'))) {
-			throw new \UnexpectedValueException('The Response content must be a string or object implementing __toString(), "'.gettype($content).'" given.');
-		}
-		$this->content = (string) $content;
+		return $this->status_code >= 100 && $this->status_code < 200;
+	}
+
+	public function is_redirection()
+	{
+		return $this->status_code >= 300 && $this->status_code < 400;
 	}
 
 	/**
@@ -209,7 +234,7 @@ class response
 	 */
 	private function prepare()
 	{
-		if ($this->isInformational() || in_array($this->status_code, array(204, 304))) {
+		if ($this->is_informational() || in_array($this->status_code, array(204, 304))) {
 			$this->content = '';
 		}
 
@@ -263,26 +288,6 @@ class response
 		if (function_exists('fastcgi_finish_request')) {
 			fastcgi_finish_request();
 		}
-	}
-
-	/**
-	 * @function     : isInformational
-	 *
-	 * @documentation: Проверяет код статуса на
-	 * вхождение в диапозон информативных http кодов
-	 *
-	 * @return bool
-	 */
-	private function isInformational()
-	{
-		return $this->status_code >= 100 && $this->status_code < 200;
-	}
-
-	public function charset($charset)
-	{
-		$this->charset = $charset;
-
-		return $this;
 	}
 
 	/**

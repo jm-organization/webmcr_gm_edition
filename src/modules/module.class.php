@@ -23,7 +23,7 @@ interface module
 	 *
 	 * @param request $request
 	 *
-	 * @return \mcr\http\response|\mcr\http\redirect|string
+	 * @return \mcr\http\response|\mcr\http\redirect_response|string
 	 */
 	public function index(request $request);
 }

@@ -18,13 +18,8 @@ if (!defined("MCR")) {
 	exit("Hacking Attempt!");
 }
 
-class redirect
+class redirect_response extends response
 {
-	/**
-	 * @var string
-	 */
-	private $server_name;
-
 	/**
 	 * @var array
 	 */
@@ -37,22 +32,12 @@ class redirect
 
 	public $messages = [];
 
-	/**
-	 * redirect constructor.
-	 *
-	 * @param string $route
-	 *
-	 * @throws \mcr\http\routing\url_builder_exception
-	 */
-	public function __construct($route = '', array $route_variables = [])
+	public function __construct($status = 301, array $headers = [])
 	{
-		$this->server_name = $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['SERVER_NAME'];
-		if ($_SERVER['SERVER_PORT'] != 80) {
-			$this->server_name .= ':' . $_SERVER['SERVER_PORT'];
-		}
+		parent::__construct('', 'UTF-8', $status, $headers);
 
-		if (!empty(trim($route))) {
-			$this->route($route, $route_variables);
+		if (!$this->is_redirection()) {
+			throw new \InvalidArgumentException(sprintf('The HTTP status code is not a redirect ("%s" given).', $status));
 		}
 	}
 
@@ -94,12 +79,10 @@ class redirect
 	 * @param       $to
 	 *
 	 * @param array $route_variables
-	 *
-	 * @throws \mcr\http\routing\url_builder_exception
 	 */
 	public function route($to, array $route_variables = [])
 	{
-		if (empty(trim($to))) throw new \UnexpectedValueException('The route can`t be empty');
+		if (empty($to)) throw new \UnexpectedValueException('The route can`t be empty');
 
 		$this->url(
 			url($to, $route_variables)
@@ -116,6 +99,10 @@ class redirect
 	{
 		if (empty(trim($url))) throw new \UnexpectedValueException('The url can`t be empty');
 
+		if (!$this->is_redirection()) {
+			throw new \InvalidArgumentException(sprintf('The HTTP status code is not a redirect ("%s" given).', $this->status_code));
+		}
+
 		$_SESSION['messages'] = $this->messages;
 
 		$this->set_target_url($url);
@@ -126,7 +113,9 @@ class redirect
 	 */
 	private function set_target_url($url)
 	{
-		response()->status(301)->header('Location', $url)->content(
+		$this->header('Location', $url);
+
+		$this->content(
 			sprintf('<!DOCTYPE html>
 <html>
     <head>
@@ -137,7 +126,6 @@ class redirect
     <body>
         Redirecting to <a href="%1$s">%1$s</a>.
     </body>
-</html>', htmlspecialchars($url, ENT_QUOTES, 'UTF-8'))
-		);
+</html>', htmlspecialchars($url, ENT_QUOTES, 'UTF-8')));
 	}
 }
