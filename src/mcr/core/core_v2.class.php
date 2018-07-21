@@ -102,7 +102,21 @@ class core_v2
      *
 	 * @return void
 	 */
-	//public function init() { }
+	public function init()
+	{
+		$core_extensions = class_uses($this);
+
+		foreach ($core_extensions as $extension) {
+			$namespace_class = explode('\\', $extension);
+			$extension_short_name = end($namespace_class);
+
+			$method = 'init_' . $extension_short_name;
+
+			if (method_exists($this, $method)) {
+				$this->$method();
+			}
+		}
+	}
 
 	/**
 	 * Запускает приложение.
@@ -131,8 +145,7 @@ class core_v2
 			$this->router = new router($this->request);
 
 			// Инициализируем расширения ядра
-		    $this->init_l10n();
-		    $this->init_cache();
+			$this->init();
 
             ////////////////////////////////////////////////////////////////////////////
             // Получение авторизированых пользователей.
