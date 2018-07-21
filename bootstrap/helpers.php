@@ -11,6 +11,7 @@
  * @Documentation:
  */
 
+use mcr\exception\exception_handler;
 use mcr\http\routing\url_builder;
 use mcr\html\blocks\blocks_manager;
 use mcr\html\document;
@@ -268,7 +269,6 @@ if (!function_exists('url')) {
 	 */
 	function url($route, array $variables = [])
 	{
-		global $log;
 		$url = '/';
 
 		try {
@@ -277,11 +277,12 @@ if (!function_exists('url')) {
 			$url = $url_builder->build($variables);
 		} catch (url_builder_exception $e) {
 
-			// Если возникли исключения, запускаем обработчик исключений.
-			// TODO: Описать обработчик исключений
+			$exception = new exception_handler($e, [
+				'log' => true,
+				'throw_on_screen' => config('main::debug'),
+			]);
 
-			// Создаём запись в лог файле
-			$log->write($e->getMessage(), $e->getCode(), $e->getFile(), $e->getLine());
+			$exception->handle()->throw_on_screen();
 
 		}
 

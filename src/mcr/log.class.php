@@ -96,7 +96,7 @@ class log
 			}
 		}
 
-		$time = date('H:m:s', time());
+		$time = date('H:i:s', time());
 		$type = '[' . self::get_log_type($code) . ']';
 
 		$log = $before."$time $type $message";
@@ -114,6 +114,8 @@ class log
 
 	public static function get_log_type($code)
 	{
+		$type = $code;
+
 		$types = [
 			111 => 'MYSQL_ERROR',
 			116 => 'MYSQL_WARNING',
@@ -130,10 +132,12 @@ class log
 			128 => 'COMPILE_WARNING'
 		];
 
-		$type = "UNDEFINED_ERROR #$code";
+		if (is_integer($code)) {
+			$type = "UNDEFINED_ERROR #$code";
 
-		if (array_key_exists($code, $types)) {
-			$type = $types[$code];
+			if (array_key_exists($code, $types)) {
+				$type = $types[$code];
+			}
 		}
 
 		return $type;
