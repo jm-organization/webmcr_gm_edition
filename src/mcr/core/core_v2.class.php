@@ -11,13 +11,16 @@
  * @Documentation:
  */
 
-namespace mcr;
+namespace mcr\core;
+
 
 use mcr\auth\auth;
+use mcr\config;
 use mcr\database\db_connection;
 use mcr\exception\exception_handler;
 use mcr\hashing\bcrypt_hasher;
 use mcr\hashing\hasher;
+use mcr\http;
 use mcr\http\csrf;
 use mcr\http\request;
 use mcr\http\routing\router;
@@ -35,7 +38,8 @@ class core_v2
 {
     use csrf,
         l10n,
-		application_compiler
+		application_compiler,
+		cache
     ;
 
 	/**
@@ -98,7 +102,7 @@ class core_v2
      *
 	 * @return void
 	 */
-	public function init() { }
+	//public function init() { }
 
 	/**
 	 * Запускает приложение.
@@ -127,7 +131,8 @@ class core_v2
 			$this->router = new router($this->request);
 
 			// Инициализируем расширения ядра
-		    $this->init();
+		    $this->init_l10n();
+		    $this->init_cache();
 
             ////////////////////////////////////////////////////////////////////////////
             // Получение авторизированых пользователей.
