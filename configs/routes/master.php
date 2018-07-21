@@ -24,5 +24,3 @@ $router->addGroup('auth/', function(route_collector $router) {
 	$router->post('logout', '\modules\auth@logout', 'auth.logout');
 	$router->get('restore', '\modules\auth@restore', 'auth.restore');
 });
-
-$router->get('version[/{v1}]', '');

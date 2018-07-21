@@ -15,6 +15,7 @@ namespace mcr;
 
 use mcr\auth\auth;
 use mcr\database\db_connection;
+use mcr\exception\exception_handler;
 use mcr\hashing\bcrypt_hasher;
 use mcr\hashing\hasher;
 use mcr\http\csrf;
@@ -120,8 +121,6 @@ class core_v2
 		// проверка ключа не будет произведена
 		if (!$this->csrf_check()) return redirect()->with('message', ['text' => translate('error_hack')])->route('home');
 
-		global $log;
-
 		// Пытаемся запустить приложение
 		try {
 			$this->request = new request();
@@ -185,11 +184,16 @@ class core_v2
 
 		} catch (\Exception $e) {
 
-			// Если возникли исключения, запускаем обработчик исключений.
-			// TODO: Описать обработчик исключений
+			$exception = new exception_handler($e, [
+				'log' => true,
+				'throw_on_screen' => config('main::debug'),
+			]);
 
-			// Создаём запись в лог файле
-			$log->write($e->getMessage(), $e->getCode(), $e->getFile(), $e->getLine());
+			// Если возникли исключения:
+			// запускаем обработчик исключений,
+			// Выводим сообщение о том, что случилась ошибка.
+			// Если включён debug, то будет выведено и исключение
+			$exception->handle()->throw_on_screen();
 
 		}
 
