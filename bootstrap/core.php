@@ -13,7 +13,7 @@
 
 //use mcr\core;
 use mcr\config;
-use mcr\core_v2;
+use mcr\core\core_v2;
 use mcr\log;
 
 include 'autoloader.php';

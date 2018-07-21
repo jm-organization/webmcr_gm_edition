@@ -26,7 +26,7 @@
 namespace mcr\database;
 
 
-use mcr\core_v2;
+use mcr\core\core_v2;
 use mcr\log;
 
 /**

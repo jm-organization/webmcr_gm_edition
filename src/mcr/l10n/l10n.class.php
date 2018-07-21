@@ -149,15 +149,12 @@ trait l10n
 	 * @throws \mcr\database\db_exception
 	 * @throws l10n_exception
 	 */
-	public function init()
+	public function init_l10n()
 	{
-		parent::init();
-
 		// Берём значение из конфига, как локаль сайта.
 		self::$locale = config('main::s_lang');
 
 		if (INSTALLED) {
-			dd(1);
 
 			// если движок установлен,
 			// то устанвливаем локаль сайта с конфига по умолчанию.
@@ -186,6 +183,7 @@ trait l10n
 				// то генерируем их на основании информации с базы.
 				$this->set_cache();
 			}
+
 		}
 	}
 

@@ -14,6 +14,8 @@
 namespace modules;
 
 
+use mcr\cache\cache;
+use mcr\cache\cache_value;
 use mcr\http\request;
 use mcr\validation\validator;
 

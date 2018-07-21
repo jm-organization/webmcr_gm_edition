@@ -11,11 +11,11 @@
  * @Documentation:
  */
 
-namespace mcr;
+namespace mcr\core;
 
 
+use mcr\html;
 use mcr\http\request;
-use mcr\http\routing\router;
 use mcr\html\document;
 
 trait application_compiler
