@@ -14,6 +14,7 @@
 namespace mcr\cache;
 
 
+use mcr\cache\drivers\driver_factory;
 use mcr\cache\drivers\mcr_cache_driver;
 
 /**
@@ -27,14 +28,24 @@ use mcr\cache\drivers\mcr_cache_driver;
  *
  * @see cache_driver
  */
-class cache
+final class cache
 {
+	/**
+	 * @var cache
+	 */
+	private static $instance;
+
 	/**
 	 * Экземпляр драйвера.
 	 *
 	 * @var cache_driver|null
 	 */
 	public static $driver = null;
+
+	/**
+	 * @var array
+	 */
+	public static $options = [];
 
 	/**
 	 * Список, доступных для взяимодействия,
@@ -49,28 +60,63 @@ class cache
 	];
 
 	/**
+	 * gets the instance via lazy initialization (created on first usage)
+	 *
+	 * @param array $options
+	 *
+	 * @return cache
+	 * @throws cache_exception
+	 */
+	public static function instance(array $options = [])
+	{
+		if (empty(static::$instance)) {
+			static::$instance = new static($options);
+		}
+
+		return static::$instance;
+	}
+
+	/**
 	 * cache constructor.
+	 *
+	 * Предотвращаем повторное создание
+	 * Singleton объекта \mcr\cache\cache через оператор new.
 	 *
 	 * @param $options
 	 *
 	 * @throws cache_exception
 	 */
-	public function __construct($options)
+	private function __construct(array $options)
 	{
-		$options += [
-			'driver' => mcr_cache_driver::class,
-			'enabled' => true,
-			'expire' => 3600 * 24 * 30,
-		];
+		// Задаём настройки
+		self::set_options($options);
 
-		if ($options['enabled']) {
-			self::$driver = new $options['driver']();
+		if (self::$options['enabled']) {
+			// Если кешировнаие включено
+			// создаём драйвер
+			$driver = driver_factory::create_driver(self::$options['driver']);
 
-			if (!(self::$driver instanceof cache_driver)) {
-				throw new cache_exception("Unexpected cache driver. Your passed driver must be implement \mcr\cache\cache_driver.");
-			}
+			// и устанавливаем его.
+			self::set_driver($driver);
 		}
 	}
+
+	/**
+	 * Предотвращаем клонирование обекта \mcr\cache\cache.
+	 *
+	 * Объект \mcr\cache\cache является Singleton
+	 * и не может быть создан ещё раз после его создания.
+	 */
+	private function __clone() { }
+
+	/**
+	 * Предотвращаем создание обекта \mcr\cache\cache
+	 * во время десериализации.
+	 *
+	 * Объект \mcr\cache\cache является Singleton
+	 * и не может быть создан ещё раз после его создания.
+	 */
+	private function __wakeup() { }
 
 	/**
 	 * Вызывает методы драйвера
@@ -95,6 +141,36 @@ class cache
 		}
 
 		return false;
+	}
+
+	/**
+	 * @param array $options
+	 */
+	public static function set_options(array $options)
+	{
+		$options += [
+			'driver' => mcr_cache_driver::class,
+			'enabled' => true,
+			'expire' => 3600 * 24 * 30,
+		];
+
+		self::$options = $options;
+	}
+
+	/**
+	 * @return cache_driver|null
+	 */
+	public static function get_driver()
+	{
+		return self::$driver;
+	}
+
+	/**
+	 * @param cache_driver $driver
+	 */
+	public static function set_driver(cache_driver $driver)
+	{
+		self::$driver = $driver;
 	}
 
 	/**

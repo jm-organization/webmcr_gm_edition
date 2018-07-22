@@ -14,7 +14,7 @@
 namespace mcr\cache;
 
 
-class cache_value
+class cache_value implements \Serializable
 {
 	/**
 	 * @var null
@@ -65,29 +65,43 @@ class cache_value
 	}
 
 	/**
+	 * Constructs the object
+	 *
+	 * @link  http://php.net/manual/en/serializable.unserialize.php
+	 *
+	 * @param string $serialized <p>
+	 *                           The string representation of the object.
+	 *                           </p>
+	 *
+	 * @return cache_value
+	 * @since 5.1.0
+	 * @throws cache_exception
+	 */
+	public function unserialize($serialized)
+	{
+		if (empty($serialized)) throw new cache_exception('Can`t deserialize empty value. You must pass serialized value.');
+
+		// Десериализируем и устанавливаем данные
+		if (false == $value = unserialize($serialized)) throw new cache_exception('Can`t deserialize received value. (Given: ' . var_export($serialized, true) . ')');
+
+		$this->set_value($value);
+
+		return $this;
+	}
+
+	/**
 	 * Десериализирует установелнное значение.
 	 *
 	 * Значение должно быть сериализированым.
 	 * Если был сериализирован объект,
 	 * то он должен реализовывать метод __wakeup.
 	 *
-	 * @param array $options
-	 *
 	 * @return cache_value
 	 * @throws cache_exception
 	 */
-	public function deserialize(array $options = [])
+	public function deserialize()
 	{
-		$options += [ 'allowed_classes' => true ];
-
-		if (empty($this->value)) throw new cache_exception('Can`t deserialize empty value. You must pass serialized value.');
-
-		// Десериализируем и устанавливаем данные
-		if ($value = unserialize($this->value, $options) == false) throw new cache_exception('Can`t deserialize received value. (Given: ' . var_export($this->value, true) . ')');
-
-		$this->set_value($value);
-
-		return $this;
+		return $this->unserialize($this->value);
 	}
 
 	/**
@@ -101,9 +115,21 @@ class cache_value
 	 */
 	public function to_json($options = 0, $depth = 512)
 	{
-		if (!is_array($this->value)) throw new cache_exception('The Received value must be of array type. (' . gettype($this->value) . var_export($this->value, true) . ' given).');
+		// Проверяем данные.
+		if (!is_array($this->value) && !is_integer($this->value) && $this->value !== null)  {
+			throw new cache_exception('The Received value must be of array type. (' . gettype($this->value) . ' ' . var_export($this->value, true) . ' given).');
+		}
 
-		$this->set_value(json_encode($this->value, $options, $depth));
+		$value = json_encode($this->value, $options, $depth);
+
+		// Если значение не стандартное,
+		// то приводим его к строчному виду,
+		// через экспортирование данных.
+		if (is_bool($value) || $value == null) {
+			$value = var_export($value, true);
+		}
+
+		$this->set_value($value);
 
 		return $this;
 	}
@@ -117,9 +143,19 @@ class cache_value
 	 */
 	private function decode_json($assoc = false, $depth = 512, array $options = [])
 	{
-		if (!is_string($this->value)) throw new cache_exception('The reseived value must be of string type. (' . gettype($this->value) . var_export($this->value, true) . ' given).');
+		if (!is_string($this->value)) throw new cache_exception('The received value must be of string type. (' . gettype($this->value) . var_export($this->value, true) . ' given).');
 
-		if ($value = json_decode($this->value, $assoc, $depth, $options) === null) throw new cache_exception('Can`t transform json to array. (' . gettype($this->value) . var_export($this->value, true) . ' given).');
+		$value = json_decode($this->value, $assoc, $depth, $options);
+
+		// Если значение после декодирование отличается
+		// проверяем его.
+		// Если было возвращено false или пустоту
+		// после декодирования выдаём ошибку.
+		if ($this->value !== $value && (
+			$value == null || $value == false
+			)) {
+			throw new cache_exception('Can`t transform json to array. (' . gettype($this->value) . var_export($this->value, true) . ' given).');
+		}
 
 		$this->set_value($value);
 	}
@@ -158,23 +194,18 @@ class cache_value
 
 	/**
 	 * @return string
-	 * @throws cache_exception
 	 */
 	public function __toString()
 	{
-		if (null !== $this->value && !is_string($this->value) && !is_numeric($this->value) && !is_callable(array($this->value, '__toString'))) {
-			throw new cache_exception('The Response content must be a string or object implementing __toString(), "'.gettype($this->value).'" given.');
-		}
-
 		return (string) $this->value;
 	}
 
 	/**
 	 * Возвращает значение кеша.
 	 *
-	 * @return null
+	 * @return mixed|null
 	 */
-	public function get()
+	public function pick()
 	{
 		return $this->value;
 	}
