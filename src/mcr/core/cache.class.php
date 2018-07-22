@@ -14,6 +14,8 @@
 namespace mcr\core;
 
 
+use mcr\cache\drivers\mcr_cache_driver;
+
 trait cache
 {
 	public static $cache_factory;
@@ -23,10 +25,12 @@ trait cache
 	 */
 	public function init_cache()
 	{
-		self::$cache_factory = new \mcr\cache\cache([
-			'driver' => \mcr\cache\drivers\mcr_cache_driver::class,
+		$options = [
+			'driver' => mcr_cache_driver::class,
 			'enabled' => true,
 			'expire' => 3600 * 24 * 30,
-		]);
+		];
+
+		self::$cache_factory = \mcr\cache\cache::instance($options);
 	}
 }
