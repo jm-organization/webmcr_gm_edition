@@ -10,7 +10,6 @@
  *
  */
 
-use mcr\core_v2;
 use mcr\http\routing\route_collector;
 
 /** @var route_collector $router */
