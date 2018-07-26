@@ -1,5 +1,15 @@
 <?php
 /**
+ * Copyright (c) 2018.
+ * MagicMCR является отдельным и независимым продуктом.
+ * Исходный код распространяется под лицензией GNU General Public License v3.0.
+ *
+ * MagicMCR не является копией оригинального движка WebMCR, а лишь его подверсией.
+ * Разработка MagicMCR производится исключительно в частных интересах. Разработчики, а также лица,
+ * участвующие в разработке и поддержке, не несут ответственности за проблемы, возникшие с движком.
+ */
+
+/**
  * Created in JM Organization.
  *
  * @e-mail       : admin@jm-org.net
@@ -141,9 +151,9 @@ class cache_value implements \Serializable
 	 *
 	 * @throws cache_exception
 	 */
-	private function decode_json($assoc = false, $depth = 512, array $options = [])
+	private function decode_json($assoc = false, $depth = 512, $options = 0)
 	{
-		if (!is_string($this->value)) throw new cache_exception('The received value must be of string type. (' . gettype($this->value) . var_export($this->value, true) . ' given).');
+		if (!is_string($this->value)) throw new cache_exception('The received value must be of string type. (' . gettype($this->value) . ' ' . var_export($this->value, true) . ' given).');
 
 		$value = json_decode($this->value, $assoc, $depth, $options);
 
@@ -154,7 +164,9 @@ class cache_value implements \Serializable
 		if ($this->value !== $value && (
 			$value == null || $value == false
 			)) {
-			throw new cache_exception('Can`t transform json to array. (' . gettype($this->value) . var_export($this->value, true) . ' given).');
+			$type = $assoc ? 'array' : 'object';
+
+			throw new cache_exception('Can`t transform json to ' . $type . '. (' . gettype($this->value) . ' ' . var_export($this->value, true) . ' given).');
 		}
 
 		$this->set_value($value);
@@ -169,7 +181,7 @@ class cache_value implements \Serializable
 	 * @return cache_value
 	 * @throws cache_exception
 	 */
-	public function to_array($depth = 512, array $options = [])
+	public function to_array($depth = 512, $options = 0)
 	{
 		$this->decode_json(true, $depth, $options);
 
@@ -185,7 +197,7 @@ class cache_value implements \Serializable
 	 * @return cache_value
 	 * @throws cache_exception
 	 */
-	public function to_object($depth = 512, array $options = [])
+	public function to_object($depth = 512, $options = 0)
 	{
 		$this->decode_json(false, $depth, $options);
 
