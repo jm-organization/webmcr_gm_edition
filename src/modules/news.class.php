@@ -16,6 +16,8 @@ namespace modules;
 
 use mcr\cache\cache;
 use mcr\cache\cache_value;
+use mcr\core\core_v2;
+use mcr\html\breadcrumbs;
 use mcr\http\request;
 use mcr\validation\validator;
 
@@ -28,6 +30,16 @@ class news extends base_module implements module
 	use validator;
 
 	public $name = self::class;
+
+	public function boot(core_v2 $core)
+	{
+		parent::boot($core);
+
+		breadcrumbs::add(
+			url('news'),
+			translate('news')
+		);
+	}
 
 	/**
 	 * Обрабатывает запрос к модулю.

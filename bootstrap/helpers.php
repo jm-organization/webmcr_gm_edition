@@ -1,5 +1,15 @@
 <?php
 /**
+ * Copyright (c) 2018.
+ * MagicMCR является отдельным и независимым продуктом.
+ * Исходный код распространяется под лицензией GNU General Public License v3.0.
+ *
+ * MagicMCR не является копией оригинального движка WebMCR, а лишь его подверсией.
+ * Разработка MagicMCR производится исключительно в частных интересах. Разработчики, а также лица,
+ * участвующие в разработке и поддержке, не несут ответственности за проблемы, возникшие с движком.
+ */
+
+/**
  * Created in JM Organization.
  *
  * @e-mail       : admin@jm-org.net
@@ -65,6 +75,16 @@ if (!function_exists('blocks')) {
 	function blocks()
 	{
 		return document::$blocks;
+	}
+}
+
+if (!function_exists('breadcrumbs')) {
+	/**
+	 * @return \mcr\html\breadcrumbs
+	 */
+	function breadcrumbs()
+	{
+		return document::$breadcrumbs;
 	}
 }
 

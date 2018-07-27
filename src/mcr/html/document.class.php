@@ -1,5 +1,15 @@
 <?php
 /**
+ * Copyright (c) 2018.
+ * MagicMCR является отдельным и независимым продуктом.
+ * Исходный код распространяется под лицензией GNU General Public License v3.0.
+ *
+ * MagicMCR не является копией оригинального движка WebMCR, а лишь его подверсией.
+ * Разработка MagicMCR производится исключительно в частных интересах. Разработчики, а также лица,
+ * участвующие в разработке и поддержке, не несут ответственности за проблемы, возникшие с движком.
+ */
+
+/**
  * Created in JM Organization.
  *
  * @e-mail       : admin@jm-org.net
@@ -17,9 +27,7 @@ namespace mcr\html;
 use mcr\html\blocks\blocks_manager;
 use mcr\http\request;
 
-use mcr\http\routing\router;
 use modules\base_module;
-use modules\logout;
 use modules\module;
 
 class document
@@ -27,17 +35,17 @@ class document
 	/**
 	 * @var string
 	 */
-	private $layout = '';
+	private $layout = 'global';
 
 	/**
 	 * @var string
 	 */
-	public static $title = '';
+	public static $title;
 
 	/**
 	 * @var string
 	 */
-	public $content = '';
+	public $content;
 
 	/**
 	 * @var blocks_manager|null
@@ -50,9 +58,14 @@ class document
 	public static $menu = null;
 
 	/**
+	 * @var breadcrumbs|null
+	 */
+	public static $breadcrumbs = null;
+
+	/**
 	 * @var string
 	 */
-	public static $stylesheets = '';
+	public static $stylesheets;
 
 	/**
 	 * @var array
@@ -73,8 +86,10 @@ class document
 		self::$menu = new menu($request);
 		// Регистрируем менеджер блоков
 		self::$blocks = new blocks_manager();
+		// Регистрируем хлембные крошки
+		self::$breadcrumbs = new breadcrumbs();
 
-		self::$title = translate('home');
+//		self::$title = translate('home');
 
 		// Определяем шаблон по каторому будет отабражена страница модуля.
 		$this->layout = $module->layout;
@@ -103,9 +118,14 @@ class document
 			// Иначе был отправлен шаблон данных.
 			// Перехваываем и оборачиваем его в layout,
 			// который установлен у модуля.
+			$breadcrumbs = breadcrumbs()->generate();
 			$title = self::$title;
 
-			$_content = self::template($this->layout, compact('content', 'title'));
+			$_content = self::template($this->layout, compact(
+				'content',
+				'title',
+				'breadcrumbs'
+			));
 
 			//response($_content, 'utf-8', 200);
 			return $_content;

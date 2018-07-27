@@ -1,5 +1,15 @@
 <?php
 /**
+ * Copyright (c) 2018.
+ * MagicMCR является отдельным и независимым продуктом.
+ * Исходный код распространяется под лицензией GNU General Public License v3.0.
+ *
+ * MagicMCR не является копией оригинального движка WebMCR, а лишь его подверсией.
+ * Разработка MagicMCR производится исключительно в частных интересах. Разработчики, а также лица,
+ * участвующие в разработке и поддержке, не несут ответственности за проблемы, возникшие с движком.
+ */
+
+/**
  * Created in JM Organization.
  *
  * @e-mail       : admin@jm-org.net
@@ -29,12 +39,25 @@ class breadcrumbs
 	/**
 	 * @var array
 	 */
-	public $routes = [];
+	public static $routes = [];
 
-	public function __construct($routes, $enabled = true)
+	/**
+	 * @var breadcrumbs|null
+	 */
+	private static $instance = null;
+
+	/**
+	 * breadcrumbs constructor.
+	 *
+	 * @param array $routes
+	 * @param bool  $enabled
+	 */
+	public function __construct(array $routes = [], $enabled = true)
 	{
 		$this->enabled = $enabled;
-		$this->routes = $routes;
+		self::$routes += $routes;
+
+		self::$instance = $this;
 	}
 
 	/**
@@ -44,10 +67,10 @@ class breadcrumbs
 	 */
 	public function generate()
 	{
-		$routes = $this->routes;
-		if (empty($routes) && count($routes) < 1) throw new \UnexpectedValueException('Can`t generate breadcrumbs from empty routes');
+		$routes = self::$routes;
+		if (empty($routes) && count($routes) < 1) return '';
 
-		$crumbs = $this->generate_crumbs($this->routes);
+		$crumbs = $this->generate_crumbs(self::$routes);
 
 		if ($this->enabled) $this->view = tmpl('breadcrumbs.list', [ 'crumbs' => $crumbs ]);
 
@@ -82,5 +105,18 @@ class breadcrumbs
 		document::$title = htmlspecialchars($document_title);
 
 		return $crumbs;
+	}
+
+	/**
+	 * @param $url
+	 * @param $name
+	 *
+	 * @return breadcrumbs|null
+	 */
+	public static function add($url, $name)
+	{
+		self::$routes[$name] = $url;
+
+		return self::$instance;
 	}
 }

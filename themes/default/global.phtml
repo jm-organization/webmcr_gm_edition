@@ -87,7 +87,11 @@ use mcr\l10n\l10n;
             </div>
 
             <div class="col-md-8">
-                <?= $content ?>
+                <?php
+                    echo $breadcrumbs;
+
+                    echo $content;
+                ?>
             </div>
         </div>
     </div>
