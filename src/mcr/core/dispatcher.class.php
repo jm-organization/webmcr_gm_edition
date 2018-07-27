@@ -18,7 +18,7 @@ use mcr\html;
 use mcr\http\request;
 use mcr\html\document;
 
-trait application_compiler
+trait dispatcher
 {
 	/**
 	 * @var request
@@ -40,9 +40,12 @@ trait application_compiler
 	 * Ответ состоит из статуса, который вернул маршрутизатор, документа,
 	 * который был получен обработчиком маршрута.
 	 *
+	 * @param core_v2 $core
+	 *
+	 * @return \mcr\http\response
 	 * @throws html\blocks\blocks_manager_exception
 	 */
-	public function compile()
+	public function dispatch(core_v2 $core)
 	{
 		list($status, $route_info, $additional_info) = $this->router->dispatch();
 		$content = '';
@@ -54,10 +57,18 @@ trait application_compiler
 			// Инициализация текущего модуля приложения
 			////////////////////////////////////////////////////////////////////////////
 
+			/** @var \modules\module $module */
 			$module = $this->initialize_module($route_info['controller']);
 
 			if ($module) {
-				$document = new document($module, $this->request, $route_info['action']);
+				$module->boot($core);
+
+				$document = new document(
+					$module,
+					$core->request,
+					$route_info['action']
+				);
+
 				$content = (string) $document->render();
 			}
 		}

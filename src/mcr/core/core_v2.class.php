@@ -36,10 +36,10 @@ define("INSTALLED", $configs->main['install']);
 
 class core_v2
 {
-    use csrf,
-        l10n,
-		application_compiler,
-		cache
+    use cache,
+		l10n,
+		csrf,
+		dispatcher
     ;
 
 	/**
@@ -198,7 +198,7 @@ class core_v2
 			)));
 
 			// Компилируем приложение
-            $this->compile();
+            $this->dispatch($this);
 
 		} catch (\Exception $e) {
 

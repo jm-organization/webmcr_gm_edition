@@ -15,7 +15,7 @@ use mcr\http\routing\route_collector;
 /** @var route_collector $router */
 
 $router->get('/', '\modules\news@index', 'home');
-$router->get('news', '\modules\news@index');
+$router->get('news', '\modules\news@index', 'news');
 
 $router->addGroup('auth/', function(route_collector $router) {
 	$router->get('register', '\modules\auth@register', 'auth.register');
