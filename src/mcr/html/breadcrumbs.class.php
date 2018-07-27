@@ -42,11 +42,6 @@ class breadcrumbs
 	public static $routes = [];
 
 	/**
-	 * @var breadcrumbs|null
-	 */
-	private static $instance = null;
-
-	/**
 	 * breadcrumbs constructor.
 	 *
 	 * @param array $routes
@@ -56,8 +51,6 @@ class breadcrumbs
 	{
 		$this->enabled = $enabled;
 		self::$routes += $routes;
-
-		self::$instance = $this;
 	}
 
 	/**
@@ -110,13 +103,9 @@ class breadcrumbs
 	/**
 	 * @param $url
 	 * @param $name
-	 *
-	 * @return breadcrumbs|null
 	 */
 	public static function add($url, $name)
 	{
 		self::$routes[$name] = $url;
-
-		return self::$instance;
 	}
 }

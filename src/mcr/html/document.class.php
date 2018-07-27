@@ -48,6 +48,11 @@ class document
 	public $content;
 
 	/**
+	 * @var string
+	 */
+	public static $advice;
+
+	/**
 	 * @var blocks_manager|null
 	 */
 	public static $blocks = null;
@@ -100,14 +105,6 @@ class document
 	}
 
 	/**
-	 * @param string $title
-	 */
-	public static function set_title($title)
-	{
-		self::$title = $title;
-	}
-
-	/**
 	 *	Возвращает ответ документ
 	 */
 	public function render()
@@ -121,10 +118,13 @@ class document
 			$breadcrumbs = breadcrumbs()->generate();
 			$title = self::$title;
 
+			$advice = self::$advice;
+
 			$_content = self::template($this->layout, compact(
 				'content',
 				'title',
-				'breadcrumbs'
+				'breadcrumbs',
+				'advice'
 			));
 
 			//response($_content, 'utf-8', 200);

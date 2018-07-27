@@ -27,6 +27,7 @@ namespace modules;
 use mcr\core\core_v2;
 use mcr\database\db;
 use mcr\html\breadcrumbs;
+use mcr\html\document;
 
 abstract class base_module
 {
@@ -36,14 +37,27 @@ abstract class base_module
 
 	/**
 	 * Метод, который вызывается при загрузке модуля.
-	 *
 	 * Принимает экземпляр ядра.
 	 *
 	 * @param core_v2 $core
+	 *
+	 * @return void
 	 */
 	public function boot(core_v2 $core)
 	{
+		$advices = $this->get_advices(config('functions::advice'));
 
+		if (is_array($advices)) {
+			$advices_count = count($advices);
+
+			if ($advices_count == 0) {
+				$advice = translate('e_advice_found');
+			} else {
+				$advice = $advices[rand(0, $advices_count - 1)];
+			}
+
+			document::$advice = tmpl('default_sp.advice', [ 'advice' => $advice ]);
+		}
 	}
 
 	/**
@@ -78,5 +92,16 @@ abstract class base_module
 		}
 
 		return false;
+	}
+
+	private function get_advices($enabled)
+	{
+		if ($enabled) {
+			$advices = file(MCR_THEME_PATH . "default_sp/advice.txt");
+
+			return (count($advices) <= 0) ? [] : $advices;
+		}
+
+		return null;
 	}
 }

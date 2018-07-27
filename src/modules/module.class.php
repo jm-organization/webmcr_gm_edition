@@ -38,5 +38,13 @@ interface module
 	 */
 	public function index(request $request);
 
+	/**
+	 * Метод, который вызывается при загрузке модуля.
+	 * Принимает экземпляр ядра.
+	 *
+	 * @param core_v2 $core
+	 *
+	 * @return void
+	 */
 	public function boot(core_v2 $core);
 }
