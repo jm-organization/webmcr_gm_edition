@@ -1,5 +1,15 @@
 <?php
 /**
+ * Copyright (c) 2018.
+ * MagicMCR является отдельным и независимым продуктом.
+ * Исходный код распространяется под лицензией GNU General Public License v3.0.
+ *
+ * MagicMCR не является копией оригинального движка WebMCR, а лишь его подверсией.
+ * Разработка MagicMCR производится исключительно в частных интересах. Разработчики, а также лица,
+ * участвующие в разработке и поддержке, не несут ответственности за проблемы, возникшие с движком.
+ */
+
+/**
  * Created in JM Organization.
  *
  * @e-mail       : 	admin@jm-org.net
@@ -12,12 +22,12 @@
  * Используетс, как стандартные методы mysqli_result,
  * так и свои собственные.
  *
- *                	Необходим для испоьзования
+ * Необходим для испоьзования
  * при вызове sql таких запросов:
- * 		- SELECT,
- *		- SHOW
- *      - DESCRIBE
- *      - EXPLAIN
+ * - SELECT,
+ * - SHOW,
+ * - DESCRIBE,
+ * - EXPLAIN,
  *
  * Обработка DML запросов данным классом не предусмотренна
  *
@@ -26,7 +36,6 @@
 namespace mcr\database;
 
 
-use mcr\core\core_v2;
 use mcr\log;
 
 /**
@@ -53,7 +62,7 @@ use mcr\log;
  *
  * @see 		\mysqli_result
  */
-class db_result extends core_v2
+class db_result
 {
 	/**
 	 * @var \mysqli|null
@@ -73,13 +82,9 @@ class db_result extends core_v2
 	 */
 	public function __construct($connection, $result)
 	{
-		global $configs;
-
 		$this->connection = $connection;
 
 		$this->result = $result;
-
-		parent::__construct($configs);
 	}
 
 	/**
