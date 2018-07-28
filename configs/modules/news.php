@@ -1,7 +1,7 @@
 <?php
 
 return array (
-  'MOD_ENABLE' => true,
+  'MOD_ENABLE' => false,
   'MOD_TITLE' => 'Новости',
   'MOD_DESC' => 'Модуль новостей',
   'MOD_AUTHOR' => 'Qexy',

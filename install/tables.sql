@@ -1,3 +1,10 @@
+CREATE TABLE IF NOT EXISTS `mcr_configs` (
+  `option_key` varchar(255) NOT NULL,
+  `option_value` mediumtext DEFAULT NULL,
+  `default_value` mediumtext DEFAULT NULL,
+  UNIQUE KEY `option_key` (`option_key`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+#line
 CREATE TABLE IF NOT EXISTS `mcr_l10n_phrases` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `language_id` int(10) NOT NULL DEFAULT '1',
