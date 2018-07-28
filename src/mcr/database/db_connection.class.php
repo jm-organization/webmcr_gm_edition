@@ -86,7 +86,7 @@ class db_connection
 		$this->dbname = $configs->db['base'];
 		$this->port = $configs->db['port'];
 
-		$this->configs = $configs;
+		$this->configs = $configs->db;
 
 		$this->connection = $this->connect();
 	}
