@@ -155,6 +155,7 @@ trait l10n
 		self::$locale = config('main::s_lang');
 
 		if (INSTALLED) {
+			// TODO: rewrite via new cache adapter
 
 			// если движок установлен,
 			// то устанвливаем локаль сайта с конфига по умолчанию.

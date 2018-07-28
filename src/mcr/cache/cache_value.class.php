@@ -38,7 +38,7 @@ class cache_value implements \Serializable
 	 */
 	public function __construct($value = null)
 	{
-		if (!empty($value)) $this->set_value($value);
+		if ($value != null) $this->set_value($value);
 	}
 
 	/**
@@ -61,8 +61,6 @@ class cache_value implements \Serializable
 	 */
 	public function serialize()
 	{
-		if (empty($this->value)) throw new cache_exception('Can`t serialize empty value. You must set serializable value.');
-
 		if (is_object($this->value)) {
 			// Проверяем наличие метода __sleep у переданного объекта
 			if (!method_exists($this->value, '__sleep')) throw new cache_exception('The Received object \\' . get_class($this->value) . ' for serialization must be a implementing __sleep() method.');
