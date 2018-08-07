@@ -1,0 +1,30 @@
+<form method="post" class="ui flow form">
+    <h3><?= translate('install_progress') ?> - <?= translate('step_2') ?></h3>
+
+    <p style="white-space: pre-line;"><?= translate('install_step_3_desc') ?></p>
+
+    <div class="field">
+        <label for="login"><?= translate('adm_login') ?></label>
+        <input type="text" required id="login" name="login" value="<?= old('login') ?>">
+    </div>
+
+    <div class="field">
+        <label for="password"><?= translate('adm_pass') ?></label>
+        <input type="password" required id="password" name="password" value="<?= old('password') ?>">
+    </div>
+
+    <div class="field">
+        <label for="repassword"><?= translate('adm_repass') ?></label>
+        <input type="password" required id="repassword" name="repassword" value="<?= old('repassword') ?>">
+    </div>
+
+    <div class="field">
+        <label for="email"><?= translate('adm_mail') ?></label>
+        <input type="email" required id="email" name="email" value="<?= old('email') ?>">
+    </div>
+
+    <div class="ui divider"></div>
+
+    <button class="ui right floated next secondary button"><?= translate('next') ?></button>
+    <a class="ui right floated button" href="/install/index.php?reinstall/"><?= translate('reinstall') ?></a>
+</form>

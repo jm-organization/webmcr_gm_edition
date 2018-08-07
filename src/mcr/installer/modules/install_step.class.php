@@ -16,11 +16,11 @@ namespace mcr\installer\modules;
 
 use mcr\installer\install;
 
-class install_step extends install
+class install_step
 {
 	public function __construct()
 	{
-		parent::__construct();
+
 	}
 
 	public function content() { }

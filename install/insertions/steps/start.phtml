@@ -1,0 +1,43 @@
+<form method="post" class="ui form flow">
+    <h3><?= translate('install_step_1_title') ?></h3>
+
+    <p style="white-space: pre-line;"><?= translate('install_step_1_desc') ?></p>
+
+    <div class="ui styled fluid accordion">
+
+        <?php
+        $next_step_not_accesed = false;
+
+        foreach ($requirements as $requirement_id => $expression) {
+          $requirement_icon = $expression ? '<i class="green check circle icon"></i>' : '<i class="red times circle icon"></i>';
+          $requirement_desc = trim(translate($requirement_id . '_desc'));
+
+          if (!$expression) {
+	          $next_step_not_accesed = true;
+          }
+
+          ?>
+
+            <div class="title">
+                <?= $requirement_icon ?>
+                <?= translate($requirement_id) ?>
+            </div>
+            <div class="content">
+                <p class="transition hidden"><?= $requirement_desc ?></p>
+            </div>
+
+        <?php } ?>
+
+    </div>
+
+    <div class="ui divider"></div>
+
+
+    <a class="ui left floated button" href="#" onclick="window.location.reload()"><?= translate('update') ?></a>
+
+    <button class="ui right floated next <?= $next_step_not_accesed ? 'disabled' : '' ?> secondary button"><?= translate('next') ?></button>
+</form>
+
+<script>
+    $('.ui.accordion').accordion();
+</script>

@@ -19,10 +19,10 @@ use mcr\log;
 include 'autoloader.php';
 
 // Загружаем конфиги
-$configs = new config();
+$configs = config::get_instance();
 
 // Запускаем логирование
-$log = new log($configs->main['debug'], log::L_ALL);
+$log = new log($configs->get('mcr::app.debug'), log::L_ALL);
 // Регистрируем функцию, которая будет отслеживать события,
 // которые прекращаюит работу скрипта
 register_shutdown_function(function () use ($log) {

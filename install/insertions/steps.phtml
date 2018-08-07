@@ -1,0 +1,27 @@
+<?php use mcr\installer\install;
+
+$icons = [
+	'start'  => 'tasks',
+	'step_1' => 'database',
+	'step_2' => 'user secret',
+	'step_3' => 'cogs',
+	'finish' => 'check',
+];
+
+foreach (install::$steps as $_step => $_step_number) {
+	if ($_step !== 'finish') {
+		$class = $step == $_step ? 'active ' : (install::step_is_passed($_step) ? 'completed ' : '');
+		$description = '<div class="description">' . translate($_step . '_desc') . '</div>';
+    } else {
+	    $class = $step == $_step ? 'active ' : '';
+	    $description = '';
+    }
+?>
+	<div class="<?= $class ?>step">
+        <i class="<?= $icons[$_step] ?> icon"></i>
+		<div class="content">
+			<div class="title"><?= translate($_step) ?></div>
+            <?= $description ?>
+		</div>
+	</div>
+<?php }

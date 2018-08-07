@@ -1,0 +1,49 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title><?=config('mcr::site.name')?> — <?= $title ?></title>
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+		<meta name="description" content="<?= config('mcr::site.description') ?>">
+		<meta name="keywords" content="<?= config('mcr::site.keywords') ?>">
+		<meta name="author" content="NC22 &amp; Qexy.org &amp; Magicmen aka Magicfar4">
+
+		<base href="<?= base_url() ?>">
+
+		<link rel="stylesheet" type="text/css" href="css/semantic.css">
+		<link rel="stylesheet" type="text/css" href="css/global.css">
+		<link rel="stylesheet" type="text/css" href="css/global-responsive.css">
+
+		<script type="text/javascript" src="js/jquery.min.js"></script>
+		<script type="text/javascript" src="js/semantic.min.js"></script>
+		<script type="text/javascript" src="js/global.js"></script>
+	</head>
+
+	<body>
+        <div class="ui container">
+
+            <?php if ($step != 'reinstall'): ?>
+            <div class="ui fluid steps"><?php include 'steps.phtml'; ?></div>
+            <?php endif; ?>
+
+            <div class="ui segment">
+                <?= $content ?>
+            </div>
+
+        </div>
+
+        <div class="ui container center aligned" style="padding-bottom: 60px"><?= FEEDBACK ?><br><?= VERSION ?></div>
+
+        <div class="ui messages"><?php echo messages(); ?></div>
+
+        <script>
+            $('.popup, .tooltip').popup();
+
+            setTimeout(function () {
+                $('.message').transition('fade left');
+            }, 6000);
+        </script>
+	</body>
+</html>

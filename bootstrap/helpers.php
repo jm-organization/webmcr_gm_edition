@@ -21,6 +21,7 @@
  * @Documentation:
  */
 
+use mcr\config;
 use mcr\exception\exception_handler;
 use mcr\http\routing\url_builder;
 use mcr\html\blocks\blocks_manager;
@@ -125,34 +126,7 @@ if (!function_exists('config')) {
 	 */
 	function config($namespace)
 	{
-		global $configs;
-
-		$namespace = explode('::', $namespace);
-
-		if (count($namespace) == 2) {
-			$config_root = $namespace[0];
-			$config_param = $namespace[1];
-
-			$config = @$configs->$config_root;
-
-			if (!empty($config)) {
-				$config_param_items = explode('.', $config_param);
-
-				foreach ($config_param_items as $item) {
-					if (array_key_exists($item, $config)) {
-						$config = $config[$item];
-					}
-				}
-
-				return $config;
-			}
-		} else {
-			$property = $namespace[0];
-
-			return @$configs->$property;
-		}
-
-		return null;
+		return config::get_instance()->get($namespace);
 	}
 }
 

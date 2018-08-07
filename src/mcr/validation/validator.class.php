@@ -51,7 +51,6 @@ trait validator
 	 *
 	 * @return \Particle\Validator\ValidationResult
 	 * @throws validation_exception
-	 * @throws \engine\http\routing\url_builder_exception
 	 */
 	public function validate(array $value, array $rules, $route = 'home')
 	{
@@ -75,7 +74,7 @@ trait validator
 				}
 			}
 
-			return $redirect->route($route);
+			return $redirect->url($_SERVER['HTTP_REFERER']);
 		}
 
 	}
@@ -135,8 +134,10 @@ trait validator
 					list($rule, $arguments) = $rule_and_arguments;
 
 					$this->set_rule($validator_rule, $rule);
-					if (!empty($validator_rule)) {
+					if (!empty($validator_rule) && $validator_rule != 'regex') {
 						$arguments = explode(',', $arguments);
+					} else {
+						$arguments = [$arguments];
 					}
 
 					break;
