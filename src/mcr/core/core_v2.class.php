@@ -25,6 +25,7 @@ use mcr\http\csrf;
 use mcr\http\request;
 use mcr\http\routing\router;
 use mcr\l10n\l10n;
+use mcr\options;
 
 if (!defined("MCR")) {
 	exit("Hacking Attempt!");
@@ -32,7 +33,7 @@ if (!defined("MCR")) {
 
 global $configs;
 
-define("INSTALLED", $configs->main['install']);
+define("INSTALLED", installed()->status);
 
 class core_v2
 {
@@ -49,6 +50,11 @@ class core_v2
 	 * @var config|object|null
 	 */
 	public $configs = null;
+
+	/**
+	 * @var options|null
+	 */
+	private static $options;
 
 	/**
 	 * Основное соединение с базой данных.
@@ -78,12 +84,12 @@ class core_v2
 	public function __construct(config $configs)
 	{
 		// Если приложение не установленно, то перенаправляем на скрипт установки
-		if (!INSTALLED) {
-			return header("Location: /install/index.php");
-		}
+		if (!INSTALLED) return header("Location: /install/index.php");
 
 		// Сохранение конфигураций в локальную среду ядра.
 		$this->configs = $configs;
+
+		self::$options = options::get_instance($configs);
 
 		////////////////////////////////////////////////////////////////////////////
 		// Инициализация Хашера паролей
@@ -206,7 +212,7 @@ class core_v2
 
 			$exception = new exception_handler($e, [
 				'log' => true,
-				'throw_on_screen' => config('main::debug'),
+				'throw_on_screen' => config('mcr::app.debug'),
 			]);
 
 			// Если возникли исключения:

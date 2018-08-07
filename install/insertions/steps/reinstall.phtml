@@ -1,0 +1,20 @@
+<form method="post" class="ui form">
+	<div class="ui center aligned text container">
+
+        <h2 class="ui center aligned icon header">
+            <i class="history icon"></i>
+            <div class="content">
+			    <?= translate('reinstall') ?>
+                <div class="sub header"><?= translate('reinstall_desc') ?></div>
+            </div>
+        </h2>
+
+        <div class="ui divider"></div>
+
+        <p>
+            <button class="ui button"><?= translate('yes') ?></button>
+            <a class="ui secondary button" href="<?= $_SERVER['HTTP_REFERER'] ?>"><?= translate('no') ?></a>
+        </p>
+
+    </div>
+</form>

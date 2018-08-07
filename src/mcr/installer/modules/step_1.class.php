@@ -3,91 +3,121 @@
 namespace mcr\installer\modules;
 
 
-if (!defined("MCR")) {
-	exit("Hacking Attempt!");
-}
+use mcr\config;
+use mcr\installer\install;
+use mcr\validation\validator;
+
+if (!defined("MCR")) exit("Hacking Attempt!");
 
 class step_1 extends install_step
 {
-	public function content()
+	use validator;
+
+	const tables = __DIR__ . '/../database/tables/';
+	const seeds = __DIR__ . '/../database/seeds/';
+
+	/**
+	 * @var \mysqli
+	 */
+	public static $connection;
+
+	/**
+	 * Connect and save DB connection data.
+	 * Fill DB and tables in DB.
+	 *
+	 * @throws \mcr\validation\validation_exception
+	 */
+	public function save()
 	{
-		global $configs;
+		$_data = array_trim_value($_POST);
+		$this->validate($_data, [
+			'host'      => 'required',
+			'port'      => 'required',
+			'basename'  => 'required',
+			'username'  => 'required',
+			'passwd'    => 'required'
+		]);
 
-		$this->title = $this->lng['mod_name'] . ' — ' . $this->lng['step_1'];
+		// Получаем соединение с базой и устанвливаем sql_mode
+		self::connect_to_db($_data)->query("SET GLOBAL sql_mode='NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION'");
+		// Сохраняем конфиги
+		config::save($_data, 'db');
 
-		if (!isset($_SESSION['start'])) {
-			$this->notify('', '', 'install/');
-		}
-		if (isset($_SESSION['step_1'])) {
-			$this->notify('', '', 'install/?do=step_2');
-		}
+		// Заполняем базу таблицами, а затем таблици содержимым.
+		self::fill_db();
+		self::fill_tables();
 
-		$_SESSION['f_host'] = (isset($_POST['host'])) ? $this->HSC($_POST['host']) : config('db::host');
-		$_SESSION['f_port'] = (isset($_POST['port'])) ? intval($_POST['port']) : config('db::port');
-		$_SESSION['f_base'] = (isset($_POST['base'])) ? $this->HSC($_POST['base']) : config('db::base');
-		$_SESSION['f_user'] = (isset($_POST['user'])) ? $this->HSC($_POST['user']) : config('db::user');
-		$_SESSION['f_pass'] = (isset($_POST['pass'])) ? $this->HSC($_POST['pass']) : config('db::pass');
+		// Закрываем соединение.
+		self::$connection->close();
 
-		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-			$db = @new \mysqli($_SESSION['f_host'], $_SESSION['f_user'], $_SESSION['f_pass'], $_SESSION['f_base'], $_SESSION['f_port']);
-			$error = $db->connect_error;
+		install::remember_step('step_1');
+		install::to_next_step();
+	}
 
-			if (!empty($error)) {
-				$this->notify($this->lng['e_connection'] . ' | ' . $error, $this->lng['e_msg'], 'install/?do=step_1');
+	/**
+	 * GET db connect data form
+	 *
+	 * @return string
+	 */
+	public function create()
+	{
+		install::$page_title = translate('mod_name') . ' — ' . translate('step_1');
+
+		return tmpl('steps.step_1');
+	}
+
+	/**
+	 * Возвращает соединение к базе данных
+	 *
+	 * @param $props
+	 *
+	 * @return \mysqli
+	 */
+	private static function connect_to_db($props)
+	{
+		if (empty(self::$connection)) {
+			self::$connection = @new \mysqli($props['host'], $props['username'], $props['passwd'], $props['basename'], $props['port']);
+
+			if (!empty(self::$connection->connect_error)) {
+				$message = [ 'title' => translate('e_msg'), 'text' => translate('e_connection') ];
+
+				return redirect()->with('message', $message)->url('/install/index.php?step_1/');
 			}
-
-			$_db =  config('db');
-			$_db['host'] = $_SESSION['f_host'];
-			$_db['port'] = $_SESSION['f_port'];
-			$_db['base'] = $_SESSION['f_base'];
-			$_db['user'] = $_SESSION['f_user'];
-			$_db['pass'] = $_SESSION['f_pass'];
-
-			if (!$configs->savecfg($_db, 'db.php', 'db')) {
-				$this->notify($this->lng['e_msg'], $this->lng['e_write'], 'install/?do=step_1');
-			}
-
-			$tables = file(DIR_INSTALL.'tables.sql');
-
-			@$db->query("SET GLOBAL sql_mode='NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION'");
-
-			$string = "";
-
-			foreach ($tables as $key => $value) {
-
-				$value = trim($value);
-
-				if ($value == '#line') {
-					$string = trim($string);
-
-					@$db->query($string);
-
-					$string = "";
-					continue;
-				}
-
-				$value = str_replace('~base_url~', URL_ROOT, $value);
-
-				$string .= $value;
-			}
-
-			$query = $db->query("UPDATE `mcr_groups` SET `id`='0' WHERE `id`='4'");
-			if (!$query) {
-				$this->notify($this->lng['e_upd_group'], $this->lng['e_msg'], 'install/?do=step_1');
-			}
-
-			$query = $db->query("ALTER TABLE `mcr_groups` AUTO_INCREMENT=0");
-			if (!$query) {
-				$this->notify($this->lng['e_upd_group'], $this->lng['e_msg'], 'install/?do=step_1');
-			}
-
-			$_SESSION['step_1'] = true;
-
-			$this->notify($this->lng['step_2'], $this->lng['db_settings'], 'install/?do=step_2');
 		}
 
-		$data = [];
+		return self::$connection;
+	}
 
-		return $this->sp('step_1.phtml', $data);
+	private static function fill_db()
+	{
+		$tables = install::$tables;
+
+		foreach ($tables as $index => $table) {
+			$table = file_get_contents(self::tables . $table . '.sql');
+
+			self::make_table($table);
+		}
+	}
+
+	private static function fill_tables()
+	{
+		$seeds = scandir(self::seeds);
+
+		foreach ($seeds as $seed) {
+			if ($seed == '.' || $seed == '..') continue;
+
+			$query = file_get_contents(self::seeds . $seed);
+
+			self::$connection->query($query);
+		}
+	}
+
+	private static function make_table($sql)
+	{
+		if (self::$connection->multi_query($sql)) {
+			do {
+				if ($result = self::$connection->store_result()) mysqli_free_result($result);
+			} while (self::$connection->next_result());
+		}
 	}
 }

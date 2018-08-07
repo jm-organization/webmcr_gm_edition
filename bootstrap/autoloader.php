@@ -1,4 +1,13 @@
 <?php
+/**
+ * Copyright (c) 2018.
+ * MagicMCR является отдельным и независимым продуктом.
+ * Исходный код распространяется под лицензией GNU General Public License v3.0.
+ *
+ * MagicMCR не является копией оригинального движка WebMCR, а лишь его подверсией.
+ * Разработка MagicMCR производится исключительно в частных интересах. Разработчики, а также лица,
+ * участвующие в разработке и поддержке, не несут ответственности за проблемы, возникшие с движком.
+ */
 
 $aliases = require __DIR__ . '/../src/libraries.php';
 
@@ -11,11 +20,11 @@ $aliases = require __DIR__ . '/../src/libraries.php';
  * @Date         : 30.06.2018
  * @Time         : 19:35
  *
- * @Documentation: Главный автозагрузжик приложения.
+ * Главный автозагрузжик приложения.
  *
  * @param $classname
  */
-function __autoload($classname) {
+function mcr_autoloader($classname) {
 	global $aliases;
 
 	// Извлекаем эллементы пространства имён загружаемого класса.
@@ -50,3 +59,5 @@ function load_if_exist($file) {
 	}
 
 }
+
+spl_autoload_register('mcr_autoloader');

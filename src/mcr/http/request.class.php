@@ -21,7 +21,7 @@ class request
 	/**
 	 * @var array
 	 */
-	private $attributes = [];
+	private static $attributes = [];
 
 	/**
 	 * @var string
@@ -46,15 +46,15 @@ class request
 
 	private function set_attributes()
 	{
-		$this->attributes = array_merge($this->attributes, $_POST, $_GET);
+		self::$attributes = array_merge(self::$attributes, $_POST, $_GET);
 
 		// Очишаем пришедшие данные от пробелов в начале и конце.
-		$this->attributes = array_map(function($attr) {
+		self::$attributes = array_map(function($attr) {
 			return trim($attr);
-		}, $this->attributes);
+		}, self::$attributes);
 
-		if (is_filled($_FILES)) {
-			$this->attributes['files'] = $_FILES;
+		if (!empty($_FILES)) {
+			self::$attributes['files'] = $_FILES;
 		}
 	}
 
@@ -88,7 +88,7 @@ class request
 	 */
 	public function put(array $attributes)
 	{
-		$this->attributes = array_merge($this->attributes, $attributes);
+		self::$attributes = array_merge(self::$attributes, $attributes);
 
 		return $this;
 	}
@@ -98,9 +98,9 @@ class request
 	 *
 	 * @return array
 	 */
-	public function all()
+	public static function all()
 	{
-		return $this->attributes;
+		return self::$attributes;
 	}
 
 	/**
@@ -133,6 +133,33 @@ class request
 	}
 
 	/**
+	 * @param      $property
+	 * @param null $default
+	 *
+	 * @return null
+	 */
+	public function old($property, $default = null)
+	{
+		// Если есть масив параметров, которые были запомнены
+		if (isset($_SESSION['properties'])) {
+			// и в них есть требуемый параметр
+			if (isset($_SESSION['properties'][$property])) {
+
+				// Запоминаем его локально чтобы удалить из общего реестра
+				$value = $_SESSION['properties'][$property];
+				// удаляем
+				unset($_SESSION['properties'][$property]);
+
+				// Возвращаем его
+				return $value;
+
+			}
+		}
+
+		return $default;
+	}
+
+	/**
 	 * @param $key
 	 *
 	 * @return bool
@@ -156,7 +183,7 @@ class request
 		}
 
 		if (array_key_exists($key, $this->all())) {
-			return $this->all()[$key];
+			return self::all()[$key];
 		}
 
 		return null;

@@ -55,7 +55,7 @@ trait storage_adapter
 		$folders_count = count($folders);
 
 		// Определяем путь
-		$path = $base_path . $this->dot_to_slash($path);
+		$path = $base_path . $this->dot_to_slash($path) . '/';
 
 		// Если такого пути нет, создаём его.
 		if (!file_exists($path)) {
@@ -75,6 +75,6 @@ trait storage_adapter
 
 	public function dot_to_slash($path)
 	{
-		return str_replace('.', '/', $path) . '/';
+		return str_replace('.', '/', $path);
 	}
 }

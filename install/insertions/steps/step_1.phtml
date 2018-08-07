@@ -1,0 +1,38 @@
+<form method="post" class="ui flow form">
+	<h3><?= translate('install_progress') ?> - <?= translate('step_1') ?></h3>
+
+	<p style="white-space: pre-line;"><?= translate('install_step_2_desc') ?></p>
+
+    <div class="field">
+        <div class="two fields">
+            <div class="field">
+                <label><?= translate('db_host') ?></label>
+                <input type="text" name="host" value="<?= old('host', '127.0.0.1') ?>" placeholder="<?= translate('db_host') ?>">
+            </div>
+            <div class="field">
+                <label><?= translate('db_port') ?></label>
+                <input type="text" name="port" value="<?= old('port', '3306') ?>" placeholder="<?= translate('db_port') ?>">
+            </div>
+        </div>
+    </div>
+
+    <div class="field">
+        <label><?= translate('db_name') ?></label>
+        <input type="text" name="basename" value="<?= old('basename') ?>" placeholder="<?= translate('db_name') ?>">
+    </div>
+
+    <div class="field">
+        <label><?= translate('db_user') ?></label>
+        <input type="text" name="username" value="<?= old('username', 'root') ?>" placeholder="<?= translate('db_user') ?>">
+    </div>
+
+    <div class="field">
+        <label><?= translate('db_pass') ?></label>
+        <input type="password" value="<?= old('passwd') ?>" name="passwd" placeholder="<?= translate('db_pass') ?>">
+    </div>
+
+    <div class="ui divider"></div>
+
+    <button class="ui right floated next secondary button"><?= translate('next') ?></button>
+    <a class="ui right floated button" href="/install/index.php?reinstall/"><?= translate('reinstall') ?></a>
+</form>

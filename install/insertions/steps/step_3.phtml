@@ -1,0 +1,103 @@
+<form method="post" class="ui flow form">
+    <h3><?= translate('install_progress') ?> - <?= translate('step_3') ?></h3>
+
+    <p style="white-space: pre-line;"><?= translate('install_step_4_desc') ?></p>
+
+    <div>
+        <div class="ui horizontal divider"><?= translate('site_info_divider') ?></div>
+
+        <div class="content">
+            <p><?= translate('site_info_desc') ?></p>
+
+            <div class="field">
+                <label for="s_name"><?= translate('site_name') ?></label>
+                <input type="text" id="s_name" name="s_name" value="<?= old('s_name', config('mcr::site.name')) ?>">
+            </div>
+
+            <div class="field">
+                <label for="s_about"><?= translate('site_desc') ?></label>
+                <input type="text" id="s_about" name="s_about" value="<?= old('s_about', config('mcr::site.description')) ?>">
+            </div>
+
+            <div class="field">
+                <label for="s_keywords"><?= translate('site_keys') ?></label>
+                <input type="text" id="s_keywords" name="s_keywords" value="<?= old('s_keywords', config('mcr::site.keywords')) ?>">
+            </div>
+        </div>
+
+
+        <div class="ui horizontal divider"><?= translate('site_mail_settings_divider') ?></div>
+
+        <div class="content">
+            <p><?= translate('site_mail_settings_desc') ?></p>
+
+            <h4 class="ui dividing header"><?= translate('site_mail_emailes') ?></h4>
+
+            <div class="field">
+                <div class="two fields">
+                    <div class="field">
+                        <label for="mail_from_name"><?= translate('mail_from_name') ?></label>
+                        <input type="text" id="mail_from_name" name="mail_from_name" value="<?= old('mail_from_name', config('mail::from_name')) ?>">
+                    </div>
+                    <div class="field">
+                        <label for="mail_from"><?= translate('mail_from') ?></label>
+                        <input type="text" id="mail_from" name="mail_from" value="<?= old('mail_from', config('mail::from')) ?>">
+                    </div>
+                </div>
+            </div>
+
+            <div class="field">
+                <div class="two fields">
+                    <div class="field">
+                        <label for="mail_reply_name"><?= translate('mail_reply_name') ?></label>
+                        <input type="text" id="mail_reply_name" name="mail_reply_name" value="<?= old('mail_reply_name', config('mail::reply_name')) ?>">
+                    </div>
+                    <div class="field">
+                        <label for="mail_reply"><?= translate('mail_reply') ?></label>
+                        <input type="text" id="mail_reply" name="mail_reply" value="<?= old('mail_reply', config('mail::reply')) ?>">
+                    </div>
+                </div>
+            </div>
+
+            <h4 class="ui dividing header"><?= translate('site_mail_smtp') ?></h4>
+
+            <div class="inline fields">
+                <div class="field">
+                    <div class="ui toggle checkbox">
+                        <input type="checkbox" tabindex="0" value="1" name="smtp" class="hidden" <?= old('smtp', config('mail::smtp')) ? 'checked' : "" ?> >
+                        <label><?= translate('smtp_use') ?></label>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <div class="ui toggle checkbox">
+                        <input type="checkbox" tabindex="0" value="1" name="smtp_tls" class="hidden" <?= old('smtp_tls', config('mail::smtp_tls')) ? 'checked' : "" ?> >
+                        <label><?= translate('smtp_tls') ?></label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="field">
+                <label for="smtp_host"><?= translate('smtp_host') ?></label>
+                <input type="text" id="smtp_host" name="smtp_host" value="<?= old('smtp_host', config('mail::smtp_host')) ?>">
+            </div>
+
+            <div class="field">
+                <label for="smtp_user"><?= translate('smtp_user') ?></label>
+                <input type="text" id="smtp_user" name="smtp_user" value="<?= old('smtp_user', config('mail::smtp_user')) ?>">
+            </div>
+
+            <div class="field">
+                <label for="smtp_pass"><?= translate('smtp_pass') ?></label>
+                <input type="text" id="smtp_pass" name="smtp_pass" value="<?= old('smtp_pass', config('mail::smtp_pass')) ?>">
+            </div>
+        </div>
+    </div>
+
+    <div class="ui divider"></div>
+
+    <button class="ui right floated next secondary button"><?= translate('next') ?></button>
+    <a class="ui right floated button" href="/install/index.php?reinstall/"><?= translate('reinstall') ?></a>
+</form>
+
+<script>$('.ui.checkbox').checkbox();</script>
