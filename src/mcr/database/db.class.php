@@ -17,6 +17,15 @@ namespace mcr\database;
 use mcr\core\core_v2;
 use mcr\log;
 
+/**
+ * Class db
+ *
+ * @package mcr\database
+ *
+ * @method  static db_query_builder 	table($name)
+ *
+ * @see     db_query_builder
+ */
 class db extends core_v2
 {
 	/**
@@ -47,31 +56,25 @@ class db extends core_v2
 	 */
 	public static function query($query)
 	{
-		global $log;
+		$query = self::query_validate($query);
+		$connection = self::$db_connection->connection;
 
-		$query = trim($query);
+		if (!empty($connection)) {
+			self::$count_queries += 1;
+			self::$count_queries_real += 1;
 
-		if (!empty($query)) {
+			$result = $connection->query($query);
 
-			$connection = self::$db_connection->connection;
+			if (!$result) {
+				global $log;
 
-			if (!empty($connection)) {
-				self::$count_queries += 1;
-				self::$count_queries_real += 1;
-
-				$result = $connection->query($query);
-
-				if (!$result) {
-					$log->write(mysqli_error($connection)." in query: \"".$query."\".", log::MYSQL_ERROR);
-				}
-
-				return new db_result($connection, $result);
-			} else {
-				throw new db_exception(self::$db_connection->connect_error, log::MYSQL_ERROR);
+				$log->write(mysqli_error($connection)." in query: \"".$query."\".", log::MYSQL_ERROR);
 			}
-		} else {
-			throw new db_exception('db::query(): Empty query', log::MYSQL_WARNING);
+
+			return new db_result($connection, $result);
 		}
+
+		throw new db_exception(self::$db_connection->connect_error, log::MYSQL_ERROR);
 	}
 
 	/**
@@ -113,4 +116,38 @@ class db extends core_v2
 		return self::$db_connection->connection->real_escape_string($string);
 	}
 
+	/**
+	 * @param $method
+	 * @param $arguments
+	 *
+	 * @return db_query_builder|null
+	 * @throws db_exception
+	 */
+	public static function __callStatic($method, $arguments)
+	{
+		$query_builder = db_query_builder::get_instance();
+
+		if (method_exists($query_builder, $method)) {
+			$query_builder->$method(...$arguments);
+
+			return $query_builder;
+		}
+
+		throw new db_exception("db_query_builder: Undefined method '$method'.");
+	}
+
+	/**
+	 * @param $query
+	 *
+	 * @return string
+	 * @throws db_exception
+	 */
+	private static function query_validate($query)
+	{
+		$query = trim($query);
+
+		if (empty($query)) throw new db_exception('db::query(): Empty query', log::MYSQL_WARNING);
+
+		return $query;
+	}
 }

@@ -26,9 +26,14 @@ use mcr\cache\cache_exception;
 use mcr\config;
 use mcr\core\mcr_registry;
 use mcr\http\request;
-use mcr\options;
+use mcr\configs_provider;
 use mcr\exception\exception_handler;
 use mcr\hashing\bcrypt_hasher;
+
+function installer($component)
+{
+	return mcr_registry::get($component);
+}
 
 class install
 {
@@ -61,11 +66,11 @@ class install
 	 * @var array
 	 */
 	public static $steps = [
-		'start'  => 0,
+		'start' => 0,
 		'step_1' => 1,
 		'step_2' => 2,
 		'step_3' => 3,
-		'finish' => 6,
+		'finish' => 4,
 	];
 
 	/**
@@ -86,7 +91,7 @@ class install
 			mcr_registry::set([
 				mcr_registry::configs => $configs,
 				mcr_registry::cache => \mcr\cache\cache::instance(),
-				mcr_registry::options => options::get_instance($configs),
+				mcr_registry::options => configs_provider::get_instance($configs),
 
 				mcr_registry::hasher => new bcrypt_hasher(),
 
@@ -113,6 +118,7 @@ class install
 		// В них нету внешних связей, но с
 		// других таблиц могут быть связит к ним.
 		// Порядок: по алфавиту
+		'mcr_blocks_configs',
 		'mcr_configs',
 		'mcr_l10n_languages',
 		'mcr_l10n_phrases',
@@ -120,6 +126,7 @@ class install
 		'mcr_menu_adm_groups',
 		'mcr_menu_adm_icons',
 		'mcr_monitoring',
+		'mcr_modules_configs',
 		'mcr_online',
 		'mcr_permissions',
 
@@ -173,12 +180,9 @@ class install
 			$content = $this->handle($step, $action);
 			$title = self::$page_title;
 
-			$installation_page = tmpl('index',
-				compact('title', 'content', 'step')
-			);
+			$installation_page = tmpl('index', compact('title', 'content', 'step'));
 
 			response()->content($installation_page);
-
 		} catch (\Exception $e) {
 			$this->handle_error($e);
 		}
@@ -207,7 +211,7 @@ class install
 	private function handle($step, $action)
 	{
 		if ($this->check_step($step)) {
-			$step = '\mcr\installer\modules\\' . $step;
+			$step = '\mcr\installer\modules\\'.$step;
 
 			if (class_exists($step)) {
 				/** @var \mcr\installer\modules\install_step $step */
@@ -216,10 +220,10 @@ class install
 				if (method_exists($step, $action)) {
 					return $step->$action();
 				} else {
-					throw new \UnexpectedValueException("Unexpected step handler " . get_class($step) . "@$action. Contact the team MagicMCR.");
+					throw new \UnexpectedValueException("Unexpected step handler ".get_class($step)."@$action. Contact the team MagicMCR.");
 				}
 			} else {
-				throw new \UnexpectedValueException("Unexpected step " . get_class($step) . ". Contact the team MagicMCR.");
+				throw new \UnexpectedValueException("Unexpected step ".get_class($step).". Contact the team MagicMCR.");
 			}
 		}
 	}
@@ -258,9 +262,11 @@ class install
 	 */
 	private static function passed_steps()
 	{
-		$passed_steps = MCR_ROOT . 'data/tmp/.install-passed-steps';
+		$passed_steps = MCR_ROOT.'data/tmp/.install-passed-steps';
 
-		if (!file_exists($passed_steps)) file_put_contents($passed_steps, 'null');
+		if (!file_exists($passed_steps)) {
+			file_put_contents($passed_steps, 'null');
+		}
 
 		return explode(',', file_get_contents($passed_steps));
 	}
@@ -293,7 +299,9 @@ class install
 		$current_step_number = self::$steps[$step];
 		$next_step_number = ($last_passed_step == 'null' ? -1 : self::$steps[$last_passed_step]) + 1;
 
-		if ($current_step_number > $next_step_number) return true;
+		if ($current_step_number > $next_step_number) {
+			return true;
+		}
 
 		return false;
 	}
@@ -306,10 +314,14 @@ class install
 	private function check_step($step)
 	{
 		if ($step != 'reinstall') {
-			if (self::step_is_passed($step) || self::is_greater($step)) {
-				self::$current_step = self::$steps[$step];
+			if (!installed()->status) {
+				if (self::step_is_passed($step) || self::is_greater($step)) {
+					self::$current_step = self::$steps[$step];
 
-				self::to_next_step();
+					self::to_next_step();
+				}
+			} else {
+				if ($step != 'finish') redirect()->url('/install/index.php?finish/');
 			}
 		}
 
@@ -329,7 +341,7 @@ class install
 			$passed_steps .= ",$step";
 		}
 
-		file_put_contents(MCR_ROOT . 'data/tmp/.install-passed-steps', $passed_steps);
+		file_put_contents(MCR_ROOT.'data/tmp/.install-passed-steps', $passed_steps);
 	}
 
 	/**
@@ -337,7 +349,7 @@ class install
 	 */
 	public static function forget_steps()
 	{
-		file_put_contents(MCR_ROOT . 'data/tmp/.install-passed-steps', 'null');
+		file_put_contents(MCR_ROOT.'data/tmp/.install-passed-steps', 'null');
 	}
 
 	/**
@@ -349,13 +361,8 @@ class install
 		$last_passed_step = max(self::passed_steps());
 		$last_passed_step_number = $last_passed_step == 'null' ? -1 : self::$steps[$last_passed_step];
 
-		$next_step = $fliped_steps[$last_passed_step_number+1];
+		$next_step = $fliped_steps[$last_passed_step_number + 1];
 
 		redirect()->url("/install/index.php?$next_step/");
 	}
-}
-
-function installer($component)
-{
-	return mcr_registry::get($component);
 }

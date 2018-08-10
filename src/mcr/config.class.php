@@ -1,11 +1,18 @@
 <?php
+/**
+ * Copyright (c) 2018.
+ * MagicMCR является отдельным и независимым продуктом.
+ * Исходный код распространяется под лицензией GNU General Public License v3.0.
+ *
+ * MagicMCR не является копией оригинального движка WebMCR, а лишь его подверсией.
+ * Разработка MagicMCR производится исключительно в частных интересах. Разработчики, а также лица,
+ * участвующие в разработке и поддержке, не несут ответственности за проблемы, возникшие с движком.
+ */
 
 namespace mcr;
 
 
-if (!defined("MCR")) {
-	exit("Hacking Attempt!");
-}
+if (!defined("MCR")) exit("Hacking Attempt!");
 
 class config
 {
@@ -19,7 +26,8 @@ class config
 	private $configs;
 
 	/**
-	 * Файлы, которые необходимо учитывать при инициализации конфигов
+	 * Файлы, которые необходимо учитывать
+	 * при инициализации конфигов
 	 *
 	 * @var array
 	 */
@@ -55,14 +63,8 @@ class config
 		$this->initialize();
 	}
 
-	/**
-	 *
-	 */
 	private function __wakeup() { }
 
-	/**
-	 *
-	 */
 	private function __clone() { }
 
 	/**
@@ -168,7 +170,7 @@ class config
 	}
 
 	/**
-	 * Возвращает значение указанного ключа конфига
+	 * Возвращает значение указанного ключа конфига.
 	 *
 	 * @param string $key
 	 *
@@ -204,23 +206,54 @@ class config
 	}
 
 	/**
-	 * @param array $config
-	 * @param       $key
+	 * Приводит масив всех конфигов
+	 * к одномерному и сериализирует значения конфигов.
 	 *
-	 * @deprecated
+	 * Возвращает результат компресии.
 	 *
-	 * @return array|mixed
+	 * @param array $configs
+	 *
+	 * @return array
 	 */
-	private function extract_value(array $config, $key)
+	public function compress(array $configs = [])
 	{
-		$config_keys = explode('.', $key);
+		$compressed = [];
+		if (count($configs) <= 0) {
+			$configs = $this->configs;
+		}
 
-		foreach ($config_keys as $key) {
-			if (array_key_exists($key, $config)) {
-				$config = $config[$key];
+		foreach ($configs as $config_group => $group) {
+			foreach ($group as $config => $value) {
+
+				$compressed["$config_group::$config"] = serialize($value);
+
 			}
 		}
 
-		return $config;
+		return $compressed;
+	}
+
+	/**
+	 * Обратный методу compress.
+	 * Также десериализирует значения конфигов
+	 *
+	 * Возвращает декомпресированый
+	 * массив конфигов.
+	 *
+	 * @param array $configs
+	 *
+	 * @return array
+	 */
+	public function decompress(array $configs)
+	{
+		$decompresed = [];
+
+		foreach ($configs as $config_group_and_config => $value) {
+			list($config_group, $config) = explode('::', $config_group_and_config);
+
+			$decompresed[$config_group][$config] = unserialize($value);
+		}
+
+		return $decompresed;
 	}
 }
