@@ -33,8 +33,12 @@ $router->post('step_1', 'step_1@save');
 $router->get('step_2', 'step_2@register_form');
 $router->post('step_2', 'step_2@register');
 
+// Базоые настрйоки сайта
 $router->get('step_3', 'step_3@settings_form');
 $router->post('step_3', 'step_3@save_settings');
+
+// Готово!
+$router->get('finish', 'finish@done_installing');
 
 $router->get('reinstall', 'reinstall@confirm');
 $router->post('reinstall', 'reinstall@reinstall');

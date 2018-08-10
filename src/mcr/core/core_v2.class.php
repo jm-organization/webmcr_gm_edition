@@ -25,7 +25,7 @@ use mcr\http\csrf;
 use mcr\http\request;
 use mcr\http\routing\router;
 use mcr\l10n\l10n;
-use mcr\options;
+use mcr\configs_provider;
 
 if (!defined("MCR")) {
 	exit("Hacking Attempt!");
@@ -52,7 +52,7 @@ class core_v2
 	public $configs = null;
 
 	/**
-	 * @var options|null
+	 * @var configs_provider|null
 	 */
 	private static $options;
 
@@ -89,7 +89,7 @@ class core_v2
 		// Сохранение конфигураций в локальную среду ядра.
 		$this->configs = $configs;
 
-		self::$options = options::get_instance($configs);
+		self::$options = configs_provider::get_instance($configs);
 
 		////////////////////////////////////////////////////////////////////////////
 		// Инициализация Хашера паролей
@@ -153,7 +153,7 @@ class core_v2
 			// Инициализируем расширения ядра
 			$this->init();
 
-			$options = options::get_instance($this->configs);
+			$options = configs_provider::get_instance($this->configs);
 
             ////////////////////////////////////////////////////////////////////////////
             // Получение авторизированых пользователей.
