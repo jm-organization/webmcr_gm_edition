@@ -1,6 +1,6 @@
 .idea
 
-configs/
+configs/*.ini
 forum/
 language/
 
