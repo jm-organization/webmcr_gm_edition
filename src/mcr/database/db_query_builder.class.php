@@ -24,6 +24,9 @@ namespace mcr\database;
 
 class db_query_builder
 {
+
+	const simple_query = /** @lang text */ "SELECT %s FROM `%s`";
+
 	/**
 	 * @var db_query_builder|null
 	 */
@@ -32,7 +35,7 @@ class db_query_builder
 	/**
 	 * @var string
 	 */
-	private $query = "SELECT `%s` FROM `%s`";
+	private $query = '';
 
 	/**
 	 * @var string
@@ -97,9 +100,13 @@ class db_query_builder
 	private function build_query()
 	{
 		$columns = implode("`, `", $this->columns);
+		if (count($this->columns) == 0) {
+			$columns = '*';
+		}
 
-		$this->query = sprintf($this->query,
-			$columns,
+		$this->query = sprintf(
+			self::simple_query,
+			"`$columns`",
 			$this->table
 		);
 	}
@@ -113,5 +120,38 @@ class db_query_builder
 		$this->build_query();
 
 		return db::query($this->query)->fetch_all(MYSQLI_ASSOC);
+	}
+
+	/**
+	 * @param      $column
+	 * @param null $_
+	 *
+	 * @return array
+	 * @throws db_exception
+	 */
+	public function pluck($column, $_ = null)
+	{
+		$assoc = false;
+		if ($_ != null) {
+			list($value, $key) = func_get_args();
+
+			$this->select($key, $value);
+			$assoc = true;
+		} else {
+			$this->select($column);
+		}
+
+		$_result = $this->get();
+		$result = [];
+
+		foreach ($_result as $item) {
+			if ($assoc) {
+				$result[$item[$_]] = $item[$column];
+			} else {
+				$result[] = $item[$column];
+			}
+		}
+
+		return $result;
 	}
 }

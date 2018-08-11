@@ -12,6 +12,8 @@
 
 namespace mcr;
 
+use mcr\core\configs\config;
+
 if (!defined("MCR")) {
 	exit("Hacking Attempt!");
 }

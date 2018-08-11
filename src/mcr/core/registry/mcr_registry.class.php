@@ -77,4 +77,9 @@ class mcr_registry
 
 		return self::$components[$key];
 	}
+
+	public static function get_registry()
+	{
+		return self::$components;
+	}
 }

@@ -1,5 +1,15 @@
 <?php
 /**
+ * Copyright (c) 2018.
+ * MagicMCR является отдельным и независимым продуктом.
+ * Исходный код распространяется под лицензией GNU General Public License v3.0.
+ *
+ * MagicMCR не является копией оригинального движка WebMCR, а лишь его подверсией.
+ * Разработка MagicMCR производится исключительно в частных интересах. Разработчики, а также лица,
+ * участвующие в разработке и поддержке, не несут ответственности за проблемы, возникшие с движком.
+ */
+
+/**
  * Created in JM Organization.
  *
  * @e-mail       : admin@jm-org.net
@@ -11,7 +21,7 @@
  * @Documentation:
  */
 
-namespace mcr\core;
+namespace mcr\core\application;
 
 
 use mcr\html;
@@ -20,16 +30,6 @@ use mcr\html\document;
 
 trait dispatcher
 {
-	/**
-	 * @var request
-	 */
-	private $request;
-
-	/**
-	 * @var \mcr\http\routing\router
-	 */
-	private $router;
-
 	/**
 	 * Компилятор приложения.
 	 * Получает информацию о маршруте от маршрутизатора.
@@ -40,18 +40,18 @@ trait dispatcher
 	 * Ответ состоит из статуса, который вернул маршрутизатор, документа,
 	 * который был получен обработчиком маршрута.
 	 *
-	 * @param core_v2 $app
+	 * @param application $app
 	 *
 	 * @return \mcr\http\response
 	 * @throws html\blocks\blocks_manager_exception
 	 */
 	public function dispatch(application $app)
 	{
-		list($status, $route_info, $additional_info) = $this->router->dispatch();
+		list($status, $route_info, $additional_info) = $app->router->dispatch();
 		$content = '';
 
 		if (isset($additional_info->route[1]) && is_callable($hundler = $additional_info->route[1])) {
-			$content = $hundler($this->request);
+			$content = $hundler($app->request);
 		} elseif (count($route_info) >= 2) {
 			////////////////////////////////////////////////////////////////////////////
 			// Инициализация текущего модуля приложения

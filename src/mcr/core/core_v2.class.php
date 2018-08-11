@@ -15,8 +15,10 @@ namespace mcr\core;
 
 
 use mcr\cache\cache;
-use mcr\config;
-use mcr\configs_provider;
+use mcr\core\configs\config;
+use mcr\core\configs\configs_application_provider;
+use mcr\core\configs\configs_blocks_provider;
+use mcr\core\configs\configs_modules_provider;
 use mcr\core\registry\mcr_registry;
 use mcr\database\db_connection;
 use mcr\exception\exception_handler;
@@ -34,6 +36,9 @@ class core_v2
 	 */
 	public static $configs;
 
+	/**
+	 * @var db_connection
+	 */
 	public static $db_connection;
 
 	/**
@@ -73,10 +78,14 @@ class core_v2
 
 			mcr_registry::set(new bcrypt_hasher(), $configs, cache::instance(self::$configs->get('mcr::cache')));
 
-			mcr_registry::set(configs_provider::get_instance());
-
 			// Установка и сохранение соединения с базой данных.
 			self::$db_connection = new db_connection($configs);
+
+			mcr_registry::get('configs')->bind(
+				configs_application_provider::class,
+				configs_modules_provider::class,
+				configs_blocks_provider::class
+			);
 
 		} catch (\Exception $e) {
 		    self::handle_exception($e);

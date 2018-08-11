@@ -16,26 +16,17 @@
  * @Author: Magicmen
  *
  * @Date  : 11.08.2018
- * @Time  : 11:11
+ * @Time  : 19:04
  */
 
-namespace mcr\core\registry;
+namespace mcr\core\configs;
 
 
-/**
- * Interface component
- *
- * Интерфейс которій описвает компонент регистра.
- * Если ваш класс реализует данный интерфейс,
- * то он может быть добавлен в регитр.
- *
- * @package mcr\core\registry
- */
-interface component
+interface provider
 {
 	/**
 	 * Мотод должен возвращать строковое
-	 * абстрактное имя комопнента.
+	 * абстрактное имя поставщика конфигов.
 	 *
 	 * @return string
 	 */
@@ -43,12 +34,11 @@ interface component
 
 	/**
 	 * Вызывается, когда происходит
-	 * инициализация - добовление компонента
+	 * инициализация - привязка поставщика,
+	 * к оснеовному классу конифгов
 	 * в реестр.
 	 *
-	 * Должен возвращать экземпляр класса component
-	 *
-	 * @return component
+	 * @param config $configs
 	 */
-	public function boot();
+	public function boot(config $configs);
 }

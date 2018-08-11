@@ -3,7 +3,10 @@
 namespace mcr\installer\modules;
 
 
-use mcr\configs_provider;
+use mcr\cache\cache;
+use mcr\cache\cache_exception;
+use mcr\cache\cache_value;
+use mcr\core\configs\configs_application_provider;
 use mcr\installer\install;
 use function mcr\installer\installer;
 
@@ -15,7 +18,7 @@ class step_3 extends install_step
 	{
 		$connection = new \mysqli(config('db::host'), config('db::username'), config('db::passwd'), config('db::basename'), config('db::port'));
 
-		$default_configs = configs_provider::get_default_configs();
+		$default_configs = configs_application_provider::get_default_configs();
 		$request = installer('request');
 
 		$default_configs['mcr']['site.name'] = $request->site_name;
@@ -95,13 +98,38 @@ class step_3 extends install_step
 
 		$values = implode(', ', $values);
 		$query = "INSERT INTO `mcr_configs` (`option_key`, `option_value`) VALUES $values";
-		$message = [
-			'title' => translate('e_msg'),
-			'text' => translate('e_set_site_configs')
-		];
 
 		if (!$connection->query($query)) {
-			return redirect()->with('message', $message)->url('/install/index.php?step_2/');
+			$message = [
+				'title' => translate('e_msg'),
+				'text' => translate('e_set_site_configs')
+			];
+
+			self::redirect($message);
+		}
+
+		self::update_configs_cache($configs);
+	}
+
+	private static function redirect(array $message = [])
+	{
+		return redirect()->with('message', $message)->url('/install/index.php?step_2/');
+	}
+
+	private static function update_configs_cache(array $configs)
+	{
+		try {
+			cache::set(
+				configs_application_provider::cache_name,
+				(new cache_value($configs))->serialize()
+			);
+		} catch (cache_exception $e) {
+			$message = [
+				'title' => translate('e_msg'),
+				'text' => $e->getMessage()
+			];
+
+			self::redirect($message);
 		}
 	}
 }

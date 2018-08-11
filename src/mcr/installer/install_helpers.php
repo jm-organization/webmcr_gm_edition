@@ -19,7 +19,7 @@
  * @Time  : 15:21
  */
 
-use mcr\config;
+use mcr\core\configs\config;
 use mcr\hashing\bcrypt_hasher;
 use mcr\http\redirect_response;
 use mcr\http\response;

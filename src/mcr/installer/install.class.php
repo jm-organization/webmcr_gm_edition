@@ -24,10 +24,10 @@ namespace mcr\installer;
 
 use mcr\cache\cache;
 use mcr\cache\cache_exception;
-use mcr\config;
+use mcr\core\configs\config;
 use mcr\core\registry\mcr_registry;
 use mcr\http\request;
-use mcr\configs_provider;
+use mcr\core\configs\configs_application_provider;
 use mcr\exception\exception_handler;
 use mcr\hashing\bcrypt_hasher;
 
@@ -41,7 +41,7 @@ class install
 	/**
 	 * Версия установщика.
 	 */
-	const version = '1.0.21';
+	const version = '1.0.31';
 
 	/**
 	 * Время инициализации установщика.
@@ -89,12 +89,10 @@ class install
 		self::$init_start_time = $installation_init_start_time;
 
 		try {
-			mcr_registry::set($configs, cache::instance($configs->get('mcr::cache')));
+			mcr_registry::set(new bcrypt_hasher(), $configs, cache::instance($configs->get('mcr::cache')), new request());
 
-			mcr_registry::set(
-				configs_provider::get_instance(),
-				new bcrypt_hasher(),
-				new request()
+			mcr_registry::get('configs')->bind(
+				configs_application_provider::class
 			);
 		} catch (cache_exception $e) {
 			$this->handle_error($e);

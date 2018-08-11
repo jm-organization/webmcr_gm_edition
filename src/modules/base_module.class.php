@@ -24,7 +24,7 @@
 namespace modules;
 
 
-use mcr\core\application;
+use mcr\core\application\application;
 use mcr\database\db;
 use mcr\html\document;
 

@@ -21,7 +21,7 @@
  * @Documentation:
  */
 
-use mcr\config;
+use mcr\core\configs\config;
 use mcr\exception\exception_handler;
 use mcr\http\routing\url_builder;
 use mcr\html\blocks\blocks_manager;
