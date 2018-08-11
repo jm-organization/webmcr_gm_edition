@@ -16,6 +16,7 @@ namespace modules;
 
 use mcr\cache\cache;
 use mcr\cache\cache_value;
+use mcr\core\application;
 use mcr\core\core_v2;
 use mcr\html\breadcrumbs;
 use mcr\http\request;
@@ -31,9 +32,9 @@ class news extends base_module implements module
 
 	public $name = self::class;
 
-	public function boot(core_v2 $core)
+	public function boot(application $app)
 	{
-		parent::boot($core);
+		parent::boot($app);
 
 		breadcrumbs::add(
 			url('news'),

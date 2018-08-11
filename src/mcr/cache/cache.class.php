@@ -26,6 +26,8 @@ namespace mcr\cache;
 
 use mcr\cache\drivers\driver_factory;
 use mcr\cache\drivers\mcr_cache_driver;
+use mcr\core\core_v2;
+use mcr\core\registry\component;
 
 /**
  * Class cache
@@ -38,7 +40,7 @@ use mcr\cache\drivers\mcr_cache_driver;
  *
  * @see cache_driver
  */
-final class cache
+final class cache implements component
 {
 	/**
 	 * @var cache
@@ -70,6 +72,42 @@ final class cache
 	];
 
 	/**
+	 * Мотод должен возвращать строковое
+	 * абстрактное имя комопнента.
+	 *
+	 * @return string
+	 */
+	public function get_abstract_name()
+	{
+		return 'cache';
+	}
+
+	/**
+	 * Вызывается, когда происходит
+	 * инициализация - добовление компонента
+	 * в реестр.
+	 *
+	 * Должен возвращать экземпляр класса component
+	 *
+	 * @return component
+	 *
+	 * @throws cache_exception
+	 */
+	public function boot()
+	{
+		if (self::$options['enabled']) {
+			// Если кешировнаие включено
+			// создаём драйвер
+			$driver = driver_factory::create_driver(self::$options['driver']);
+
+			// и устанавливаем его.
+			self::set_driver($driver);
+		}
+
+		return $this;
+	}
+
+	/**
 	 * gets the instance via lazy initialization (created on first usage)
 	 *
 	 * @param array $options
@@ -93,22 +131,11 @@ final class cache
 	 * Singleton объекта \mcr\cache\cache через оператор new.
 	 *
 	 * @param $options
-	 *
-	 * @throws cache_exception
 	 */
 	private function __construct(array $options)
 	{
 		// Задаём настройки
 		self::set_options($options);
-
-		if (self::$options['enabled']) {
-			// Если кешировнаие включено
-			// создаём драйвер
-			$driver = driver_factory::create_driver(self::$options['driver']);
-
-			// и устанавливаем его.
-			self::set_driver($driver);
-		}
 	}
 
 	/**

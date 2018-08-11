@@ -24,7 +24,7 @@
 namespace mcr\exception;
 
 
-use mcr\log;
+use mcr\http\response;use mcr\log;
 
 class exception_handler
 {
@@ -260,7 +260,10 @@ class exception_handler
         // Забираем содержимое из будефора, очишаем его.
         // Делаем ответ с сервера со статусом 500 (внутренняя ошибка сервера)
         // и содержимым, которое было получено из буфера вывода.
-		response()->content(ob_get_clean(), 500);
+		$content = ob_get_clean();
+		$response = new response($content, 'UTF-8', 500);
+
+		$response->send();
 	}
 
     /**

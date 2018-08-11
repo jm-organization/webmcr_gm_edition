@@ -19,34 +19,13 @@
  * @Time  : 22:01
  */
 
-namespace mcr\core;
+namespace mcr\core\registry;
 
+
+use mcr\core\core_v2;
 
 class mcr_registry
 {
-	const cache         = 'cache';
-	const options       = 'options';
-	const l10n          = 'l10n';
-	const dispatcher    = 'dispatcher';
-	const csrf          = 'csrf';
-	const hasher        = 'hasher';
-	const request       = 'request';
-	const configs       = 'configs';
-
-	/**
-	 * @var array
-	 */
-	private static $allowed_components = [
-		self::cache,
-		self::options,
-		self::l10n,
-		self::dispatcher,
-		self::csrf,
-		self::hasher,
-		self::request,
-		self::configs
-	];
-
 	/**
 	 * @var array
 	 */
@@ -57,12 +36,18 @@ class mcr_registry
 	 */
 	public static function set($component)
 	{
-		$args = func_get_args();
+		$components = is_array($component) ? $component : func_get_args();
 
-		$components = is_array($component) ? $component : [ $args[0] => $args[1] ];
+		foreach ($components as $component) {
+			if ($component instanceof component) {
 
-		foreach ($components as $key => $component) {
-			self::add($key, $component);
+				$key = $component->boot()->get_abstract_name();
+
+				self::add($key, $component);
+
+			} else {
+				throw new \UnexpectedValueException("mcr_registry::add(): You can only add classes that implement the registry component.");
+			}
 		}
 	}
 
@@ -70,12 +55,8 @@ class mcr_registry
 	 * @param $key
 	 * @param $component
 	 */
-	private static function add($key, $component)
+	private static function add($key, component $component)
 	{
-		if (!in_array($key, self::$allowed_components)) {
-			throw new \InvalidArgumentException("mcr_registry::set(): Invalid component name ('$key' given).");
-		}
-
 		self::$components[$key] = $component;
 	}
 
@@ -86,9 +67,13 @@ class mcr_registry
 	 */
 	public static function get($key)
 	{
-		if (!in_array($key, self::$allowed_components) || !isset(self::$components[$key])) {
+		if (!isset(self::$components[$key])) {
 			throw new \UnexpectedValueException("mcr_registry::get(): Unknown component $key.");
 		}
+
+//		if (in_array($key, self::$private_components)) {
+//			throw new
+//		}
 
 		return self::$components[$key];
 	}

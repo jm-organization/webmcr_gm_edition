@@ -22,9 +22,10 @@
 namespace mcr\installer;
 
 
+use mcr\cache\cache;
 use mcr\cache\cache_exception;
 use mcr\config;
-use mcr\core\mcr_registry;
+use mcr\core\registry\mcr_registry;
 use mcr\http\request;
 use mcr\configs_provider;
 use mcr\exception\exception_handler;
@@ -88,15 +89,13 @@ class install
 		self::$init_start_time = $installation_init_start_time;
 
 		try {
-			mcr_registry::set([
-				mcr_registry::configs => $configs,
-				mcr_registry::cache => \mcr\cache\cache::instance(),
-				mcr_registry::options => configs_provider::get_instance($configs),
+			mcr_registry::set($configs, cache::instance($configs->get('mcr::cache')));
 
-				mcr_registry::hasher => new bcrypt_hasher(),
-
-				mcr_registry::request => new request(),
-			]);
+			mcr_registry::set(
+				configs_provider::get_instance(),
+				new bcrypt_hasher(),
+				new request()
+			);
 		} catch (cache_exception $e) {
 			$this->handle_error($e);
 		}
@@ -177,7 +176,7 @@ class install
 
 			list($step, $action) = explode('@', $this->step_handler);
 
-			$content = $this->handle($step, $action);
+			$content = $this->handle($step, mcr_registry::get('request'), $action);
 			$title = self::$page_title;
 
 			$installation_page = tmpl('index', compact('title', 'content', 'step'));
@@ -208,7 +207,7 @@ class install
 	 *
 	 * @return mixed
 	 */
-	private function handle($step, $action)
+	private function handle($step, request $request, $action)
 	{
 		if ($this->check_step($step)) {
 			$step = '\mcr\installer\modules\\'.$step;
@@ -218,7 +217,7 @@ class install
 				$step = new $step();
 
 				if (method_exists($step, $action)) {
-					return $step->$action();
+					return $step->$action($request);
 				} else {
 					throw new \UnexpectedValueException("Unexpected step handler ".get_class($step)."@$action. Contact the team MagicMCR.");
 				}

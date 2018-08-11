@@ -12,9 +12,11 @@
 namespace mcr;
 
 
+use mcr\core\registry\component;
+
 if (!defined("MCR")) exit("Hacking Attempt!");
 
-class config
+class config implements component
 {
 	const path = MCR_CONF_PATH;
 
@@ -40,6 +42,32 @@ class config
 	 * @var null
 	 */
 	private static $instance = null;
+
+	/**
+	 * Мотод должен возвращать строковое
+	 * абстрактное имя комопнента.
+	 *
+	 * @return string
+	 */
+	public function get_abstract_name()
+	{
+		return 'configs';
+	}
+
+	/**
+	 * Вызывается, когда происходит
+	 * инициализация - добовление компонента
+	 * в реестр.
+	 *
+	 * Должен возвращать экземпляр класса component
+	 *
+	 * @return component
+	 */
+	public function boot()
+	{
+		// TODO: Implement boot() method.
+		return $this;
+	}
 
 	/**
 	 * @return config|null

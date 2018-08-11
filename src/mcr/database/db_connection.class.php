@@ -80,13 +80,13 @@ class db_connection
 	 */
 	public function __construct(config $configs)
 	{
-		$this->host = $configs->db['host'];
-		$this->user = $configs->db['user'];
-		$this->passwd = $configs->db['pass'];
-		$this->dbname = $configs->db['base'];
-		$this->port = $configs->db['port'];
+		$this->host = $configs->get('db::host');
+		$this->user = $configs->get('db::username');
+		$this->passwd = $configs->get('db::passwd');
+		$this->dbname = $configs->get('db::basename');
+		$this->port = $configs->get('db::port');
 
-		$this->configs = $configs->db;
+		$this->configs = $configs->get('db');
 
 		$this->connection = $this->connect();
 	}

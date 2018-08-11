@@ -81,7 +81,7 @@ trait csrf
 			$_functions['whitelist'] = implode(',', $whitelist);
 
 			// сохраняем
-			if (!$configs->savecfg($_functions, 'functions.php', 'func')) return false;
+			//if (!$configs->savecfg($_functions, 'functions.php', 'func')) return false;
 
 			return true;
 		}

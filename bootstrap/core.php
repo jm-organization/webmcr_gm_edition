@@ -13,6 +13,7 @@
 
 //use mcr\core;
 use mcr\config;
+use mcr\core\application;
 use mcr\core\core_v2;
 use mcr\log;
 
@@ -44,4 +45,4 @@ register_shutdown_function(function () use ($log) {
 });
 
 // Создаём приложение по конфигам.
-$application = new core_v2($configs);
+$application = new application($configs);

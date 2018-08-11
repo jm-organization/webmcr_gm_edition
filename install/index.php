@@ -29,9 +29,6 @@ include __DIR__ . '/../bootstrap/constants.php';
 define('DIR_INSTALL', __DIR__ . '/');
 define('DIR_INSTALL_LAYOUTS', DIR_INSTALL . 'insertions/');
 
-session_save_path(MCR_ROOT . 'data/tmp');
-if (!session_start()) { session_start(); }
-
 include __DIR__ . '/../src/mcr/installer/install_initializer.php';
 include __DIR__ . '/../src/mcr/installer/install_helpers.php';
 
