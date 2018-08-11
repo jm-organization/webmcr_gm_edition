@@ -25,10 +25,11 @@ namespace mcr;
 use mcr\cache\cache;
 use mcr\cache\cache_exception;
 use mcr\cache\cache_value;
+use mcr\core\registry\component;
 use mcr\database\db;
 use mcr\database\db_exception;
 
-class configs_provider
+class configs_provider implements component
 {
 	const name = 'site_settings.options';
 
@@ -45,6 +46,37 @@ class configs_provider
 	private static $instance = null;
 
 	/**
+	 * Мотод должен возвращать строковое
+	 * абстрактное имя комопнента.
+	 *
+	 * @return string
+	 */
+	public function get_abstract_name()
+	{
+		return '_configs_provider';
+	}
+
+	/**
+	 * Вызывается, когда происходит
+	 * инициализация - добовление компонента
+	 * в реестр.
+	 *
+	 * Должен возвращать экземпляр класса component
+	 *
+	 * @return component
+	 */
+	public function boot()
+	{
+		global $configs;
+
+		foreach (self::$configs as $configs_group => $value) {
+			$configs->attach($configs_group, $value);
+		}
+
+		return $this;
+	}
+
+	/**
 	 * Возвращаем экзмпляр поставщика конфигов приложения.
 	 * В основном предоставляет конфиги из кеша.
 	 * Если данного кеша не было обнаружено,
@@ -55,10 +87,10 @@ class configs_provider
 	 *
 	 * @return configs_provider|null
 	 */
-	public static function get_instance(config $configs = null)
+	public static function get_instance()
 	{
 		if (empty(self::$instance)) {
-			self::$instance = new self($configs);
+			self::$instance = new self();
 		}
 
 		return self::$instance;
@@ -66,10 +98,8 @@ class configs_provider
 
 	/**
 	 * configs_provider constructor.
-	 *
-	 * @param \mcr\config $configs
 	 */
-	private function __construct(config $configs)
+	private function __construct()
 	{
 		try {
 
@@ -81,10 +111,6 @@ class configs_provider
 
 			self::$configs = $this->set_options_cache();
 
-		}
-
-		foreach (self::$configs as $configs_group => $value) {
-			$configs->attach($configs_group, $value);
 		}
 	}
 

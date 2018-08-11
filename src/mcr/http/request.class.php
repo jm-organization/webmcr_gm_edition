@@ -14,9 +14,10 @@
 namespace mcr\http;
 
 
+use mcr\core\registry\component;
 use mcr\http\routing\router;
 
-class request
+class request implements component
 {
 	/**
 	 * @var array
@@ -32,6 +33,31 @@ class request
 	 * @var string
 	 */
 	public static $path = '';
+
+	/**
+	 * Мотод должен возвращать строковое
+	 * абстрактное имя комопнента.
+	 *
+	 * @return string
+	 */
+	public function get_abstract_name()
+	{
+		return 'request';
+	}
+
+	/**
+	 * Вызывается, когда происходит
+	 * инициализация - добовление компонента
+	 * в реестр.
+	 *
+	 * Должен возвращать экземпляр класса component
+	 *
+	 * @return component
+	 */
+	public function boot()
+	{
+		return $this;
+	}
 
 	/*
 	 * Constructor for request

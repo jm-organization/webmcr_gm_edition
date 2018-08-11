@@ -24,7 +24,7 @@
 namespace modules;
 
 
-use mcr\core\core_v2;
+use mcr\core\application;
 use mcr\http\request;
 
 interface module
@@ -42,9 +42,9 @@ interface module
 	 * Метод, который вызывается при загрузке модуля.
 	 * Принимает экземпляр ядра.
 	 *
-	 * @param core_v2 $core
+	 * @param application $app
 	 *
 	 * @return void
 	 */
-	public function boot(core_v2 $core);
+	public function boot(application $app);
 }

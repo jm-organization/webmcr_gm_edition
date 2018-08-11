@@ -1,14 +1,23 @@
 <?php
 /**
+ * Copyright (c) 2018.
+ * MagicMCR является отдельным и независимым продуктом.
+ * Исходный код распространяется под лицензией GNU General Public License v3.0.
+ *
+ * MagicMCR не является копией оригинального движка WebMCR, а лишь его подверсией.
+ * Разработка MagicMCR производится исключительно в частных интересах. Разработчики, а также лица,
+ * участвующие в разработке и поддержке, не несут ответственности за проблемы, возникшие с движком.
+ */
+
+
+/**
  * Created in JM Organization.
  *
- * @e-mail       : admin@jm-org.net
- * @Author       : Magicmen
+ * @e-mail: admin@jm-org.net
+ * @Author: Magicmen
  *
- * @Date         : 26.06.2018
- * @Time         : 19:33
- *
- * @Documentation:
+ * @Date: 26.06.2018 (rewrite old index file)
+ * @Time: 19:33
  */
 
 // Фиксируем время начала загрузки страници.
@@ -19,20 +28,6 @@ if (file_exists('./init-krumo.php')) require_once("./init-krumo.php");
 
 // Загружаем файл, где определяются константы
 require 'bootstrap/constants.php';
-
-ini_set("upload_max_filesize", MAX_FILE_SIZE);
-ini_set("post_max_size", MAX_POST_REQUEST_DATA_SIZE);
-@date_default_timezone_set(TIMEZONE);
-
-// Запрещаем вывод ошибок.
-// Для адекватного логирования
-error_reporting(0);
-
-session_save_path(MCR_ROOT . 'data/tmp');
-ini_set('session.gc_maxlifetime', MAX_SESSION_LIFETIME);
-ini_set('session.cookie_lifetime', MAX_COOKIE_LIFETIME);
-if (!session_start()) { session_start(); }
-
 
 // Загружаем ядро
 require 'src/mcr/filter.php';

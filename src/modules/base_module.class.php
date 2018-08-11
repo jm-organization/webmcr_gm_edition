@@ -24,9 +24,8 @@
 namespace modules;
 
 
-use mcr\core\core_v2;
+use mcr\core\application;
 use mcr\database\db;
-use mcr\html\breadcrumbs;
 use mcr\html\document;
 
 abstract class base_module
@@ -39,11 +38,11 @@ abstract class base_module
 	 * Метод, который вызывается при загрузке модуля.
 	 * Принимает экземпляр ядра.
 	 *
-	 * @param core_v2 $core
+	 * @param application $app
 	 *
 	 * @return void
 	 */
-	public function boot(core_v2 $core)
+	public function boot(application $app)
 	{
 		$advices = $this->get_advices(config('functions::advice'));
 

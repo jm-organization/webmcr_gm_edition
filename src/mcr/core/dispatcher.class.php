@@ -40,12 +40,12 @@ trait dispatcher
 	 * Ответ состоит из статуса, который вернул маршрутизатор, документа,
 	 * который был получен обработчиком маршрута.
 	 *
-	 * @param core_v2 $core
+	 * @param core_v2 $app
 	 *
 	 * @return \mcr\http\response
 	 * @throws html\blocks\blocks_manager_exception
 	 */
-	public function dispatch(core_v2 $core)
+	public function dispatch(application $app)
 	{
 		list($status, $route_info, $additional_info) = $this->router->dispatch();
 		$content = '';
@@ -61,11 +61,11 @@ trait dispatcher
 			$module = $this->initialize_module($route_info['controller']);
 
 			if ($module) {
-				$module->boot($core);
+				$module->boot($app);
 
 				$document = new document(
 					$module,
-					$core->request,
+					$app->request,
 					$route_info['action']
 				);
 

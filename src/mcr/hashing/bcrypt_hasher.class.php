@@ -13,11 +13,13 @@
 
 namespace mcr\hashing;
 
+use mcr\core\registry\component;
+
 if (!defined("MCR")) {
 	exit("Hacking Attempt!");
 }
 
-class bcrypt_hasher extends adstract_hasher implements hasher
+class bcrypt_hasher extends adstract_hasher implements hasher, component
 {
 	/**
 	 * The default cost factor.
@@ -25,6 +27,31 @@ class bcrypt_hasher extends adstract_hasher implements hasher
 	 * @var int
 	 */
 	protected $rounds = 10;
+
+	/**
+	 * Мотод должен возвращать строковое
+	 * аэстрактное имя комопнента.
+	 *
+	 * @return string
+	 */
+	public function get_abstract_name()
+	{
+		return 'hasher';
+	}
+
+	/**
+	 * Вызывается, когда происходит
+	 * инициализация - добовление компонента
+	 * в реестр.
+	 *
+	 * Должен возвращать экземпляр класса component
+	 *
+	 * @return component
+	 */
+	public function boot()
+	{
+		return $this;
+	}
 
 	/**
 	 * Хеширует полученное значение
