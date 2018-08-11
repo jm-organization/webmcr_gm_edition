@@ -9,7 +9,7 @@
  * участвующие в разработке и поддержке, не несут ответственности за проблемы, возникшие с движком.
  */
 
-namespace mcr;
+namespace mcr\core\configs;
 
 
 use mcr\core\registry\component;
@@ -44,6 +44,13 @@ class config implements component
 	private static $instance = null;
 
 	/**
+	 * Список поставщиков конфигов.
+	 *
+	 * @var array
+	 */
+	private $providers = [];
+
+	/**
 	 * Мотод должен возвращать строковое
 	 * абстрактное имя комопнента.
 	 *
@@ -65,7 +72,6 @@ class config implements component
 	 */
 	public function boot()
 	{
-		// TODO: Implement boot() method.
 		return $this;
 	}
 
@@ -274,14 +280,54 @@ class config implements component
 	 */
 	public function decompress(array $configs)
 	{
-		$decompresed = [];
+		$decompressed = [];
 
 		foreach ($configs as $config_group_and_config => $value) {
 			list($config_group, $config) = explode('::', $config_group_and_config);
 
-			$decompresed[$config_group][$config] = unserialize($value);
+			$decompressed[$config_group][$config] = unserialize($value);
 		}
 
-		return $decompresed;
+		return $decompressed;
+	}
+
+	/**
+	 * Привязывает поставщик конфигов к configs.
+	 * Вызывает метод инициализации провайдера чтобы
+	 * выполнить добавление конфигов,
+	 * поставляемых поставщиком в
+	 * общий список конигов
+	 *
+	 * @param $provider
+	 *
+	 * @return $this
+	 */
+	public function bind($provider)
+	{
+		$providers = func_get_args();
+
+		foreach ($providers as $_provider) {
+			$provider = new $_provider();
+
+			if ($provider instanceof provider) {
+				$this->add_provider($provider);
+			} else {
+				throw new \UnexpectedValueException("You can`t register '$_provider' in config providers. Your provider don`t implement of \mcr\core\configs\provider");
+			}
+		}
+
+		return $this;
+	}
+
+	/**
+	 * @param provider $provider
+	 */
+	private function add_provider(provider $provider)
+	{
+		$provider_abstract_name = $provider->get_abstract_name();
+
+		$provider->boot($this);
+
+		$this->providers[$provider_abstract_name] = $provider;
 	}
 }

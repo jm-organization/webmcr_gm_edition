@@ -19,11 +19,13 @@
  * @Time  : 11:31
  */
 
-namespace mcr\core;
+namespace mcr\core\application;
 
 
 use mcr\auth\auth;
-use mcr\config;
+use mcr\core\configs\config;
+use mcr\core\core_v2;
+use mcr\core\registry\mcr_registry;
 use mcr\http\csrf;
 use mcr\http\request;
 use mcr\http\routing\router;
@@ -38,14 +40,39 @@ class application
 		dispatcher
 	;
 
+	/**
+	 * @var core_v2
+	 */
 	public $core;
 
+	/**
+	 * @var request
+	 */
+	private $request;
+
+	/**
+	 * @var \mcr\http\routing\router
+	 */
+	private $router;
+
+	/**
+	 * @var array
+	 */
+	public $registry;
+
+	/**
+	 * application constructor.
+	 *
+	 * @param config $configs
+	 */
 	public function __construct(config $configs)
 	{
 		// Если приложение не установленно, то перенаправляем на скрипт установки
 		if (!INSTALLED) header("Location: /install/index.php");
 
 		$this->core = core_v2::get_instance($configs);
+
+		$this->registry = mcr_registry::get_registry();
 	}
 
 	/**
@@ -56,7 +83,7 @@ class application
 	 * Инициализирует модуль
 	 * Создаёт и отрисовывает документ
 	 *
-	 * @return \mcr\http\redirect_response|\mcr\http\response
+	 * @return \mcr\http\redirect_response|\mcr\http\response|bool
 	 */
 	public function run()
 	{
@@ -71,6 +98,7 @@ class application
 
 		// Пытаемся запустить приложение
 		try {
+
 			$this->request = new request();
 			$this->router = new router($this->request);
 
@@ -131,5 +159,7 @@ class application
 			$core = $this->core;
 			$core::handle_exception($e);
 		}
+
+		return true;
 	}
 }

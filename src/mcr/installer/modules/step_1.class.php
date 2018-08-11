@@ -3,7 +3,7 @@
 namespace mcr\installer\modules;
 
 
-use mcr\config;
+use mcr\core\configs\config;
 use mcr\installer\install;
 use mcr\validation\validator;
 

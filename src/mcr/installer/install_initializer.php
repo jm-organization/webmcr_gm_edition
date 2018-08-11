@@ -19,7 +19,7 @@
  * @Time  : 15:11
  */
 
-use mcr\config;
+use mcr\core\configs\config;
 use mcr\installer\install;
 use mcr\log;
 

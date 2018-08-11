@@ -12,8 +12,8 @@
  */
 
 //use mcr\core;
-use mcr\config;
-use mcr\core\application;
+use mcr\core\configs\config;
+use mcr\core\application\application;
 use mcr\core\core_v2;
 use mcr\log;
 

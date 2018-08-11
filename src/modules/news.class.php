@@ -16,7 +16,7 @@ namespace modules;
 
 use mcr\cache\cache;
 use mcr\cache\cache_value;
-use mcr\core\application;
+use mcr\core\application\application;
 use mcr\core\core_v2;
 use mcr\html\breadcrumbs;
 use mcr\http\request;

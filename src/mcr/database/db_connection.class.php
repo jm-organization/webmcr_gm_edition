@@ -3,7 +3,7 @@
 namespace mcr\database;
 
 
-use mcr\config;
+use mcr\core\configs\config;
 use mysqli;
 
 if (!defined("MCR")) {
@@ -27,7 +27,7 @@ class db_connection
 	public $connect_errno = '';
 
 	/**
-	 * @var config|null
+	 * @var \mcr\core\configs\config|null
 	 */
 	private $configs = null;
 
