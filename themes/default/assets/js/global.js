@@ -40,8 +40,6 @@
             },
             app.messages.delay
         );
-
-        console.log(app.timeouts);
     });
 
     $('.message .close').on('click', function() {
@@ -53,6 +51,8 @@
 
         $message.transition('fade');
     });
+
+    $('form[method="post"]').prepend('<input type="hidden" name="mcr_secure" value="' + app.meta.application.secure + '">');
 }
 )(window, document, jQuery);
 

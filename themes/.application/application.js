@@ -12,9 +12,21 @@ class mcr_application
 {
     constructor(windows, document, jquery)
     {
+        let _this       = this;
+
         this.$          = jquery;
         this.messages   = { delay: 3500, list: [] };
         this.timeouts   = {};
+
+        this.meta       = {};
+
+        this.$('meta').each(function (id, element) {
+            if (element.name !== '') {
+                let value = _this.isValidJSON(element.content) ? JSON.parse(element.content) : element.content;
+
+                _this.meta[element.name] = value;
+            }
+        });
 
         this._init_site_components();
     }
@@ -43,6 +55,11 @@ class mcr_application
             _this.messages.list = $messagesList;
 
         });
+    }
+
+    isValidJSON(json)
+    {
+        return /^[\],:{}\s]*$/.test(json.replace(/\\["\\\/bfnrtu]/g, '@').replace(/"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g, ']').replace(/(?:^|:|,)(?:\s*\[)+/g, ''))
     }
 
     isVisible(el)

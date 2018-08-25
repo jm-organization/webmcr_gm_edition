@@ -32,6 +32,7 @@ use mcr\http\routing\router;
 use mcr\l10n\l10n;
 
 define("INSTALLED", installed()->status);
+define("APPLICATION_KEY", installed()->app_key);
 
 class application
 {
