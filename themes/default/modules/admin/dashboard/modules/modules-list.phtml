@@ -1,11 +1,15 @@
-<div class="card">
-
-    <div class="admin-menu-groups card-block">
-        <h4 class="card-title mb-4"><i class="fa fa-plus-square"></i> <?=$this->l10n->gettext('modules')?> <a href="/?mode=admin&do=modules" class="fa fa-link"></a></h4>
-
-        <div class="spl-body owl-carousel owl-theme" id="modules_carusel">
-			<?=$data['CONTENT']?>
-        </div>
-    </div>
-
+<div class="ui segments">
+	<div class="ui segment">
+		<h5 class="ui header">
+			<i class="plus square icon"></i>
+			<div class="content">
+				<a href="/?mode=admin&do=modules"><?= $this->l10n->gettext('modules') ?></a>
+			</div>
+		</h5>
+	</div>
+	<div class="ui segment admin-menu-groups">
+		<div class="spl-body owl-carousel owl-theme" id="modules_carusel">
+			<?= $data['CONTENT'] ?>
+		</div>
+	</div>
 </div>

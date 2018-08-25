@@ -1,14 +1,22 @@
 <div class="mcr-debug">
 	<a class="action" href="#">></a>
-	<h4><?php echo $this->l10n->gettext('debug'); ?></h4>
-	<div class="php-version"><?php echo $this->l10n->gettext('debug_php_ver'); ?>: <span><?php echo phpversion(); ?></span></div>
-	<div class="php-error"><?php echo $this->l10n->gettext('debug_php_err'); ?>: <span><?php var_dump($data['PHP_ERROR']); ?></span></div>
-	<div class="plt"><?php echo $this->l10n->gettext('debug_plt'); ?>: <span><?php echo $data['PLT']; ?> <?php echo $this->l10n->gettext('sec'); ?></span></div>
-	<div class="queries"><?php echo $this->l10n->gettext('debug_num_q'); ?>: <span><?php echo $data['QUERIES']; ?></span></div>
-	<div class="base-error"><?php echo $this->l10n->gettext('debug_db_err'); ?>: <span><?php echo $data['BASE_ERROR']; ?></span></div>
-	<div class="memory"><?php echo $this->l10n->gettext('debug_memory'); ?>: <span><?php echo $data['MEMORY_USAGE']; ?> / <?php echo $data['MEMORY_PEAK']; ?> <?php echo $this->l10n->gettext('debug_kb'); ?></span></div>
-	<div><?php echo $this->l10n->gettext('debug_script'); ?>: <span><?php echo $_SERVER['PHP_SELF']; ?></span></div>
-	<div><?php echo $this->l10n->gettext('debug_protocol'); ?>: <span><?php echo $_SERVER['SERVER_PROTOCOL']; ?></span></div>
-	<div><?php echo $this->l10n->gettext('debug_method'); ?>: <span><?php echo $_SERVER['REQUEST_METHOD']; ?></span></div>
-	<div><?php echo $this->l10n->gettext('debug_os'); ?>: <span><?php echo php_uname(); ?></span></div>
+	<h4><?= $this->l10n->gettext('debug'); ?></h4>
+	<div class="php-version"><?= $this->l10n->gettext('debug_php_ver'); ?>: <span><?= phpversion(); ?></span>
+	</div>
+	<div class="php-error"><?= $this->l10n->gettext('debug_php_err'); ?>:
+		<span><? var_dump($data['PHP_ERROR']); ?></span></div>
+	<div class="plt"><?= $this->l10n->gettext('debug_plt'); ?>:
+		<span><?= $data['PLT']; ?> <?= $this->l10n->gettext('sec'); ?></span></div>
+	<div class="queries"><?= $this->l10n->gettext('debug_num_q'); ?>: <span><?= $data['QUERIES']; ?></span>
+	</div>
+	<div class="base-error"><?= $this->l10n->gettext('debug_db_err'); ?>:
+		<span><?= $data['BASE_ERROR']; ?></span></div>
+	<div class="memory"><?= $this->l10n->gettext('debug_memory'); ?>:
+		<span><?= $data['MEMORY_USAGE']; ?> / <?= $data['MEMORY_PEAK']; ?> <?= $this->l10n->gettext('debug_kb'); ?></span>
+	</div>
+	<div><?= $this->l10n->gettext('debug_script'); ?>: <span><?= $_SERVER['PHP_SELF']; ?></span></div>
+	<div><?= $this->l10n->gettext('debug_protocol'); ?>: <span><?= $_SERVER['SERVER_PROTOCOL']; ?></span>
+	</div>
+	<div><?= $this->l10n->gettext('debug_method'); ?>: <span><?= $_SERVER['REQUEST_METHOD']; ?></span></div>
+	<div><?= $this->l10n->gettext('debug_os'); ?>: <span><?= php_uname(); ?></span></div>
 </div>

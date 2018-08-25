@@ -12,13 +12,8 @@
 
 	<div class="item-footer" style="text-align:left;">
 		<span class="version"><?=$data['VERSION'];?></span>
-		<span class="btn btn-sm btn-link more pull-right get_more_theme_info"
-              role="button"
-
-              data-theme-cod="<?= $data['CODE']; ?>"
-
-              data-toggle="modal"
-              data-target="#themesModal"
-        ><?= $this->l10n->gettext('more') ?></span>
+		<span class="ui primary right floated mini button get_more_theme_info" role="button" data-theme-cod="<?= $data['CODE']; ?>">
+			<?= $this->l10n->gettext('more') ?>
+		</span>
 	</div>
 </div>

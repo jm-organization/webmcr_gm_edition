@@ -24,11 +24,11 @@ class block_profile implements base_block
 	 * Инициализатор блока.
 	 * Принимает конфиги блока.
 	 *
-	 * @param array $configs - конфиги блока, которые необходимы для его работы.
+	 * @param array $block_info - конфиги блока, которые необходимы для его работы.
 	 *
 	 * @return base_block
 	 */
-	public function init(array $configs)
+	public function init(array $block_info)
 	{
 		if (!empty(auth::user())) {
 			$this->tmpl = 'mini-profile';

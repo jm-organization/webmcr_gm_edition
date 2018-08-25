@@ -1,28 +1,49 @@
-<div class="form-block new-full">
-
-	<div class="block-header">
-		
-		<div class="block-name"><?php echo $data['TITLE']; ?></div><!--
-		--><div class="block-right">
-			<?php echo $data['ADMIN']; ?>
-			<?php echo $data['LIKES']; ?>
+<div class="ui segments new-full">
+	
+	<div class="ui clearing segment">
+		<div class="ui header">
+			<?= $data['TITLE']; ?>
+			<?= $data['LIKES']; ?>
+			<?= $data['ADMIN']; ?>
 		</div>
 	</div>
-
-	<div class="block-line"></div>
-
-	<div class="new-full-content">
-		<?php echo $data['TEXT']; ?>
+	
+	<div class="ui segment">
+		<div class="new-full-content">
+			<?= $data['TEXT']; ?>
+		</div>
 	</div>
-
-	<div class="block-line"></div>
-
-	<div class="block-footer">
-		<div class="date" rel="tooltip" title="<?php echo $this->l10n->gettext('date_create'); ?>"><?php echo $data['DATE'] ?></div>
-		<div class="category"><a href="<?php echo BASE_URL; ?>?mode=news&amp;cid=<?php echo $data['CID']; ?>" rel="tooltip" title="<?php echo $this->l10n->gettext('category'); ?>"><?php echo $data['CATEGORY']; ?></a></div>
-		<div class="readmore"><a href="<?php echo BASE_URL; ?>"><?php echo $this->l10n->gettext('go_home'); ?></a></div>
-		<div class="views" rel="tooltip" title="<?php echo $this->l10n->gettext('views'); ?>"><i class="fa fa-eye"></i><?php echo $data['VIEWS']; ?></div>
+	
+	<div class="ui clearing segment">
+		<div class="ui horizontal divided list">
+			<div class="item">
+				<div class="middle aligned content">
+					<div class="date" rel="tooltip" title="<?= $this->l10n->gettext('date_create'); ?>">
+						<i class="icon calendar alternate"></i>
+						<span data-livestamp="<?= $data['DATE'] ?>">
+							<?= $this->l10n->parse_date($data['DATE']); ?>
+						</span>
+					</div>
+				</div>
+			</div>
+			<div class="item">
+				<div class="middle aligned content">
+					<div class="views" rel="tooltip" title="<?= $this->l10n->gettext('views'); ?>">
+						<i class="icon eye"></i><?= $data['VIEWS']; ?>
+					</div>
+				</div>
+			</div>
+			<div class="item">
+				<div class="middle aligned content">
+					<div class="category">
+						<i class="icon folder open"></i>
+						<a href="<?= BASE_URL; ?>?mode=news&amp;cid=<?= $data['CID']; ?>" rel="tooltip" title="<?= $this->l10n->gettext('category'); ?>"><?= $data['CATEGORY']; ?></a>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
-
+	
 </div>
-<?php echo $data['COMMENTS']; ?>
+
+<?= $data['COMMENTS']; ?>

@@ -1,6 +1,6 @@
 .idea
 
-configs/*.ini
+node_modules/
 forum/
 language/
 

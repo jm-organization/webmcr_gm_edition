@@ -1,17 +1,10 @@
 <?php foreach ($messages as $message) {
     ?>
 
-    <div class="block-notify form-block alert alert-<?= $message['type'] ?>">
-        <div class="block-header" style="color: unset">
-			<?= translate('alert') ?>
-            <a href="#" id="close-notify">&times;</a>
-        </div>
-
-        <div class="block-line"></div>
-
-        <div class="block-content">
-            <b><?= $message['title'] ?></b> <?= $message['text'] ?>
-        </div>
+    <div class="ui black message <?= $message['type'] ?>">
+        <i class="close icon"></i>
+        <div class="header"><?= $message['title'] ?></div>
+        <p><?= $message['text'] ?></p>
     </div>
 
     <?php

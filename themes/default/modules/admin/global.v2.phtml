@@ -1,41 +1,36 @@
 <!DOCTYPE html>
 <html lang="<?= explode('-', $this->l10n->get_config_locale())[0] ?>">
-<head>
-    <meta charset="utf-8">
-	<title><?php echo $data['CFG']['s_name']; ?> — <?php echo $data['TITLE']; ?></title>
-
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-	<meta name="author" content="NC22 &amp; Qexy.org / completed Magicfar4 aka Magicmen">
-	<meta name='data' content='<?php echo META_JSON_DATA; ?>'>
-
-	<base href="<?php echo BASE_URL ?>">
-
-	<?php echo $data['DEF_HEADER']; ?>
-
-	<?php echo $data['HEADER']; ?>
-</head>
-<body>
+	<head>
+		<meta charset="utf-8">
+		<title><?= $data['CFG']['s_name']; ?> — <?= $data['TITLE']; ?></title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta name="author" content="NC22 &amp; Qexy.org / completed Magicfar4 aka Magicmen">
+		<meta name='data' content='<?= META_JSON_DATA; ?>'>
+		<base href="<?= BASE_URL ?>">
+		<?= $data['DEF_HEADER']; ?>
+		<?= $data['HEADER']; ?>
+	</head>
+	<body>
 
     <div id="js-loader" title="<?php echo $this->l10n->gettext('loading'); ?>"><img src="<?php echo STYLE_URL; ?>img/ajaxload.info_FFFFFF_facebook.gif" alt="<?php echo $this->l10n->gettext('loading'); ?>"/></div>
 
-	<section style="width:100%;height:100%;padding-top:24px;background:black" class="admin-wrapper">
+    <section style="width:100%;height:100%;padding-top:24px;background:black" class="admin-wrapper">
 
-		<aside>
+        <aside>
             <div class="menu-header">
                 <a href="/?mode=admin"><?=$this->l10n->gettext('module_admin-panel')?></a>
-                <div class="sidebar-toggler fa fa-bars" onclick="$('html').toggleClass('sidebar-hide');"></div>
+                <div class="sidebar-toggler icon bars" onclick="$('html').toggleClass('sidebar-hide');"><i class="icon bars"></i></div>
             </div>
 
-            <ul class="nav-list" id="admin-menu">
+            <ul class="ui accordion nav-list" id="admin-menu">
 				<?php echo $data["ADMIN_MENU"]; ?>
             </ul>
         </aside>
 
-		<div class="admin-container form-block">
+        <div class="ui grid admin-container form-block">
 
             <div class="breadcrumbs-container">
-				<?php echo $data['BREADCRUMBS']; ?>
+					<?php echo $data['BREADCRUMBS']; ?>
             </div>
 
 			<?php echo $data['CONTENT']; ?>
@@ -50,9 +45,9 @@
 				<?php echo $data['L_BLOCKS']?>
             </div>
 
-		</div>
+        </div>
 
-	</section>
+    </section>
 
     <header style="display:flow-root;position:fixed;top:0;width:100%;">
         <div class="brand"><?=$this->cfg->main['s_name']?></div>
@@ -69,54 +64,51 @@
                 </a>
             </li>-->
 
-            <?php $data['DEBUG'] = [
-                "PLT" => number_format(microtime(true)-DEBUG_PLT,3),
-                "QUERIES" => $this->db->count_queries,
-                "MEMORY_USAGE" => intval(memory_get_usage()/1024),
-                "MEMORY_PEAK" => intval(memory_get_peak_usage()/1024),
-                "BASE_ERROR" => $this->db->error(),
-                "PHP_ERROR" => error_get_last()
-            ]; ?>
+			<?php $data['DEBUG'] = [
+				"PLT" => number_format(microtime(true)-DEBUG_PLT,3),
+				"QUERIES" => $this->db->count_queries,
+				"MEMORY_USAGE" => intval(memory_get_usage()/1024),
+				"MEMORY_PEAK" => intval(memory_get_peak_usage()/1024),
+				"BASE_ERROR" => $this->db->error(),
+				"PHP_ERROR" => error_get_last()
+			]; ?>
 
             <!-- START: Dev-tools -->
             <li class="nav-item divider"></li>
 
             <li class="nav-item">
                 <a class="nav-link icons" title="<?=$this->l10n->gettext('debug_plt')?>: <?=$data['DEBUG']['PLT'] . ' ' . $this->l10n->gettext('sec')?>">
-                    <i class="fa fa-tachometer" aria-hidden="true"></i>
-                    <span class="badge ml-1"><?=$data['DEBUG']['PLT'] . ' ' . $this->l10n->gettext('sec')?></span>
+                    <i class="tachometer alternate icon"></i>
+                    <span><?=$data['DEBUG']['PLT'] . ' ' . $this->l10n->gettext('sec')?></span>
                 </a>
             </li>
             <li class="nav-item">
                 <a class="nav-link icons" title="<?=$this->l10n->gettext('debug_num_q')?>: <?=$data['DEBUG']['QUERIES']?>">
-                    <i class="fa fa-database" aria-hidden="true"></i>
-                    <span class="badge ml-1"><?=$data['DEBUG']['QUERIES']?></span>
+                    <i class="database icon"></i>
+                    <span><?=$data['DEBUG']['QUERIES']?></span>
                 </a>
             </li>
             <li class="nav-item">
                 <a class="nav-link icons" title="<?=$this->l10n->gettext('system_errors')?>">
-                    <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
-                    <span class="badge badge-default ml-1"><?=$this->log->get_logs_num('error')?></span>
-                    <?php
+                    <i class="exclamation triangle icon"></i>
+                    <span class="ui label"><?=$this->log->get_logs_num('error')?></span>
+					<?php
 
-                    if (!empty(error_get_last())) {
-                        $error = error_get_last();
-                        $type = $this->log->get_log_type($error['type']);
-                        $error = "[{$type}] {$error['message']} in file: {$error['file']} on line: {$error['line']}";
+					if (!empty(error_get_last())) {
+						$error = error_get_last();
+						$type = \mcr\log::get_log_type($error['type']);
+						$error = "[{$type}] {$error['message']} in file: {$error['file']} on line: {$error['line']}";
 
-                        ?>
-                        <span class="badge badge-danger ml-1"
-                              title="Last PHP error:"
-                              data-container="body"
-                              data-toggle="popover"
-                              data-placement="bottom"
-                              data-content="<?=$error?>"
+						?>
+                        <span class="ui red label php error"
+                              title="Last PHP error"
+                              data-html="<div class='header'>Last PHP error:</div><div class='content'><?=$error?></div>"
                               style="cursor:pointer;"
                         >!</span>
-                        <?php
-                    }
+						<?php
+					}
 
-                    ?>
+					?>
                 </a>
             </li>
             <!-- END: Dev-tools -->
@@ -135,6 +127,6 @@
     <script src="<?=STYLE_URL?>galery/js/lg-fullscreen.min.js"></script>
     <script src="<?=STYLE_URL?>galery/js/lg-pager.min.js"></script>
     <script src="<?=STYLE_URL?>galery/js/lg-zoom.min.js"></script>
-
-</body>
+		
+	</body>
 </html>

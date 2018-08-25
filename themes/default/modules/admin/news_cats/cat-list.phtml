@@ -1,51 +1,59 @@
-<form method="post" class="panel-categories" action="<?php echo ADMIN_URL; ?>&do=news_cats&op=delete">
-	<div class="form-block">
+<div class="row">
+	<div class="column">
 		
-		<div class="block-header">
-			<div class="block-name">
-				<p id="title">
-					<span class="title"><?php echo $this->l10n->gettext('categories'); ?></span>
-				</p>
-				<p id="actions">
-					<span class="btn-group">
-						<a href="#" class="btn btn-secondary edit" data-for="check-input" data-link="<?php echo ADMIN_URL; ?>&do=news_cats&op=edit&id="><i class="fa fa-pencil"></i></a>
-						<button class="btn btn-secondary remove" data-for="check-input" data-text="<?php echo $this->l10n->gettext('cn_accept'); ?>" type="submit" name="delete"><i class="fa fa-times"></i></button>
-					</span>
-
-					<span class="btn-group" role="group">
-						<input type="text" class="adm-search-input form-control" id="adm-search-id" placeholder="<?php echo $this->l10n->gettext('search_placeholder'); ?>">
-						<span class="input-group-prepend">
-							<button class="btn btn-secondary adm-search" data-for="#adm-search-id" type="button" rel="tooltip" title="<?php echo $this->l10n->gettext('search'); ?>"><i class="fa fa-search"></i></button>
-						</span>
-                    </span>
-
-					<span class="btn-group" role="group">
-                    	<a role="button" href="<?php echo ADMIN_URL; ?>&do=news_cats&op=add" class="btn btn-primary"><?php echo $this->l10n->gettext('add'); ?></a>
-                    </span>
-				</p>
+		<form class="ui form panel-categories" method="post" action="<?= ADMIN_URL; ?>&do=news_cats&op=delete">
+			
+			<div class="ui fluid action input">
+				<input type="text" id="adm-search-id" placeholder="<?= $this->l10n->gettext('search_placeholder'); ?>">
+				<button class="ui basic button" data-for="#adm-search-id" type="button" rel="tooltip" title="<?= $this->l10n->gettext('search'); ?>">
+					<i class="search fitted icon"></i>
+				</button>
 			</div>
-		</div>
-
-		<?php if (!empty($data['PAGINATION'])) {?>
-		<div class="block-line"></div>
-
-		<div class="left-act"><?php echo $data['PAGINATION']; ?></div>
-		<?php } ?>
-		
-		<div class="table-responsive">
-			<table class="table table-striped">
+			
+			<table class="ui celled striped table">
 				<thead>
 					<tr>
-						<th><a href="#" class="sort-trigger" data-field="id" data-order="desc">#</a></th>
-						<th><a href="#" class="sort-trigger" data-field="title" data-order="desc"><?php echo $this->l10n->gettext('cn_field_name'); ?></a></th>
-						<th class="action"><?php echo $this->l10n->gettext('action'); ?> <input type="checkbox" class="check-all" data-for="check-input"></th>
+						<th class="collapsing">
+							<a href="#" class="sort-trigger" data-field="id" data-order="desc">#</a>
+						</th>
+						<th>
+							<a href="#" class="sort-trigger" data-field="title" data-order="desc"><?= $this->l10n->gettext('cn_field_name'); ?></a>
+						</th>
+						<th class="collapsing action">
+							<div class="ui checkbox">
+								<input class="check-all" type="checkbox" data-for="check-input">
+								<label></label>
+							</div>
+						</th>
 					</tr>
 				</thead>
 				
 				<tbody>
-					<?php echo $data['CATEGORIES']; ?>
+					<?= $data['CATEGORIES']; ?>
 				</tbody>
 			</table>
-		</div>
+			
+			<div class="field">
+				<div id="actions" class="ui fluid buttons">
+					<a class="ui primary button" href="<?= ADMIN_URL; ?>&do=news_cats&op=add">
+						<i class="icon plus"></i> <?= $this->l10n->gettext('add'); ?>
+					</a>
+					<a class="ui primary button edit" data-for="check-input" data-link="<?= ADMIN_URL; ?>&do=news_cats&op=edit&id=">
+						<i class="icon pencil"></i> <?= $this->l10n->gettext('edit'); ?>
+					</a>
+					<button class="ui negative button remove" data-for="check-input" name="delete" type="submit">
+						<i class="icon times"></i> <?= $this->l10n->gettext('delete'); ?>
+					</button>
+				</div>
+			</div>
+			
+			<div class="ui one column stackable center aligned page grid">
+				<div class="column wide">
+					<?= $data['PAGINATION']; ?>
+				</div>
+			</div>
+			
+		</form>
+		
 	</div>
-</form>
+</div>

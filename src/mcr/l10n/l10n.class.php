@@ -152,7 +152,7 @@ trait l10n
 	public function init_l10n()
 	{
 		// Берём значение из конфига, как локаль сайта.
-		self::$locale = config('main::s_lang');
+		self::$locale = config('mcr::site.locale');
 
 		if (INSTALLED) {
 			// TODO: rewrite via new cache adapter

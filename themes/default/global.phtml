@@ -1,128 +1,139 @@
-<?php
-use mcr\l10n\l10n;
-?>
+<!--
+Copyright (c) 2018.
+MagicMCR является отдельным и независимым продуктом.
+Исходный код распространяется под лицензией GNU General Public License v3.0.
 
+MagicMCR не является копией оригинального движка WebMCR, а лишь его подверсией.
+Разработка MagicMCR производится исключительно в частных интересах. Разработчики, а также лица,
+участвующие в разработке и поддержке, не несут ответственности за проблемы, возникшие с движком.
+-->
 <!DOCTYPE HTML>
-<html lang="<?= explode('-', l10n::get_config_locale())[0] ?>">
-<head>
-    <meta charset="utf-8">
-	<title><?= $title ?> — <?= config('main::s_name') ?></title>
+<?= document('open') ?>
+	<head>
+        <meta charset="utf-8">
+		<title><?= $title ?> — <?= config('mcr::site.name') ?></title>
 
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-	<meta name="description" content="<?= config('main::s_about') ?>">
-	<meta name="keywords" content="<?= config('main::s_keywords') ?>">
-	<meta name="author" content="NC22 &amp; Qexy.org / completed Magicfar4 aka Magicmen">
+        <meta name="description" content="<?= config('mcr::site.description') ?>">
+        <meta name="keywords" content="<?= config('mcr::site.keywords') ?>">
+        <meta name="author" content="NC22 &amp; Qexy.org / completed Magicfar4 aka Magicmen">
 
-	<meta name='data' content='<?= META_JSON_DATA; ?>'>
+        <meta name='data' content='<?= META_JSON_DATA; ?>'>
 
-	<base href="<?= BASE_URL ?>">
+        <base href="<?= BASE_URL ?>">
 
-    <!-- Base stylesheets -->
-    <link rel="stylesheet" href="<?= asset('css/font-awesome.min.css') ?>">
-    <link rel="stylesheet" href="<?= asset('css/bootstrap.min.css') ?>">
-    <link rel="stylesheet" href="<?= asset('css/jquery.minicolors.css') ?>">
-    <link rel="stylesheet" href="<?= asset('css/global.css') ?>">
+        <!-- Base stylesheets -->
+        <link rel="stylesheet" href="/themes/.semantic/dist/semantic.min.css">
+        <link rel="stylesheet" href="<?= asset('css/jquery.minicolors.css') ?>">
+        <link rel="stylesheet" href="<?= asset('css/global.css') ?>">
 
-    <!-- User stylesheets -->
-    <?php stylesheets(); ?>
+        <!-- User stylesheets -->
+		<?php stylesheets(); ?>
 
-    <!-- Head scripts -->
-    <script type="application/javascript" src="<?= asset('js/jquery.min.js') ?>"></script>
-    <?php scripts('head'); ?>
+        <!-- Head scripts -->
+        <script type="application/javascript" src="<?= asset('js/jquery.min.js') ?>"></script>
+		<?php scripts('head'); ?>
+	</head>
 
-</head>
+	<?= document('open_body') ?>
 
-<body style="direction:<?= l10n::get_locale_info('text_direction') ?>;" class="global">
+		<!-- Sidebar Menu -->
+		<div class="ui vertical inverted sidebar menu">
+			<?php echo menu()->generate(); ?>
+		</div>
 
-    <nav class="navbar navbar-toggleable-md navbar-light bg-faded fixed-top">
-        <div class="container">
-            <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
-                    data-target="#navbar-header" aria-controls="navbar-header" aria-expanded="false"
-                    aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-
-            <a class="navbar-brand mb-0 h1" href="/"><?= config('main::s_name') ?></a>
-
-            <div class="collapse navbar-collapse" id="navbar-header">
-                <ul class="navbar-nav mr-auto mt-2 mt-md-0">
-                    <?php echo menu()->generate(); ?>
-                </ul>
-            </div>
-        </div>
-
-        <div class="bg"></div>
-    </nav>
-
-    <header class="jumbotron jumbotron-fluid">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-8">
-                    <h1 class="display-3"><?= config('main::s_name') ?></h1>
-                    <p><?= config('main::s_about') ?></p>
-                    <p><a class="btn btn-success btn-lg" href="index.php?mode=start" role="button">
-                            <i class="fa fa-download"></i> <?= translate('load_client') ?>
-                        </a>
-                    </p>
-                </div>
-
-                <div class="col-md-4">
-                    <img src="/themes/default/img/logotype.png">
+		<div id="mcr-header" class="ui vertical masthead segment">
+            <div class="ui top fixed menu">
+                <div class="ui container">
+                    <a class="hidden-menu toc item">
+                        <i class="sidebar icon"></i>
+                    </a>
+	                <?php echo menu()->generate(); ?>
+                    <div class="right menu">
+                        <!-- TODO: Search -->
+                    </div>
                 </div>
             </div>
-        </div>
-    </header>
 
-    <?= $advice ?>
+			<div class="ui text container">
+				<img id="mcr-logotype" class="ui right floated image" src="<?= asset('img/logotype.png') ?>">
+				<div class="ui header">
+					<h1><?= config('mcr::site.name') ?></h1>
+					<div class="ui sub header">
+						<p><?= config('mcr::site.description') ?></p>
+						<p>
+							<a class="ui huge green button" href="index.php?mode=start" role="button"><i class="icon download"></i> <?= translate('load_client'); ?></a>
+						</p>
+					</div>
+				</div>
+			</div>
 
-    <div class="container">
-        <div class="row">
-            <div class="col-md-4">
-                <div id="js-notify" class="alert alert-warning">
-                    <a href="#" id="close">&times;</a>
-                    <div id="title"></div>
-                    <div id="message"></div>
-                </div>
+		</div>
 
-                <?php blocks()->render(); ?>
+		<div class="ui vertical segment" id="mcr-content-container">
+
+			<?= $advice ?>
+
+			<div class="ui stackable relaxed mobile reversed grid container">
+                <!-- Left side -->
+				<div class="five wide left floated column" id="mcr-sidebar">
+
+					<?php blocks()->render(['block_banner', 'block_monitoring', 'block_online', 'block_profile']); ?>
+
+				</div>
+
+				<!-- Right side -->
+				<div class="eleven wide right floated column" id="mcr-content">
+
+					<?php
+					echo $breadcrumbs;
+
+					echo $content;
+					?>
+
+				</div>
+
+			</div>
+
+		</div>
+
+
+		<div id="js-loader" title="<?= translate('loading'); ?>">
+			<img src="<?= asset('img/ajaxload.gif') ?>" alt="<?= translate('loading') ?>"/>
+		</div>
+
+		<div id="mcr-footer">
+			<div class="feature alternate ui stripe vertical segment">
+				<div class="ui container">
+					<h4 class="ui inverted header"><?= sprintf(translate('copyright'), config('mcr::site.name')); ?></h4>
+					<p><?= FEEDBACK ?> | <?= VERSION ?></p>
+				</div>
+			</div>
+		</div>
+
+        <div class="ui messages">
+            <div class="ui black async message">
+                <i class="close icon"></i>
+                <div id="title" class="header"></div>
+                <p id="message"></p>
             </div>
 
-            <div class="col-md-8">
-                <?php
-                    echo $breadcrumbs;
-
-                    echo $content;
-                ?>
-            </div>
+            <?php blocks()->render('block_notify') ?>
         </div>
-    </div>
 
-    <div id="js-loader" title="<?= translate('loading'); ?>"><img src="<?= asset('img/ajaxload.info_FFFFFF_facebook.gif') ?>" alt="<?= translate('loading'); ?>"/></div>
+        <!-- Base body scripts -->
+        <script type="application/javascript" src="<?= asset('js/jquery.easing.js') ?>"></script>
+        <script type="application/javascript" src="/themes/.semantic/dist/semantic.min.js"></script>
+        <script type="application/javascript" src="<?= asset('js/bootstrap.file-input.js') ?>"></script>
+        <script type="application/javascript" src="<?= asset('js/jquery.minicolors.min.js') ?>"></script>
+        <script type="application/javascript" src="<?= asset('js/cookie.js') ?>"></script>
+        <script type="application/javascript" src="/themes/.application/application.js"></script>
+        <script type="application/javascript" src="<?= asset('js/global.js') ?>"></script>
 
-    <nav class="navbar navbar-light bg-faded">
-        <div class="container">
-            <div id="navbar-footer">
-                <div class="block-left"><?php echo sprintf(translate('copyright'), config('main::s_name')) ?></div>
-                <div class="block-right" style="white-space: nowrap"><?php echo FEEDBACK; ?> | <?php echo VERSION; ?></div>
-            </div>
-        </div>
-    </nav>
+        <!-- User body scripts -->
+        <?php scripts('body'); ?>
 
-    <!-- Base body scripts -->
-    <script type="application/javascript" src="<?= asset('js/jquery.easing.js') ?>"></script>
-    <script type="application/javascript" src="<?= asset('js/popper.min.js') ?>"></script>
-    <script type="application/javascript" src="<?= asset('js/tether.min.js') ?>"></script>
-    <script type="application/javascript" src="<?= asset('js/bootstrap.min.js') ?>"></script>
-    <script type="application/javascript" src="<?= asset('js/bootstrap.file-input.js') ?>"></script>
-    <script type="application/javascript" src="<?= asset('js/jquery.minicolors.min.js') ?>"></script>
-    <script type="application/javascript" src="<?= LANG_URL . 'js/global.js' ?>"></script>
-    <script type="application/javascript" src="<?= asset('js/cookie.js') ?>"></script>
-    <script type="application/javascript" src="<?= asset('js/global.js') ?>"></script>
+    <?= document('close', ['body']) ?>
 
-    <!-- User body scripts -->
-	<?php scripts('body'); ?>
-
-</body>
-
-</html>
+<?= document('close') ?>
