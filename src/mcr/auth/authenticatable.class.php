@@ -14,6 +14,8 @@
 namespace mcr\auth;
 
 use mcr\database\db;
+use mcr\hashing\bcrypt_hasher;
+use mcr\hashing\hasher;
 
 if (!defined("MCR")) {
 	exit("Hacking Attempt!");
@@ -77,8 +79,8 @@ trait authenticatable
 					])->route('home');
 				}
 
-				global $application;
-				$hasher = $application::$hasher;
+				/** @var hasher $hasher */
+				$hasher = app('hasher');
 
 				$password = $auth_data['password'].$user['salt'];
 
