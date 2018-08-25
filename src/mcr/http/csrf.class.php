@@ -32,7 +32,7 @@ trait csrf
 		// фиксируем время.
 		$this->time = time();
 		//генерируем ключ в это время.
-		$csrf_key = $this->time . '_' . md5(auth::ip() . config('main::mcr_secury') . $this->time);
+		$csrf_key = $this->time . '_' . md5(auth::ip() . APPLICATION_KEY . $this->time);
 
 		// если нет куки с ключём
 		if (!isset($_COOKIE['mcr_secure'])) {
@@ -45,7 +45,7 @@ trait csrf
 			// иначе проверяем ту, что есть
 			$cookie = explode('_', $_COOKIE['mcr_secure']);
 			$old_time = intval($cookie[0]);
-			$old_key = md5(auth::ip() . config('main::mcr_secury') . $old_time);
+			$old_key = md5(auth::ip() . APPLICATION_KEY . $old_time);
 
 			// если csrf ключ другой, то обновляем куку
 			if (!isset($cookie[1]) || $cookie[1] !== $old_key || $this->csrf_is_old($old_time)) {
@@ -109,7 +109,7 @@ trait csrf
 					$secure_time = intval($secure_key[0]);
 					if ($this->csrf_is_old($secure_time)) return false;
 
-					$mcr_secure = $secure_time . '_' . md5(auth::ip() . config('main::mcr_secury') . $secure_time);
+					$mcr_secure = $secure_time . '_' . md5(auth::ip() . APPLICATION_KEY . $secure_time);
 					if ($mcr_secure !== $_POST['mcr_secure']) return false;
 
 				} else {
@@ -118,8 +118,6 @@ trait csrf
 			} else {
 				return false;
 			}
-
-
 		}
 
 		return true;
