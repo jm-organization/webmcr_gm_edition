@@ -1,26 +1,36 @@
-<div class="form-block">
+<div class="row">
+	<div class="column">
+		
+		<div class="ui six item labeled icon menu">
+			<a class="item" href="<?= ADMIN_URL; ?>&do=settings&op=main">
+				<i class="cogs icon"></i>
+				<?= $this->l10n->gettext('set_main'); ?>
+			</a>
+			<a class="item" href="<?= ADMIN_URL; ?>&do=settings&op=pagin">
+				<i class="ellipsis horizontal icon"></i>
+				<?= $this->l10n->gettext('set_pagin'); ?>
+			</a>
+			<a class="item" href="<?= ADMIN_URL; ?>&do=settings&op=mail">
+				<i class="envelope icon"></i>
+				<?= $this->l10n->gettext('set_mail'); ?>
+			</a>
+			<a class="active item" href="<?= ADMIN_URL; ?>&do=settings&op=search">
+				<i class="search icon"></i>
+				<?= $this->l10n->gettext('set_search'); ?>
+			</a>
+			<a class="item" href="<?= ADMIN_URL; ?>&do=settings&op=functions">
+				<i class="lightbulb icon"></i>
+				<?= $this->l10n->gettext('set_func'); ?>
+			</a>
+			<a class="item" href="<?= ADMIN_URL; ?>&do=settings&op=base">
+				<i class="database icon"></i>
+				<?= $this->l10n->gettext('set_base'); ?>
+			</a>
+		</div>
 
-	<div class="block-header">
-		<div class="block-name"><?php echo $this->l10n->gettext('set_search'); ?></div>
-	</div>
-
-	<div class="block-line"></div>
-
-	<div class="adm-settings">
 		<form method="post"></form>
 
-		<ul class="nav nav-tabs">
-			<li class="nav-item"><a class="nav-link" href="<?php echo ADMIN_URL; ?>&do=settings&op=main"><?php echo $this->l10n->gettext('set_main'); ?></a></li>
-			<li class="nav-item"><a class="nav-link" href="<?php echo ADMIN_URL; ?>&do=settings&op=pagin"><?php echo $this->l10n->gettext('set_pagin'); ?></a></li>
-			<li class="nav-item"><a class="nav-link" href="<?php echo ADMIN_URL; ?>&do=settings&op=mail"><?php echo $this->l10n->gettext('set_mail'); ?></a></li>
-			<li class="nav-item"><a class="nav-link active" href="<?php echo ADMIN_URL; ?>&do=settings&op=search"><?php echo $this->l10n->gettext('set_search'); ?></a></li>
-			<li class="nav-item"><a class="nav-link" href="<?php echo ADMIN_URL; ?>&do=settings&op=functions"><?php echo $this->l10n->gettext('set_func'); ?></a></li>
-			<li class="nav-item"><a class="nav-link" href="<?php echo ADMIN_URL; ?>&do=settings&op=base"><?php echo $this->l10n->gettext('set_base'); ?></a></li>
-		</ul>
-		 
-		<div class="tab-content">
-			<?php echo $data['ITEMS']; ?>
-		</div>
+		<?= $data['ITEMS']; ?>
+
 	</div>
-		
 </div>

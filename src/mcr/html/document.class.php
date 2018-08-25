@@ -17,8 +17,6 @@
  *
  * @Date         : 27.06.2018
  * @Time         : 22:58
- *
- * @Documentation:
  */
 
 namespace mcr\html;
@@ -27,6 +25,7 @@ namespace mcr\html;
 use mcr\html\blocks\blocks_manager;
 use mcr\http\request;
 
+use mcr\l10n\l10n;
 use modules\base_module;
 use modules\module;
 
@@ -127,7 +126,6 @@ class document
 				'advice'
 			));
 
-			//response($_content, 'utf-8', 200);
 			return $_content;
 		}
 
@@ -181,5 +179,24 @@ class document
 
 		self::$stylesheets .= asset($module . '.header-styles', true);
 		self::$scripts['body'] .= asset($module . '.header-body-scripts', true);
+	}
+
+	public static function open()
+	{
+		$lang = 'lang="' . explode('-', l10n::get_config_locale())[0] . '"';
+
+		return "<html $lang>";
+	}
+
+	public static function close($tag = 'html')
+	{
+		return "</$tag>";
+	}
+
+	public static function open_body()
+	{
+		$direction = l10n::get_locale_info('text_direction');
+
+		return "<body style=\"direction:$direction;\">";
 	}
 }

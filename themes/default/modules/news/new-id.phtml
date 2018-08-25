@@ -1,27 +1,41 @@
-<div class="form-block new-id">
-
-	<div class="block-header">
-		
-		<div class="block-name"><a href="<?php echo BASE_URL; ?>?mode=news&amp;id=<?php echo $data['ID']; ?>"><?php echo $data['TITLE']; ?></a></div><!--
-		--><div class="block-right">
-			<?php echo $data['ADMIN']; ?>
-			<?php echo $data['LIKES']; ?>
+<div class="item new-id">
+	<div class="image">
+		<img src="<?= $data['IMG']; ?>">
+	</div>
+	<div class="content">
+		<a class="header" href="<?= BASE_URL; ?>?mode=news&amp;id=<?= $data['ID']; ?>">
+			<?= $data['TITLE']; ?>
+			<!-- <?= $data['ADMIN']; ?>
+			<?= $data['LIKES']; ?> -->
+		</a>
+		<div class="meta">
+			<span class="date">
+				<span data-livestamp="<?= $data['DATE']; ?>">
+					<?= $this->l10n->parse_date($data['DATE']); ?>
+				</span>
+			</span>
+			<span class="category">
+				<a href="<?= BASE_URL; ?>?mode=news&amp;cid=<?= $data['CID']; ?>" rel="tooltip" title="<?= $this->l10n->gettext('category'); ?>">
+					<?= $data['CATEGORY']; ?>
+				</a>
+			</span>
 		</div>
-	</div>
-
-	<div class="block-line"></div>
-
-	<div class="new-id-content">
-		<?php echo $data['TEXT']; ?>
-	</div>
-
-	<div class="block-line"></div>
-
-	<div class="block-footer">
-		<?php echo $data['DATE']; ?>
-		<div class="category"><a href="<?php echo BASE_URL; ?>?mode=news&amp;cid=<?php echo $data['CID']; ?>" rel="tooltip" title="<?php echo $this->l10n->gettext('category'); ?>"><?php echo $data['CATEGORY']; ?></a></div>
-		<div class="readmore"><a href="<?php echo BASE_URL; ?>?mode=news&amp;id=<?php echo $data['ID']; ?>"><?php echo $this->l10n->gettext('readmore'); ?></a></div>
-		<?php echo $data['COMMENTS']; ?>
-		<div class="views" rel="tooltip" title="<?php echo $this->l10n->gettext('views'); ?>"><i class="fa fa-eye"></i><?php echo $data['VIEWS']; ?></div>
+		<div class="description">
+			<?= $data['TEXT']; ?>
+		</div>
+		<div class="extra">
+			<div class="ui label views">
+				<i class="eye icon"></i>
+				<?= $data['VIEWS']; ?>
+			</div>
+			<div class="ui label">
+				<?= $data['COMMENTS']; ?>
+			</div>
+			
+			<a class="ui right floated primary button" href="<?= BASE_URL; ?>?mode=news&amp;id=<?= $data['ID']; ?>">
+				Подробнее <!-- TODO: Добавить фразу -->
+				<i class="right chevron icon"></i>
+			</a>
+		</div>
 	</div>
 </div>

@@ -1,136 +1,162 @@
-<div class="form-block menu-adm-change">
-
-    <script>new ClipboardJS('#copylink');</script>
-
-    <div class="row">
-        <div class="col-md-8 offset-md-2">
-            <div class="block-header">
-                <div class="block-name">
-                    <p id="title">
-                        <span class="title"><?=$data['PAGE']?></span>
-                    </p>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-8 offset-md-2">
-            <div class="card">
-                <form method="post" class="card-block card-body">
-                    <div class="form-group row">
-                        <div class="col-sm-6 offset-3">
-                            <div class="input-group">
-                                <span class="input-group-addon">#page_id</span>
-                                <input type="text" class="form-control" <?=$data['EDIT']?'disabled readonly':''?> required name="page_id" value="<?=$data['PAGE_ID']?>">
-                            </div>
-                            <small class="form-text text-muted">(<?php echo $this->l10n->gettext('menu_page_id_same_with_class'); ?>)</small>
-                        </div>
-                    </div>
-
-                    <div class="form-group row">
-                        <div class="col-sm-6 offset-3">
-                            <div class="input-group">
-                                <span class="input-group-addon"><?php echo $this->cfg->main['s_root_full']; ?>?mode=admin&do=</span>
-                                <input type="text" class="form-control disabled" readonly id="page_url" value="<?=$data['PAGE_ID']?>">
-                                <input type="hidden" data-prefix="/?mode=admin&do=" id="page_main_url" name="url" value="/?mode=admin&do=<?=$data['PAGE_ID']?>">
-                            </div>
-                        </div>
-
-                        <a href="#" id="copylink" title="Copy to clipboard" data-toggle="tooltip" class="btn btn-link" onclick="return false;" data-prefix="<?php echo $this->cfg->main['s_root_full']; ?>?mode=admin&do=" data-clipboard-text="<?php echo $this->cfg->main['s_root_full']; ?>?mode=admin&do=<?=$data['PAGE_ID']?>" style="margin-left:-15px"><i class="fa fa-link"></i></a>
-                    </div>
-
-                    <hr>
-
-                    <div class="form-group row">
-                        <label for="menuTitle" class="col-sm-3 col-form-label text-right"><?php echo $this->l10n->gettext('mcp_field_name'); ?></label>
-                        <div class="col-sm-6 float-left">
-                            <input type="text" class="form-control" id="menuTitle" name="title" value="<?=$data['TITLE']?>">
-                        </div>
-                    </div>
-
-                    <div class="form-group row">
-                        <label for="selectGid" class="col-sm-3 col-form-label text-right"><?=$this->l10n->gettext('group')?></label>
-                        <div class="col-sm-6 float-left">
-                            <select name="gid" class="form-control" id="selectGid">
-								<?=$data['GROUPS']?>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="form-group row">
-						<label for="selectPerm" class="col-sm-3 col-form-label text-right"><?=$this->l10n->gettext('mcp_field_access')?></label>
-						<div class="col-sm-6 float-left">
-							<select class="form-control"name="permissions" id="selectPerm">
-                                <?=$data['PERMISSIONS']?>
-                            </select>
-						</div>
-					</div>
-
-                    <div class="form-group row">
-						<label class="col-sm-3 col-form-label text-right"><?=$this->l10n->gettext('mcp_field_icon')?></label>
-						<div class="col-sm-6 float-left">
-
-                            <div class="btn-group w-100" role="group" aria-label="Button group with nested dropdown">
-                                <img src="" width="33" height="33" class="img-thumbnail" id="menu_icon" style="height:33px">
-
-                                <div class="btn-group w-100" role="group">
-                                    <button id="btnGroupDrop1" type="button" data-target="#icons-list" class="btn btn-link"><?=$this->l10n->gettext('select_icon')?></button>
-                                </div>
-                            </div>
-
-                            <div class="menu-icons-select triangled" id="icons-list">
-                                <h5 class="d-block mb-3"><?=$this->l10n->gettext('icons')?></h5>
-
-                                <?php foreach ($data['ICONS'] as $icons_chank) { ?>
-                                    <div class="row">
-                                        <?php foreach ($icons_chank as $icon) {?>
-                                            <label class="menu-icon col-md-1" title="<?php echo $data['TITLE']; ?>">
-                                                <input class="icon-input" type="radio" name="icon" data-icon="<?php echo UPLOAD_URL; ?>panel-icons/<?php echo $icon['IMG']; ?>" value="<?php echo $icon['ID']; ?>" <?php echo $icon['CHECKED']; ?>>
-                                                <div class="icon-img" style="background-image: url(<?php echo UPLOAD_URL; ?>panel-icons/<?php echo $icon['IMG']; ?>);"></div>
-                                            </label>
-                                        <?php }?>
-                                    </div>
-								<?php }?>
-
-                            </div>
-                        </div>
-					</div>
-
-                    <div class="form-group row">
-						<label for="inputPriority" class="col-sm-3 col-form-label text-right"><?=$this->l10n->gettext('mcp_field_priority')?></label>
-						<div class="col-sm-6 float-left">
-                            <input type="number" class="form-control" name="priority" value="<?=$data['PRIORITY']?>" id="inputPriority">
-                        </div>
-					</div>
-
-                    <div class="form-group row">
-						<label for="selectTarget" class="col-sm-3 col-form-label text-right"><?=$this->l10n->gettext('mcp_field_target')?></label>
-						<div class="col-sm-6 float-left">
-                            <select id="selectTarget" class="form-control" name="target">
-                                <option value="_self"><?=$this->l10n->gettext('mcp_target_self')?></option>
-                                <option value="_blank" <?=$data['TARGET']?>><?=$this->l10n->gettext('target_blank2')?></option>
-                            </select>
-                        </div>
-					</div>
-
-                    <div class="form-group row">
-                        <label for="text" class="col-sm-3 col-form-label text-right"><?=$this->l10n->gettext('mcp_field_desc')?></label>
-                        <div class="col-sm-6 float-left">
-                            <textarea class="form-control" id="text" name="text" rows="8" maxlength="255"><?=$data['TEXT']?></textarea>
-                        </div>
-                    </div>
-
-                    <hr>
-
-                    <div class="form-group row mb-0">
-                        <label class="col-sm-3 col-form-label text-right"></label>
-                        <div class="col-sm-6">
-                            <button type="submit" class="btn btn-success"><?php echo $this->l10n->gettext('save'); ?></button>
-                            <a href="<?php echo ADMIN_URL.'&do=menu_adm'; ?>" class="btn btn-outline-primary" role="button"><?php echo $this->l10n->gettext('cancel'); ?></a>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
+<div class="row">
+	<div class="column">
 		
+		<script>new ClipboardJS('#copylink');</script>
+		
+		<form class="ui form menu-adm-change" method="post">
+			
+			<table class="ui definition table">
+				<tbody>
+					
+					<tr>
+						<td>
+							<label for="title">#page_id</label>
+						</td>
+						<td>
+							<input type="text" <?= $data['EDIT'] ? 'disabled readonly' : '' ?> required name="page_id" value="<?= $data['PAGE_ID'] ?>">
+							<label><?= $this->l10n->gettext('menu_page_id_same_with_class'); ?></label>
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<label for="page_url"></label>
+						</td>
+						<td>
+                            <?= $this->cfg->main['s_root_full']; ?>?mode=admin&do=<span id="page_url"><?=$data['PAGE_ID'] ?></span>
+							<input type="hidden" data-prefix="/?mode=admin&do=" id="page_main_url" name="url" value="/?mode=admin&do=<?= $data['PAGE_ID'] ?>">
+
+                            <a class="circular ui icon mini button"
+                               id="copylink"
+                               data-tooltip="Copy to clipboard"
+                               data-inverted data-mini
+                               onclick="return false;"
+                               data-prefix="<?= $this->cfg->main['s_root_full']; ?>?mode=admin&do="
+                               data-clipboard-text="<?= $this->cfg->main['s_root_full']; ?>?mode=admin&do=<?= $data['PAGE_ID'] ?>"
+                               style="margin-left: 15px"
+                            >
+                                <i class="clipboard icon"></i>
+                            </a>
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<label for="menuTitle"><?= $this->l10n->gettext('mcp_field_name'); ?></label>
+						</td>
+						<td>
+							<input type="text" id="menuTitle" name="title" value="<?= $data['TITLE'] ?>">
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<label for="selectGid"><?= $this->l10n->gettext('group') ?></label>
+						</td>
+						<td>
+							<select class="ui fluid selection dropdown" name="gid" id="selectGid">
+								<?= $data['GROUPS'] ?>
+							</select>
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<label for="selectPerm"><?= $this->l10n->gettext('mcp_field_access') ?></label>
+						</td>
+						<td>
+							<select class="ui fluid selection dropdown" name="gid" id="selectGid">
+								<?= $data['GROUPS'] ?>
+							</select>
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<label for="selectPerm"><?= $this->l10n->gettext('mcp_field_access') ?></label>
+						</td>
+						<td>
+							<select class="ui fluid selection dropdown" name="permissions" id="selectPerm">
+								<?= $data['PERMISSIONS'] ?>
+							</select>
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<label><?= $this->l10n->gettext('mcp_field_icon') ?></label>
+						</td>
+						<td>
+							<img src="" width="36" height="36" class="img-thumbnail" id="menu_icon" style="height:36px;float:left;margin-right:15px;">
+								
+                            <button id="select_menu_adm_icon" type="button" data-target="#icons-list" class="ui button"><?= $this->l10n->gettext('select_icon') ?></button>
+
+
+							<div class="ui grid menu-icons-select" id="icons-list">
+
+								<div class="ui header" style="margin-top: 10px;"><?= $this->l10n->gettext('icons') ?></div>
+								
+								<? foreach ($data['ICONS'] as $icons_chank) { ?>
+									<div class="row">
+										<? foreach ($icons_chank as $icon) {?>
+											<label class="menu-icon column" title="<?= $icon['TITLE']; ?>">
+												<input class="icon-input" type="radio" name="icon" data-icon="<?= UPLOAD_URL; ?>panel-icons/<?= $icon['IMG']; ?>" value="<?= $icon['ID']; ?>" <?= $icon['CHECKED']; ?>>
+												<div class="icon-img" style="background-image: url(<?= UPLOAD_URL; ?>panel-icons/<?= $icon['IMG']; ?>);"></div>
+											</label>
+										<? }?>
+									</div>
+								<? }?>
+								
+							</div>
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<label for="inputPriority"><?= $this->l10n->gettext('mcp_field_priority') ?></label>
+						</td>
+						<td>
+							<input type="number" name="priority" value="<?=$data['PRIORITY']?>" id="inputPriority">
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<label for="selectTarget"><?= $this->l10n->gettext('mcp_field_target') ?></label>
+						</td>
+						<td>
+							<select class="ui fluid selection dropdown" id="selectTarget" name="target">
+								<option value="_self"><?= $this->l10n->gettext('mcp_target_self') ?></option>
+								<option value="_blank"<?= $data['TARGET']?>><?= $this->l10n->gettext('target_blank2') ?></option>
+							</select>
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<label for="text"><?= $this->l10n->gettext('mcp_field_desc') ?></label>
+						</td>
+						<td>
+							<textarea id="text" name="text" rows="8" maxlength="255"><?= $data['TEXT'] ?></textarea>
+						</td>
+					</tr>
+					
+				</tbody>
+
+                <tfoot class="full-width">
+
+                    <tr>
+                        <th></th>
+                        <th>
+                            <button type="submit" class="ui medium primary button"><?= $this->l10n->gettext('save'); ?></button>
+                        </th>
+                    </tr>
+
+                </tfoot>
+
+			</table>
+			
+		</form>
+		
+	</div>
 </div>

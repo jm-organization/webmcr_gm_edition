@@ -1,7 +1,8 @@
 <div class="search-block-id">
 	<div class="title">
-		<a href="<?php echo BASE_URL; ?>?mode=news&id=<?php echo $data['NID']; ?>"><?php echo $data['TITLE']; ?></a>
+		<a href="<?= BASE_URL; ?>?mode=news&id=<?= $data['NID']; ?>"><?= $data['TITLE']; ?></a>
 	</div>
-	<?php echo $data['TEXT']; ?>
-	<div class="subinfo"><?php echo $this->l10n->gettext('added'); ?>: <?php echo $data['TIME_CREATE']; ?> <?php echo $this->l10n->gettext('user'); ?> <a href="#"><?php echo $data['LOGIN']; ?></a></div>
+	<?= $data['TEXT']; ?>
+	<div class="subinfo"><?= $this->l10n->gettext('added'); ?>: <?= $data['TIME_CREATE']; ?> <?= $this->l10n->gettext('user'); ?>
+		<a href="#"><?= $data['LOGIN']; ?></a></div>
 </div>

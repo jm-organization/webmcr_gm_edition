@@ -1,40 +1,41 @@
-<form method="post" class="panel-blocks" action="<?php echo ADMIN_URL; ?>&do=blocks&op=delete">
-	<div class="form-block">
+<div class="row">
+	<div class="column">
 
-		<div class="block-header">
-			<div class="block-name"><?php echo $this->l10n->gettext('blocks'); ?></div>
-		</div>
+			<form class="ui form" method="post" action="<?= ADMIN_URL; ?>&do=blocks&op=delete">
+				<table class="ui celled table">
+					<thead>
+						<tr>
+							<th class="collapsing"><?= $this->l10n->gettext('block_field_status'); ?></th>
+							<th><?= $this->l10n->gettext('block_field_name'); ?></th>
+							<th><?= $this->l10n->gettext('author'); ?></th>
+							<th><?= $this->l10n->gettext('version'); ?></th>
+							<th class="right aligned collapsing action">
+								<div class="ui checkbox">
+									<input type="checkbox" class="check-all" data-for="check-input">
+									<label></label>
+								</div>
+							</th>
+						</tr>
+					</thead>
+					
+					<tbody>
+						<?= $data['BLOCKS']; ?>
+					</tbody>
+				</table>
+				
+				<div class="ui fluid buttons" role="group" id="actions">
+					<button class="ui primary button" id="enable" data-for="check-input">
+						<i class="icon play fitted"></i>
+					</button>
+					<button class="ui primary button" id="disable" data-for="check-input">
+						<i class="icon pause fitted"></i>
+					</button>
+					<a ref="#" class="ui primary button edit" data-for="check-input" data-link="<?= ADMIN_URL; ?>&do=blocks&op=edit&id=">
+						<?= $this->l10n->gettext('edit'); ?>
+					</a>
+				</div>
 
-		<div class="block-line"></div>
+			</form>
 
-		<div class="table-responsive">
-			<table class="table table-striped">
-				<thead>
-					<tr>
-						<th><?php echo $this->l10n->gettext('block_field_status'); ?></th>
-						<th><?php echo $this->l10n->gettext('block_field_name'); ?></th>
-						<th><?php echo $this->l10n->gettext('author'); ?></th>
-						<th><?php echo $this->l10n->gettext('version'); ?></th>
-						<th class="action"><?php echo $this->l10n->gettext('action'); ?> <input type="checkbox" class="check-all" data-for="check-input"></th>
-					</tr>
-				</thead>
-
-				<tbody>
-					<?php echo $data['BLOCKS']; ?>
-				</tbody>
-			</table>
-		</div>
 	</div>
-
-	<div class="form-block actions">
-		<div class="left-act"></div>
-		<div class="right-act">
-			<?php echo $this->l10n->gettext('block_field_action2'); ?>: 
-			<div class="btn-group">
-				<a class="btn btn-secondary edit" data-for="check-input" data-link="<?php echo ADMIN_URL; ?>&do=blocks&op=edit&id=" href="#"><i class="fa fa-pencil"></i></a>
-				<button class="btn btn-secondary" id="enable" data-for="check-input"><i class="fa fa-play"></i></button>
-				<button class="btn btn-secondary" id="disable" data-for="check-input"><i class="fa fa-pause"></i></button>
-			</div>
-		</div>
-	</div>
-</form>
+</div>

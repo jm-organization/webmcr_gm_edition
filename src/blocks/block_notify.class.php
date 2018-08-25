@@ -28,11 +28,11 @@ class block_notify implements base_block
 	 * Инициализатор блока.
 	 * Принимает конфиги блока.
 	 *
-	 * @param array $configs - конфиги блока, которые необходимы для его работы.
+	 * @param array $block_info - конфиги блока, которые необходимы для его работы.
 	 *
 	 * @return base_block
 	 */
-	public function init(array $configs)
+	public function init(array $block_info)
 	{
 		// Выходим из инициализации, если нету блока сообщений в сессии
 		if (!isset($_SESSION['messages'])) return null;

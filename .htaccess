@@ -15,3 +15,5 @@ AddDefaultCharset   UTF-8
 	RewriteRule ^(install/|themes/|favicon\.ico|crossdomain\.xml|robots\.txt|sitemap\.xml) - [NC,L]
 	RewriteRule ^.*$ index.php [NC,L]
 </IfModule>
+
+Options -Indexes

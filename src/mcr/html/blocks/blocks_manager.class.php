@@ -1,5 +1,16 @@
 <?php
 /**
+ * Copyright (c) 2018.
+ * MagicMCR является отдельным и независимым продуктом.
+ * Исходный код распространяется под лицензией GNU General Public License v3.0.
+ *
+ * MagicMCR не является копией оригинального движка WebMCR, а лишь его подверсией.
+ * Разработка MagicMCR производится исключительно в частных интересах. Разработчики, а также лица,
+ * участвующие в разработке и поддержке, не несут ответственности за проблемы, возникшие с движком.
+ */
+
+
+/**
  * Created in JM Organization.
  *
  * @e-mail       : admin@jm-org.net
@@ -7,8 +18,6 @@
  *
  * @Date         : 05.07.2018
  * @Time         : 21:41
- *
- * @Documentation:
  */
 
 namespace mcr\html\blocks;
@@ -28,7 +37,7 @@ class blocks_manager
 	public function __construct()
 	{
 		// регистрируем конфиги блоков локально
-		$this->configs = config('blocks');
+		$this->configs = config('components::blocks');
 
 		$blocks = array_keys($this->configs);
 		$this->set_blocks($blocks);
@@ -72,30 +81,38 @@ class blocks_manager
 
 	public function render($blocks = 'all')
 	{
+		$_blocks = $this->blocks;
+
 		// Если пришёл масив блоков или вывести нужно все, то перебираем блоки и выводим их.
 		if (is_array($blocks) || $blocks == 'all') {
 
-			// Если выбраны все блоки, то берём блоки из реестра
-			if ($blocks == 'all') $blocks = $this->blocks;
+			// Если выбраны не все блоки, то выводим только указанные.
+			if ($blocks != 'all')  {
+				$executed_blocks = array_diff(array_keys($this->blocks), $blocks);
 
-			// Сортируем блоки по их позиции -->
-			foreach ($blocks as $block) {
+				foreach ($executed_blocks as $block) {
+					if (array_key_exists($block, $this->blocks)) {
+						unset($_blocks[$block]);
+					}
+				}
+			}
+
+			foreach ($_blocks as $block) {
 				// берём позицию блока, если такая есть, то инкрементим её.
-				$blocks_position = $block->configs['POSITION'];
-				if (array_key_exists($blocks_position, $blocks)) $blocks_position++;
+				$blocks_position = $block->configs['configs']['order'];
+				if (array_key_exists($blocks_position, $_blocks)) $blocks_position++;
 
 				// сохраняем в масиве блоков этот блок под новым ключём
-				$blocks[$blocks_position] = $block;
+				$_blocks[$blocks_position] = $block;
 				// удаляем старый ключ со значением
-				unset($blocks[$block->name]);
+				unset($_blocks[$block->name]);
 			}
 
 			// сортируем по ключу asc
-			ksort($blocks);
-			// <-- конец сортировки
+			ksort($_blocks);
 
 			// рендерим каждый из блоков
-			foreach ($blocks as $block) {
+			foreach ($_blocks as $block) {
 				if (array_key_exists($block->name, $this->blocks)) $this->render_block($this->blocks[$block->name]);
 			}
 
@@ -109,7 +126,7 @@ class blocks_manager
 	{
 		if ($block instanceof block) {
 			// Если блок включен
-			if ($block->configs['ENABLE']) {
+			if (in_array($block->name, config('components::enabled_blocks'))) {
 				// Рендерим блок
 				echo $block->view;
 			}

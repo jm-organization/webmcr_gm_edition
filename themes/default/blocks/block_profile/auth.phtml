@@ -1,43 +1,37 @@
-<div class="form-block">
-	
-	<div class="block-header"><?= translate('auth') ?></div>
-	
-	<div class="block-line"></div>
-	
-	<div class="block-content">
-		<form method="post" class="block-auth" action="<?= url('auth.login') ?>">
-			<div class="form-group">
-				<div class="input-group">
-					<span class="input-group-addon"><i class="fa fa-user"></i></span>
-					<input type="text" name="login" class="form-control" placeholder="<? translate('login_or_email') ?>">
-				</div>
-			</div>
-			
-			<div class="form-group">
-				<div class="input-group">
-					<span class="input-group-addon"><i class="fa fa-lock"></i></span>
-					<input type="password" name="password" class="form-control" placeholder="<?= translate('password') ?>">
-				</div>
-			</div>
-			
-			<label class="custom-control custom-checkbox">
-				<input class="custom-control-input" type="checkbox" name="remember" value="1">
-				<span class="custom-control-indicator"></span>
-				<span class="custom-control-description"><?= translate('remember') ?></span>
-			</label>
-			
-			<div class="row">
-				<div class="col-md-4">
-                    <button type="submit" class="btn btn-secondary btn-block"><?= translate('sign_in') ?></button>
+<div class="ui segments">
+
+    <div class="ui segment">
+        <div class="header"><i class="icon user"></i> <?= translate('auth') ?></div>
+    </div>
+
+    <div class="ui secondary segment">
+
+        <form class="ui form" method="post" action="<?= url('auth.login') ?>?mode=auth">
+
+            <div class="field">
+                <input type="text" id="login" name="login" class="form-control" placeholder="<? translate('login_or_email') ?>">
+            </div>
+
+            <div class="relative field">
+                <input type="password" id="password" name="password" class="form-control" placeholder="<?= translate('password') ?>">
+                <span id="restore">
+                    <a href="<?= url('auth.restore') ?>"><?= translate('restore') ?></a>
+                </span>
+            </div>
+
+            <div class="field">
+                <div class="ui checked checkbox">
+                    <input type="checkbox" checked  id="remember" name="remember" value="1">
+                    <label for="remember"><?= translate('remember') ?></label>
                 </div>
-				<div class="col-md-3">
-                    <a class="btn btn-secondary btn-block" rel="tooltip" title="<?= translate('restore') ?>" href="<?= url('auth.restore') ?>"><i class="fa fa-repeat"></i></a>
-                </div>
-				<div class="col-md-5">
-                    <a href="<?= url('auth.register') ?>" class="btn btn-secondary btn-block"><?= translate('register') ?></a>
-                </div>
-			</div>
-		</form>
-	</div>
-	
+            </div>
+
+            <button class="ui fluid primary button" type="submit" name="submit" value="1"><?= translate('sign_in') ?></button>
+	        <p class="center-align">
+		        <?= translate('or') ?> <a href="<?= url('auth.register') ?>"><?= translate('register') ?></a>
+            </p>
+        </form>
+
+    </div>
+
 </div>

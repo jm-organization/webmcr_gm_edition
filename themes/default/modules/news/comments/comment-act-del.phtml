@@ -1,1 +1,3 @@
-<div class="del-btn"><a href="#" rel="tooltip" title="<?php echo $this->l10n->gettext('delete'); ?>" class="del_comment" data-id="<?php echo $data['ID']; ?>"><i class="fa fa-times"></i></a></div>
+<a href="#" class="mcr-del-comment" data-id="<?= $data['ID']; ?>">
+	<i class="icon remove"></i> <?= $this->l10n->gettext('delete'); ?>
+</a>

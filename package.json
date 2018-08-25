@@ -1,0 +1,29 @@
+{
+  "name": "webmcr_gm_edition",
+  "version": "2.0.6",
+  "description": "CMS / Site engine powered by WebMCR",
+  "main": "index.php",
+  "scripts": {
+    "test": "npm version"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jm-organization/webmcr_gm_edition.git"
+  },
+  "keywords": [
+    "webmcr",
+    "webmcr-gm-edition",
+    "magicmcr",
+    "html5-css3-js",
+    "cms"
+  ],
+  "author": "Magicmen aka Magicfar4",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/jm-organization/webmcr_gm_edition/issues"
+  },
+  "homepage": "https://github.com/jm-organization/webmcr_gm_edition#readme",
+  "dependencies": {
+    "semantic-ui": "^2.3.3"
+  }
+}

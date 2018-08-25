@@ -55,7 +55,7 @@ abstract class base_module
 				$advice = $advices[rand(0, $advices_count - 1)];
 			}
 
-			document::$advice = tmpl('default_sp.advice', [ 'advice' => $advice ]);
+			document::$advice = tmpl('advice', [ 'advice' => $advice ]);
 		}
 	}
 
@@ -80,10 +80,7 @@ abstract class base_module
 
 			$date = time();
 
-			$result = db::query(
-				"INSERT INTO `mcr_logs` (`uid`, `message`, `date`)
-				VALUES ('$uid', '$msg', $date)"
-			)->result();
+			$result = db::query("INSERT INTO `mcr_logs` (`uid`, `message`, `date`) VALUES ('$uid', '$msg', $date)")->result();
 
 			if (!$result) return false;
 
@@ -96,7 +93,7 @@ abstract class base_module
 	private function get_advices($enabled)
 	{
 		if ($enabled) {
-			$advices = file(MCR_THEME_PATH . "default_sp/advice.txt");
+			$advices = file(MCR_ROOT . "data/advices.txt");
 
 			return (count($advices) <= 0) ? [] : $advices;
 		}

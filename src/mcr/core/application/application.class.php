@@ -64,6 +64,8 @@ class application
 	 * application constructor.
 	 *
 	 * @param config $configs
+	 *
+	 * @throws \mcr\database\db_exception
 	 */
 	public function __construct(config $configs)
 	{
@@ -87,20 +89,21 @@ class application
 	 */
 	public function run()
 	{
-		// Защищаемся от CSRF
-		// Проверяем пришедший ключ csrf.
-		// Если вовсе не пришёл, функция вернёт ложь - редиректим.
-		// Если всё ок, то продолжаем загрузку страници
-		// ---------------------------------------------------------
-		// Если ip юзера есть в белов списике,
-		// проверка ключа не будет произведена
-		if (!$this->csrf_check()) return redirect()->with('message', ['text' => translate('error_hack')])->route('home');
-
-		// Пытаемся запустить приложение
 		try {
+
+			$this->init_l10n();
 
 			$this->request = new request();
 			$this->router = new router($this->request);
+
+			// Защищаемся от CSRF
+			// Проверяем пришедший ключ csrf.
+			// Если вовсе не пришёл, функция вернёт ложь - редиректим.
+			// Если всё ок, то продолжаем загрузку страници
+			// ---------------------------------------------------------
+			// Если ip юзера есть в белов списике,
+			// проверка ключа не будет произведена
+			if (!$this->csrf_check()) return redirect()->with('message', ['text' => translate('error_hack')])->route('home');
 
 			////////////////////////////////////////////////////////////////////////////
 			// Получение авторизированых пользователей.
@@ -113,32 +116,25 @@ class application
 			////////////////////////////////////////////////////////////////////////////
 
 			// Системные константы  ----------------------------------------------------
-			define('MCR_LANG', 			config('main::s_lang'));
+			define('MCR_LANG', 			config('mcr::site.locale'));
 			define('MCR_LANG_DIR', 		MCR_LANG_PATH . MCR_LANG . '/');
-			define('MCR_THEME_PATH', 	MCR_ROOT . 'themes/' . config('main::s_theme') . '/');
+			define('MCR_THEME_PATH', 	MCR_ROOT . 'themes/' . config('mcr::site.theme') . '/');
 			define('MCR_THEME_MOD', 	MCR_THEME_PATH . 'modules/');
 			define('MCR_THEME_BLOCK',	MCR_THEME_PATH . 'blocks/');
 
 
 			// MCR ссылки, маршруты  ---------------------------------------------------
-			$base_url = (INSTALLED) ? config('main::s_root') : router::base_url();
+			$base_url = (INSTALLED) ? config('mcr::base_full_url') : router::base_url();
 			define('BASE_URL', 			$base_url);
-			define('ADMIN_MOD', 		'mode=admin');
+			define('ADMIN_MOD', 		'admin');
 			define('ADMIN_URL', 		BASE_URL . '?' . ADMIN_MOD);
-
-			$mode_url = BASE_URL . '?mode=' . config('main::s_dpage');
-			if (is_filled($this->request->mode)) {
-				$mode_url =  BASE_URL . '?mode=' . filter($this->request->mode, 'chars');
-			}
-			define('MOD_URL', 			$mode_url);
 			define('UPLOAD_URL', 		BASE_URL . 'uploads/');
-			define('LANG_URL', 			BASE_URL . 'language/' . MCR_LANG . '/');
 
 			// Пути к плащам и скинам  -------------------------------------------------
-			define('SKIN_URL', 			BASE_URL . config('main::skin_path'));
-			define('MCR_SKIN_PATH', 	MCR_ROOT . config('main::skin_path'));
-			define('CLOAK_URL', 		BASE_URL . config('main::cloak_path'));
-			define('MCR_CLOAK_PATH', 	MCR_ROOT . config('main::cloak_path'));
+//			define('SKIN_URL', 			BASE_URL . config('mcr::skin_path'));
+//			define('MCR_SKIN_PATH', 	MCR_ROOT . config('mcr::skin_path'));
+//			define('CLOAK_URL', 		BASE_URL . config('mcr::cloak_path'));
+//			define('MCR_CLOAK_PATH', 	MCR_ROOT . config('mcr::cloak_path'));
 
 			// CSRF ключ защиты  -------------------------------------------------------
 			define("MCR_SECURE_KEY", 	$this->gen_csrf_key());
@@ -156,10 +152,25 @@ class application
 			$this->dispatch($this);
 
 		} catch (\Exception $e) {
-			$core = $this->core;
-			$core::handle_exception($e);
+			$this->handle_exception($e);
 		}
 
 		return true;
+	}
+
+	public function component($name)
+	{
+		if (array_key_exists($name, $this->registry)) {
+			return $this->registry[$name];
+		}
+
+		return null;
+	}
+
+	public function handle_exception(\Exception $e)
+	{
+		$core = $this->core;
+
+		$core::handle_exception($e);
 	}
 }

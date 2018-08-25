@@ -17,12 +17,12 @@
  *
  * @Date         : 26.06.2018
  * @Time         : 21:05
- *
- * @Documentation:
  */
 
+use mcr\core\application\application;
 use mcr\core\configs\config;
-use mcr\exception\exception_handler;
+use mcr\core\registry\component;
+use mcr\hashing\bcrypt_hasher;
 use mcr\http\routing\url_builder;
 use mcr\html\blocks\blocks_manager;
 use mcr\html\document;
@@ -56,7 +56,7 @@ if (!function_exists('asset')) {
 				$extension = '.' . $extension;
 			}
 
-			$resource = MCR_THEME_PATH . str_replace('.', '/', $resource) . $extension;
+			$resource = MCR_THEME_PATH . 'assets/' . str_replace('.', '/', $resource) . $extension;
 			load_if_exist($resource);
 
 			return ob_get_clean();
@@ -64,8 +64,25 @@ if (!function_exists('asset')) {
 		} else {
 			$_base_url = router::base_url();
 
-			return $_base_url . 'themes/' . config('main::s_theme') . '/' . $resource;
+			return $_base_url . 'themes/' . config('mcr::site.theme') . '/assets/' . $resource;
 		}
+	}
+}
+
+if (!function_exists('app')) {
+	/**
+	 * @param string $component
+	 *
+	 * @return application|component
+	 */
+	function app($component = '')
+	{
+		$component = trim($component);
+		global $application;
+
+		if (empty($component)) return $application;
+
+		return $application->component($component);
 	}
 }
 
@@ -126,7 +143,10 @@ if (!function_exists('config')) {
 	 */
 	function config($namespace)
 	{
-		return config::get_instance()->get($namespace);
+		/** @var config $configs */
+		$configs = app('configs');
+
+		return $configs->get($namespace);
 	}
 }
 
@@ -138,23 +158,26 @@ if (!function_exists('configs')) {
 	 */
 	function configs()
 	{
-		global $configs;
+		/** @var config $configs */
+		$configs = app('configs');
 
 		return $configs->all();
 	}
 }
 
-if (!function_exists('is_filled')) {
+if (!function_exists('document')) {
 	/**
-	 * Проверяет переменную на наличие и её заполненость.
+	 * Возвращает все конфиги
 	 *
-	 * @param $key
+	 * @param       $method
 	 *
-	 * @return boolean
+	 * @param array $args
+	 *
+	 * @return mixed
 	 */
-	function is_filled($key)
+	function document($method, array $args = [])
 	{
-		return isset($key) && !empty($key);
+		return call_user_func(['\mcr\html\document', $method], ...$args);
 	}
 }
 
@@ -176,24 +199,22 @@ if (!function_exists('menu')) {
 	}
 }
 
-if (!function_exists('passwd_hash')) {
+if (!function_exists('bcrypt')) {
 	/**
 	 * Системный генератор хэшей паролей пользователей
 	 *
 	 * @param string $string - исходный пароль
-	 * @param string $salt - соль
+	 * @param string $salt   - соль
 	 *
 	 * @return string
+	 * @throws \mcr\hashing\hashing_exception
 	 */
-	function passwd_hash($string, $salt = '')
+	function bcrypt($string, $salt = '')
 	{
-		global $application;
+		/** @var bcrypt_hasher $hasher */
+		$hasher = app('hasher');
 
-		$hasher = $application::$hasher;
-
-		$password = $hasher->make($string . $salt);
-
-		return $password;
+		return $hasher->make($string . $salt);
 	}
 }
 
@@ -270,14 +291,7 @@ if (!function_exists('url')) {
 
 			$url = $url_builder->build($variables);
 		} catch (url_builder_exception $e) {
-
-			$exception = new exception_handler($e, [
-				'log' => true,
-				'throw_on_screen' => config('main::debug'),
-			]);
-
-			$exception->handle()->throw_on_screen();
-
+			app()->handle_exception($e);
 		}
 
 		return $url;
