@@ -31,7 +31,7 @@ class step_3 extends install_step
 		self::make_news($connection);
 		self::add_phrases_to_language($connection);
 
-		$application_key = '$Installed-in:'.time().'_'.str_random(230);
+		$application_key = '$Installed-in:'.time().'_'.str_random(128);
 		file_put_contents(MCR_ROOT.'src/mcr/.installed', $application_key);
 
 		install::remember_step('step_3');
