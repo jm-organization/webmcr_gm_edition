@@ -40,5 +40,5 @@ $router->post('step_3', 'step_3@save_settings');
 // Готово!
 $router->get('finish', 'finish@done_installing');
 
-$router->get('reinstall', 'reinstall@confirm');
-$router->post('reinstall', 'reinstall@reinstall');
+$router->get('reinstall[/{app_key}]', 'reinstall@confirm');
+$router->post('reinstall[/{app_key}]', 'reinstall@reinstall');

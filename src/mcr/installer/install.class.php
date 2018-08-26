@@ -101,6 +101,8 @@ class install
 		$status = $handler = $additional_info = null;
 		require 'install_router.php';
 
+		installer('request')->put($additional_info);
+
 		$this->step_handler = $handler;
 	}
 

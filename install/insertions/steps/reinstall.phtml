@@ -13,7 +13,7 @@
 
         <p>
             <button class="ui button"><?= translate('yes') ?></button>
-            <a class="ui secondary button" href="<?= $_SERVER['HTTP_REFERER'] ?>"><?= translate('no') ?></a>
+            <a class="ui secondary button" href="<?= isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '/install/index.php/' ?>"><?= translate('no') ?></a>
         </p>
 
     </div>

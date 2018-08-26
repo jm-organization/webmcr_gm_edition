@@ -117,7 +117,7 @@ class step_1 extends install_step
 		if (self::$connection->multi_query($sql)) {
 			do {
 				if ($result = self::$connection->store_result()) mysqli_free_result($result);
-			} while (self::$connection->next_result());
+			} while (self::$connection->more_results() && self::$connection->next_result());
 		}
 	}
 }

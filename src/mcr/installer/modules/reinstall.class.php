@@ -5,6 +5,7 @@ namespace mcr\installer\modules;
 
 use mcr\core\configs\config;
 use mcr\installer\install;
+use function mcr\installer\installer;
 
 if (!defined("MCR")) exit("Hacking Attempt!");
 
@@ -12,6 +13,8 @@ class reinstall extends install_step
 {
 	public function confirm()
 	{
+		$this->check_application_key();
+
 		install::$page_title = translate('mod_name') . ' — ' . translate('reinstall');
 
 		return tmpl('steps/reinstall');
@@ -19,6 +22,8 @@ class reinstall extends install_step
 
 	public function reinstall()
 	{
+		$this->check_application_key();
+
 		$connection = new \mysqli(config('db::host'), config('db::username'), config('db::passwd'), config('db::basename'), config('db::port'));
 		$error = $connection->connect_error;
 
@@ -57,4 +62,16 @@ class reinstall extends install_step
 		return redirect('/install/');
 	}
 
+	private function check_application_key()
+	{
+		if (installed()->status) {
+			$application_key = explode('_', installed()->app_key)[1];
+
+			$message = [ 'title' => translate('e_msg'), 'text' => 'Invalid App key!' ];
+
+			if (installer('request')->app_key !== $application_key) return redirect()->with('message', $message)->url('/');
+		}
+
+		return true;
+	}
 }
