@@ -132,10 +132,10 @@ class application
 			define('UPLOAD_URL', 		BASE_URL . 'uploads/');
 
 			// Пути к плащам и скинам  -------------------------------------------------
-//			define('SKIN_URL', 			BASE_URL . config('mcr::skin_path'));
-//			define('MCR_SKIN_PATH', 	MCR_ROOT . config('mcr::skin_path'));
-//			define('CLOAK_URL', 		BASE_URL . config('mcr::cloak_path'));
-//			define('MCR_CLOAK_PATH', 	MCR_ROOT . config('mcr::cloak_path'));
+			define('SKIN_URL', 			'data/uploads/skins/');
+			define('MCR_SKIN_PATH', 	MCR_ROOT . 'data/uploads/skins/');
+			define('CLOAK_URL', 		'data/uploads/cloaks/');
+			define('MCR_CLOAK_PATH', 	MCR_ROOT . 'data/uploads/cloaks/');
 
 			// CSRF ключ защиты  -------------------------------------------------------
 			define("MCR_SECURE_KEY", 	$this->gen_csrf_key());

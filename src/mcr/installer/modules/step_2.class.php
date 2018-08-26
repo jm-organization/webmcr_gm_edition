@@ -31,7 +31,7 @@ class step_2 extends install_step
 
 			self::try_query(
 				$connection,
-				"INSERT INTO `mcr_users` (`gid`, `login`, `email`, `password`, `uuid`, `salt`, `ip_last`, `time_create`) VALUE ('3', '$login', '$email', '$password', UNHEX(REPLACE(UUID(), '-', '')), '$salt', '$ip', NOW())",
+				"INSERT INTO `mcr_users` (`gid`, `login`, `email`, `password`, `uuid`, `salt`, `ip_last`, `time_create`) VALUE ('4', '$login', '$email', '$password', UNHEX(REPLACE(UUID(), '-', '')), '$salt', '$ip', NOW())",
 				translate('e_add_admin')
 			);
 

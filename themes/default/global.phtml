@@ -38,9 +38,11 @@ MagicMCR не является копией оригинального движ�
 
 	<?= document('open_body') ?>
 
+        <?php $_menu = menu()->generate(); ?>
+
 		<!-- Sidebar Menu -->
 		<div class="ui vertical inverted sidebar menu">
-			<?php echo menu()->generate(); ?>
+			<?= $_menu ?>
 		</div>
 
 		<div id="mcr-header" class="ui vertical masthead segment">
@@ -49,7 +51,7 @@ MagicMCR не является копией оригинального движ�
                     <a class="hidden-menu toc item">
                         <i class="sidebar icon"></i>
                     </a>
-	                <?php echo menu()->generate(); ?>
+	                <?= $_menu ?>
                     <div class="right menu">
                         <!-- TODO: Search -->
                     </div>
@@ -77,14 +79,14 @@ MagicMCR не является копией оригинального движ�
 
 			<div class="ui stackable relaxed mobile reversed grid container">
                 <!-- Left side -->
-				<div class="five wide left floated column" id="mcr-sidebar">
+				<div class="four wide left floated column" id="mcr-sidebar">
 
 					<?php blocks()->render(['block_banner', 'block_monitoring', 'block_online', 'block_profile']); ?>
 
 				</div>
 
 				<!-- Right side -->
-				<div class="eleven wide right floated column" id="mcr-content">
+				<div class="twelve wide right floated column" id="mcr-content">
 
 					<?php
 					echo $breadcrumbs;
