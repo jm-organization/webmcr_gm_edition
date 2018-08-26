@@ -299,10 +299,10 @@ return [
 		|
 		*/
 		'enabled_blocks' => [
-			'block_banner',
-			'block_monitoring',
+//			'block_banner',
+//			'block_monitoring',
 			'block_notify',
-			'block_online',
+//			'block_online',
 			'block_profile',
 		],
 

@@ -2,6 +2,7 @@
 
 namespace mcr\html;
 
+use mcr\auth\auth;
 use mcr\database\db;
 use mcr\http\request;
 
@@ -117,6 +118,8 @@ class menu
 	 */
 	private function public_menu()
 	{
+		$user = empty(auth::user()) ? auth::guest() : auth::user();
+
 		$query = db::query("
 			SELECT id, title, `parent`, `url`, `style`, `target`, `permissions`
 			FROM `mcr_menu`
@@ -128,7 +131,7 @@ class menu
 
 			while ($public_menu_element = $query->fetch_assoc()) {
 				// TODO: перенести метод проверки прав в класс user
-				// if (!$this->core->is_access($public_menu_element['permissions'])) continue;
+			    if ($user->cannot($public_menu_element['permissions'])) continue;
 
 				$array[$public_menu_element['id']] = [
 					"id" => $public_menu_element['id'],

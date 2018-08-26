@@ -12,7 +12,7 @@ AddDefaultCharset   UTF-8
     RewriteCond %{REQUEST_FILENAME} -l [OR]
     RewriteCond %{REQUEST_FILENAME} -d
 
-	RewriteRule ^(install/|themes/|favicon\.ico|crossdomain\.xml|robots\.txt|sitemap\.xml) - [NC,L]
+	RewriteRule ^(data/uploads/|install/|themes/|favicon\.ico|crossdomain\.xml|robots\.txt|sitemap\.xml) - [NC,L]
 	RewriteRule ^.*$ index.php [NC,L]
 </IfModule>
 
