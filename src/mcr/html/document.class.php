@@ -47,11 +47,6 @@ class document
 	public $content;
 
 	/**
-	 * @var string
-	 */
-	public static $advice;
-
-	/**
 	 * @var blocks_manager|null
 	 */
 	public static $blocks = null;
@@ -77,6 +72,11 @@ class document
 	public static $scripts = [ 'body' => '', 'head' => '' ];
 
 	/**
+	 * @var array
+	 */
+	public static $variables = [];
+
+	/**
 	 * document constructor.
 	 *
 	 * @param base_module|module $module
@@ -84,7 +84,7 @@ class document
 	 *
 	 * @throws blocks\blocks_manager_exception
 	 */
-	public function __construct(base_module $module, request $request, $action)
+	public function __construct(module $module, request $request, $action)
 	{
 		// Регистрируем меню
 		self::$menu = new menu($request);
@@ -114,17 +114,11 @@ class document
 			// Иначе был отправлен шаблон данных.
 			// Перехваываем и оборачиваем его в layout,
 			// который установлен у модуля.
-			$breadcrumbs = breadcrumbs()->generate();
-			$title = self::$title;
+			self::$variables['breadcrumbs'] = breadcrumbs()->generate();
+			self::$variables['title'] = self::$title;
+			self::$variables['content'] = $content;
 
-			$advice = self::$advice;
-
-			$_content = self::template($this->layout, compact(
-				'content',
-				'title',
-				'breadcrumbs',
-				'advice'
-			));
+			$_content = self::template($this->layout, self::$variables);
 
 			return $_content;
 		}
