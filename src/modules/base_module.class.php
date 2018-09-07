@@ -55,7 +55,7 @@ abstract class base_module
 				$advice = $advices[rand(0, $advices_count - 1)];
 			}
 
-			document::$advice = tmpl('advice', [ 'advice' => $advice ]);
+			document::$variables['advice'] = tmpl('advice', [ 'advice' => $advice ]);
 		}
 	}
 
