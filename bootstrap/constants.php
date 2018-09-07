@@ -104,9 +104,9 @@ function installed()
 	$app_key = '';
 
 	if (file_exists(MCR_ROOT . 'src/mcr/.installed')) {
-		$app_key = substr(file_get_contents(MCR_ROOT . 'src/mcr/.installed'), 0, 255);
+		$app_key = file_get_contents(MCR_ROOT . 'src/mcr/.installed');
 
-		if (strlen($app_key) == 255) {
+		if (strlen($app_key) >= 128) {
 			$status = true;
 		}
 	}
