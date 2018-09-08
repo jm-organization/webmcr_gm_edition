@@ -27,6 +27,7 @@ namespace mcr\core\application;
 use mcr\html;
 use mcr\http\request;
 use mcr\html\document;
+use mcr\http\routing\routing_exception;
 
 trait dispatcher
 {
@@ -44,6 +45,7 @@ trait dispatcher
 	 *
 	 * @return \mcr\http\response
 	 * @throws html\blocks\blocks_manager_exception
+	 * @throws routing_exception
 	 */
 	public function dispatch(application $app)
 	{
@@ -87,6 +89,7 @@ trait dispatcher
 	 * @param string $module
 	 *
 	 * @return \modules\module|bool
+	 * @throws routing_exception
 	 */
 	private function initialize_module($module)
 	{
@@ -103,6 +106,6 @@ trait dispatcher
 
 		}
 
-		return false;
+		throw new routing_exception("Module `$module` not found.");
 	}
 }

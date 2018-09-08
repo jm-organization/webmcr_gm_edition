@@ -16,28 +16,39 @@
  * @Author: Magicmen
  *
  * @Date  : 07.09.2018
- * @Time  : 20:25
+ * @Time  : 20:27
  */
 
 namespace modules\admin;
 
 
-use mcr\http\request;
-use modules\module;
+use mcr\core\application\application;
+use mcr\html\breadcrumbs;
+use mcr\html\document;
 
-class dashboard extends admin implements module
+abstract class admin
 {
-	public $name = self::class;
+	public $layout = 'modules.admin.global'; //
+
+	public $name = 'admin';
 
 	/**
-	 * Обрабатывает запрос к модулю.
+	 * Метод, который вызывается при загрузке модуля.
+	 * Принимает экземпляр ядра.
 	 *
-	 * @param request $request
+	 * @param application $app
 	 *
-	 * @return \mcr\http\response|\mcr\http\redirect_response|string
+	 * @return void
 	 */
-	public function index(request $request)
+	public function boot(application $app)
 	{
-		return 'Hello World';
+		breadcrumbs::add(
+			url('admin.dashboard'),
+			translate('module_admin-panel')
+		);
+
+		global $log;
+
+		document::$variables['errors_count'] = $log->get_logs_num('error');
 	}
 }

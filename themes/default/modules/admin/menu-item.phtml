@@ -1,0 +1,14 @@
+<div class="title item <?= $active ?>">
+	<i class="<?= $icon ?> mcr-sidebar-icon icon"></i>
+	<span><?= $title ?></span>
+    <i class="dropdown icon"></i>
+</div>
+<div class="content <?= $active ?>">
+	<?php foreach($sub_menu as $href) { ?>
+
+	<div class="<?= $active ?> item">
+		<a href="<?= $href['url'] ?>" target="<?= $href['target'] ?>"><?= $href['title'] ?></a>
+	</div>
+
+	<?php } ?>
+</div>

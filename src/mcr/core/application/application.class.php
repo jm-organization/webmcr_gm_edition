@@ -125,7 +125,7 @@ class application
 
 
 			// MCR ссылки, маршруты  ---------------------------------------------------
-			$base_url = (INSTALLED) ? config('mcr::base_full_url') : router::base_url();
+			$base_url = (INSTALLED) ? config('mcr::site.base_full_url') : router::base_url();
 			define('BASE_URL', 			$base_url);
 			define('ADMIN_MOD', 		'admin');
 			define('ADMIN_URL', 		BASE_URL . '?' . ADMIN_MOD);

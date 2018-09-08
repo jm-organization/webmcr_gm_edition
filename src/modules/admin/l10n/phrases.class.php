@@ -1,4 +1,5 @@
-/*
+<?php
+/**
  * Copyright (c) 2018.
  * MagicMCR является отдельным и независимым продуктом.
  * Исходный код распространяется под лицензией GNU General Public License v3.0.
@@ -8,12 +9,34 @@
  * участвующие в разработке и поддержке, не несут ответственности за проблемы, возникшие с движком.
  */
 
-(function (windows, document, jquery)
-    {
-        let app = windows.app;
+/**
+ * Created in JM Organization.
+ *
+ * @e-mail: admin@jm-org.net
+ * @Author: Magicmen
+ *
+ * @Date  : 08.09.2018
+ * @Time  : 18:19
+ */
+
+namespace modules\admin\l10n;
 
 
-        $('.debug-popup').popup({ on: 'click' });
-        $('.accordion').accordion();
-    }
-)(window, document, jQuery);
+use mcr\http\request;
+use modules\admin\admin;
+use modules\module;
+
+class phrases extends admin implements module
+{
+	/**
+	 * Обрабатывает запрос к модулю.
+	 *
+	 * @param request $request
+	 *
+	 * @return \mcr\http\response|\mcr\http\redirect_response|string
+	 */
+	public function index(request $request)
+	{
+		return tmpl('modules.admin.l10n.phrases.index');
+	}
+}
