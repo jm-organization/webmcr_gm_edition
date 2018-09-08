@@ -23,3 +23,11 @@ $router->addGroup('auth/', function(route_collector $router) {
 	$router->post('logout', '\modules\auth@logout', 'auth.logout');
 	$router->get('restore', '\modules\auth@restore', 'auth.restore');
 });
+
+$router->addGroup('admin/', function(route_collector $router) {
+	$router->get('dashboard', '\modules\admin\dashboard@index', 'admin.dashboard');
+
+	$router->addGroup('settings/', function(route_collector $router) {
+		$router->get('sitesettings', '\modules\admin\site_settings@index', 'admin.site.settings');
+	});
+});

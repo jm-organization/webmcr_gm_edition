@@ -15,19 +15,29 @@
  * @e-mail: admin@jm-org.net
  * @Author: Magicmen
  *
- * @Date  : 07.09.2018
- * @Time  : 20:25
+ * @Date  : 08.09.2018
+ * @Time  : 17:36
  */
 
 namespace modules\admin;
 
 
+use mcr\core\application\application;
+use mcr\html\breadcrumbs;
 use mcr\http\request;
 use modules\module;
 
-class dashboard extends admin implements module
+class site_settings extends admin implements module
 {
-	public $name = self::class;
+	public function boot(application $app)
+	{
+		parent::boot($app);
+
+		breadcrumbs::add(
+			url('admin.site.settings'),
+			translate('site_settings')
+		);
+	}
 
 	/**
 	 * Обрабатывает запрос к модулю.
@@ -38,6 +48,6 @@ class dashboard extends admin implements module
 	 */
 	public function index(request $request)
 	{
-		return 'Hello World';
+		return tmpl('modules.admin.settings.sitesettings.index');
 	}
 }

@@ -1,0 +1,166 @@
+<!--
+Copyright (c) 2018.
+MagicMCR является отдельным и независимым продуктом.
+Исходный код распространяется под лицензией GNU General Public License v3.0.
+
+MagicMCR не является копией оригинального движка WebMCR, а лишь его подверсией.
+Разработка MagicMCR производится исключительно в частных интересах. Разработчики, а также лица,
+участвующие в разработке и поддержке, не несут ответственности за проблемы, возникшие с движком.
+-->
+<!DOCTYPE HTML>
+<?= document('open') ?>
+    <head>
+        <meta charset="utf-8">
+        <title><?= $title ?> — <?= config('mcr::site.name') ?></title>
+
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <meta name="description" content="<?= config('mcr::site.description') ?>">
+        <meta name="keywords" content="<?= config('mcr::site.keywords') ?>">
+        <meta name="author" content="NC22 &amp; Qexy.org / completed Magicfar4 aka Magicmen">
+
+        <meta name='application' content='<?= META_JSON_DATA ?>'>
+
+        <base href="<?= BASE_URL ?>">
+
+        <!-- Base stylesheets -->
+        <link rel="stylesheet" href="/themes/.semantic/dist/semantic.min.css">
+        <link rel="stylesheet" href="<?= asset('css/jquery.minicolors.css') ?>">
+        <link rel="stylesheet" href="<?= asset('css/modules/admin/global.css') ?>">
+
+        <!-- User stylesheets -->
+        <?php stylesheets(); ?>
+
+        <!-- Head scripts -->
+        <script type="application/javascript" src="<?= asset('js/jquery.min.js') ?>"></script>
+        <?php scripts('head'); ?>
+    </head>
+
+    <?= document('open_body') ?>
+
+        <div id="js-loader" title="<?= translate('loading') ?>"><img src="<?= asset('img/ajaxload.gif') ?>" alt="<?= translate('loading') ?>"/></div>
+
+        <section style="width:100%;height:100%;padding-top:24px;background:black" class="admin-wrapper">
+
+            <aside>
+                <div class="menu-header">
+                    <a href="<?= url('admin.dashboard') ?>"><?= translate('module_admin-panel') ?></a>
+                    <div class="sidebar-toggler icon bars" onclick="$('html').toggleClass('sidebar-hide');"><i class="icon bars"></i></div>
+                </div>
+
+                <ul class="ui accordion nav-list" id="admin-menu">
+                    <?php echo menu()->generate('admin'); ?>
+                </ul>
+            </aside>
+
+            <div class="ui grid admin-container form-block">
+
+                <div class="breadcrumbs-container">
+                    <?= $breadcrumbs ?>
+                </div>
+
+                <div class="ui container">
+	                <?php echo $content ?>
+                </div>
+
+                <div class="ui messages">
+                    <div class="ui black async message">
+                        <i class="close icon"></i>
+                        <div id="title" class="header"></div>
+                        <p id="message"></p>
+                    </div>
+
+		            <?php blocks()->render('block_notify') ?>
+                </div>
+
+            </div>
+
+        </section>
+
+        <header style="display:flow-root;position:fixed;top:0;width:100%;">
+            <div class="brand"><?= config('mcr::site.name') ?></div>
+
+            <ul class="global-menu">
+                <li class="nav-item"><a href="/" class="nav-link"><?= translate('home') ?></a></li>
+
+                <!--<li class="nav-item divider"></li>
+
+                <li class="nav-item">
+                    <a href="/?mode=admin&do=info&op=update_center" class="nav-link icons" title="Обновлений нет" style="padding-right:1em">
+                        <span class="fa fa-refresh nav-icon"></span>
+                        <span class="badge ml-1">0</span>
+                    </a>
+                </li>-->
+
+                <?php $data['DEBUG'] = [
+                    "PLT" => number_format(microtime(true)-DEBUG_PLT,3),
+                    "QUERIES" => \mcr\database\db::$count_queries,
+                    "MEMORY_USAGE" => intval(memory_get_usage()/1024),
+                    "MEMORY_PEAK" => intval(memory_get_peak_usage()/1024),
+                    "BASE_ERROR" => \mcr\database\db::$db_connection->connect_error,
+                    "PHP_ERROR" => error_get_last()
+                ]; ?>
+
+                <!-- START: Dev-tools -->
+                <li class="nav-item divider"></li>
+
+                <li class="nav-item">
+                    <a class="nav-link icons" title="<?= translate('debug_plt') ?>: <?= $data['DEBUG']['PLT'] . ' ' . translate('sec') ?>">
+                        <i class="tachometer alternate icon"></i>
+                        <span><?= $data['DEBUG']['PLT'] . ' ' . translate('sec') ?></span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link icons" title="<?= translate('debug_num_q') ?>: <?=$data['DEBUG']['QUERIES']?>">
+                        <i class="database icon"></i>
+                        <span><?=$data['DEBUG']['QUERIES']?></span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link icons" title="<?= translate('system_errors')?>">
+                        <i class="exclamation triangle icon"></i>
+                        <span class="ui label"><?= $errors_count ?></span>
+                        <?php
+
+                        if (!empty(error_get_last())) {
+                            $error = error_get_last();
+                            $type = \mcr\log::get_log_type($error['type']);
+                            $error = "[{$type}] {$error['message']} in file: {$error['file']} on line: {$error['line']}";
+
+                            ?>
+                            <span class="ui red label php error debug-popup"
+                                  title="Last PHP error"
+                                  data-html="<div class='header'>Last PHP error:</div><div class='content'><?=$error?></div>"
+                                  style="cursor:pointer;"
+                            >!</span>
+                            <?php
+                        }
+
+                        ?>
+                    </a>
+                </li>
+                <!-- END: Dev-tools -->
+
+                <li class="nav-item pull-right">
+                    <img width="20px" height="20px" src="<?= SKIN_URL ?>interface/<?= \mcr\auth\auth::user()->skin ?>_mini.png?<?=mt_rand(1000,9999)?>">
+                    <a href="<?= BASE_URL . '?mode=profile' ?>" class="nav-link"><?= \mcr\auth\auth::user()->login ?></a>
+                </li>
+            </ul>
+        </header>
+
+        <!-- Base body scripts -->
+        <script type="application/javascript" src="<?= asset('js/jquery.easing.js') ?>"></script>
+        <script type="application/javascript" src="/themes/.semantic/dist/semantic.min.js"></script>
+        <script type="application/javascript" src="<?= asset('js/bootstrap.file-input.js') ?>"></script>
+        <script type="application/javascript" src="<?= asset('js/jquery.minicolors.min.js') ?>"></script>
+        <script type="application/javascript" src="<?= asset('js/cookie.js') ?>"></script>
+        <script type="application/javascript" src="/themes/.application/application.js"></script>
+        <script type="application/javascript" src="<?= asset('js/global.js') ?>"></script>
+        <script type="application/javascript" src="<?= asset('js/modules/admin/global.js') ?>"></script>
+
+        <!-- User body scripts -->
+        <?php scripts('body'); ?>
+
+    <?= document('close', ['body']) ?>
+
+<?= document('close') ?>

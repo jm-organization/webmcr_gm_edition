@@ -4,6 +4,24 @@ body {
 	height: 100%;
 }
 
+#js-loader {
+	position: fixed;
+	top: 0;
+	right: 0;
+	display: none;
+	background-color: rgba(0, 0, 0, 0.7);
+	border-bottom-left-radius: 10px;
+	float: right;
+	width: 85px;
+	height: 30px;
+	text-align: center;
+	z-index: 20000;
+}
+
+#js-loader img {
+	padding: 9px 0;
+}
+
 #mcr-menu {
 	border: none;
 	border-radius: 0px !important;
@@ -79,7 +97,7 @@ body {
 }
 
 #mcr-dashboard {
-	background-image: url(/themes/semantic-ui/img/admin-header-bg.png);
+	background-image: url(../../../img/admin-header-bg.png);
 }
 
 #mcr-dashboard .ui.header {
@@ -389,6 +407,33 @@ body {
 |******************************************|
 \*----------------------------------------*/
 
+body {
+	overflow: hidden;
+}
+
+.ui.messages {
+	position: fixed;
+	top: 50px;
+	right: 8px;
+	min-width: 350px;
+}
+
+.ui.async.message {
+	display: none;
+	overflow: hidden;
+}
+
+.ui.async.message > #title {
+	display: block;
+	line-height: 12px;
+	margin-bottom: 5px;
+	font-weight: bold;
+}
+
+.ui.async.message > #message {
+	clear: both;
+}
+
 #menu_adm .paperclip {
 	margin: 3px 0 0 5px!important;
 	font-size: 26px;
@@ -438,9 +483,10 @@ header .global-menu {
 	width: calc(100% - 200px);
 	float: right;
 	margin: 0;
-	padding: 0;
-	padding-right: 25px;
+	padding: 0 24px 0 1rem;
 }
+
+header .global-menu li:first-child a { padding-left: 0!important; }
 
 header .global-menu li {
 	display: inline-block;
@@ -707,7 +753,12 @@ header .global-menu li.divider {
 	background: transparent;
 	margin: 0;
 	line-height: 42px;
-	padding-left: 24px;
+}
+
+.admin-wrapper > .admin-container > .ui.container {
+	margin: 0;
+	width: 100%;
+	margin-top: 20px;
 }
 
 .sidebar-hide .admin-wrapper > .admin-container {

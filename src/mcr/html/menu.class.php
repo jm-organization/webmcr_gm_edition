@@ -34,12 +34,29 @@ class menu
 	/**
 	 * Возвращает админ меню в виде масива данных
 	 *
-	 * @return array|null
+	 * @return string|null
 	 * @throws \mcr\database\db_exception
 	 */
 	private function admin_menu()
 	{
-		$sub_menus = $this->admin_sub_menus();
+		$sub_menus = [];
+		$admin_menu = '';
+
+		$query = db::query(
+			"SELECT `title`, `text`, `url`, `target`, `gid`, `priority` FROM `mcr_menu_adm`"
+		);
+
+		if ($query->result() && $query->num_rows > 0) {
+			while ($sub_menu_element = $query->fetch_assoc()) {
+				$id = intval($sub_menu_element['priority']);
+
+				if (isset($sub_menus[$sub_menu_element['gid']][$id])) {
+					$id++;
+				}
+
+				$sub_menus[$sub_menu_element['gid']][$id] = $sub_menu_element;
+			}
+		}
 
 		$query = db::query("
 			SELECT id, `page_ids`, `icon`, title, `text`, `access`
@@ -48,8 +65,6 @@ class menu
 		");
 
 		if ($query->result() && $query->num_rows > 0) {
-			$admin_menu = [];
-
 			$counter = 0;
 			while ($menu_element = $query->fetch_assoc()) {
 				$counter++;
@@ -66,14 +81,17 @@ class menu
 				// сортируем вложенные меню asc'ом
 				ksort($sub_menus[$id]);
 
-				$admin_menu[] = [
+				$admin_menu .= tmpl('modules.admin.menu-item', [
 					"id" => $id,
 					"title" => htmlspecialchars($menu_element['title']),
 					"active" => isset($_GET['do']) && array_key_exists($_GET['do'], $page_ids) ? ' active open' : null,
 					"icon" => trim(str_replace('fa-', '', $menu_element['icon'])),
-					"sub_menu" => $sub_menus[$id]
-				];
+					"sub_menu" => $sub_menus[$id],
+					"parent" => null
+				]);
+
 			}
+
 
 			//echo $this->core->sp(MCR_THEME_MOD."admin/panel_menu/menu-groups/group-id.phtml", $data);
 
@@ -82,33 +100,6 @@ class menu
 
 //		return "<center>{$this->l10n->gettext('empty_panel_menu_group')}</center>";
 		return null;
-	}
-
-	/**
-	 * @return array
-	 * @throws \mcr\database\db_exception
-	 */
-	private function admin_sub_menus()
-	{
-		$results = [];
-
-		$query = db::query(
-			"SELECT `title`, `text`, `url`, `target`, `gid`, `priority` FROM `mcr_menu_adm`"
-		);
-
-		if ($query->result() && $query->num_rows > 0) {
-			while ($sub_menu_element = $query->fetch_assoc()) {
-				$id = intval($sub_menu_element['priority']);
-
-				if (isset($results[$sub_menu_element['gid']][$id])) {
-					$id++;
-				}
-
-				$results[$sub_menu_element['gid']][$id] = $sub_menu_element;
-			}
-		}
-
-		return $results;
 	}
 
 	/**
@@ -127,13 +118,13 @@ class menu
 		");
 
 		if ($query->result() && $query->num_rows > 0) {
-			$array = [];
+			$menu = [];
 
 			while ($public_menu_element = $query->fetch_assoc()) {
 				// TODO: перенести метод проверки прав в класс user
 			    if ($user->cannot($public_menu_element['permissions'])) continue;
 
-				$array[$public_menu_element['id']] = [
+				$menu[$public_menu_element['id']] = [
 					"id" => $public_menu_element['id'],
 					"title" => $public_menu_element['title'],
 					"parent" => $public_menu_element['parent'],
@@ -144,7 +135,33 @@ class menu
 				];
 			}
 
-			return $array;
+			ob_start();
+
+			$tree = $this->create_tree($menu);
+
+			foreach ($tree as $key => $ar) {
+				$data = array(
+					"title" => $ar['title'],
+					"url" => htmlspecialchars($ar['url']),
+					"style" => htmlspecialchars($ar['style']),
+					"target" => htmlspecialchars($ar['target']),
+
+					"active" => (self::is_active($ar['url'])) ? 'active' : '',
+
+					"sub_menu" => (!empty($ar['sons'])) ? $this->generate_sub_menu($ar['sons']) : "",
+				);
+
+				if (!empty($ar['sons'])) {
+					echo tmpl('menu.menu-id-parented', $data);
+
+					continue;
+				}
+
+				echo tmpl('menu.menu-id', $data);
+
+			}
+
+			return ob_get_clean();
 		}
 
 		return null;
@@ -164,37 +181,7 @@ class menu
 
 		if (method_exists($this, $menu_controller)) {
 			// Извлекаем данные о меню
-			$menu = $this->$menu_controller();
-
-			if (is_array($menu)) {
-				ob_start();
-
-				$tree = $this->create_tree($menu);
-
-				foreach ($tree as $key => $ar) {
-					$data = array(
-						"title" => $ar['title'],
-						"url" => htmlspecialchars($ar['url']),
-						"style" => htmlspecialchars($ar['style']),
-						"target" => htmlspecialchars($ar['target']),
-
-						"active" => (self::is_active($ar['url'])) ? 'active' : '',
-
-						"sub_menu" => (!empty($ar['sons'])) ? $this->generate_sub_menu($ar['sons']) : "",
-					);
-
-					if (!empty($ar['sons'])) {
-						echo tmpl('menu.menu-id-parented', $data);
-
-						continue;
-					}
-
-					echo tmpl('menu.menu-id', $data);
-
-				}
-
-				return ob_get_clean();
-			}
+			return $this->$menu_controller();
 		}
 
 		return null;
