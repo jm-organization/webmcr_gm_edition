@@ -56,7 +56,7 @@ if (!function_exists('asset')) {
 				$extension = '.' . $extension;
 			}
 
-			$resource = MCR_THEME_PATH . 'assets/' . str_replace('.', '/', $resource) . $extension;
+			$resource = MCR_THEME_PATH . str_replace('.', '/', $resource) . $extension;
 			load_if_exist($resource);
 
 			return ob_get_clean();
