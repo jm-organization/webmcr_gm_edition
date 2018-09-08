@@ -69,8 +69,18 @@ class url_builder
 	public function build(array $variables = [])
 	{
 		$routeParser = new route_parser;
+
 		// Извлекаем все возможные маршруты
 		$routes = $routeParser->parse($this->route);
+		$_variables = $this->get_all_possible_variables($routes);
+
+		$path_vars = array_filter($variables, function($key) use ($_variables) {
+			return in_array($key, $_variables);
+		}, ARRAY_FILTER_USE_KEY);
+
+		$query_vars = array_filter($variables, function($key) use ($_variables) {
+			return !in_array($key, $_variables);
+		}, ARRAY_FILTER_USE_KEY);
 
 		foreach ($routes as $route) {
 			$url = '';
@@ -84,22 +94,18 @@ class url_builder
 				}
 
 				// добавляем параметр
-				if ($paramIdx === count($variables)) {
+				if ($paramIdx === count($path_vars)) {
 					throw new url_builder_exception('Not enough parameters given');
 				}
 				$paramIdx++;
-				$url .= $variables[$part[0]];
+				$url .= $path_vars[$part[0]];
 			}
 
 			// Если число параметров в маршруте соответствует числу заданных параметров, используйте этот маршрут.
 			// В противном случае попробуйте найти маршрут с большим количеством параметров
-			if ($paramIdx === count($variables)) {
-				return $url;
-			} else {
-				// Получаеременные лишьние переменные
-				$params = array_slice($variables, $paramIdx);
-
-				$params = $this->variables_to_query_params($params);
+			if ($paramIdx === count($path_vars)) {
+				// Получаем лишьние переменные
+				$params = $this->variables_to_query_params($query_vars);
 
 				// собираем url-строку.
 				// url + query запрос + фрагмент
@@ -139,5 +145,18 @@ class url_builder
 		$query = ($query != '') ? '?' . trim($query, '&') : '';
 
 		return [ $query, $fragment ];
+	}
+
+	private function get_all_possible_variables($routes)
+	{
+		$variables = [];
+
+		foreach ($routes as $route) {
+			if (isset($route[1])) {
+				$variables[] = $route[1][0];
+			}
+		}
+
+		return $variables;
 	}
 }
