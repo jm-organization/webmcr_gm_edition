@@ -27,7 +27,7 @@ use mcr\http\request;
 
 use mcr\l10n\l10n;
 use modules\base_module;
-use modules\module;
+use mcr\http\module;
 
 class document
 {

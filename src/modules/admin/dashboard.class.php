@@ -23,7 +23,7 @@ namespace modules\admin;
 
 
 use mcr\http\request;
-use modules\module;
+use mcr\http\module;
 
 class dashboard extends admin implements module
 {

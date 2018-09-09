@@ -25,7 +25,7 @@ namespace modules\admin;
 use mcr\core\application\application;
 use mcr\html\breadcrumbs;
 use mcr\http\request;
-use modules\module;
+use mcr\http\module;
 
 class site_settings extends admin implements module
 {

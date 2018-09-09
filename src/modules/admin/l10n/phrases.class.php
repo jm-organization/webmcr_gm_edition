@@ -27,7 +27,7 @@ use mcr\database\db;
 use mcr\html\breadcrumbs;
 use mcr\http\request;
 use modules\admin\admin;
-use modules\module;
+use mcr\http\module;
 
 class phrases extends admin implements module
 {
