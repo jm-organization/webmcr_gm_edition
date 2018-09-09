@@ -15,40 +15,40 @@
  * @e-mail: admin@jm-org.net
  * @Author: Magicmen
  *
- * @Date  : 07.09.2018
- * @Time  : 20:27
+ * @Date  : 08.09.2018
+ * @Time  : 17:36
  */
 
-namespace modules\admin;
+namespace modules\magicmen\magicmcr\admin\settings;
 
 
 use mcr\core\application\application;
 use mcr\html\breadcrumbs;
-use mcr\html\document;
+use mcr\http\request;
+use mcr\http\module;
+use modules\magicmen\magicmcr\admin\admin;
 
-abstract class admin
+class site_settings extends admin implements module
 {
-	public $layout = 'modules.admin.global'; //
-
-	public $name = 'admin';
-
-	/**
-	 * Метод, который вызывается при загрузке модуля.
-	 * Принимает экземпляр ядра.
-	 *
-	 * @param application $app
-	 *
-	 * @return void
-	 */
 	public function boot(application $app)
 	{
+		parent::boot($app);
+
 		breadcrumbs::add(
-			url('admin.dashboard'),
-			translate('module_admin-panel')
+			url('admin.site.settings'),
+			translate('site_settings')
 		);
+	}
 
-		global $log;
-
-		document::$variables['errors_count'] = $log->get_logs_num('error');
+	/**
+	 * Обрабатывает запрос к модулю.
+	 *
+	 * @param request $request
+	 *
+	 * @return \mcr\http\response|\mcr\http\redirect_response|string
+	 */
+	public function index(request $request)
+	{
+		return tmpl('modules.admin.settings.sitesettings.index');
 	}
 }

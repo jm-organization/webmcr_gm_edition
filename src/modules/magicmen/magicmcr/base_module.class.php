@@ -21,7 +21,7 @@
  * @Documentation:
  */
 
-namespace modules;
+namespace modules\magicmen\magicmcr;
 
 
 use mcr\core\application\application;

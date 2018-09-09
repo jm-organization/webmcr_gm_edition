@@ -12,32 +12,57 @@
 /**
  * Created in JM Organization.
  *
- * @e-mail: admin@jm-org.net
- * @Author: Magicmen
+ * @e-mail       : admin@jm-org.net
+ * @Author       : Magicmen
  *
- * @Date  : 07.09.2018
- * @Time  : 20:25
+ * @Date         : 27.06.2018
+ * @Time         : 22:31
+ *
+ * @Documentation:
  */
 
-namespace modules\admin;
+namespace modules\magicmen\magicmcr;
 
 
-use mcr\http\request;
+use mcr\cache\cache;
+use mcr\cache\cache_value;
+use mcr\core\application\application;
+use mcr\core\core_v2;
+use mcr\html\breadcrumbs;
 use mcr\http\module;
+use mcr\http\request;
+use mcr\validation\validator;
+use modules\magicmen\magicmcr\base_module;
 
-class dashboard extends admin implements module
+if (!defined("MCR")) {
+	exit("Hacking Attempt!");
+}
+
+class news extends base_module implements module
 {
+	use validator;
+
 	public $name = self::class;
+
+	public function boot(application $app)
+	{
+		parent::boot($app);
+
+		breadcrumbs::add(
+			url('news'),
+			translate('news')
+		);
+	}
 
 	/**
 	 * Обрабатывает запрос к модулю.
 	 *
 	 * @param request $request
 	 *
-	 * @return \mcr\http\response|\mcr\http\redirect_response|string
+	 * @return string
 	 */
 	public function index(request $request)
 	{
-		return 'Hello World';
+		return '';
 	}
 }
