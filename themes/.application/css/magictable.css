@@ -1,0 +1,61 @@
+/*
+ * Copyright (c) 2018.
+ * MagicMCR является отдельным и независимым продуктом.
+ * Исходный код распространяется под лицензией GNU General Public License v3.0.
+ *
+ * MagicMCR не является копией оригинального движка WebMCR, а лишь его подверсией.
+ * Разработка MagicMCR производится исключительно в частных интересах. Разработчики, а также лица,
+ * участвующие в разработке и поддержке, не несут ответственности за проблемы, возникшие с движком.
+ */
+
+.magic_table_control_panel_top {
+	display: inline-block;
+	width: 100%;
+	height: 38px;
+	margin-bottom: 20px;
+}
+
+.magic_table_control_panel_bottom {
+	display: inline-block;
+	width: 100%;
+	height: 42px;
+	margin-top: 20px;
+}
+
+.magic_table_control_panel_top > .magic_table_length_cp {
+	display: inline-block;
+	height: 38px;
+}
+
+.magic_table_control_panel_top > .magic_table_filter_cp {
+	display: inline-block;
+	float: right;
+	height: 38px;
+}
+
+.magic_table_control_panel_bottom > .magic_table_information {
+	display: inline-block;
+	height: 42px;
+}
+
+.magic_table_control_panel_bottom > .magic_table_pagination {
+	display: inline-block;
+	float: right;
+	height: 42px;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button:not(.next):not(.previous) {
+	margin-left: 0;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button:not(.next):not(.previous):hover {
+	border-color: transparent;
+	color: black!important;
+	padding-top: .928571em!important;
+	text-decoration: underline!important;
+}
+
+.magic_table_container thead > tr > th {
+	text-align: left;
+}
+
