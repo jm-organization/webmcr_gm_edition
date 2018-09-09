@@ -1,3 +1,16 @@
+<div class="page-header">
+    <h3><?= translate('phrases') ?></h3>
+    <div class="ui dropdown" id="languages">
+        <div class="text"><?= $language ?></div>
+        <i class="dropdown icon"></i>
+        <div class="menu">
+            <?php foreach ($languages as $language_id => $language) { ?>
+                <div class="item" data-value="<?= $language_id ?>"><?= $language ?></div>
+            <?php } ?>
+        </div>
+    </div>
+</div>
+
 <table id="phrases" class="ui table dataTable">
 	<thead>
 	<tr>
@@ -5,8 +18,7 @@
 		<th class="collapsing l10n-action sorting_disabled"><?= translate('action') ?></th>
 	</tr>
 	</thead>
-	<tbody>
-	</tbody>
+	<tbody></tbody>
     <tfoot>
     <tr>
         <th class="l10n-phrases"><?= translate('phrases_list') ?></th>

@@ -8,22 +8,38 @@
  * участвующие в разработке и поддержке, не несут ответственности за проблемы, возникшие с движком.
  */
 
-(function (windows, document, jquery)
+(function (window, document, jquery)
 {
-    let app = windows.app;
+    let app = window.app;
 
     let $table = $('table#phrases').magicTable({
-        lengthMenu: [[50, 75, 150, 250, -1], [50, 75, 150, 250, "Все"]],
-        pageLength: 50,
+        lengthMenu: [[25, 50, 75, 150, 250, -1], [25, 50, 75, 150, 250, "Все"]],
+        pageLength: 25,
         columns: [
             { "orderable": true },
             { "orderable": false }
         ]
     });
 
-    /*app.ajax({
-        url: ''
-    });*/
+    $('#languages').dropdown({
+        onChange: function(value, text, $selectedItem) {
+            window.location.href = '/admin/l10n/phrases/' + value;
+        }
+    });
+
+    app.ajax({
+        type: 'POST',
+        dataType: 'json',
+        async: true, 
+        success: function (phrases) {
+            $.each(phrases, function (phraseId, phrase) {
+                let phrase_html = '<h5>' + phraseId + '</h5><span>' + phrase + '</span>';
+
+                let $phrase_node = $table.row.add([ phrase_html, '' ]).draw().node();
+                $($phrase_node).addClass('phrase');
+            });
+        }
+    });
 }
 )(window, document, jQuery);
 

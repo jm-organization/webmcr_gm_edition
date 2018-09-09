@@ -53,17 +53,44 @@ class phrases extends admin implements module
 	 */
 	public function index(request $request)
 	{
-		/*$language_id = $request->id ? $request->id : 0;
+		$_languages = db::table('l10n_languages')->select('settings', 'id')->get();
+		$languages = ["<span style='color: #ff4545'><i class='ru flag'></i> Русский (ru-RU) - master</span>"];
+
+		$current_language_id = $request->id;
+		if ($current_language_id == null) {
+			$current_language_id = 0 ;
+		}
+
+		foreach ($_languages as $_language) {
+			$language_settings = json_decode($_language['settings']);
+
+			$lang_short_code = explode('-', $language_settings->locale)[0];
+			$languages[$_language['id']] = "<span><i class='$lang_short_code flag'></i> {$language_settings->title} ({$language_settings->locale})</span>";
+		}
+
+		$language = $languages[$current_language_id];
+
+		return tmpl('modules.admin.l10n.phrases.index', compact('languages', 'language'));
+	}
+
+	/**
+	 * @param request $request
+	 *
+	 * @return \mcr\http\response
+	 * @throws \mcr\database\db_exception
+	 */
+	public function get_phrases(request $request)
+	{
+		$language_id = $request->id ? $request->id : 0;
 
 		if ($language_id === 0) {
 			$phrases = db::table('l10n_phrases')->pluck( 'phrase_value', 'phrase_key');
+			$phrases = json_encode($phrases, JSON_UNESCAPED_UNICODE);
 		} else {
-			$phrases_jsoned = db::table('l10n_languages')->select('phrases')->where('id', $language_id)->first();
-			$phrases = json_decode($phrases_jsoned['phrases'], true);
-		}*/
+			$language = db::table('l10n_languages')->select('phrases')->where('id', $language_id)->first();
+			$phrases = $language['phrases'];
+		}
 
-
-
-		return tmpl('modules.admin.l10n.phrases.index');
+		return response()->header('Content-Type', 'application/json')->content($phrases, 200);
 	}
 }
