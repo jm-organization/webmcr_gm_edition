@@ -59,7 +59,7 @@ trait dispatcher
 			// Инициализация текущего модуля приложения
 			////////////////////////////////////////////////////////////////////////////
 
-			/** @var \modules\module $module */
+			/** @var \mcr\http\module $module */
 			$module = $this->initialize_module($route_info['controller']);
 
 			if ($module) {
@@ -88,7 +88,7 @@ trait dispatcher
 	 *
 	 * @param string $module
 	 *
-	 * @return \modules\module|bool
+	 * @return \mcr\http\module|bool
 	 * @throws routing_exception
 	 */
 	private function initialize_module($module)

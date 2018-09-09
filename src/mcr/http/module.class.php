@@ -17,27 +17,15 @@
  *
  * @Date         : 27.06.2018
  * @Time         : 22:17
- *
- * @Documentation:
  */
 
-namespace modules;
+namespace mcr\http;
 
 
 use mcr\core\application\application;
-use mcr\http\request;
 
 interface module
 {
-	/**
-	 * Обрабатывает запрос к модулю.
-	 *
-	 * @param request $request
-	 *
-	 * @return \mcr\http\response|\mcr\http\redirect_response|string
-	 */
-	public function index(request $request);
-
 	/**
 	 * Метод, который вызывается при загрузке модуля.
 	 * Принимает экземпляр ядра.
@@ -47,4 +35,13 @@ interface module
 	 * @return void
 	 */
 	public function boot(application $app);
+
+	/**
+	 * Обрабатывает запрос к модулю.
+	 *
+	 * @param request $request
+	 *
+	 * @return \mcr\http\response|\mcr\http\redirect_response|string
+	 */
+	public function index(request $request);
 }

@@ -19,6 +19,7 @@ use mcr\cache\cache_value;
 use mcr\core\application\application;
 use mcr\core\core_v2;
 use mcr\html\breadcrumbs;
+use mcr\http\module;
 use mcr\http\request;
 use mcr\validation\validator;
 

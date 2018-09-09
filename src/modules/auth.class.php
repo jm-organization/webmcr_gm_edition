@@ -16,6 +16,7 @@ namespace modules;
 use mcr\auth\auth as current_auth;
 
 use mcr\database\db;
+use mcr\http\module;
 use mcr\http\request;
 use mcr\validation\validator;
 
