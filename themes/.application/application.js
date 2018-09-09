@@ -40,21 +40,60 @@ class mcr_application
 
         $.when(
 
+            // Ищим сообщения в контйнере сообщений
+            // Идетитифицируем сообщения
             $('.ui.messages > .message').each(function (messageId, message) {
                 let $message    = $(message),
                     $messageId  = 'message_' + (messageId + 1)
                 ;
 
+                // Унифицируем сообщение, добавляя ему идентификатор
                 $message.attr('id', $messageId);
 
+                // Регистрирунем сообщение по его идентитификатору
                 $messagesList[$messageId] = $message;
             })
 
         ).then(function() {
 
+            // По окончанию идентитификации сообщений
+            // Регистриуем отправленные с сайта сообщения глобально
             _this.messages.list = $messagesList;
 
         });
+
+        $.fn.magicTable = function (options) {
+            if (typeof options !== 'object') {
+                options = {};
+            }
+
+            $.extend(options, {
+                sDom:
+                    '<"magic_table_control_panel_top"' +
+                    '   <"magic_table_length_cp"l>' +
+                    '   <"magic_table_filter_cp"f>' +
+                    '>' +
+
+                    '<"magic_table_container"t>' +
+
+                    '<"magic_table_control_panel_bottom"' +
+                    '   <"magic_table_information"i>' +
+                    '   <"magic_table_pagination"p>' +
+                    '>'
+                ,
+                language: { url: "//cdn.datatables.net/plug-ins/1.10.19/i18n/Russian.json" },
+            });
+
+            // $.ajax({
+            //     url: "/themes/.application/css/magictable.css",
+            //     dataType: "stylesheet",
+            //     success: function (data) {
+            //         console.log(data);
+            //     }
+            // });
+
+            return $(this).DataTable(options);
+        }
     }
 
     isValidJSON(json)
@@ -67,6 +106,23 @@ class mcr_application
         let $el = $(el);
 
         return $el.is(':visible') || $el.is(':not(:hidden)');
+    }
+
+    _loading(enabled)
+    {
+        let $loader = this.$('#js-loader');
+
+        if (enabled) {
+            if (!$loader.hasClass('runclose') && !$loader.hasClass('runopen')) {
+                $loader.addClass('runopen').fadeIn(300, function () {
+                    $(this).removeClass('runopen');
+                });
+            }
+        } else {
+            $loader.addClass('runclose').fadeOut(300, function () {
+                $(this).removeClass('runclose');
+            });
+        }
     }
 
     setTimeout(name, callback, delay)
@@ -90,5 +146,34 @@ class mcr_application
         clearTimeout(timeout);
 
         delete this.timeouts[name];
+    }
+
+    ajax(options)
+    {
+        let $       = this.$,
+            _this   = this
+        ;
+
+        if (typeof options !== 'object') {
+            options = {};
+        }
+
+        $.extend(options, {
+            complete: function (jqXHR, textStatus) {
+                _this._loading(false);
+            }
+        });
+        
+        if (typeof options.success !== 'undefined') {
+            options.success = function (data, textStatus, jqXHR) {
+                _this._loading(false);
+
+                options.success(data, textStatus, jqXHR);
+            }
+        }
+
+        _this._loading(true);
+
+        return $.ajax(options);
     }
 }

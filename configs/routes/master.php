@@ -27,6 +27,10 @@ $router->addGroup('auth/', function(route_collector $router) {
 $router->addGroup('admin/', function(route_collector $router) {
 	$router->get('dashboard', '\modules\admin\dashboard@index', 'admin.dashboard');
 
+	$router->addGroup('l10n/', function(route_collector $router) {
+		$router->get('phrases[/{id:\d+}]', '\modules\admin\l10n\phrases@index', 'admin.l10n.phrases');
+	});
+
 	$router->addGroup('settings/', function(route_collector $router) {
 		$router->get('sitesettings', '\modules\admin\site_settings@index', 'admin.site.settings');
 	});

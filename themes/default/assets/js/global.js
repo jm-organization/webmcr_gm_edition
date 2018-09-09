@@ -12,22 +12,6 @@
 {
     let app = window.app = new mcr_application(windows, document, jquery);
 
-    function loading (enabled) {
-        let $loader = this.$('#js-loader');
-
-        if (enabled) {
-            if (!$loader.hasClass('runclose') && !$loader.hasClass('runopen')) {
-                $loader.addClass('runopen').fadeIn(300, function () {
-                    $(this).removeClass('runopen');
-                });
-            }
-        } else {
-            $loader.addClass('runclose').fadeOut(300, function () {
-                $(this).removeClass('runclose');
-            });
-        }
-    }
-
     $('.popup, .tooltip').popup();
 
     $.each(app.messages.list, function (messageId, $message) {

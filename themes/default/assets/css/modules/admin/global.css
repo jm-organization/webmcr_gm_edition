@@ -6,7 +6,7 @@ body {
 
 #js-loader {
 	position: fixed;
-	top: 0;
+	top: 24px;
 	right: 0;
 	display: none;
 	background-color: rgba(0, 0, 0, 0.7);
@@ -1314,38 +1314,6 @@ td.news-title p#img > img.user_a-news_avatar {
 	opacity: 0.85;
 	box-shadow: none;
 	border-color: transparent;
-}
-
-/* debatable's design adaptation */
-.dataTables_wrapper select {
-	padding: 3px 4px;
-	border-radius: 3px;
-}
-
-.dataTables_wrapper input[type="search"] {
-	border: 1px solid rgb(169, 169, 169);
-	height: 26px;
-	padding: 1px 24px 1px 12px;
-	border-radius: 3px;
-}
-
-.dataTables_wrapper .dataTables_paginate .paginate_button {
-	background: white;
-	border: 1px solid #ddd !important;
-	margin-left: 5px !important;
-	border-radius: 5px !important;
-}
-
-.dataTables_wrapper .dataTables_paginate .paginate_button.current {
-	background: #e0dfdf !important;
-}
-
-.dataTables_wrapper .dataTables_paginate .paginate_button:hover {
-	background: #8a8a8a !important;
-}
-
-.dataTables_wrapper .dataTables_paginate .paginate_button.disabled:hover {
-	background: transparent !important;
 }
 
 .mysql-info {
