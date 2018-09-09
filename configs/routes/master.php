@@ -29,6 +29,7 @@ $router->addGroup('admin/', function(route_collector $router) {
 
 	$router->addGroup('l10n/', function(route_collector $router) {
 		$router->get('phrases[/{id:\d+}]', '\modules\magicmen\magicmcr\admin\l10n\phrases@index', 'admin.l10n.phrases');
+		$router->post('phrases[/{id:\d+}]', '\modules\magicmen\magicmcr\admin\l10n\phrases@get_phrases');
 	});
 
 	$router->addGroup('settings/', function(route_collector $router) {
