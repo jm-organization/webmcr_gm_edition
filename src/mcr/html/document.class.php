@@ -25,6 +25,7 @@ namespace mcr\html;
 use mcr\html\blocks\blocks_manager;
 use mcr\http\request;
 
+use mcr\http\routing\routing_exception;
 use mcr\l10n\l10n;
 use modules\magicmen\magicmcr\base_module;
 use mcr\http\module;
@@ -83,6 +84,7 @@ class document
 	 * @param request                                       $request
 	 *
 	 * @throws blocks\blocks_manager_exception
+	 * @throws routing_exception
 	 */
 	public function __construct(module $module, request $request, $action)
 	{
@@ -97,7 +99,9 @@ class document
 
 		// Определяем шаблон по каторому будет отабражена страница модуля.
 		$this->layout = $module->layout;
+
 		// Получаем содеримое отображаемой страници
+		if (!method_exists($module, $action)) throw new routing_exception("Undefined action method `$action` in `" . get_class($module) . "`");
 		$this->content = $module->$action($request);
 
 		$this->load_module_assets($module->name);
