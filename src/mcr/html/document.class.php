@@ -26,7 +26,7 @@ use mcr\html\blocks\blocks_manager;
 use mcr\http\request;
 
 use mcr\l10n\l10n;
-use modules\base_module;
+use modules\magicmen\magicmcr\base_module;
 use mcr\http\module;
 
 class document
@@ -79,8 +79,8 @@ class document
 	/**
 	 * document constructor.
 	 *
-	 * @param base_module|module $module
-	 * @param request            $request
+	 * @param \modules\magicmen\magicmcr\base_module|module $module
+	 * @param request                                       $request
 	 *
 	 * @throws blocks\blocks_manager_exception
 	 */

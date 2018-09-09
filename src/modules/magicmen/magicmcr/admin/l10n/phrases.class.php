@@ -16,26 +16,30 @@
  * @Author: Magicmen
  *
  * @Date  : 08.09.2018
- * @Time  : 17:36
+ * @Time  : 18:19
  */
 
-namespace modules\admin;
+namespace modules\magicmen\magicmcr\admin\l10n;
 
 
 use mcr\core\application\application;
+use mcr\database\db;
 use mcr\html\breadcrumbs;
 use mcr\http\request;
+use modules\magicmen\magicmcr\admin\admin;
 use mcr\http\module;
 
-class site_settings extends admin implements module
+class phrases extends admin implements module
 {
+	public $name = 'modules.admin.l10n.phrases';
+
 	public function boot(application $app)
 	{
 		parent::boot($app);
 
 		breadcrumbs::add(
-			url('admin.site.settings'),
-			translate('site_settings')
+			url('admin.l10n.phrases'),
+			translate('phrases')
 		);
 	}
 
@@ -45,9 +49,21 @@ class site_settings extends admin implements module
 	 * @param request $request
 	 *
 	 * @return \mcr\http\response|\mcr\http\redirect_response|string
+	 * @throws \mcr\database\db_exception
 	 */
 	public function index(request $request)
 	{
-		return tmpl('modules.admin.settings.sitesettings.index');
+		/*$language_id = $request->id ? $request->id : 0;
+
+		if ($language_id === 0) {
+			$phrases = db::table('l10n_phrases')->pluck( 'phrase_value', 'phrase_key');
+		} else {
+			$phrases_jsoned = db::table('l10n_languages')->select('phrases')->where('id', $language_id)->first();
+			$phrases = json_decode($phrases_jsoned['phrases'], true);
+		}*/
+
+
+
+		return tmpl('modules.admin.l10n.phrases.index');
 	}
 }

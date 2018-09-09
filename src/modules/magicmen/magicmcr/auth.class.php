@@ -11,7 +11,7 @@
  * @Documentation:
  */
 
-namespace modules;
+namespace modules\magicmen\magicmcr;
 
 use mcr\auth\auth as current_auth;
 
@@ -19,6 +19,7 @@ use mcr\database\db;
 use mcr\http\module;
 use mcr\http\request;
 use mcr\validation\validator;
+use modules\magicmen\magicmcr\base_module;
 
 if (!defined("MCR")) {
 	exit("Hacking Attempt!");
