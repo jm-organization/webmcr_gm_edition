@@ -18,7 +18,7 @@
         app.setTimeout(
             messageId,
             function () {
-                if (app.isVisible($message)) {
+                if (mcr_application.isVisible($message)) {
                     $message.transition('fade left');
                 }
             },

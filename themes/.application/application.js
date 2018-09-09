@@ -22,9 +22,7 @@ class mcr_application
 
         this.$('meta').each(function (id, element) {
             if (element.name !== '') {
-                let value = _this.isValidJSON(element.content) ? JSON.parse(element.content) : element.content;
-
-                _this.meta[element.name] = value;
+                _this.meta[element.name] = mcr_application.isValidJSON(element.content) ? JSON.parse(element.content) : element.content;
             }
         });
 
@@ -37,6 +35,10 @@ class mcr_application
             $messagesList   = {},
             _this           = this
         ;
+
+        $.getScript('/themes/.application/js/doT.min.js', function () {
+            console.info('doT.js was loaded');
+        });
 
         $.when(
 
@@ -93,15 +95,30 @@ class mcr_application
             // });
 
             return $(this).DataTable(options);
-        }
+        };
+
+        $.fn.tmpl = function(tmplId, data) {
+            let tmpl = doT.template($('#' + tmplId).text());
+            if (!$.isArray(data)) data = [data];
+
+            return this.each(function() {
+                let html = '';
+
+                for (let itemIdx = 0; itemIdx < data.length; itemIdx++) {
+                    html += tmpl(data[itemIdx]);
+                }
+
+                $(this).html(html);
+            });
+        };
     }
 
-    isValidJSON(json)
+    static isValidJSON(json)
     {
         return /^[\],:{}\s]*$/.test(json.replace(/\\["\\\/bfnrtu]/g, '@').replace(/"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g, ']').replace(/(?:^|:|,)(?:\s*\[)+/g, ''))
     }
 
-    isVisible(el)
+    static isVisible(el)
     {
         let $el = $(el);
 
@@ -169,9 +186,9 @@ class mcr_application
             let success = options.success;
 
             options.success = function (data, textStatus, jqXHR) {
-                _this._loading(false);
-
                 success(data, textStatus, jqXHR);
+
+                _this._loading(false);
             }
         }
 
