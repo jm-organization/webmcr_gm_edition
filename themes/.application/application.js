@@ -159,16 +159,19 @@ class mcr_application
         }
 
         $.extend(options, {
+            data: { mcr_secure: this.meta.application.secure },
             complete: function (jqXHR, textStatus) {
                 _this._loading(false);
             }
         });
         
         if (typeof options.success !== 'undefined') {
+            let success = options.success;
+
             options.success = function (data, textStatus, jqXHR) {
                 _this._loading(false);
 
-                options.success(data, textStatus, jqXHR);
+                success(data, textStatus, jqXHR);
             }
         }
 
